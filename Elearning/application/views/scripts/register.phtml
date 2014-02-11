@@ -1,0 +1,56 @@
+
+<div>
+	 <?php
+		// TODO session
+		?>
+        <div>
+		<div class="center">Hừng đông Online</div>
+	</div>
+	<div class="line"></div>
+
+	<div class="block_zero center">
+		<img src="images/bt_VN.png" alt="*" />
+		<h1 class="yellow">Có xxx người chơi!</h1>
+		<h1>Hãy cùng nhau chiến đấu</h1>
+		<span class="medium"> Một tựa game huyền thoại lần đầu tiên dành cho
+			di động<br /> Chúc mừng, bạn đã trở thành Huyền Thoại!
+		</span><br /> <br />
+		<div class="bigBtn">
+			<a class="btn" href="#"><span class="end"><span class="label">Chơi
+						ngay lập tức</span></span></a>
+		</div>
+	</div>
+	<div class="mini-line"></div>
+	<div class="block_zero center" style="padding-bottom: 8px;">
+		<div style="margin-bottom: 10px;">
+
+			<form action="<?php echo $this->element->getAction();?>"
+				method="<?php echo $this->element->getMethod();?>">
+				<div style="margin-bottom: 10px;">
+					<!-- Email -->
+					Email: <br /> 
+						<?php echo $this->element->email;?>
+						<br />
+					<!-- Username -->
+					Tên người dùng:<br /> 
+						<?php echo $this->element->username;?>
+						<br />
+					<!-- Password -->
+					Mật khẩu:<br /> 
+						<?php echo $this->element->password;?>
+						<br />
+					<!-- Repass -->
+					Nhập lại mật khẩu:<br /> 
+						<?php echo $this->element->repass;?>
+						<br />
+					<!-- Submit -->
+					<span class="btn"><span class="end"> 
+						<?php echo $this->element->submit?>
+						</span></span>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+
