@@ -1,0 +1,65 @@
+<?php echo $this->headLink()->appendStylesheet($this->baseUrl() . '/public/css/captcha.css'); ?>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<div>
+	 <?php
+		// TODO session
+		?>
+        <div>
+		<div class="center">E-learning</div>
+	</div>
+	<div class="line"></div>
+
+	<div class="block_zero center">
+		<img src="<?php echo $this->baseUrl().'/public/images/elearning-logo.png';  ?>"/>
+		<h1 class="yellow">Có xxx người đang học trực tuyến!</h1>
+		<h1>Hãy cùng nhau nâng cao kiến thức</h1>
+		<span class="medium"> Một website học trực tuyến huyền thoại lần đầu tiên dành cho
+			di động<br /> Chúc mừng, bạn sắp trở thành thành viên của E-leanring!
+		</span><br /> <br />
+		<div class="bigBtn">
+			<a class="btn" href="#"><span class="end"><span class="label">Học
+						ngay lập tức</span></span></a>
+		</div>
+	</div>
+	<div class="mini-line"></div>
+	<div class="block_zero center" style="padding-bottom: 8px;">
+		<div style="margin-bottom: 10px;">
+
+			<form action="<?php echo $this->element->getAction();?>"
+				method="<?php echo $this->element->getMethod();?>">
+				<div style="margin-bottom: 10px;">
+					<!-- Email -->
+					Email: <br />
+						<?php echo $this->element->email;?>
+						<br />
+					<!-- Username -->
+					Tên người dùng:<br />
+						<?php echo $this->element->username;?>
+						<br />
+					<!-- Password -->
+					Mật khẩu:<br />
+						<?php echo $this->element->password;?>
+						<br />
+					<!-- Repass -->
+					Nhập lại mật khẩu:<br />
+						<?php echo $this->element->repass;?>
+						<br />
+
+					<div margin-left: 160px style="width: 250px; margin-left: 145px; padding-bottom: 15px">
+					<!-- Captcha -->
+					Nhập mã xác nhận:<br />
+        				<?php echo $this->element->captcha; ?>
+						<br />
+					</div>
+
+					<!-- Submit -->
+					<span class="btn"><span class="end">
+						<?php echo $this->element->submit; ?>
+						</span></span>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+

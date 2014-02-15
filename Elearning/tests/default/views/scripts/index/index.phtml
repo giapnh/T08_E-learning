@@ -1,0 +1,76 @@
+<?php echo $this->doctype()?>
+<html>
+<head> 
+    <?php echo $this->headTitle() ?> 
+    <?php echo $this->headMeta() ?>      
+    <?php echo $this->headLink() ?> 
+</head>
+<body>
+	<div>
+	 <?php
+		// TODO session
+		?>
+        <div>
+			<div class="center">Hừng đông Online</div>
+		</div>
+		<div class="line"></div>
+
+		<div class="block_zero center">
+			<img src="images/bt_VN.png" alt="*" />
+			<h1 class="yellow">Có xxx người chơi!</h1>
+			<h1>Hãy cùng nhau chiến đấu</h1>
+			<span class="medium"> Một tựa game huyền thoại lần đầu tiên dành cho
+				di động<br /> Chúc mừng, bạn đã trở thành Huyền Thoại!
+			</span><br /> <br />
+			<div class="bigBtn">
+				<a class="btn" href="#"><span class="end"><span class="label">Chơi
+							ngay lập tức</span></span></a>
+			</div>
+		</div>
+		<div class="mini-line"></div>
+		<div class="block_zero center" style="padding-bottom: 8px;">
+			<div style="margin-bottom: 10px;">
+                <?php
+																// if
+																// (Session::get
+																// (
+																// 'ValidLogin'
+																// ) == 'Empty')
+																// {
+																// echo "Bạn
+																// phải nhập đầy
+																// đủ thông
+																// tin";
+																// } else if
+																// (Session::get
+																// (
+																// 'ValidLogin'
+																// ) ==
+																// 'Invalid') {
+																// echo "Thông
+																// tin đăng nhập
+																// không chính
+																// xác. Hãy nhập
+																// lại";
+																// }
+																?>
+																</div>
+			<form action="<?php echo $this->element->getAction()?>"
+				method="<?php echo $this->element->getMethod()?>">
+				<div style="margin-bottom: 10px;">
+					Tên người dùng:<br /> <input class="text medium-text" type="text"
+						name="username" /><br /> Mật khẩu:<br /> <input
+						class="text medium-text" type="password" name="password" /><br />
+					<span class="btn"><span class="end"> <input class="label"
+							type="submit" value="Đăng nhập" />Đăng nhập
+					</span></span>
+				</div>
+				<a class="btn" href="views/newfile.php"> <span class="end"><span
+						class="label">Quên mật khẩu</span></span>
+				</a>
+			</form>
+		</div>
+	</div>
+</body>
+</html>
+
