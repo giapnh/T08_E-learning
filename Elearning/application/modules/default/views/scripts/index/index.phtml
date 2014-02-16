@@ -11,7 +11,7 @@
 <div id="contents">
 <div class="top_content clear">
 <div class="logo"><a href="#"> <img width="230"
-	height="58" src="/Elearning/public/images/elearning-logo.png"
+	height="58" src="<?php echo $this->baseUrl().'/public/images/elearning-logo.png';  ?>"
 	alt="Logo"> </a></div>
 <div class="action">
 
@@ -24,8 +24,8 @@
 	</div>
 	</li>
 	<li class="ac_log">
-	<div><a href="#" class="showlogfromm">ログイン</a>
-	<a href="#" class="register-cus">登録</a></div>
+	<div><a href="/index/login" class="showlogfromm">ログイン</a>
+	<a href="<?=$this->url(array( 'controller' => 'register' , 'action' => 'index' ))?>" class="register-cus">登録</a></div>
 	</li>
 </ul>
 
