@@ -62,14 +62,21 @@ class IndexController extends IController {
 				$flag = true;
 			}
 			if ($flag == true) {
-				$this->_redirect ( '/index/index' );
+				$this->_redirect ( '/index/profile' );
 			}
 		}
 		$this->view->form = $form;
 	}
 
+	public function profileAction(){
+		$auth = Zend_Auth::getInstance ();
+		$infoUser = $auth->getIdentity ();
+		$this->view->username = $infoUser->username;
+	}
+
 	public function logoutAction(){
 		$auth = Zend_Auth::getInstance();
 		$auth->clearIdentity();
+		$this->_redirect('index/index');
 	}
 }
