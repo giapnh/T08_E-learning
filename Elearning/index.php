@@ -7,10 +7,15 @@ defined ( 'APPLICATION_PATH' ) || define ( 'APPLICATION_PATH', realpath ( dirnam
 defined ( 'APPLICATION_ENV' ) || define ( 'APPLICATION_ENV', (getenv ( 'APPLICATION_ENV' ) ? getenv ( 'APPLICATION_ENV' ) : 'production') );
 
 // Ensure library/ is on include_path
-set_include_path ( implode ( PATH_SEPARATOR, array (
-realpath ( APPLICATION_PATH . '/../library' ),
-get_include_path ()
-) ) );
+set_include_path(implode(PATH_SEPARATOR, array(
+realpath(APPLICATION_PATH . '/../library'),
+get_include_path(),
+)));
+
+echo implode(PATH_SEPARATOR, array(
+realpath(APPLICATION_PATH . '/../library'),
+get_include_path(),
+));
 
 /**
  * Zend_Application

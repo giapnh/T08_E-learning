@@ -25,7 +25,7 @@ class Default_Form_Login extends Zend_Form {
 				array (
 						'viewScript',
 				array (
-								'viewScript' => '/index/login.phtml'
+								'viewScript' => 'login.phtml'
 								)
 								)
 								) );

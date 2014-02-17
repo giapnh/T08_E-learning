@@ -15,7 +15,7 @@ class IndexController extends IController {
 		$auth = Zend_Auth::getInstance ();
 		if (! $auth->hasIdentity ()) {
 			if ($this->_request->getActionName () != 'login') {
-				$this->_redirect ( '/../Elearning/login' );
+				$this->_redirect ( 'index/login' );
 			}
 		}
 	}

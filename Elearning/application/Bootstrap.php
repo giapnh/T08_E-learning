@@ -4,6 +4,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
 	protected function _initSession(){
 		Zend_Session::start();
 	}
+
 	protected function _initAutoload() {
 
 		// Set Error
@@ -13,13 +14,12 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
 				'controller' => 'error',
 				'action'     => 'error'
 				)));
-
-				//Load Module - khong co cung duoc - vi da cau hinh file bootstrap cs tung module roi.
-				$autoloader = new Zend_Application_Module_Autoloader ( array (
-				'namespace' => '',
-				'basePath' => dirname ( __FILE__ )
-				) );
-				return $autoloader;
+				$default_loader = new Zend_Application_Module_Autoloader( array(    'namespace' => 'Default_',
+                                                                            'basePath'  => APPLICATION_PATH . '/modules/default'
+                                                                            ));
+                                                                            $admin_loader = new Zend_Application_Module_Autoloader( array(    'namespace' => 'Admin_',
+                                                                            'basePath'  => APPLICATION_PATH . '/modules/admin'
+                                                                            ));
 	}
 	/**
 	 * Khoi tao database
