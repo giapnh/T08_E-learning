@@ -6,20 +6,21 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
 	}
 
 	protected function _initAutoload() {
-
-		// Set Error
-		$front = Zend_Controller_Front::getInstance();
-		$front->registerPlugin(new Zend_Controller_Plugin_ErrorHandler(array(
-				'module'     => 'error',
-				'controller' => 'error',
-				'action'     => 'error'
-				)));
-				$default_loader = new Zend_Application_Module_Autoloader( array(    'namespace' => 'Default_',
+		/*Autoload for default module*/
+		$default_loader = new Zend_Application_Module_Autoloader( array(    'namespace' => 'Default_',
                                                                             'basePath'  => APPLICATION_PATH . '/modules/default'
                                                                             ));
+                                                                            /*Autoload for admin module*/
                                                                             $admin_loader = new Zend_Application_Module_Autoloader( array(    'namespace' => 'Admin_',
                                                                             'basePath'  => APPLICATION_PATH . '/modules/admin'
                                                                             ));
+                                                                            // Set Error
+                                                                            $front = Zend_Controller_Front::getInstance();
+                                                                            $front->registerPlugin(new Zend_Controller_Plugin_ErrorHandler(array(
+                'module'     => 'error',
+                'controller' => 'error',
+                'action'     => 'error'
+                )));
 	}
 	/**
 	 * Khoi tao database

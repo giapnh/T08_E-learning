@@ -12,7 +12,11 @@
 <div class="yellow_title_left">ユーザログイン</div>
 </div>
 <div class="yellow_title_bottom"></div>
-<div class="row-input">
+<div class="row-input"><?php echo $this->element->getMethod();?>
+<form action="<?php echo $this->element->getAction();?>" method="post">
+<div class="title-lgu">ユーザ名:</div>
+
+</form>
 <div class="input-lg"><input tabindex="1" type="text"
 	id="clogin_username" name="txtUsername" value=""></div>
 <a href="#" class="link-rf" title="アカウントを作る?">アカウントを作る?</a></div>

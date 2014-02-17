@@ -21,6 +21,7 @@ class IndexController extends IController {
 	}
 	public function loginAction() {
 		$form = new  Default_Form_Login();
+		$this->view->form = $form;
 		//		if ($this->_request->isPost ()) {
 		//
 		//			// 1.Goi ket noi voi Zend Db
@@ -65,7 +66,6 @@ class IndexController extends IController {
 		//				$this->_redirect ( '/index/index' );
 		//			}
 		//		}
-		$this->view->form = $form;
 	}
 
 	public function logoutAction(){

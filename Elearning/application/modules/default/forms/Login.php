@@ -2,7 +2,7 @@
 class Default_Form_Login extends Zend_Form {
 	public function init() {
 		$this->setAction ( '' )->setMethod ( 'post' );
-//		$is_student = $this->createElement("checkbox", "is_student");
+		//		$is_student = $this->createElement("checkbox", "is_student");
 
 		$username = $this->createElement ( "text", "username", array (
 				"size" => "30",

@@ -12,11 +12,6 @@ realpath(APPLICATION_PATH . '/../library'),
 get_include_path(),
 )));
 
-echo implode(PATH_SEPARATOR, array(
-realpath(APPLICATION_PATH . '/../library'),
-get_include_path(),
-));
-
 /**
  * Zend_Application
  */
