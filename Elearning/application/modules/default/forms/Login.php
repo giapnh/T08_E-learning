@@ -2,18 +2,23 @@
 class Default_Form_Login extends Zend_Form {
 	public function init() {
 		$this->setAction ( '' )->setMethod ( 'post' );
-		//		$is_student = $this->createElement("checkbox", "is_student");
-
+		$type=$this->createElement("radio","type",array(
+		//"label" => "Gender",
+                                          "multioptions"=> array(
+                                                    "1" => "student",
+                                                    "2" => "teacher",
+		),
+		));
 		$username = $this->createElement ( "text", "username", array (
-				"size" => "30",
-				"class" => "text medium-text"
+				"id" => "clogin_username",
+				"tabindex" => "1"
 				) );
 				$password = $this->createElement ( "password", "password", array (
-				"size" => "30",
-				"class" => "text medium-text"
-				) );
+		"tabindex" => "2",
+		"id" => "clogin_password"
+		) );
 
-				$email = $this->createElement ( "text", "email", array (
+		$email = $this->createElement ( "text", "email", array (
 				"size" => "30"
 				) );
 				$submit = $this->createElement ( "submit", "submit", array (
