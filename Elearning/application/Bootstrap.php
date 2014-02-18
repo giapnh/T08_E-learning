@@ -6,6 +6,21 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
 	}
 
 	protected function _initAutoload() {
+
+		// Set Error
+		$front = Zend_Controller_Front::getInstance();
+		$front->registerPlugin(new Zend_Controller_Plugin_ErrorHandler(array(
+				'module'     => 'error',
+				'controller' => 'error',
+				'action'     => 'error'
+				)));
+
+				//Load Module - khong co cung duoc - vi da cau hinh file bootstrap cs tung module roi.
+				$autoloader = new Zend_Application_Module_Autoloader ( array (
+				'namespace' => '',
+				'basePath' => dirname ( __FILE__ )
+				) );
+				return $autoloader;
 		/*Autoload for default module*/
 		$default_loader = new Zend_Application_Module_Autoloader( array(    'namespace' => 'Default_',
                                                                             'basePath'  => APPLICATION_PATH . '/modules/default'
