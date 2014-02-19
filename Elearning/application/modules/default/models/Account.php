@@ -1,7 +1,7 @@
 <?php
 class Default_Model_Account extends Zend_Db_Table_Abstract {
-	protected $_name = "users";
-	protected $_primary = "id";
+	protected $_name = "user";
+	protected $_primary = "u_id";
 	protected $db;
 
 	public function __construct(){
@@ -19,7 +19,7 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
         }
         else return false;
 	}
-
+    
 	/*
     public function listall2(){
         $sql=$this->db->query("select * from users where status='0' order by id DESC");
