@@ -2,27 +2,32 @@
 class Default_Form_Register extends Zend_Form {
 	public function init() {
 		$this->setAction ( '' )->setMethod ( 'post' );
-		$email = $this->createElement ( "text", "email", array (
-				"size" => "30",
-				"class" => "text medium-text"
-		) );
-
 		$username = $this->createElement ( "text", "username", array (
-				"size" => "30",
-				"class" => "text medium-text",
+				"class" => "res_input",
+		        "id" => "username",
+		        "maxlength" => "50",
 				"required" => true
 		) );
 		$password = $this->createElement ( "password", "password", array (
-				"size" => "30",
-				"class" => "text medium-text",
-				"required" => true
+				"class" => "res_input res_input_pass",
+                "id" => "password",
+		         "onclick" => "this.select()",
+                "maxlength" => "50",
+                "required" => true
 		) );
 
-		$repass = $this->createElement ( "password", "repass", array (
-				"size" => "30",
-				"class" => "text medium-text",
-				"required" => true
+		$confirmPass = $this->createElement ( "password", "repassword", array (
+             "class" => "res_input res_input_pass",
+                "id" => "repassword",
+                 "onclick" => "this.select()",
+                "maxlength" => "50",
+                "required" => true
 		) );
+		
+		$email = $this->createElement ( "text", "email", array (
+                "size" => "30",
+                "class" => "text medium-text"
+        ) );
 
 		$path = Zend_Controller_Front::getInstance()->getBaseUrl();
 		$captcha = new Zend_Form_Element_Captcha('captcha',array(
@@ -43,8 +48,8 @@ class Default_Form_Register extends Zend_Form {
 
 
 		$submit = $this->createElement ( "submit", "submit", array (
-				"class" => "label",
-				"label" => "Đăng ký"
+				"class" => "showlogfromm",
+				"label" => "登録"
 		) );
 
 		$this->setDecorators ( array (
@@ -57,7 +62,7 @@ class Default_Form_Register extends Zend_Form {
 		) );
 		$username->removeDecorator ( 'HtmlTag' )->removeDecorator ( 'Label' );
 		$password->removeDecorator ( 'HtmlTag' )->removeDecorator ( 'Label' );
-		$repass->removeDecorator ( 'HtmlTag' )->removeDecorator ( 'Label' );
+		$confirmPass->removeDecorator ( 'HtmlTag' )->removeDecorator ( 'Label' );
 		$email->removeDecorator ( 'HtmlTag' )->removeDecorator ( 'Label' );
 		$captcha->removeDecorator ( 'HtmlTag' )->removeDecorator ( 'Label' );
 		$submit->removeDecorator ( 'DtDdWrapper' );
@@ -65,7 +70,7 @@ class Default_Form_Register extends Zend_Form {
 		$this->addElements ( array (
 				$username,
 				$password,
-				$repass,
+				$confirmPass,
 				$email,
 				$captcha,
 				$submit

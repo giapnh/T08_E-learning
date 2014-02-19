@@ -279,7 +279,7 @@ ul.grid {
 }
 
 @
--moz-document url-prefix                  () { .bg_top {
+-moz-document url-prefix                   () { .bg_top {
 	position: relative;
 }
 
@@ -291,7 +291,7 @@ ul.grid {
 }
 
 @media all and (min-width:0px) {
-	head                  ~body .bg_top {
+	head                   ~body .bg_top {
 		position: relative;
 	}
 }
@@ -452,9 +452,8 @@ a:hover .box_dt_row {
 }
 
 .ac_box {
-	border-color: navy;
-	border-style: inset; 
-	width : 700px;
+	border-color: green;
+	border-style: double;
 	height: 400px;
 	margin-left: 0px;
 	margin-top: 50px;
@@ -909,8 +908,8 @@ a:hover .box_dt_row {
 }
 
 @
--moz-document url-prefix                  () { .containt_center_cen_left
-	{ /*   padding: 9px 0px 8px 0px;*/
+-moz-document url-prefix                   () {
+	.containt_center_cen_left { /*   padding: 9px 0px 8px 0px;*/
 	padding: 9px13px8px8px;
 }
 
@@ -1050,7 +1049,7 @@ a:hover .des_cont_three_left {
 }
 
 @
--moz-document url-prefix                  () { .numss {
+-moz-document url-prefix                   () { .numss {
 	margin: 21px009px;
 }
 
@@ -1879,7 +1878,7 @@ a:hover .bt_datthe {
 }
 
 @
--moz-document url-prefix                  () { .vbv2_current {
+-moz-document url-prefix                   () { .vbv2_current {
 	padding: 8px8px8px6px;
 }
 
@@ -1891,7 +1890,7 @@ a:hover .bt_datthe {
 }
 
 @
--moz-document url-prefix                  () { .vbv2_ishomes {
+-moz-document url-prefix                   () { .vbv2_ishomes {
 	margin-left: -8px
 }
 
@@ -1957,9 +1956,9 @@ a:hover .bt_datthe {
 #tops {
 	position: fixed;
 	_position: absolute;
-	_top: expression(eval(document.body.scrollTop +
+	_top: expression(eval(document.body.scrollTop + 
 		                               
-		    430) );
+		     430) );
 	bottom: 20px;
 	margin-left: 1005px;
 	_right: -50px;
@@ -2388,7 +2387,9 @@ a:hover .question_icon_tacb {
 
 
 
+
  
+
 
 
 
@@ -2422,7 +2423,9 @@ ul
 
 
 
+
  
+
 
 
 
@@ -2472,6 +2475,8 @@ li
 
 
 
+
+
 :nth-of-type
 
 
@@ -2489,7 +2494,9 @@ li
 
 
 
+
  
+
 
 
 
@@ -2540,6 +2547,8 @@ div
 
 
 
+
+
 :nth-of-type
 
 
@@ -2557,7 +2566,9 @@ div
 
 
 
+
  
+
 
 
 
@@ -2608,7 +2619,10 @@ padding-left
 
 
 
+
+
 :
+
 
 
 
@@ -2642,8 +2656,11 @@ padding-left
 
 
 
+
 6
 px
+
+
 
 
 
@@ -4290,7 +4307,17 @@ a .vd_oth_text,a:hover .vd_oth_text {
 	width: 700px;
 	line-height: normal;
 	float: none;
+	border: 1px;
 	margin: 0 0 8px 17px;
+	padding-bottom: 15px; } 
+	
+.resg_box {
+	width: 800px;
+	border-color:green;
+	border-style: double;
+	height: 1000px; 
+	float : none;
+	margin: 10px 10px 8px 17px;
 	padding-bottom: 15px;
 }
 
@@ -7255,7 +7282,7 @@ input.pne_st1_r_file_bt:disabled {
 .vbv2_mark {
 	background: black;
 	opacity: 0.4;
-	filter: alpha(opacity =                                   40);
+	filter: alpha(opacity =                                     40);
 	width: 360px;
 	height: 53px;
 	line-height: 53px;
@@ -8546,7 +8573,7 @@ ol#controls li a:focus,#prevBtn a:focus,#nextBtn a:focus {
 	left: 0;
 	position: absolute;
 	opacity: 0;
-	filter: Alpha(Opacity =                                   0);
+	filter: Alpha(Opacity =                                     0);
 }
 
 /* Interaction Cues
@@ -9320,18 +9347,18 @@ button.ui-button::-moz-focus-inner {
 
 .ui-widget-content {
 	border: 1px solid #aaaaaa /*{borderColorContent}*/;
-	background: #ffffff /*{bgColorContent}*/                   
-		                 url(images/ui-bg_flat_75_ffffff_40x100.png)
-		/*{bgImgUrlContent}*/            
+	background: #ffffff /*{bgColorContent}*/                    
+		                  url(images/ui-bg_flat_75_ffffff_40x100.png)
+		/*{bgImgUrlContent}*/             
 		
 		 
 		   
-		                 50% /*{bgContentXPos}*/ 
+		                  50% /*{bgContentXPos}*/  
 		                               
-		   50% /*{bgContentYPos}*/          
+		    50% /*{bgContentYPos}*/           
 		 
 		         
-		              repeat-x /*{bgContentRepeat}*/;
+		               repeat-x /*{bgContentRepeat}*/;
 	color: #222222 /*{fcContent}*/;
 }
 
@@ -9341,14 +9368,14 @@ button.ui-button::-moz-focus-inner {
 
 .ui-widget-header {
 	border: 1px solid #aaaaaa /*{borderColorHeader}*/;
-	background: #cccccc /*{bgColorHeader}*/                   
-		                 url(images/ui-bg_highlight-soft_75_cccccc_1x100.png)
-		/*{bgImgUrlHeader}*/                                     50%
-		/*{bgHeaderXPos}*/      
+	background: #cccccc /*{bgColorHeader}*/                    
+		                  url(images/ui-bg_highlight-soft_75_cccccc_1x100.png)
+		/*{bgImgUrlHeader}*/                                       50%
+		/*{bgHeaderXPos}*/       
 		   
 		             
-		            50% /*{bgHeaderYPos}*/                 
-		                   repeat-x /*{bgHeaderRepeat}*/;
+		             50% /*{bgHeaderYPos}*/                  
+		                    repeat-x /*{bgHeaderRepeat}*/;
 	color: #222222 /*{fcHeader}*/;
 	font-weight: bold;
 }
@@ -9362,18 +9389,18 @@ button.ui-button::-moz-focus-inner {
 .ui-state-default,.ui-widget-content .ui-state-default,.ui-widget-header .ui-state-default
 	{
 	border: 1px solid #d3d3d3 /*{borderColorDefault}*/;
-	background: #e6e6e6 /*{bgColorDefault}*/                   
-		                 url(images/ui-bg_glass_75_e6e6e6_1x400.png)
-		/*{bgImgUrlDefault}*/            
+	background: #e6e6e6 /*{bgColorDefault}*/                    
+		                  url(images/ui-bg_glass_75_e6e6e6_1x400.png)
+		/*{bgImgUrlDefault}*/             
 		
 		 
 		   
-		                 50% /*{bgDefaultXPos}*/ 
+		                  50% /*{bgDefaultXPos}*/  
 		                               
-		   50% /*{bgDefaultYPos}*/          
+		    50% /*{bgDefaultYPos}*/           
 		 
 		         
-		              repeat-x /*{bgDefaultRepeat}*/;
+		               repeat-x /*{bgDefaultRepeat}*/;
 	font-weight: normal /*{fwDefault}*/;
 	color: #555555 /*{fcDefault}*/;
 }
@@ -9387,17 +9414,17 @@ button.ui-button::-moz-focus-inner {
 .ui-state-hover,.ui-widget-content .ui-state-hover,.ui-widget-header .ui-state-hover,.ui-state-focus,.ui-widget-content .ui-state-focus,.ui-widget-header .ui-state-focus
 	{
 	border: 1px solid #999999 /*{borderColorHover}*/;
-	background: #dadada /*{bgColorHover}*/                   
-		                 url(images/ui-bg_glass_75_dadada_1x400.png)
-		/*{bgImgUrlHover}*/          
+	background: #dadada /*{bgColorHover}*/                    
+		                  url(images/ui-bg_glass_75_dadada_1x400.png)
+		/*{bgImgUrlHover}*/           
 		
 		  
 		     
-		                50% /*{bgHoverXPos}*/
+		                 50% /*{bgHoverXPos}*/ 
 		                                 
-		  50% /*{bgHoverYPos}*/           
+		   50% /*{bgHoverYPos}*/            
 		           
-		             repeat-x /*{bgHoverRepeat}*/;
+		              repeat-x /*{bgHoverRepeat}*/;
 	font-weight: normal /*{fwDefault}*/;
 	color: #212121 /*{fcHover}*/;
 }
@@ -9410,18 +9437,18 @@ button.ui-button::-moz-focus-inner {
 .ui-state-active,.ui-widget-content .ui-state-active,.ui-widget-header .ui-state-active
 	{
 	border: 1px solid #aaaaaa /*{borderColorActive}*/;
-	background: #ffffff /*{bgColorActive}*/                   
-		                 url(images/ui-bg_glass_65_ffffff_1x400.png)
-		/*{bgImgUrlActive}*/           
+	background: #ffffff /*{bgColorActive}*/                    
+		                  url(images/ui-bg_glass_65_ffffff_1x400.png)
+		/*{bgImgUrlActive}*/            
 		
 		  
 		    
-		                50% /*{bgActiveXPos}*/
+		                 50% /*{bgActiveXPos}*/ 
 		                                 
-		  50% /*{bgActiveYPos}*/         
+		   50% /*{bgActiveYPos}*/          
 		  
 		         
-		              repeat-x /*{bgActiveRepeat}*/;
+		               repeat-x /*{bgActiveRepeat}*/;
 	font-weight: normal /*{fwDefault}*/;
 	color: #212121 /*{fcActive}*/;
 }
@@ -9440,16 +9467,16 @@ button.ui-button::-moz-focus-inner {
 .ui-state-highlight,.ui-widget-content .ui-state-highlight,.ui-widget-header .ui-state-highlight
 	{
 	border: 1px solid #fcefa1 /*{borderColorHighlight}*/;
-	background: #fbf9ee /*{bgColorHighlight}*/                   
-		                 url(images/ui-bg_glass_55_fbf9ee_1x400.png)
-		/*{bgImgUrlHighlight}*/              
+	background: #fbf9ee /*{bgColorHighlight}*/                    
+		                  url(images/ui-bg_glass_55_fbf9ee_1x400.png)
+		/*{bgImgUrlHighlight}*/               
 		 
 		  
-		                 50% /*{bgHighlightXPos}*/  
+		                  50% /*{bgHighlightXPos}*/   
 		                              
-		   50% /*{bgHighlightYPos}*/             
+		    50% /*{bgHighlightYPos}*/              
 		       
-		               repeat-x /*{bgHighlightRepeat}*/;
+		                repeat-x /*{bgHighlightRepeat}*/;
 	color: #363636 /*{fcHighlight}*/;
 }
 
@@ -9461,17 +9488,17 @@ button.ui-button::-moz-focus-inner {
 .ui-state-error,.ui-widget-content .ui-state-error,.ui-widget-header .ui-state-error
 	{
 	border: 1px solid #cd0a0a /*{borderColorError}*/;
-	background: #fef1ec /*{bgColorError}*/                   
-		                 url(images/ui-bg_glass_95_fef1ec_1x400.png)
-		/*{bgImgUrlError}*/          
+	background: #fef1ec /*{bgColorError}*/                    
+		                  url(images/ui-bg_glass_95_fef1ec_1x400.png)
+		/*{bgImgUrlError}*/           
 		
 		  
 		     
-		                50% /*{bgErrorXPos}*/
+		                 50% /*{bgErrorXPos}*/ 
 		                                 
-		  50% /*{bgErrorYPos}*/           
+		   50% /*{bgErrorYPos}*/            
 		           
-		             repeat-x /*{bgErrorRepeat}*/;
+		              repeat-x /*{bgErrorRepeat}*/;
 	color: #cd0a0a /*{fcError}*/;
 }
 
@@ -9493,14 +9520,14 @@ button.ui-button::-moz-focus-inner {
 .ui-priority-secondary,.ui-widget-content .ui-priority-secondary,.ui-widget-header .ui-priority-secondary
 	{
 	opacity: .7;
-	filter: Alpha(Opacity =                                   70);
+	filter: Alpha(Opacity =                                     70);
 	font-weight: normal;
 }
 
 .ui-state-disabled,.ui-widget-content .ui-state-disabled,.ui-widget-header .ui-state-disabled
 	{
 	opacity: .35;
-	filter: Alpha(Opacity =                                   35);
+	filter: Alpha(Opacity =                                     35);
 	background-image: none;
 }
 
@@ -10278,41 +10305,41 @@ button.ui-button::-moz-focus-inner {
 
 /* Overlays */
 .ui-widget-overlay {
-	background: #aaaaaa /*{bgColorOverlay}*/                   
-		                 url(images/ui-bg_flat_0_aaaaaa_40x100.png)
-		/*{bgImgUrlOverlay}*/           
+	background: #aaaaaa /*{bgColorOverlay}*/                    
+		                  url(images/ui-bg_flat_0_aaaaaa_40x100.png)
+		/*{bgImgUrlOverlay}*/            
 		
 		  
 		    
-		                50% /*{bgOverlayXPos}*/ 
+		                 50% /*{bgOverlayXPos}*/  
 		                                
-		  50% /*{bgOverlayYPos}*/          
+		   50% /*{bgOverlayYPos}*/           
 		 
 		         
-		              repeat-x /*{bgOverlayRepeat}*/;
+		               repeat-x /*{bgOverlayRepeat}*/;
 	opacity: .3;
-	filter: Alpha(Opacity =                                   30)
+	filter: Alpha(Opacity =                                     30)
 		/*{opacityOverlay}*/;
 }
 
 .ui-widget-shadow {
-	margin: -8px /*{offsetTopShadow}*/                                     0
-		0 -8px /*{offsetLeftShadow}*/;
+	margin: -8px /*{offsetTopShadow}*/                                      
+		0 0 -8px /*{offsetLeftShadow}*/;
 	padding: 8px /*{thicknessShadow}*/;
-	background: #aaaaaa /*{bgColorShadow}*/                   
-		                 url(images/ui-bg_flat_0_aaaaaa_40x100.png)
-		/*{bgImgUrlShadow}*/          
+	background: #aaaaaa /*{bgColorShadow}*/                    
+		                  url(images/ui-bg_flat_0_aaaaaa_40x100.png)
+		/*{bgImgUrlShadow}*/           
 		
 		  
 		     
-		                50% /*{bgShadowXPos}*/
+		                 50% /*{bgShadowXPos}*/ 
 		                                 
-		  50% /*{bgShadowYPos}*/         
+		   50% /*{bgShadowYPos}*/          
 		  
 		         
-		              repeat-x /*{bgShadowRepeat}*/;
+		               repeat-x /*{bgShadowRepeat}*/;
 	opacity: .3;
-	filter: Alpha(Opacity =                                   30)
+	filter: Alpha(Opacity =                                     30)
 		/*{opacityShadow}*/;
 	-moz-border-radius: 8px /*{cornerRadiusShadow}*/;
 	-khtml-border-radius: 8px /*{cornerRadiusShadow}*/;
