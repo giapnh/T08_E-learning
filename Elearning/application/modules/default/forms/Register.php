@@ -33,7 +33,6 @@ class Default_Form_Register extends Zend_Form {
                 "class" => "res_input",
                   "id" => "res_name"
                   ) );
-        
                   
 		$path = Zend_Controller_Front::getInstance()->getBaseUrl();
 		$captcha = new Zend_Form_Element_Captcha('captcha',array(
@@ -52,7 +51,6 @@ class Default_Form_Register extends Zend_Form {
 				),
 		));
 
-
 		$submit = $this->createElement ( "submit", "submit", array (
 				"class" => "showlogfromm",
 				"label" => "登録"
@@ -66,6 +64,7 @@ class Default_Form_Register extends Zend_Form {
 						)
 				)
 		) );
+		
 		$username->removeDecorator ( 'HtmlTag' )->removeDecorator ( 'Label' );
 		$password->removeDecorator ( 'HtmlTag' )->removeDecorator ( 'Label' );
 		$confirmPass->removeDecorator ( 'HtmlTag' )->removeDecorator ( 'Label' );
