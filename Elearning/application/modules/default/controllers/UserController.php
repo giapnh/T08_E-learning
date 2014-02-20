@@ -2,7 +2,11 @@
 require 'IController.php';
 //require 'RegisterController.php';
 class UserController extends IController {
-	public function indexAction() {
+	public function indexAction(){
+	   $this->redirect('user/login');
+	}
+	
+	public function loginAction() {
 		$form = new Default_Form_Login ();
 		if ($this->_request->isPost ()) {
 			// 1.Goi ket noi voi Zend Db
