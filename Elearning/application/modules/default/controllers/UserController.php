@@ -3,11 +3,12 @@ require 'IController.php';
 //require 'RegisterController.php';
 class UserController extends IController {
 	public function indexAction(){
-	   $this->redirect('user/login');
+		$this->redirect('user/login');
 	}
-	
+
 	public function loginAction() {
 		$form = new Default_Form_Login ();
+		$this->view->form = $form;
 		if ($this->_request->isPost ()) {
 			// 1.Goi ket noi voi Zend Db
 			$db = Zend_Registry::get("connectDB");
@@ -22,7 +23,15 @@ class UserController extends IController {
 			// 4. Lay gia tri duoc gui qua tu FORM
 			$uname = $this->_request->getParam ( 'username' );
 			$paswd = $this->_request->getParam ( 'password' );
-			$type = $this->_request->getParam('type');
+			$role = $this->_request->getParam('role');
+			// If filed is null
+			if(trim($uname) == ''){
+				$this->view->errorMessage = "ユーザー名は空にすることはできません";
+				return;
+			}else if(trim($paswd) == ''){
+				$this->view->errorMessage = "パスワードは空にすることはできません";
+				return;
+			}
 			// 5. Dua vao so sanh voi du lieu khai bao o muc 3
 			$authAdapter->setIdentity ( $uname );
 			$authAdapter->setCredential ( $paswd );
@@ -30,51 +39,52 @@ class UserController extends IController {
 
 			// 6. Kiem tra trang thai cua user neu status = 1 moi duoc login
 			$select = $authAdapter->getDbSelect ();
-			// $select->where ( 'status = 1' );
+			$select->where ( 'role = '.$role );
 
 			// 7. Lay ket qua truy van
 			$result = $auth->authenticate ( $authAdapter );
 			$flag = false;
-			if ($result->isValid ()) {
-				echo "login success";
-				// 8. Lay nhung du lieu can thiet trong bang users neu login
-				// thanh cong
-				$data = $authAdapter->getResultRowObject ( null, array (
-                        'password'
-                        ) );
 
-                        // 9. Luu nhung du lieu cua member vao session
-                        $auth->getStorage ()->write ( $data );
-                        $flag = true;
+			if ($result->isValid ()) {
+				$data = $authAdapter->getResultRowObject ( null, array (
+						'password'
+				) );
+				$auth->getStorage ()->write ( $data );
+				$flag = true;
+			}else{
+				$this->view->errorMessage = "ログイン情報は正しくない！";
 			}
 			if ($flag == true) {
-				$this->_redirect ( '/index/index' );
+				if($role == 1){
+					$this->_redirect ( '/student/index' );
+				}else{
+					$this->_redirect ( '/teacher/index' );
+				}
 			}
 		}
-		$this->view->form = $form;
 	}
-	
+
 	public function registerAction(){
 		$account = new Default_Model_Account();
-	    $form = new Default_Form_Register ();
-	    $this->view->form = $form;
-        if ($this->_request->isPost ()) {
-            $data = $this->_request->getParams();
-            if($data['password'] != $data['repassword']){
-                    $this->view->errorMessage = "Password and confirm password don't match.";
-                    $this->redirect('user/register');
-                    return;
-                }
-                
-            if($account->isExits($data['username'])){
-                $this->view->errorMessage = "Name already taken. Please choose      another one.";
-                return;
-            }
-            unset($data['repassword']);
-                $users->insert($data);
-                $this->_redirect('auth/login');
-            }
-       
+		$form = new Default_Form_Register ();
+		$this->view->form = $form;
+		if ($this->_request->isPost ()) {
+			$data = $this->_request->getParams();
+			if($data['password'] != $data['repassword']){
+				$this->view->errorMessage = "Password and confirm password don't match.";
+				$this->redirect('user/register');
+				return;
+			}
+
+			if($account->isExits($data['username'])){
+				$this->view->errorMessage = "Name already taken. Please choose      another one.";
+				return;
+			}
+			unset($data['repassword']);
+			$users->insert($data);
+			$this->_redirect('auth/login');
+		}
+			
 	}
 
 	public function logoutAction(){
