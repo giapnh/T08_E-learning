@@ -1,0 +1,72 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-Equiv="Cache-Control" Content="no-cache">
+<meta http-Equiv="Pragma" Content="no-cache">
+<meta http-Equiv="Expires" Content="0">
+<link rel="stylesheet" type="text/css"
+	href="http://www.tienganh123.com/static/css/ta123_styles.css?v=3" />
+<script type="text/javascript"
+	src="http://www.tienganh123.com/static/js/libraries.js?v=4"></script>
+<script type="text/javascript"
+	src="http://www.tienganh123.com/static/js/jquery_ready.js?v=8"></script>
+<!--[if lte IE 10]>
+        <link rel="stylesheet" type="text/css" href="http://www.tienganh123.com/static/css/common.css">
+        <![endif]-->
+<!--[if IE 6]>
+        <link rel="stylesheet" type="text/css" href="http://www.tienganh123.com/static/css/ie6.css">
+        <![endif]-->
+<!--[if IE 7]>
+        <link rel="stylesheet" type="text/css" href="http://www.tienganh123.com/static/css/ie7.css">
+        <![endif]-->
+<!--[if IE 8]>
+        <link rel="stylesheet" type="text/css" href="http://www.tienganh123.com/static/css/ie8.css">
+        <![endif]-->
+<!--[if IE 9]>
+        <link rel="stylesheet" type="text/css" href="http://www.tienganh123.com/static/css/ie9.css">
+        <![endif]-->
+<!-- Tienganh123 lib -->
+<!-- AUDIO PLAYER -->
+<script type="text/javascript"
+	src="/file/dungchung/audioPlayer/ubanplayer/swfobject/swfobject.js"></script>
+<script src="http://www.tienganh123.com/static/js/libs_audio.js"></script>
+<script type="text/javascript"
+	src="http://www.tienganh123.com/static/js/audioPlayer/pickle/pickle.js"></script>
+
+
+</head>
+<body>
+	<a href="#"> <img class="logo"
+		src="../public/images/elearning-logo.png" alt="Logo">
+	</a>
+	<div class="action">
+		<ul class="first_notLogin">
+			<li class="ac_log">
+				<div>
+					<a href="../user/login" class="register-cus">ログアウト</a>
+				</div>
+			</li>
+		</ul>
+	</div>
+	<div class="menus clear">
+		<ul>
+			<li class="home mn"><a href="http://www.tienganh123.com"></a></li>
+			<li title="" class="mn first_mn"><a
+				href="http://www.tienganh123.com/menu/tieng-anh-tre-em">Tiếng Anh
+					trẻ em</a></li>
+			<li class="mn" title=""><a
+				href="http://www.tienganh123.com/tieng-anh-pho-thong">Tiếng Anh phổ
+					thông </a></li>
+			<li title="" class="mn "><a
+				href="http://www.tienganh123.com/menu/tieng-anh-nguoi-lon">Tiếng Anh
+					người lớn</a></li>
+			<li title="" class="mn "><a href="javascript:;">Kỹ năng</a></li>
+			<li title="" class="mn "><a
+				href="http://www.tienganh123.com/menu/hoc-qua-clip">Học qua Video</a>
+			</li>
+		</ul>
+	</div>
+</body>
+</html>

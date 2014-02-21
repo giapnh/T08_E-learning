@@ -1,0 +1,13 @@
+<?php 
+echo $this->form;
+if(isset($this->errorMessage)){?>
+<div>
+	<center>
+		<font size="20"> <?php
+		$this->errorMessage;
+		?>
+		</font>
+	</center>
+</div>
+<?php 
+$this->form->errorMessage =  $this->errorMessage;

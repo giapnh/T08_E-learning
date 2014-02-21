@@ -1,0 +1,12 @@
+<?php 
+echo $this->form;
+if(isset($this->errorMessage))
+{?>
+<div>
+		<font size="10"> <?php
+		echo $this->errorMessage;
+		?>
+		</font>
+</div>
+<?php 
+}

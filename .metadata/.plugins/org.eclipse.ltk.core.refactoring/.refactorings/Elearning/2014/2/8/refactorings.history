@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;Elearning/application/modules/default/views/scripts/student/mylession.phtml&apos; to &apos;index.phtml&apos;" description="Rename resource &apos;mylession.phtml&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="application/modules/default/views/scripts/student/mylession.phtml" name="index.phtml" stamp="1393013187967" updateReferences="true"/>
+</session>

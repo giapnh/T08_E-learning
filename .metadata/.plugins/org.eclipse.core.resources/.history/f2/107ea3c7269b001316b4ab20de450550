@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+<body>
+	<div align="center" style="margin-top: 50px;">
+		<font size="30"><big>Elearningシステムへようこそ</big> </font>
+	</div>
+	<center>
+		<div class="ac_box" align="center">
+			<div class="res_box">
+				<div class="yellow_title_box">
+					<div class="yellow_title_left">ユーザログイン</div>
+				</div>
+			</div>
+			<form action="<?php echo $this->element->getAction();?>"
+				method="<?php echo $this->element->getMethod(); ?>">
+				<div class="row-input">
+					<input type="radio" tabindex="1" value="1" name="type"
+						checked="checked">学生 <input type="radio" tabindex="2" value="2"
+						name="type">先生
+				</div>
+				<div class="row-input">
+					<div class="title-lgu">ユーザ名:</div>
+					<div class="input-lg">
+						<?php echo $this->element->username; ?>
+					</div>
+				</div>
+				<div class="row-input">
+					<div class="title-lgp">パースワード:</div>
+					<div class="input-lg">
+						<?php echo $this->element->password; ?>
+					</div>
+				</div>
+				<div class="row-input" align="center">
+					<a href="#" class="link-rf" title="パースワードを忘れる??">パースワードを忘れる?</a>
+				</div>
+				<div class="row-input">
+					<input type="checkbox" alt="Remember me" value=""
+						name="rememberPass"> 私を覚えている
+				</div>
+				<div class="row-input" style="margin-top: 10px; margin-left: 250px;"
+					align="center">
+					<?php echo $this->element->submit; ?>
+					<a tabindex="6" href="../user/register"><input type="button"
+						class="register-cus" value="登録"> </a>
+				</div>
+			</form>
+		</div>
+	</center>
+	<div>
+		<?php echo $this->element->errorMessage; ?>
+	</div>
+</body>
+</html>
