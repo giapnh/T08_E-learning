@@ -30,7 +30,7 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
 		->where('username=?',
 				$username)
 				->where('password=?',
-						$password)
+                                md5($password))
 						->where('role=?',$role);
 		$result = $this->getAdapter()->fetchAll($query);
 		if($result){
