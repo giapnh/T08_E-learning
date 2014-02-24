@@ -9,4 +9,5 @@ class Code{
 	public static $VIOLATION_TIME  =  10;//資料の禁止回数
 	public static $FILE_LOCATION  ="E:\Documents";//課金情報を格納するフォルダ
 	public static $BACKUP_TIME  =  30 ;//自動バックアップ期間（日）
+        public static $PASSWORD_CONST = 100;
 }

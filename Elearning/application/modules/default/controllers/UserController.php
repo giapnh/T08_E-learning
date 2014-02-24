@@ -47,6 +47,7 @@ class UserController extends IController {
 
             $flag = false;
             if ($authAdapter->isValid($uname, $paswd, $role)) {
+                $flag = true;
                 $curr_ip = $_SERVER['REMOTE_ADDR'];
                 if ($curr_ip == "::1") {
                     $curr_ip = "127.0.0.1";
@@ -54,15 +55,12 @@ class UserController extends IController {
 
                 // If user is teacher, check ip address valid or invalid
                 if ($role == 2) {
+                    $flag = false;
                     if ($authAdapter->checkIpValid($uname, $curr_ip)) {
-                        // 					$data = $authAdapter->getResultRowObject ( null, array (
-                        // 							'password'
-                        // 					) );
-                        // 					$auth->getStorage ()->write ( $data );
                         $flag = true;
                     } else {
                         echo "Invalid ip address";
-
+                        
                         $flag = false;
                     }
                 }
@@ -79,6 +77,11 @@ class UserController extends IController {
             }
         }
     }
+
+    public function login_new_ipAction(){
+        
+    }
+
 
     public function registerAction() {
         $user = new Default_Model_Account();
