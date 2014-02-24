@@ -1,4 +1,0 @@
-<?php echo $this->form;
-?>
-<center>echo $this->errorMessage;</center>
-?>

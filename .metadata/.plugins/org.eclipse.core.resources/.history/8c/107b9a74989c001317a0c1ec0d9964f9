@@ -1,7 +1,0 @@
-<?php
-class Message{
-	public static $M001 = "ユーザネームがない";
-	public static $M002 = "パースワードがない";
-	public static $M003 = "ユーザネームとパースワードが会っていない";
-	
-}

@@ -1,6 +1,0 @@
-<?php 
-echo $this->form;
-if(isset($this->errorMessage)){
-	$this->form->errorMessage =  $this->errorMessage;
-}
-?>
