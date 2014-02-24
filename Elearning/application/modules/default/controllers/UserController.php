@@ -135,7 +135,7 @@ class UserController extends IController {
 				$this->view->errorMessage = Message::$M034;
 				return;
 			}
-                        $user->insert($data);
+                        $user->insertNew($data);
 			$this->_redirect('user/login');
 		}
 			
