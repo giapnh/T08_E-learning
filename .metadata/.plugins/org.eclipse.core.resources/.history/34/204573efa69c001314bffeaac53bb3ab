@@ -1,0 +1,14 @@
+<?php
+class Code{
+	public static $LOCK_TIME = 5 ;// ログイン間違い回数
+	public static $SESSION_TIME =  24;//  自動ログアウト時間（時）
+	public static $LOGIN_FAIL_LOCK_TIME=1;  ロック時間
+	public static $COMA_PRICE  =  20;//  学生が使用する場合、１コマにつき暫定２万ドン。
+	public static $TEACHER_FEE_RATE  =60;//先生の課金率（%）
+	LESSON_DEADLINE = 10  授業の期限（日）
+	VIOLATION_TIME  =  10  資料の禁止回数
+	FILE_LOCATION  =
+	“E:\Documents”
+	課金情報を格納するフォルダ
+	BACKUP_TIME  =  30  自動バックアップ期間（日）
+}
