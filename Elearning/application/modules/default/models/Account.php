@@ -46,7 +46,7 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
 		->from($this->_name, array('username','last_login_ip'))
 		->where('username=?',
 				$username)
-				->where("last_login_ip=$curr_ip OR last_login_ip IS NULL");
+				->where("last_login_ip='$curr_ip' OR last_login_ip IS NULL");
 		$result = $this->getAdapter()->fetchAll($query);
 		if($result)
 			return true;
@@ -60,4 +60,24 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
 		$where = "username='$username'";
 		$this->update($data,$where);
 	}
+        
+        public function insertNew($data){
+            $ins_data = array(
+                'username' => $data['username'],
+                'first_password' => md5($data['password']),
+                'password' =>  md5($data['password']),
+                'name' => $data['fullname'],
+                'birthday' =>$data['day'].'-'.$data['month'].'-'.$data['year'],
+                'address' => $data['address'],
+                'phone' => $data['phone'],
+                'bank_account' => $data['bank_acc'],
+                'first_secret_question' => $data['secret_question'],
+                'secret_question' => $data['secret_question'],
+                'first_secret_answer' => $data['first_secret_answer'],
+                'secret_answer' => $data['secret_answer'],
+                'role' => $data['role'],
+                'status' => 2,//Wait for confirm by admin
+            );
+            $this->insert($ins_data);
+        }
 }

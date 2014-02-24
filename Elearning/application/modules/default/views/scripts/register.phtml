@@ -23,9 +23,10 @@
 				<div class="res_form_row">
 					<div class="res_f_r_left">
 						<div class="res_f_r_left_up">
-							<b>ユーザ名</b>（５字以上）: <span class="red">*</span>
+							<b>ユーザ名</b>（6字以上）: <span class="red">*</span>
 						</div>
-						<div class="res_f_r_left_down">例えば: ひかり</div>
+						<div class="res_f_r_left_down">ユーザ名は「A-Z, a-z, 0-9, -, _ 」以外があ
+							りますかどうかチェックします。</div>
 					</div>
 					<div class="res_f_r_right">
 						<?php echo $this->element->username; ?>
@@ -58,7 +59,7 @@
 				<div class="res_form_row">
 					<div class="res_f_r_left">
 						<div class="res_f_r_left_up">
-							<b>イーメール</b>: <span class="red">*</span>
+							<b>イーメール</b>:
 						</div>
 						<div class="res_f_r_left_down">あなたのイーメールを入力してください</div>
 					</div>
@@ -93,8 +94,8 @@
 					</div>
 					<div class="res_f_r_right">
 						<div class="res_select">
-							<label> <select id="day">
-									<option value="">---</option>
+							<label> <select id="day" name="day">
+									<option value="0">---</option>
 
 									<option value="1">1</option>
 
@@ -162,8 +163,8 @@
 							</label>​
 						</div>
 						<div class="res_select">
-							<label> <select id="mon">
-									<option value="">-------</option>
+							<label> <select id="mon" name="month">
+									<option value="0">-------</option>
 
 									<option value="1">1月</option>
 
@@ -193,8 +194,8 @@
 							</label>​
 						</div>
 						<div class="res_select res_select_last">
-							<label> <select id="year">
-									<option value="">-----</option>
+							<label> <select id="year" name="year">
+									<option value="0">-----</option>
 
 									<option value="2013">2013</option>
 
@@ -323,67 +324,6 @@
 									<option value="1951">1951</option>
 
 									<option value="1950">1950</option>
-
-									<option value="1949">1949</option>
-
-									<option value="1948">1948</option>
-
-									<option value="1947">1947</option>
-
-									<option value="1946">1946</option>
-
-									<option value="1945">1945</option>
-
-									<option value="1944">1944</option>
-
-									<option value="1943">1943</option>
-
-									<option value="1942">1942</option>
-
-									<option value="1941">1941</option>
-
-									<option value="1940">1940</option>
-
-									<option value="1939">1939</option>
-
-									<option value="1938">1938</option>
-
-									<option value="1937">1937</option>
-
-									<option value="1936">1936</option>
-
-									<option value="1935">1935</option>
-
-									<option value="1934">1934</option>
-
-									<option value="1933">1933</option>
-
-									<option value="1932">1932</option>
-
-									<option value="1931">1931</option>
-
-									<option value="1930">1930</option>
-
-									<option value="1929">1929</option>
-
-									<option value="1928">1928</option>
-
-									<option value="1927">1927</option>
-
-									<option value="1926">1926</option>
-
-									<option value="1925">1925</option>
-
-									<option value="1924">1924</option>
-
-									<option value="1923">1923</option>
-
-									<option value="1922">1922</option>
-
-									<option value="1921">1921</option>
-
-									<option value="1920">1920</option>
-
 							</select>
 							</label>​
 						</div>
@@ -394,7 +334,8 @@
 						<div class="res_f_r_left_up">住所:</div>
 					</div>
 					<div class="res_f_r_right">
-						<input id="res_address" class="res_input" type="text">
+						<input id="res_address" name="address" class="res_input"
+							type="text">
 					</div>
 				</div>
 				<div class="res_form_row">
@@ -402,7 +343,8 @@
 						<div class="res_f_r_left_up">電話番後:</div>
 					</div>
 					<div class="res_f_r_right">
-						<input id="res_phone_number" class="res_input" type="text">
+						<input id="res_phone_number" name="phone" class="res_input"
+							type="text">
 					</div>
 				</div>
 
@@ -411,7 +353,8 @@
 						<div class="res_f_r_left_up">銀後アカウント:</div>
 					</div>
 					<div class="res_f_r_right">
-						<input id="res_bank_account" class="res_input" type="text">
+						<input id="res_bank_account" name="bank_acc" class="res_input"
+							type="text">
 					</div>
 				</div>
 
@@ -420,7 +363,8 @@
 						<div class="res_f_r_left_up">機密質問:</div>
 					</div>
 					<div class="res_f_r_right">
-						<input id="res_secret_question_q" class="res_input" type="text">
+						<input id="res_secret_question_q" class="res_input"
+							name="secret_question" type="text">
 					</div>
 				</div>
 
@@ -429,7 +373,8 @@
 						<div class="res_f_r_left_up">答え:</div>
 					</div>
 					<div class="res_f_r_right">
-						<input id="res_secret_question_a" class="res_input" type="text">
+						<input id="res_secret_question_a" class="res_input"
+							name="secret_answer" type="text">
 					</div>
 				</div>
 
@@ -445,8 +390,8 @@
 				<div class="res_form_row">
 					<div class="res_radio_box">
 						<div class="res_radio_te">
-							<input type="checkbox" name="dieukhoan"><span class="font_weight">私は<a
-								href="#" target="_blank" class="blue2">Elearningシステムの使用規制</a>が納得しました<span
+							<input type="checkbox" checked="checked" name="rule_accept"><span
+								class="font_weight">私は<a href="#" target="_blank" class="blue2">Elearningシステムの使用規制</a>が納得しました<span
 								class="red">*</span>
 							</span>
 						</div>

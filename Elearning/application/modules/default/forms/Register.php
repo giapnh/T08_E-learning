@@ -4,36 +4,36 @@ class Default_Form_Register extends Zend_Form {
 		$this->setAction ( '' )->setMethod ( 'post' );
 		$username = $this->createElement ( "text", "username", array (
 				"class" => "res_input",
-		        "id" => "username",
-		        "maxlength" => "50",
+				"id" => "username",
+				"maxlength" => "30",
 				"required" => true
 		) );
 		$password = $this->createElement ( "password", "password", array (
 				"class" => "res_input res_input_pass",
-                "id" => "password",
-		         "onclick" => "this.select()",
-                "maxlength" => "50",
-                "required" => true
+				"id" => "password",
+				"onclick" => "this.select()",
+				"maxlength" => "20",
+				"required" => true
 		) );
 
 		$confirmPass = $this->createElement ( "password", "repassword", array (
-             "class" => "res_input res_input_pass",
-                "id" => "repassword",
-                 "onclick" => "this.select()",
-                "maxlength" => "50",
-                "required" => true
+				"class" => "res_input res_input_pass",
+				"id" => "repassword",
+				"onclick" => "this.select()",
+				"maxlength" => "20",
+				"required" => true
 		) );
-		
+
 		$email = $this->createElement ( "text", "email", array (
-                "class" => "res_input",
-		          "id" => "res_email"
-		          ) );
-		          
+				"class" => "res_input",
+				"id" => "res_email"
+		) );
+
 		$name =   $this->createElement ( "text", "fullname", array (
-                "class" => "res_input",
-                  "id" => "res_name"
-                  ) );
-                  
+				"class" => "res_input",
+				"id" => "res_name"
+		) );
+
 		$path = Zend_Controller_Front::getInstance()->getBaseUrl();
 		$captcha = new Zend_Form_Element_Captcha('captcha',array(
 				'label' => 'Captcha',
@@ -64,12 +64,12 @@ class Default_Form_Register extends Zend_Form {
 						)
 				)
 		) );
-		
+
 		$username->removeDecorator ( 'HtmlTag' )->removeDecorator ( 'Label' );
 		$password->removeDecorator ( 'HtmlTag' )->removeDecorator ( 'Label' );
 		$confirmPass->removeDecorator ( 'HtmlTag' )->removeDecorator ( 'Label' );
 		$email->removeDecorator ( 'HtmlTag' )->removeDecorator ( 'Label' );
-        $name->removeDecorator ( 'HtmlTag' )->removeDecorator ( 'Label' );
+		$name->removeDecorator ( 'HtmlTag' )->removeDecorator ( 'Label' );
 		$captcha->removeDecorator ( 'HtmlTag' )->removeDecorator ( 'Label' );
 		$submit->removeDecorator ( 'DtDdWrapper' );
 

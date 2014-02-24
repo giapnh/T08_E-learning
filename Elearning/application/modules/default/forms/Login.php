@@ -12,8 +12,8 @@ class Default_Form_Login extends Zend_Form {
 				"tabindex" => "4",
 				"id" => "clogin_password"
 		) );
-		
-		
+
+
 		$submit = $this->createElement ( "submit", "submit", array (
 				"tabindex" => "5",
 				"class" => "showlogfromm",

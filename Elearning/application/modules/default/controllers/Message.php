@@ -33,4 +33,7 @@ class  Message{
 	public static $M031  ="本当にユーザを許可しますか";
 	public static $M032  ="月の課金情報を TSV ファイルに作成のが完成しました";
 	public static $M033  ="本当にデータベースをバックアップしますか？";
+
+	//Add register message
+	public static $M034 = "アカウントは存在してしまった";
 }

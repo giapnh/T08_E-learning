@@ -44,8 +44,8 @@ class UserController extends IController {
 				$this->view->errorMessage = Message::$M002;
 				return;
 			}
-			$flag = false;
 
+			$flag = false;
 			if ($authAdapter->isValid($uname,$paswd,$role)) {
 				$curr_ip =  $_SERVER['REMOTE_ADDR'];
 				if($curr_ip == "::1"){
@@ -66,34 +66,77 @@ class UserController extends IController {
 				$authAdapter->incLoginFailure($uname);
 				$this->view->errorMessage = Message::$M003;
 			}
-			// 			if ($flag == true) {
-			// 				if($role == 1){
-			// 					$this->_redirect ( '/student/index' );
-			// 				}else{
-			// 					$this->_redirect ( '/teacher/index' );
-			// 				}
-			// 			}
+			if ($flag == true) {
+				if($role == 1){
+					$this->_redirect ( '/student/index' );
+				}else{
+					$this->_redirect ( '/teacher/index' );
+				}
+			}
 		}
 	}
 
 	public function registerAction(){
-		$account = new Default_Model_Account();
+		$user = new Default_Model_Account();
 		$form = new Default_Form_Register ();
 		$this->view->form = $form;
 		if ($this->_request->isPost ()) {
 			$data = $this->_request->getParams();
+			//Check empty
+			if(trim($data['username'])==''){
+				$this->view->errorMessage = Message::$M006;
+				return;
+			}
+			if(trim($data['password'])==''){
+				$this->view->errorMessage = Message::$M007;
+				return;
+			}
+
 			if($data['password'] != $data['repassword']){
-				$this->view->errorMessage = "Password and confirm password don't match.";
-				$this->redirect('user/register');
+				$this->view->errorMessage = Message::$M008;
 				return;
 			}
-			if($account->isExits($data['username'])){
-				$this->view->errorMessage = "Name already taken. Please choose      another one.";
+
+			if(trim($data['fullname'])==''){
+				$this->view->errorMessage = Message::$M009;
 				return;
 			}
-			unset($data['repassword']);
-			$users->insert($data);
-			$this->_redirect('auth/login');
+
+			if($data['day'] == 0 || $data['month'] == 0 || $data['year'] == 0){
+				$this->view->errorMessage = Message::$M010;
+				return;
+			}
+
+			if(trim($data['address']) == ''){
+				$this->view->errorMessage = Message::$M011;
+				return;
+			}
+
+			if(trim($data['phone']) == ''){
+				$this->view->errorMessage = Message::$M012;
+				return;
+			}
+
+			if(trim($data['bank_acc'])==''){
+				$this->view->errorMessage = Message::$M013;
+			}
+
+			if(trim($data['secret_question'])==''){
+				$this->view->errorMessage = Message::$M014;
+				return;
+			}
+
+			if(trim($data['secret_answer'])==''){
+				$this->view->errorMessage = Message::$M015;
+				return;
+			}
+
+			if($user->isExits($data['username'])){
+				$this->view->errorMessage = Message::$M034;
+				return;
+			}
+                        $user->insert($data);
+			$this->_redirect('user/login');
 		}
 			
 	}
@@ -101,5 +144,6 @@ class UserController extends IController {
 	public function logoutAction(){
 		$auth = Zend_Auth::getInstance();
 		$auth->clearIdentity();
+		$this->_redirect('user/login');
 	}
 }
