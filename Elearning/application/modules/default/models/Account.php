@@ -69,6 +69,8 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
                 'name' => $data['fullname'],
                 'birthday' =>$data['day'].'-'.$data['month'].'-'.$data['year'],
                 'address' => $data['address'],
+                'sex' => $data['sex'],
+                'email' => $data['email'],
                 'phone' => $data['phone'],
                 'bank_account' => $data['bank_acc'],
                 'first_secret_question' => $data['secret_question'],
