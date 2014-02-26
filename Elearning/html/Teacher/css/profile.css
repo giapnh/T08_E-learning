@@ -30,30 +30,7 @@ ul{
     min-height: 50px;
     margin: 5px 0 0 10px ;
 }
-.action_card{height: 60px;line-height: 60px;background:#EAF6DC url(http://data.tienganh123.com/images/v2/home/stars_bgr.png) no-repeat; border:1px solid #DDDDDD ;}
-.mess_card {float: left;}
-.mess_card a:hover .blue1 { color:#ee7600;}
-.ac_card{float: right;}
-.mess_card{margin-left: 25px;line-height: normal;margin-top: 10px;}
-.ac_card{margin: 6px 5px 0 0;}
-.datmuathe{
-    background:url(http://data.tienganh123.com/images/v2/home/img_homepage.png) -115px -958px no-repeat;
-    padding: 17px 73px 3px;
-}
-.datmuathe:hover{
-    background:url(http://data.tienganh123.com/images/v2/home/img_homepage.png) -115px -1266px no-repeat;
-    padding: 17px 73px 3px;
-}
-.napthe{
-    background:url(http://data.tienganh123.com/images/v2/home/img_homepage.png) -115px -1046px no-repeat;
-    padding: 17px 73px 3px;
-}
-.napthe:hover{
-    background:url(http://data.tienganh123.com/images/v2/home/img_homepage.png) -115px -1310px no-repeat;
-    padding: 17px 73px 3px;
-}
-.center_info_cus{float: left;}
-.center_info_cus{margin-top: 10px; width: 540px;font-weight:normal;float: left; margin-left:2px; margin-bottom:15px; padding-right:10px;}
+
 .banbe{width: 201px;margin-left: 8px; float:right}
 .banbe a:hover { color:#ee7600}
 .banbe table{font-size: 12px;}
@@ -127,16 +104,10 @@ ul{
     line-height:17px;
     width: 90%;
 }
-.pr_ceninfo_form{
-    margin-bottom: 20px;
-    float:left;
-    word-wrap: break-word;
-    width: 658px;
-}
 .pr_ceninfo_title{
     width: 100%;
     height: 27px;
-    background: url("http://data.tienganh123.com/images/v2/pr_bg_title_content.jpg");
+    background: url("../../public/images/pr_bg_title_content.jpg");
     background-repeat: no-repeat;
 }
 .pr_ceninfo_title_text{
@@ -148,9 +119,6 @@ ul{
 }
 .pr_ceninfo_bg_title{
 }
-.pr_ceninfo_wrap_content{
-    margin-top: 15px;
-}
 .pr_ceninfo_wrap_title img{
     vertical-align: middle;
 }
@@ -161,11 +129,6 @@ ul{
     color: #0081a1;
     font-size: 12px;
 }
-.pr_ceninfo_content{
-    padding-left: 21px;
-    padding-top: 5px;
-}
-.pr_ceninfo_content img {max-width:500px}
 .lsf_ghichep_ct img {max-width:540px}
 .pr_ceninfo_score{}
 .pr_ceninfo_detail{
@@ -193,15 +156,8 @@ a:hover .pr_bt_viewmore_r {background: url("http://data.tienganh123.com/images/v
     background-image: url("http://data.tienganh123.com/images/v2/bt_view_detail_hover.png");
 }
 /*----tiennv-note------------*/
-.pr_ceninfo_note{
-    margin-top: 15px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #E0EFF3;
-    width: 510px;
-}
-.pr_ceninfo_note_paragrap, .pr_ceninfo_note_info_comment{
-    margin-top: 10px;
-}
+
+
 .pr_ceninfo_note_info_comment{font-size:11px; color:#797474}
 .pr_ceninfo_view, .pr_ceninfo_comment{
     border-right: 1px solid #CCC;
@@ -329,7 +285,7 @@ a:hover .pr_bt_viewmore_r {background: url("http://data.tienganh123.com/images/v
 .profile_cen_title{
     width: 100%;
     height: 27px;
-    background-image: url("http://data.tienganh123.com/images/v2/home/pr_bg_title_content.jpg");
+    background-image: url("../../public/images/pr_bg_title_content.jpg");
     background-size: 100%;
     background-repeat: no-repeat;
 }
