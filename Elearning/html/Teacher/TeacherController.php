@@ -115,6 +115,8 @@ class TeacherController extends IController {
 	}
 
 
+	public function thunghiemAction(){}
+	
 	public function managelessonAction(){}
 
 	public function viewlessonAction(){}
