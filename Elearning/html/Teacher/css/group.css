@@ -1,0 +1,105 @@
+.right_info_cus {position:relative;}
+.prg_pr_bt {width:100px; height:48px; background:#5c822f; position:absolute; top:0; right:0; text-align:center; color:#fff; text-transform:uppercase; line-height:200%; padding-top:14px;}
+.prg_pr_bt.napbt {right:100px; border-right:1px solid #455d28; height:53px; padding-top:9px; line-height:160%;}
+a:hover .prg_pr_bt {background:#567a2b;}
+.prg_name_group {width:100%; line-height:48px; margin:10px 0; float:left; color:#d16c1a; font-size:24px; font-weight:bold; text-transform:uppercase; font-family:"Times New Roman", Times, serif; text-align:center;}
+ul.prg_tab_menu {width:100%; height:43px; float:left; border-bottom:2px solid #f27b00;}
+ul.prg_tab_menu li {float:left; height:41px; margin-right:5px; line-height:41px; padding:0 23px; background:#e6e6e6; color:#505050; font-size:13px; font-weight:bold;}
+ul.prg_tab_menu li.last_tab {margin:0 0 0 1px;}
+ul.prg_tab_menu a:hover li, ul.prg_tab_menu li.active{ border-bottom:2px solid #f27b00; background:#f27b00; color:#fff;}
+.prg_statis {width:100%; float:left;}
+.prg_statis_row {width:100%; height:41px;line-height:40px; float:left;}
+.prg_statis_row:hover, .prg_statis_row.active { background:#fff2e6;}
+.prg_statis_row.first {height:67px; background:#ab5400; border-radius:6px 6px 0 0;}
+.prg_statis_row.first div {display:table-cell; vertical-align:middle; line-height:14px; color:#fff; font-size:12px; font-weight:bold; text-transform:uppercase; float:none; height:67px;}
+.prg_statis_row div { border: 1px solid #dddddd; border-left:none;border-top:0; height:40px; float:left; text-align:center; color:#777777;}
+.prg_statis_row .stt {width:43px; border-left:1px solid #dddddd;}
+.prg_statis_row .name {width:187px; text-align:left; text-indent:8px; font-weight:bold;}
+.prg_statis_row .level {width:119px;}
+.prg_statis_row .hovaten {width:196px; text-align:left; text-indent:8px;}
+.prg_statis_row .loaithanhvien {width:140px;}
+.prg_statis_row .loaithanhvien .date {font-size:12px; height:40px; line-height:14px; display:table-cell; vertical-align:middle; width:140px; text-align:center; }
+.prg_statis_row .quanly {width:199px;}
+.prg_statis_row.first .quanly_normal {border-right:none;}
+.prg_statis_row .toeic {width:70px;}
+.prg_statis_row .history {width:105px;}
+.prg_statis_row .download {width:49px; padding-top:8px; height:32px;}
+.prg_statis_row.first .stt { border: 0 1px 1px 0 solid blue; border-left:none;width:44px;}
+.prg_statis_row.first .toeic {width:141px;}
+.prg_statis_row.first .hovaten {text-align:center; text-indent:0px;}
+.prg_statis_row.first .level span {width:90px; display:inline-block; } .prg_statis_row.first .level img {vertical-align:top;}
+.prg_statis_row.first .name {text-align:center; text-indent:0px;}
+.prg_statis_row.first .name img {margin:0 10px;}
+.prg_statis_row.first .toeic img { margin-left:3px;}
+.prg_statis_row.first .download { border: 0 1px 1px 0 solid blue; border-right:none;width:50px; padding:0; font-weight:normal; text-transform:none;}
+.prg_search_name {width:143px; height:24px; background:#d5aa80; border-radius:4px; display:inline-block; margin-top:5px;}
+.prg_search_name input {background:none; border:none; height:24px;line-height:24px; width:110px; text-indent:10px; float:left;}
+.prg_search_name button {width:27px; height:24px; float:right; border:none; background:url(../../images/profile_new/search_icon.png) center bottom no-repeat; cursor:pointer;}
+.prg_statis_toeic_big {width:100%; height:34px; line-height:34px; display:inline-block;}
+.prg_statis_toeic_small {width:70px; height:33px; line-height:33px;text-transform:none; font-weight:normal; display:inline-block; text-align:center; background:#ff8714;}
+.prg_statis_pagi {width:100%; height:28px; padding:15px 0; text-align:center; float:left; font-size:12px; text-transform:uppercase; color:#575757; font-weight:bold;}
+.prg_statis_pagi a {width:36px; height:26px; background:url(../../images/profile_new/pagi_number.jpg) center top repeat-x; display:inline-block; margin:0 6px; line-height:26px; text-align:center; border:1px solid #d4d4d4;}
+.prg_statis_pagi a:hover, .prg_statis_pagi a.active {background-position: center bottom; color:#fff; border:1px solid #f78e0a;}
+.prg_statis_download {width:100%; float:left; text-align:right;border-top:1px  solid #d7d7d7; padding-top:10px;}
+.prg_statis_download a {height:22px; background:url(../../images/profile_new/excel_icon_small.png) left center no-repeat; display:inline-block; color:#3680a0; padding-left:25px; line-height:22px; margin-left:10px;}
+.prg_del_bt {height:28px; line-height:28px; background:#e7e7e7; border-radius:3px; display:inline-block;vertical-align:middle; margin-top:6px; padding:0 15px; box-shadow: 1px 2px 2px #909090 inset; vertical-align:top; margin:6px 5px;}
+.prg_del_bt:hover, .prg_del_bt.del {background:#d60b00; box-shadow: 1px 2px 2px #780c00 inset; color:#fff;}
+.prg_napthe_bt {height:28px; line-height:28px; background:#51a007; border-radius:3px; display:inline-block;vertical-align:middle;  padding:0 20px;  vertical-align:top; margin:6px 5px; color:#fff;}
+.prg_napthe_bt.dis, .prg_napthe_bt.dis:hover { background:#e7e7e7; box-shadow: 1px 2px 2px #909090 inset; color:#9f9f9f; cursor:default;}
+.prg_napthe_bt:hover {background:#469100; color:#fff;}
+.prg_statis_row.deleted {background:#f14c50;}
+.prg_statis_row.deleted div{color:#fff !important;}
+.prg_statis_row.danapthe {background:#d7e9c5;}
+.prg_statis_row.danapthe .quanly {color:#315a00;}
+.prg_nthe_box {width:739px; border:1px solid #dddddd; float:left; border-top:none; background:#fff2e6; padding:15px; position:relative;}
+.prg_nthe_close_bt {font-size:12px; padding-left:17px; color:#ed1c24; position:absolute; top:0; right:0; height:30px; line-height:30px; padding-right:10px; background:url(../../images/profile_new/close_bt.png) left center no-repeat;}
+.prg_nthe_close_bt:hover {text-decoration:underline;color:#ed1c24; }
+.prg_nthe_name {font-size:14px; width:100%; float:left; color:#575757;}
+.prg_nthe_bt_box {width:100%; float:left; text-align:center; margin:15px 0 0;}
+.prg_nthe_bt_box span {margin: 0 15px; display:inline-block; vertical-align:top;}
+.prg_nthe_bt {height:38px; line-height:38px; color:#fff; background:#f78e0a; box-shadow: 1px 2px 2px #a25e00 inset; border-radius:4px; display:inline-block; padding:0 40px;margin-bottom:10px;}
+.prg_nthe_bt:hover {background:#e67900; color:#fff; }
+.prg_nt_card_tit {text-align:center; font-weight:bold; color:#a66322; font-size:14px; float:left; width:100%;}
+.prg_nt_card_row {width:100%; float:left;margin:15px 0 0;}
+.prg_nt_card_text {width:280px;float:left; font-size:13px; text-align:left; margin-right:20px;}
+.prg_nt_card_label {float:left; vertical-align:top; }
+.prg_nt_card_label input {width:260px; padding:0 15px; height:38px; line-height:38px; border:1px solid #bb670a; font-size:20px; float:left;}
+.prg_nt_card_label .prg_nthe_bt {padding:0 30px; margin-left:10px; float:left;}
+.prg_nt_card_tit.taikhoan {text-align:left;}
+.prg_nt_card_select {float:left; }
+.prg_nt_card_select select {height:38px; line-height:38px; padding:10px 15px 8px; border-radius:2px; border:1px solid #a6a6a6;}
+.prg_nthe_bt.dis {background:#e7e7e7; box-shadow: 1px 2px 2px #909090 inset; color:#9f9f9f; cursor:default;}
+.prg_nt_card_note {height:20px; line-height:20px; clear:both; text-align:left;}
+.prg_cre_box {width:100%; float:left;}
+.prg_cre_title {width:100%; float:left; height:15px; border-bottom:1px solid #ababab;}
+.prg_cre_title span{float:left; height:30px; line-height:30px; padding-right:10px; background:#fff; font-size:14px; font-weight:bold; color:#ee7600;}
+.prg_cre_box .res_input {height:28px; line-height:28px;}
+.prg_cre_bt {height:46px; line-height:46px; color:#fff; font-weight:bold; font-size:14px; padding: 0 50px; background:#53a209; display:inline-block; border-radius:4px;border: none;}
+.prg_cre_bt:hover {background:#3f8300; color:#fff;}
+.prg_add_mem_box {width:100%; float:left; height:70px; background:url(../../images/profile_new/bg_add_mem_box.png) left center no-repeat;}
+.prg_add_mem_search {width:270px; height:40px; line-height:40px; float:left; background:#fff; border-radius:4px; margin:17px 0 0 24px; overflow:hidden;}
+.prg_add_mem_search input.type {width:200px; float:left; height:40px; line-height:40px; background:#fff; border:none; font-size:14px; padding:0 10px;}
+.prg_add_mem_search_bt {width:40px ; height:40px; float:right; background:url(../../images/profile_new/bt_search_memadd.png) right bottom no-repeat; border: none;}
+.prg_add_mem_search_kq {height:40px; line-height:40px; padding:0 30px; font-size:14px; font-weight:bold; color:#fff; background:url(../../images/profile_new/bg_black_opacity.png); margin:17px 0 0 15px; float:left;}
+.prg_mem_list {width:100%; float:left;}
+.prg_mem_list .lsf_info_box_ct {width:764px;}
+.prg_mem_list .lsf_info_box_top {width:754px;}
+.prg_mem_list .lik_info_right {float:left;}
+.prg_mem_control {width:200px; float:right; padding:12px;}
+div.comfirm_group{display: none;}
+.prg_mem_add_bt {float:right; background:url(../../images/profile_new/bg_add_bt.jpg) left center no-repeat #58960f; font-size:14px; font-weight:bold; color:#fff; padding:0 10px 0 72px; display:inline-block; height:39px; line-height:39px; margin-right:-17px; margin-top:10px;}
+.prg_mem_add_bt:hover {color:yellow;}
+.prg_mem_control_bt { width:80px; text-align:center; height:30px; line-height:30px; color:#fff; font-weight:bold; background:#58960f; display:inline-block; margin: 0 5px; }
+.prg_mem_control_bt:hover {color:#fff;}
+.prg_mem_control_bt.cancel {background:#474747;}
+.prg_mem_namegroup {display:inline-block; height:19px; line-height:19px; font-size:11px; color:#fff; padding:0 20px; border-radius:10px; background:#58960f;}
+.prg_update_box {width:100%; float:left;}
+.prg_update_title {padding-left:32px; height:24px; line-height:24px; background:url(../../images/profile_new/star_icon_title.png) left center no-repeat; color:#d00000; font-size:14px;}
+.prg_update_content { float:left; padding-left:40px;display: none;}
+.prg_update_list {padding-left:18px; background:url(../../images/profile_new/list_style_update.png) left 4px no-repeat; margin:10px 0; color:#a66322; font-size:13px; text-align:justify;}
+.prg_cre_bt.update {background:#fba51a;float: left;border: none;}
+.prg_update_type {height:46px; line-height:46px; border:1px solid #cccccc; padding:0 10px; width:182px; margin-right:15px; font-size:18px; color:#575757; font-weight:normal; float:left; display:inline-block; border-radius:4px;}
+.prg_update_note {width:100%; height:30px; line-height:30px; float:left; color:#58960f; background:url(../../images/profile_new/wait_icon.png) left center no-repeat; text-indent:34px;}
+.prg_statis_row .hovaten.hovaten_short {width:165px;}
+.prg_statis_row .quanly.quanly_short {width:100px;}
+.prg_statis_row .quanly.quanly_normal {width:129px;}
