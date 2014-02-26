@@ -1,5 +1,7 @@
 <?php
+
 require '/../controllers/Code.php';
+
 class Default_Model_Account extends Zend_Db_Table_Abstract {
 
     protected $_name = "user";
@@ -63,7 +65,7 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
         $ins_data = array(
             'username' => $data['username'],
             'first_password' => md5($data['username'] . '+' . $data['password'] . '+' . Code::$PASSWORD_CONST),
-            'password' => md5($data['password']),
+            'password' => md5($data['username'] . '+' . $data['password'] . '+' . Code::$PASSWORD_CONST),
             'name' => $data['fullname'],
             'birthday' => $data['day'] . '-' . $data['month'] . '-' . $data['year'],
             'address' => $data['address'],

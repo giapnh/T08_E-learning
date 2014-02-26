@@ -49,7 +49,7 @@ class UserController extends IController {
             if ($authAdapter->isValid($uname, $paswd, $role)) {
                 $flag = true;
                 $curr_ip = $_SERVER['REMOTE_ADDR'];
-                if ($curr_ip == "::1") {
+                if ($curr_ip === "::1") {
                     $curr_ip = "127.0.0.1";
                 }
 
@@ -60,7 +60,7 @@ class UserController extends IController {
                         $flag = true;
                     } else {
                         echo "Invalid ip address";
-                        
+
                         $flag = false;
                     }
                 }
@@ -78,10 +78,9 @@ class UserController extends IController {
         }
     }
 
-    public function login_new_ipAction(){
+    public function login_new_ipAction() {
         
     }
-
 
     public function registerAction() {
         $user = new Default_Model_Account();
@@ -93,10 +92,20 @@ class UserController extends IController {
             if (trim($data['username']) == '') {
                 $this->view->errorMessage = Message::$M006;
                 return;
+            } else {
+                if (!preg_match(Code::$REGEX_USERNAME, $data['username'])) {
+                    $this->view->errorMessage = Message::$M006;
+                    return;
+                }
             }
             if (trim($data['password']) == '') {
                 $this->view->errorMessage = Message::$M007;
                 return;
+            } else {
+                if (!preg_match(Code::$REGEX_PASSWORD, $data['password'])) {
+                    $this->view->errorMessage = Message::$M007;
+                    return;
+                }
             }
 
             if ($data['password'] != $data['repassword']) {

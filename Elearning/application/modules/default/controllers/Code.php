@@ -1,5 +1,9 @@
 <?php
 class Code{
+        //Regex
+        public static $REGEX_USERNAME = "/^[a-zA-Z][A-Za-z0-9]{5,29}$/";
+        public static $REGEX_PASSWORD = "/^[a-zZ-Z][A-Za-z0-9]{5,29}$/";
+        
 	public static $LOCK_COUNT = 5 ;//ログイン間違い回数
 	public static $SESSION_TIME =  86400;//自動ログアウト時間（時）
 	public static $LOGIN_FAIL_LOCK_TIME=3600;//ロック時間
