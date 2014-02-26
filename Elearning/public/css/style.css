@@ -472,6 +472,8 @@ a:hover .box_dt_row {
     color: white !important;
 }
 
+
+
 .showlogfromm:hover {
     background: #408107;
 }
@@ -496,6 +498,7 @@ a:hover .box_dt_row {
     color: white;
     margin-left: 2px;
 }
+
 
 .ac_log div {
 
@@ -710,7 +713,6 @@ a:hover .box_dt_row {
 }
 
 .nums {
-    float: left;
     width: 20px;
     height: 22px;
     line-height: 20px;
@@ -898,31 +900,21 @@ a:hover .box_dt_row {
 
 .containt_center_cen {
     float: left;
-    width: 1012px;
+    width: 870px;
     _margin-top: -8px;
-    background:
-        url(http://data.tienganh123.com/images/v2/home/bg_content_center.png)
-        -5px 0 repeat-y;
+    background:#F9F9F9;
 }
 
 .containt_center_cen_left {
     float: left;
-    _width: 760px;
-    padding: 9px 8px 8px 13px;
+    _width: 170px;
     line-height: 180%;
-    /*    width: 770px; */
-    width: 750px;
+    width: 170px;
 }
 
--moz-document url-prefix                   () {
-    .containt_center_cen_left { /*   padding: 9px 0px 8px 0px;*/
-        padding: 9px13px8px8px;
-    }
-
-}
 .containt_center_cen_right {
     float: left;
-    width: 232px;
+    width: 695px;
 }
 
 .containt_center_cen_right ul,.containt_center_cen_right h3 {
@@ -1052,12 +1044,6 @@ a:hover .des_cont_three_left {
     float: left;
     color: white;
     text-shadow: 1px 0.1em 0.1em #646464
-}
-
--moz-document url-prefix                   () { .numss {
-                                                    margin: 21px009px;
-                                                }
-
 }
 .new {
     float: left;
@@ -1683,7 +1669,7 @@ a:hover .des_cont_three_left {
 
 .input_search {
     background:
-        url(http://data.tienganh123.com/images/v2/home/bg_search_left.jpg)
+        url(../../public/images/bg_search_left.jpg)
         no-repeat;
     border: none;
     width: 166px;

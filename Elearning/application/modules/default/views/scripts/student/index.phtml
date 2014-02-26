@@ -2,44 +2,15 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <meta http-Equiv="Cache-Control" Content="no-cache">
-        <meta http-Equiv="Pragma" Content="no-cache">
-        <meta http-Equiv="Expires" Content="0">
-        <link rel="stylesheet" type="text/css"
-              href="http://www.tienganh123.com/static/css/ta123_styles.css?v=3" />
         <script type="text/javascript"
-        src="http://www.tienganh123.com/static/js/libraries.js?v=4"></script>
+        src="../public/js/libraries.js"></script>
         <script type="text/javascript"
-        src="http://www.tienganh123.com/static/js/jquery_ready.js?v=8"></script>
-        <!--[if lte IE 10]>
-                <link rel="stylesheet" type="text/css" href="http://www.tienganh123.com/static/css/common.css">
-                <![endif]-->
-        <!--[if IE 6]>
-                <link rel="stylesheet" type="text/css" href="http://www.tienganh123.com/static/css/ie6.css">
-                <![endif]-->
-        <!--[if IE 7]>
-                <link rel="stylesheet" type="text/css" href="http://www.tienganh123.com/static/css/ie7.css">
-                <![endif]-->
-        <!--[if IE 8]>
-                <link rel="stylesheet" type="text/css" href="http://www.tienganh123.com/static/css/ie8.css">
-                <![endif]-->
-        <!--[if IE 9]>
-                <link rel="stylesheet" type="text/css" href="http://www.tienganh123.com/static/css/ie9.css">
-                <![endif]-->
-        <!-- Tienganh123 lib -->
-        <script type="text/javascript"
-        src="/file/dungchung/audioPlayer/ubanplayer/swfobject/swfobject.js"></script>
-        <script src="http://www.tienganh123.com/static/js/libs_audio.js"></script>
-        <script type="text/javascript"
-        src="http://www.tienganh123.com/static/js/audioPlayer/pickle/pickle.js"></script>
-
-
+        src="../public/js/jquery_ready.js"></script>
     </head>
     <body>
     <center>
         <div class="top_content clear">
-            <div class="logo">
+            <div class="logo" style="float: left;">
                 <a href="#"> <img width="230" height="58" src="#" alt="Logo">
                 </a>
             </div>
@@ -63,15 +34,54 @@
             </ul>
         </div>
 
-        <div class="search clear" style="float: right;">
-            <form action="#">
-                <input type="hidden" name="cx" value="018190178346521003272:szsvnrednru" />
-                <input type="hidden" name="cof" value="FORID:10" />
-                <input type="hidden" name="ie" value="UTF-8" />
-                <input type="text" name="q" class="input_search" value="授業を検索"/>
-                <input class="btnsm" name="sa" style="width: 37px; height: 38px;" type="image" src="../public/images/bg_search_right.jpg">
-            </form>
+
+
+        <div>
+            <button style="float: left; " name="btn_tag" class="showlogfromm">タグ</button>
+            <button style="float: left; margin-left: 10px;" name="btn_teacher" class="register-cus">先生</button>
+            <div  style="float: right;">
+                <form action="#">
+                    <input type="text" name="q" class="input_search" placeholder="検索内容"/>
+                    <input class="btnsm" name="sa" style="width: 37px; height: 38px;" type="image" src="../public/images/bg_search_right.jpg">
+                </form>
+            </div>
         </div>
+
+        <div class="containt_center_cen clear">
+            <table class="list_lession_content" style="border: 1px;border-style: solid; border-color: navy" cellpadding="0" cellspacing="0" border="0">
+                <tbody>
+                    <tr>
+                        <td valign="top" class="containt_center_cen_left">
+                            <div style="width: 100%;"></div>
+                            <?php
+                            for ($i = 0; $i < 10; $i++) {
+                                ?>
+                                <button class="showlogfromm" style="margin-bottom: 5px;">タグ名</button>
+                                <?php
+                            }
+                            ?>
+                        </td>
+                        <td valign="top" class="containt_center_cen_right">
+                            <?php
+                            for ($i = 0; $i < 10; $i++) {
+                                ?>
+                                <div class="lession-content row-input">
+                                    <a href=""><h3  class="lession-title">C programming</h3></a>
+                                    <div class="row-input">
+                                        <div class="lession-teacher">ごんだい先生</div>
+                                        <div class="lession-time">2013年02月20日</div>
+                                    </div>
+                                    <div id="lession-description" class="lession-description">この授業はCプログラミング言語について、教えてさせます。</div>
+                                </div>
+                            <?php }
+                            ?>
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
     </center>
 </body>
 </html>
