@@ -283,38 +283,6 @@ ul.grid {
     z-index: 9;
 }
 
-@
--moz-document url-prefix                   () { .bg_top {
-                                                    position: relative;
-                                                }
-
-}
-@media screen and (-webkit-min-device-pixel-ratio:0) {
-    .bg_top {
-        position: relative;
-    }
-}
-
-@media all and (min-width:0px) {
-    head                   ~body .bg_top {
-        position: relative;
-    }
-}
-
-@media screen and (min-width:0\0) {
-    .bg_top {
-        position: static !important;
-    }
-    .top_content {
-        margin-top: -303px !important;
-    }
-    .menus {
-        margin-top: -210px !important;
-    }
-    #contents {
-        margin-top: -150px !important;
-    }
-}
 
 .bg_center {
     position: absolute;
@@ -349,7 +317,7 @@ ul.grid {
 /* Top Content */
 .top_content {
     float: left;
-    width: 100%;
+    width: 1000px;
     font-weight: bold;
 }
 
@@ -475,15 +443,15 @@ a:hover .box_dt_row {
 
 
 .showlogfromm:hover {
-    background: #408107;
+    background: #3f8300;
 }
 
 .register-cus:hover {
-    background: #3C3C3C
+    background: #960
 }
 
 .showlogfromm {
-    background: #52A20B;
+    background: #5a9301;
     width: 120px;
     height: 35px;
     display: inline-table;
@@ -504,74 +472,52 @@ a:hover .box_dt_row {
 
 }
 
-/* Menus */
-.menus ul,.des_one ul,.des_c h3,.des_c h8,.containt_info ul,.footer p,.input_reg_news,.navigations ul,.ghichu0 h3,.comment ul,.hc_box ul,.baihoc ul,.baihoc h3,.baihoc h6
-{
-    margin: 0;
-    padding: 0;
-}
 
 .menus {
+    border-radius: 3px;
+    background: #57970F;
     float: left;
-    margin: 10px 0 10px;
     width: 100%;
-    background:
-        url(http://data.tienganh123.com/images/v2/home/bg_menu_center.png)
-        repeat-x;
-    font-weight: bold;
+    border-style: groove;
+    border-width: thin;
+    border-color: #719C4A;
 }
 
-.menus ul {
-    position: static;
-}
+
 
 .mn {
+    border-style: solid;
+    border-width:thin;
+    border-color: #00a7a1;
     float: left;
-    height: 48px;
+    height: 35px;
     width: 80px;
-    line-height: 48px;
+    line-height: 35px;
     padding: 0 9px;
-    font-size: 12px;
-    background:
-        url(../public/images/menu_arrow.png) 1px 0px
-        no-repeat;
+    font-size: 14px;
+    color: white;
+    font-weight: bold;
+    background:#51A007;
+}
+.mn div:hover{
+    background: #007F9F;
 }
 
-.menus li a:hover {
-    color: white;
-}
+
 
 .home {
-    width: 52px !important;
-    _margin-top: 1px;
-    background: none !important;
-    padding: 0 !important;
-}
-
-.home a {
-    background: url(http://data.tienganh123.com/images/v2/home/home_new.png)
-        no-repeat;
-    background-position: -298px -1566px;
-    padding: 16px 52px 14.5px 0;
-    width: 50px;
-    height: 17px;
+    background: url(../../public/images/ic-home.png);
+    background-size: 35px 35px;
+    width: 35px;
+    height: 35px;
     float: left;
 }
+
 
 .first_mn {
     background: none !important;
 }
 
-.hover_mn_new {
-    height: 46px !important;
-    line-height: 46px !important;
-    margin-top: 0px;
-    background:
-        url(http://data.tienganh123.com/images/v2/home/bg_menu_center_hover.jpg)
-        repeat-x transparent !important;
-    position: relative;
-    z-index: 999999;
-}
 
 .hover_mn_new a {
     color: white;
@@ -900,26 +846,9 @@ a:hover .box_dt_row {
 
 .containt_center_cen {
     float: left;
-    width: 870px;
+    width: 100%;
     _margin-top: -8px;
     background:#F9F9F9;
-}
-
-.containt_center_cen_left {
-    float: left;
-    _width: 170px;
-    line-height: 180%;
-    width: 170px;
-}
-
-.containt_center_cen_right {
-    float: left;
-    width: 695px;
-}
-
-.containt_center_cen_right ul,.containt_center_cen_right h3 {
-    margin: 0px;
-    padding: 0px;
 }
 
 .containt_center_bot {
@@ -1663,24 +1592,11 @@ a:hover .des_cont_three_left {
 }
 
 .search {
-    height: 50px;
+    height: 30px;
     line-height: 50px;
 }
 
-.input_search {
-    background:
-        url(../../public/images/bg_search_left.jpg)
-        no-repeat;
-    border: none;
-    width: 166px;
-    padding-left: 0px !important;
-    color: #818181;
-    margin: 5px 0 10px 10px;
-    float: left;
-    text-align: center;
-    height: 36px;
-    line-height: 36px;
-}
+
 
 .bt_datthe {
     width: 201px;
@@ -1697,11 +1613,6 @@ a:hover .bt_datthe {
         -118px -1222px no-repeat;
 }
 
-.btnsm {
-    float: left;
-    margin-top: 5px;
-    border: none;
-}
 
 .nhanbaihoc {
     background:

@@ -61,6 +61,27 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
         $this->update($data, $where);
     }
 
+    /**
+     * Get user information
+     * @param type $username
+     * @return null
+     */
+    public function getUserInfo($username) {
+        $query = $this->select()
+                ->from($this->_name, array('username', 'password', 'name',))
+                ->where('username=?', $username);
+        $result = $this->getAdapter()->fetchRow($query);
+        if ($result) {
+            return $result;
+        } else {
+            return NULL;
+        }
+    }
+
+    /**
+     * Add new registed user
+     * @param type $data User information to save to database
+     */
     public function insertNew($data) {
         $ins_data = array(
             'username' => $data['username'],
