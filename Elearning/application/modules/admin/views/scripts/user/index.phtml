@@ -1,0 +1,45 @@
+
+<?php $this->headLink()->appendStylesheet($this->baseUrl() . "/public/css/admin-common-style.css"); ?>
+<?php $this->headLink()->appendStylesheet($this->baseUrl() . "/public/css/ta123_style.css"); ?>
+<?php $this->headLink()->appendStylesheet($this->baseUrl() . "/public/css/ta123_style2.css"); ?>
+<?php $this->headLink()->appendStylesheet($this->baseUrl() . "/public/css/admin-style-3.css"); ?>
+
+<?php echo $this->render('admin-layout.phtml') ?>
+
+<div style="width: 1000px; margin: 20px auto">
+    <div class="detail_layout">
+        <div class="detail_layout_title">
+            <div class="detail_title_left title_left_1">I</div>
+            <div class="detail_title_center title_center_1">ユーザリスト</div>
+            <div class="detail_title_right title_right_1"></div>
+        </div>
+        <div class="detail_layout_content">
+            <button class="normal-button" style="float: right; margin-bottom: 10px;"><a href="#">管理者作成</a></button>
+            <table width="690" border="1" bordercolor="#d5d5d5" style="border-collapse:collapse" cellpadding="4" cellspacing="4">
+                <tr align="left" class="title_table" bordercolor="4f4f4f" style="background-color: rgb(251, 251, 251); background-position: initial initial; background-repeat: initial initial;">
+                    <td width="30">NO</td>
+                    <td width="120">ユーザ名</td>
+                    <td width="83">登録日</td>
+                    <td width="73">役割</td>
+                    <td width="100">ステータス</td>
+                </tr>
+                <tr align="left">
+                    <td class="orange">1</td>
+                    <td><a href="#">MinhTQ</a></td>
+                    <td>07/03/2014</td>
+                    <td>学生</td>
+                    <td>ユーザ</td>
+                </tr>
+               <tr align="left">
+                    <td class="orange">2</td>
+                    <td><a href="#">MinhTQ</a></td>
+                    <td>07/03/2014</td>
+                    <td>管理者</td>
+                    <td>許可を待っている</td>
+                </tr>
+            </table>
+            <?php echo $this->partial("pager.phtml", array('page'=>1, 'total'=>10, 'next'=>"#", 'pre'=>"#")) ?>
+        </div>
+    </div>
+    <?php echo $this->render("rightBanner.phtml") ?>
+</div>

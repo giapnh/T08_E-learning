@@ -1,0 +1,64 @@
+
+<?php $this->headLink()->appendStylesheet($this->baseUrl() . "/public/css/admin-common-style.css"); ?>
+<?php $this->headLink()->appendStylesheet($this->baseUrl() . "/public/css/ta123_style.css"); ?>
+<?php $this->headLink()->appendStylesheet($this->baseUrl() . "/public/css/ta123_style2.css"); ?>
+<?php $this->headLink()->appendStylesheet($this->baseUrl() . "/public/css/admin-style-3.css"); ?>
+
+<?php echo $this->render('admin-layout.phtml') ?>
+
+<div style="width: 1000px; margin: 20px auto">
+    <div class="detail_layout">
+        <div class="detail_layout_title">
+            <div class="detail_title_left title_left_1">I</div>
+            <div class="detail_title_center title_center_1">ユーザの個人情報</div>
+            <div class="detail_title_right title_right_1"></div>
+        </div>
+        <div class="detail_layout_content">
+            <table>
+                <tr>
+                    <td width="200">ユーザ名</td>
+                    <td>minhtq</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>名前</td>
+                    <td>クアン・ミン</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>生年月日</td>
+                    <td>1991年2月23日</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>住所</td>
+                    <td>ハノイ</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>電話番号</td>
+                    <td>０９８７６５４３２１</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>クレジットカード情報</td>
+                    <td>1234-5678-9011</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>ステータス</td>
+                    <td>許可を待っている</td>
+                    <td><button class="normal-button">許可をする</button></td>
+                </tr>
+            </table>
+        </div>
+        <div class="detail_layout_content">
+            <div style="width: 520px; margin: 0px auto">
+                <button class="normal-button" style="width: 150px; margin: 0px 10px">パースワードリセット</button>
+                <button class="normal-button" style="width: 150px; margin: 0px 10px">「Verifycode」リセット</button>
+                <button class="normal-button" style="width: 150px; margin: 0px 10px">ユーザを削除</button>
+            </div>
+        </div>
+    </div>
+    <?php echo $this->render("rightBanner.phtml") ?>
+</div>

@@ -1,1 +1,31 @@
-Add IP screen
+
+<?php $this->headLink()->appendStylesheet($this->baseUrl() . "/public/css/admin-style-3.css"); ?>
+<?php echo $this->render('admin-layout.phtml') ?>
+
+<center>
+    <form style="width: 700px; margin: 0px auto;" action="" method="post">
+        <div class="resg_box">
+            <div class="yellow_title_bottom"></div>
+            <div class="res_step_title">
+                <div class="res_step_t_num res_num1">IPアドレスを入力してください</div>
+                <div class="res_step_t_r"></div>
+            </div>
+            <div class="res_form_row">
+                <div class="res_f_r_left">
+                    <div class="res_f_r_left_up">
+                        <b>IPアドレス</b>: <span class="red">*</span>
+                    </div>
+                    <!--<div class="res_f_r_left_down">xxx.yyy.zzz.ttt</div>-->
+                </div>
+                <div class="res_f_r_right">
+                    <input type="text" name="username" id="username" value="" class="res_input" maxlength="30">                            
+                    <div id="er_username" class="res_f_note"></div>
+                </div>
+            </div>
+            <div class="res_form_row" style="margin-left:250px;">
+                <input type="submit" name="submit" id="submit" value="追加">
+                <a href="#"><input type="button" class="register-cus" value="キャンセル"> </a>
+            </div>
+        </div>
+    </form>
+</center>
