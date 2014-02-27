@@ -1,5 +1,5 @@
 <?php
-class Admin_AccountController extends Zend_Controller_Action {
+class Admin_AccountController extends IController {
     
     /**
      * 管理者の個人情報画面
@@ -9,6 +9,16 @@ class Admin_AccountController extends Zend_Controller_Action {
 //            $data=$muser->listAll();
 //            print_r($data);
         echo 'Account Controller, index action';
+    }
+    
+    /**
+     * ログイン
+     * @param String $username ユーザ名
+     * @param String $password パースワード
+     * @param Boolean $remember 存在するか
+     */
+    public function loginAction() {
+        
     }
     
     /**

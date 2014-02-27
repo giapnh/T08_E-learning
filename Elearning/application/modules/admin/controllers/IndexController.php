@@ -9,16 +9,6 @@ class Admin_IndexController extends Zend_Controller_Action {
     }
     
     /**
-     * ログイン
-     * @param String $username ユーザ名
-     * @param String $password パースワード
-     * @param Boolean $remember 存在するか
-     */
-    public function loginAction() {
-        
-    }
-    
-    /**
      * 課金情報画面
      * 
      */
