@@ -32,7 +32,8 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
                 ->from($this->_name, array('username', 'password', 'role'))
                 ->where('username=?', $username)
                 ->where('password=?', md5($username . '+' . $password . '+' . Code::$PASSWORD_CONST))
-                ->where('role=?', $role);
+                ->where('role=?', $role)
+                ->where('status=?', 1); //If this account is accepted by admin
         $result = $this->getAdapter()->fetchAll($query);
         if ($result) {
             return true;
@@ -68,7 +69,7 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
      */
     public function getUserInfo($username) {
         $query = $this->select()
-                ->from($this->_name, array('username', 'password', 'name',))
+                ->from($this->_name, "*")
                 ->where('username=?', $username);
         $result = $this->getAdapter()->fetchRow($query);
         if ($result) {

@@ -506,16 +506,15 @@ a:hover .box_dt_row {
 
 
 .home {
-    background: url(../../public/images/ic-home.png);
+    background: url(../../public/images/ic-home.png) no-repeat;
     background-size: 35px 35px;
-    width: 35px;
+    width: 80px;
     height: 35px;
     float: left;
+    padding-left: 25px;
 }
-
-
 .first_mn {
-    background: none !important;
+    background: yellowgreen;
 }
 
 

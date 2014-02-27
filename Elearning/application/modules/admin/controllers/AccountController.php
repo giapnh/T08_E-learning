@@ -1,6 +1,9 @@
 <?php
+
+require 'IController.php';
+
 class Admin_AccountController extends IController {
-    
+
     /**
      * 管理者の個人情報画面
      */
@@ -10,7 +13,7 @@ class Admin_AccountController extends IController {
 //            print_r($data);
         echo 'Account Controller, index action';
     }
-    
+
     /**
      * ログイン
      * @param String $username ユーザ名
@@ -20,24 +23,26 @@ class Admin_AccountController extends IController {
     public function loginAction() {
         
     }
-    
+
     /**
      * IP追加画面
      */
     public function addIpAction() {
         
     }
-    
+
     /**
      * 「Verify」コード更新画面
      */
     public function changeVerifyCodeAction() {
         
     }
+
     /**
      * パースワード更新画面
      */
     public function changePasswordAction() {
         
     }
+
 }
