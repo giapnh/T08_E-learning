@@ -52,7 +52,6 @@ class UserController extends IController {
                 if ($curr_ip === "::1") {
                     $curr_ip = "127.0.0.1";
                 }
-
                 // If user is teacher, check ip address valid or invalid
                 if ($role == 2) {
                     $flag = false;
@@ -60,10 +59,14 @@ class UserController extends IController {
                         $flag = true;
                     } else {
                         echo "Invalid ip address";
-
                         $flag = false;
+                        return;
                     }
                 }
+
+                $data = $authAdapter->getUserInfo($uname);
+                // Save
+                $auth->getStorage()->write($data);
             } else {
                 $authAdapter->incLoginFailure($uname);
                 $this->view->errorMessage = Message::$M003;

@@ -12,5 +12,4 @@ class IController extends Zend_Controller_Action {
         $this->view->headLink()->appendStylesheet($baseurl . "/public/css/style.css");
         $this->view->headLink()->appendStylesheet($baseurl . "/public/css/style_2.css");
     }
-
 }
