@@ -5,30 +5,6 @@
         <meta http-Equiv="Cache-Control" Content="no-cache">
         <meta http-Equiv="Pragma" Content="no-cache">
         <meta http-Equiv="Expires" Content="0">
-        <!-- style tong hop -->
-        <link rel="stylesheet" type="text/css" href="http://www.tienganh123.com/static/css/ta123_styles.css?v=3"/>
-        <script type="text/javascript" src="http://www.tienganh123.com/static/js/libraries.js?v=4"></script>
-        <script type="text/javascript" src="http://www.tienganh123.com/static/js/jquery_ready.js?v=8"></script>
-        <!--[if lte IE 10]>
-        <link rel="stylesheet" type="text/css" href="http://www.tienganh123.com/static/css/common.css">
-        <![endif]-->
-        <!--[if IE 6]>
-        <link rel="stylesheet" type="text/css" href="http://www.tienganh123.com/static/css/ie6.css">
-        <![endif]-->
-        <!--[if IE 7]>
-        <link rel="stylesheet" type="text/css" href="http://www.tienganh123.com/static/css/ie7.css">
-        <![endif]-->
-        <!--[if IE 8]>
-        <link rel="stylesheet" type="text/css" href="http://www.tienganh123.com/static/css/ie8.css">
-        <![endif]-->
-        <!--[if IE 9]>
-        <link rel="stylesheet" type="text/css" href="http://www.tienganh123.com/static/css/ie9.css">
-        <![endif]-->
-        <!-- Tienganh123 lib -->
-        <!-- AUDIO PLAYER -->
-        <script type="text/javascript" src="/file/dungchung/audioPlayer/ubanplayer/swfobject/swfobject.js"></script>
-        <script src="http://www.tienganh123.com/static/js/libs_audio.js"></script>
-        <script type="text/javascript" src="http://www.tienganh123.com/static/js/audioPlayer/pickle/pickle.js"></script>
     </head>
     <body>
         <div class="bg_top">&nbsp;</div>
@@ -36,7 +12,7 @@
             <div id="contents">
                 <div class="top_content clear">
 					<div class="logo">
-						<a href="http://www.tienganh123.com">
+						<a href="#">
 						<img width="230" height="58" src="#" alt="Logo">
 						</a>
 					</div>
@@ -133,23 +109,128 @@
 
 
     <div class="right_info_cus">
+	
+		<div class="action_cardd">        
+            <div class="mess_cardd">
+                <p class="black-11">作成した授業リスト</p>
+            </div>          
+            <div class="ac_cardd">
+                <a href="#" class="addcourse">&nbsp;</a>
+            </div>
+        </div>
+	
         <div class="center_info_cus clear">
-			<div class="pr_ceninfo_form">
-			
-				<div class="pr_ceninfo_title">
-					<p class="pr_ceninfo_title_text">作成した授業リスト
-					<div class="ac_cardd"><a href="#" ><img src="<?php echo $this->baseUrl().'/public/images/addcourse.png'; ?>"></a></div>
-					</p>
-				</div>
-                <div class="pr_ceninfo_wrap_content">
-					<div class="pr_ceninfo_content pr_ceninfo_note">
-						<p class="pr_ceninfo_note_paragrap">Bạn chưa có ghi chép nào!</p>
-					</div>
-				</div>
-				
-			</div>
+			<div class="CSSTableGenerator" >
+                <table >
+                    <tr>
+						<td></td>
+                        <td>授業</td>
+						<td>変更</td>
+						<td>削除</td>
+                        <td>いいね</td>
+						<td>学生数</td>
+						<td>作成日</td>
+                    </tr>
+					
+                    <tr>
+                        <td>1.</td>
+						<td>ＩＴ日本語今日は私があなたに会った</td>
+                        <td>
+							<a href="<?=$this->url(array('controller' => '#' , 'action' => '#'))?>" >
+							<img height="30" width="30"  src="<?php echo $this->baseUrl().'/public/images/edit_icon.png'; ?>">
+							</a></td>
+                        <td>
+							<a href="<?=$this->url(array('controller' => '#' , 'action' => '#'))?>" >
+							<img height="30" width="30" src="<?php echo $this->baseUrl().'/public/images/delete_icon.png'; ?>">
+							</a></td>
+						<td>50</td>
+						<td>120</td>
+						<td>2013年09月02日</td>
+                    </tr>
+					
+					<tr>
+						<td>2.</td>
+                        <td>数学</td>
+                        <td>
+							<a href="<?=$this->url(array('controller' => '#' , 'action' => '#'))?>" >
+							<img height="30" width="30"  src="<?php echo $this->baseUrl().'/public/images/edit_icon.png'; ?>">
+							</a></td>
+                        <td>
+							<a href="<?=$this->url(array('controller' => '#' , 'action' => '#'))?>" >
+							<img height="30" width="30" src="<?php echo $this->baseUrl().'/public/images/delete_icon.png'; ?>">
+							</a></td>
+						<td>30</td>
+						<td>130</td>
+						<td>2014年02月02日</td>
+                    </tr>
+					
+					<tr>
+						<td>3.</td>
+                        <td>中級日本語</td>
+                        <td>
+							<a href="<?=$this->url(array('controller' => '#' , 'action' => '#'))?>" >
+							<img height="30" width="30"  src="<?php echo $this->baseUrl().'/public/images/edit_icon.png'; ?>">
+							</a></td>
+                        <td>
+							<a href="<?=$this->url(array('controller' => '#' , 'action' => '#'))?>" >
+							<img height="30" width="30" src="<?php echo $this->baseUrl().'/public/images/delete_icon.png'; ?>">
+							</a></td>
+						<td>50</td>
+						<td>350</td>
+						<td>2014年01月15日</td>
+                    </tr>
+					
+					<tr>
+                        <td>4.</td>
+						<td>ＩＴ日本語今日は私があなたに会った</td>
+                        <td>
+							<a href="<?=$this->url(array('controller' => '#' , 'action' => '#'))?>" >
+							<img height="30" width="30"  src="<?php echo $this->baseUrl().'/public/images/edit_icon.png'; ?>">
+							</a></td>
+                        <td>
+							<a href="<?=$this->url(array('controller' => '#' , 'action' => '#'))?>" >
+							<img height="30" width="30" src="<?php echo $this->baseUrl().'/public/images/delete_icon.png'; ?>">
+							</a></td>
+						<td>50</td>
+						<td>120</td>
+						<td>2013年09月02日</td>
+                    </tr>
+					
+					<tr>
+						<td>5.</td>
+                        <td>数学</td>
+                        <td>
+							<a href="<?=$this->url(array('controller' => '#' , 'action' => '#'))?>" >
+							<img height="30" width="30"  src="<?php echo $this->baseUrl().'/public/images/edit_icon.png'; ?>">
+							</a></td>
+                        <td>
+							<a href="<?=$this->url(array('controller' => '#' , 'action' => '#'))?>" >
+							<img height="30" width="30" src="<?php echo $this->baseUrl().'/public/images/delete_icon.png'; ?>">
+							</a></td>
+						<td>30</td>
+						<td>130</td>
+						<td>2014年02月02日</td>
+                    </tr>
+					
+					<tr>
+						<td>6.</td>
+                        <td>中級日本語</td>
+                        <td>
+							<a href="<?=$this->url(array('controller' => '#' , 'action' => '#'))?>" >
+							<img height="30" width="30"  src="<?php echo $this->baseUrl().'/public/images/edit_icon.png'; ?>">
+							</a></td>
+                        <td>
+							<a href="<?=$this->url(array('controller' => '#' , 'action' => '#'))?>" >
+							<img height="30" width="30" src="<?php echo $this->baseUrl().'/public/images/delete_icon.png'; ?>">
+							</a></td>
+						<td>50</td>
+						<td>350</td>
+						<td>2014年01月15日</td>
+                    </tr>
+                </table>
+            </div>
+		
 		</div>
-    </div>
 				</div>
 
                 <div class="containt_center_bot clear"></div>
