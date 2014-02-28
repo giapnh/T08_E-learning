@@ -186,3 +186,35 @@
 .resg_num_file_delete { background:url('') left no-repeat; font-size:14px; font-weight: bold; padding:7px 0 0 335px;}
 .resg_create_button { margin-left: 400px; padding:7px 0 0 335px;}
 .resg_f_r_right_right {float:left; width:295px; min-height:30px;margin: 20px 10px 20px 550px;}
+
+.tag_selected {float:left; margin-right: 160px;}
+.resg_select {float:left; margin-right: 10px;}
+.resg_select select{
+	width: 200px; 
+    padding:6px;
+    margin: 0;
+    -webkit-border-radius:4px;
+    -moz-border-radius:4px;
+    border-radius:4px;
+    border:1px solid #b5b5b5;
+    background: #fff;
+    color:#333;
+    outline:none;
+    display: inline-block;
+    -webkit-appearance:none;
+    -moz-appearance:none;
+    appearance:none;
+    cursor:pointer;
+    height:29px;
+    font-weight:bold;
+    font-family:Arial, Helvetica, sans-serif;
+    font-size:12px;
+}
+.resg_select label {position:relative}
+.resg_select label:after {
+    content:'';
+    color:#aaa;
+    padding:0 0 2px;
+    position:absolute;
+}
+.resg_select label:before {content:''; right:5px; top:-5px; width:24px; height:27px; background:url(http://data.tienganh123.com/images/v2/home/rs_bg_select.jpg) left center no-repeat; position:absolute; pointer-events:none; display:block;}
