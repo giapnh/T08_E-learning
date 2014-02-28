@@ -91,4 +91,59 @@ class StudentController extends IController {
         $this->initial();
     }
 
+    /**
+     * 授業検索画面
+     * 
+     */
+    public function lessonsAction() {
+        
+    }
+    
+    /**
+     * 授業検索画面
+     * 
+     */
+    public function lessonAction() {
+        
+    }
+    
+    /**
+     * 授業を登録画面
+     * 
+     */
+    public function registerLessonAction() {
+        
+    }
+    
+    /**
+     * ファイルを見る画面
+     * 
+     */
+    public function fileAction() {
+        
+    }
+    
+    /**
+     * テスト画面
+     * 
+     */
+    public function testAction() {
+        
+    }
+    
+    /**
+     * テストの結果を見る画面
+     * 
+     */
+    public function testResultAction() {
+        
+    }
+    
+    /**
+     * 課金情報を見る画面
+     * 
+     */
+    public function paymentAction() {
+        
+    }
 }
