@@ -34,4 +34,61 @@ class StudentController extends IController {
         $this->initial();
     }
 
+    /**
+     * プロファイが変更機能アクション
+     * @return type
+     */
+    public function profilechangeinfoAction() {
+        $this->initial();
+        $user = new Default_Model_Account();
+        $form = new Default_Form_Register ();
+        $this->view->form = $form;
+        if ($this->_request->isPost()) {
+            $data = $this->_request->getParams();
+            //Check empty
+            if (trim($data['username']) == '') {
+                return;
+            }
+
+            if (trim($data['fullname']) == '') {
+                $this->view->errorMessage = Message::$M009;
+                return;
+            }
+
+            if (trim($data['address']) == '') {
+                $this->view->errorMessage = Message::$M011;
+                return;
+            }
+
+            if (trim($data['phone']) == '') {
+                $this->view->errorMessage = Message::$M012;
+                return;
+            }
+
+            if (trim($data['bank_acc']) == '') {
+                $this->view->errorMessage = Message::$M013;
+            }
+
+            $user->updateNewInfo($data);
+            $auth = Zend_Auth::getInstance();
+            $auth->getStorage()->write($user->getUserInfo($data['username']));
+            $this->view->user_info = $auth->getStorage()->read();
+            $this->_redirect('student/profile');
+        }
+    }
+
+    /**
+     * パスワードが変更機能アクション
+     */
+    public function changepasswordAction() {
+        $this->initial();
+    }
+
+    /**
+     * 秘密質問が変更機能アクション
+     */
+    public function changesecretqaAction() {
+        $this->initial();
+    }
+
 }

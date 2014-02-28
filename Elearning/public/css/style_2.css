@@ -22,7 +22,7 @@
     width: 1000px;
     float: left; 
     padding: 2px;
-    background: wheat;
+    background: #F0F0F0;
     border-color: #F37B00;
     box-shadow: 5px 5px 5px #888888;
 }
@@ -142,6 +142,10 @@ div.row-show{
     width: 100%;
 }
 
+.center{
+    text-align: center;
+}
+
 font.num-like-comment{
     height: 19px;
     text-align: center;
@@ -176,5 +180,27 @@ font.num-like-comment{
 
 a.link-view-detail{
     text-decoration: underline;
+    font-weight: bold;
+}
+
+tr.profile{
+    width: 100%;
+    border-style: solid;
+    border-color: #408107;
+    border-width: medium;
+}
+
+.font-medium{
+    font-size: 15px;
+}
+.font-small{
+    font-size: 12px;
+}
+
+.font-big{
+    font-size: 20px;
+}
+
+.font-bold{
     font-weight: bold;
 }

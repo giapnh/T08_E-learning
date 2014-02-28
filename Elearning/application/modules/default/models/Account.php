@@ -54,6 +54,10 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
             return false;
     }
 
+    /**
+     * ユーザがかくログインが失敗ことと、ログイン失敗数が追加するの機能
+     * @param type $username
+     */
     public function incLoginFailure($username) {
         $data = array(
             'fail_login_count' => "'fail_login_count'+1"
@@ -63,7 +67,7 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
     }
 
     /**
-     * Get user information
+     * ユーザの情報が取る
      * @param type $username
      * @return null
      */
@@ -80,8 +84,8 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
     }
 
     /**
-     * Add new registed user
-     * @param type $data User information to save to database
+     * 新しいユーザが追加機能
+     * @param type $data ユーザの情報
      */
     public function insertNew($data) {
         $ins_data = array(
@@ -103,6 +107,24 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
             'status' => 2//Wait for confirm by admin
         );
         $this->insert($ins_data);
+    }
+
+    /**
+     * ユーザの更新情報が更新機能
+     * @param type $data ユーザの新しい情報
+     */
+    public function updateNewInfo($data) {
+        $ins_data = array(
+            'name' => $data['fullname'],
+            'birthday' => $data['day'] . '-' . $data['month'] . '-' . $data['year'],
+            'address' => $data['address'],
+            'email' => $data['email'],
+            'phone' => $data['phone'],
+            'bank_account' => $data['bank_acc']
+        );
+        $username = $data['username'];
+        $where = "username='$username'";
+        $this->update($ins_data, $where);
     }
 
 }

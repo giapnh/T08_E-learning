@@ -6,8 +6,7 @@ img {
 body {
     margin: 0;
     background: url(../../public/images/bg_body_center.jpg);
-    padding-left: 150px;
-    padding-right: 150px;
+    padding-left: 180px;
 }
 body.home {
     background: url(../../public/images/bg_body_center.jpg);
@@ -428,15 +427,15 @@ a:hover .box_dt_row {
 .ac_box {
     border-color: green;
     border-style: double;
-    height: 400px;
     margin-left: 0px;
-    margin-top: 50px;
+    padding-bottom: 100px;
     width: 800px;
 }
 
 .showlogfromm,.register-cus {
     float: left;
     border-style: none;
+    border-radius: 4px;
     color: white !important;
 }
 
@@ -452,9 +451,9 @@ a:hover .box_dt_row {
 
 .showlogfromm {
     background: #5a9301;
-    width: 120px;
+    min-width: 120px;
+    max-width: 180px;
     height: 35px;
-    display: inline-table;
     color: white;
 }
 
