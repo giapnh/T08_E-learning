@@ -1,19 +1,19 @@
 <?php
-class Admin_UserController extends Zend_Controller_Action {
+
+require_once 'IController.php';
+
+class Admin_UserController extends IController {
     /**
      * ユーザリスト画面
      */
     public function indexAction() {
-//            $muser=new Default_Model_Account;
-//            $data=$muser->listAll();
-//            print_r($data);
-        echo 'Account Controller, index action';
+        
     }
     
     /**
      * ユーザ情報画面
      */
-    public function userInfoAction() {
+    public function infoAction() {
         
     }
     
