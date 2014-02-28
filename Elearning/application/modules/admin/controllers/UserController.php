@@ -1,5 +1,8 @@
 <?php
-class Admin_UserController extends Zend_Controller_Action {
+
+require_once 'IController.php';
+
+class Admin_UserController extends IController {
     /**
      * ユーザリスト画面
      */

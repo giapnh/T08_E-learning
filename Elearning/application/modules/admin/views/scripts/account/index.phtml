@@ -3,7 +3,9 @@
 <?php $this->headLink()->appendStylesheet($this->baseUrl() . "/public/css/ta123_style.css"); ?>
 <?php $this->headLink()->appendStylesheet($this->baseUrl() . "/public/css/ta123_style2.css"); ?>
 <?php echo $this->render('admin-layout.phtml') ?>
+
 <div style="width: 1000px; margin: 0px auto;">
+    
     <div class="detail_layout">
         <div class="detail_layout_title">
             <div class="detail_title_left title_left_1">I</div>
@@ -41,16 +43,17 @@
                     <td style="color: red">X</td>
                 </tr>
                 <tr>
-                    <td>192.168.1.3</td>
+                    <td>192.168.1.2</td>
                     <td style="color: red">X</td>
                 </tr>
                 <tr>
-                    <td>192.168.1.4</td>
+                    <td>192.168.1.2</td>
                     <td style="color: red">X</td>
                 </tr>
             </table>
             <button class="normal-button">追加</button>
         </div>
     </div>
-    <img src="/Elearning/public/images/twitter_bird_learning.png" style="float: right; width: 200px"/>
+    
+    <?php echo $this->render("rightBanner.phtml") ?>
 </div>

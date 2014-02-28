@@ -1,1 +1,58 @@
-admin info
+
+<?php $this->headLink()->appendStylesheet($this->baseUrl() . "/public/css/admin-style-3.css"); ?>
+<?php $this->headLink()->appendStylesheet($this->baseUrl() . "/public/css/ta123_style.css"); ?>
+<?php $this->headLink()->appendStylesheet($this->baseUrl() . "/public/css/ta123_style2.css"); ?>
+<?php echo $this->render('admin-layout.phtml') ?>
+
+<div style="width: 1000px; margin: 0px auto;">
+    
+    <div class="detail_layout">
+        <div class="detail_layout_title">
+            <div class="detail_title_left title_left_1">I</div>
+            <div class="detail_title_center title_center_1">個人情報</div>
+            <div class="detail_title_right title_right_1"></div>
+        </div>
+        <div class="detail_layout_content">
+            <table>
+                <tr>
+                    <td><span class="span_text_1" style="width: 100px;">ユーザ名</span></td>
+                    <td>: minhtq</td>
+                </tr>
+                <tr>
+                    <td><span class="span_text_1" style="width: 100px;">作成した日</span></td>
+                    <td>: 2014年1月23日</td>
+                </tr>
+                <tr>
+                    <td><span class="span_text_1" style="width: 100px;">作成した人</span></td>
+                    <td>:giapnh</td>
+                </tr>
+            </table>
+            <button class="normal-button">削除</button>
+        </div>
+
+        <div class="detail_layout_title">
+            <div class="detail_title_left title_left_1">II</div>
+            <div class="detail_title_center title_center_1">ログインできるIPリスト</div>
+            <div class="detail_title_right title_right_1"></div>
+        </div>
+        <div class="detail_layout_content">
+            <table>
+                <tr>
+                    <td>192.168.1.2</td>
+                    <td style="color: red">X</td>
+                </tr>
+                <tr>
+                    <td>192.168.1.2</td>
+                    <td style="color: red">X</td>
+                </tr>
+                <tr>
+                    <td>192.168.1.2</td>
+                    <td style="color: red">X</td>
+                </tr>
+            </table>
+            <button class="normal-button">IP追加</button>
+        </div>
+    </div>
+    
+    <?php echo $this->render("rightBanner.phtml") ?>
+</div>
