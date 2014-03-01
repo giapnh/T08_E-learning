@@ -30,7 +30,13 @@ class TeacherController extends IController {
         // 	   $this->redirect('student/mylession');
     }
 
+    /**
+     * 授業作成画面
+     * @param type $name Description
+     * @return type
+     */
     public function createLessonAction() {
+        return;
         $form = new Default_Form_CreateLesson();
         $this->view->form = $form;
         if ($this->_request->isPost()) {
@@ -106,6 +112,7 @@ class TeacherController extends IController {
         }
     }
 
+    
     protected function _findexts($filename) {
 
         $filename = strtolower($filename);
@@ -122,4 +129,43 @@ class TeacherController extends IController {
         return $exts;
     }
 
+    /**
+     * 授業を見る画面
+     * @param type $name Description
+     */
+    public function lessonAction() {
+        
+    }
+    
+    /**
+     * ファイルを見る画面
+     * @param type $name Description
+     */
+    public function fileAction() {
+        
+    }
+    
+    /**
+     * 授業を更新する画面
+     * @param type $name Description
+     */
+    public function updateLessonAction() {
+        
+    }
+    
+    /**
+     * 授業の学生を見る画面
+     * @param type $name Description
+     */
+    public function studentsAction() {
+        
+    }
+    
+    /**
+     * 学生のテスト結果を見る画面
+     * @param type $name Description
+     */
+    public function studentResultAction() {
+        
+    }
 }

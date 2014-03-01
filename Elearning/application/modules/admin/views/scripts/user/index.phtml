@@ -2,7 +2,7 @@
 <?php $this->headLink()->appendStylesheet($this->baseUrl() . "/public/css/admin-common-style.css"); ?>
 <?php $this->headLink()->appendStylesheet($this->baseUrl() . "/public/css/ta123_style.css"); ?>
 <?php $this->headLink()->appendStylesheet($this->baseUrl() . "/public/css/ta123_style2.css"); ?>
-<?php $this->headLink()->appendStylesheet($this->baseUrl() . "/public/css/admin-style-3.css"); ?>
+<?php $this->headLink()->appendStylesheet($this->baseUrl() . "/public/css/common-style.css"); ?>
 
 <?php echo $this->render('admin-layout.phtml') ?>
 
@@ -41,5 +41,5 @@
             <?php echo $this->partial("pager.phtml", array('page'=>1, 'total'=>10, 'next'=>"#", 'pre'=>"#")) ?>
         </div>
     </div>
-    <?php echo $this->render("rightBanner.phtml") ?>
+    <?php echo $this->render("right-banner.phtml") ?>
 </div>

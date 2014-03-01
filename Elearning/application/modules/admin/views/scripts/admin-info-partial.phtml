@@ -1,11 +1,12 @@
+<?php
+$vars = $this->getVars(); 
+$username = $vars['username'];
+$birthday = $vars['birthday'];
+$createdAdmin = $vars['created_admin'];
+$ipList = $vars['ip_list'];
+?>
 
-<?php $this->headLink()->appendStylesheet($this->baseUrl() . "/public/css/common-style.css"); ?>
-<?php $this->headLink()->appendStylesheet($this->baseUrl() . "/public/css/ta123_style.css"); ?>
-<?php $this->headLink()->appendStylesheet($this->baseUrl() . "/public/css/ta123_style2.css"); ?>
-<?php echo $this->render('admin-layout.phtml') ?>
 
-<div style="width: 1000px; margin: 0px auto;">
-    
     <div class="detail_layout">
         <div class="detail_layout_title">
             <div class="detail_title_left title_left_1">I</div>
@@ -16,18 +17,19 @@
             <table>
                 <tr>
                     <td><span class="span_text_1" style="width: 100px;">ユーザ名</span></td>
-                    <td>: minhtq</td>
+                    <td>: <?php echo $username?></td>
                 </tr>
                 <tr>
                     <td><span class="span_text_1" style="width: 100px;">作成した日</span></td>
-                    <td>: 2014年1月23日</td>
+                    <td>: <?php echo $birthday?></td>
                 </tr>
                 <tr>
                     <td><span class="span_text_1" style="width: 100px;">作成した人</span></td>
-                    <td>:giapnh</td>
+                    <td>:<?php echo $createdAdmin?></td>
                 </tr>
             </table>
-            <button class="normal-button">削除</button>
+            <button class="normal-button">パースワード更新</button>
+            <button class="normal-button">秘密質問更新</button>
         </div>
 
         <div class="detail_layout_title">
@@ -37,22 +39,17 @@
         </div>
         <div class="detail_layout_content">
             <table>
-                <tr>
-                    <td>192.168.1.2</td>
-                    <td style="color: red">X</td>
-                </tr>
-                <tr>
-                    <td>192.168.1.2</td>
-                    <td style="color: red">X</td>
-                </tr>
-                <tr>
-                    <td>192.168.1.2</td>
-                    <td style="color: red">X</td>
-                </tr>
+                <?php
+                foreach ($ipList as $ip) {
+                ?>
+                    <tr>
+                        <td><?php echo $ip?></td>
+                        <td style="color: red">X</td>
+                    </tr>
+                <?php
+                }
+                ?>
             </table>
-            <button class="normal-button">IP追加</button>
+            <button class="normal-button">追加</button>
         </div>
     </div>
-    
-    <?php echo $this->render("right-banner.phtml") ?>
-</div>

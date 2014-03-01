@@ -8,6 +8,12 @@ class UserController extends IController {
         $this->redirect('user/login');
     }
 
+    /**
+     * ログイン画面
+     * @param string $username ユーザ名
+     * @param string $password パースワード
+     * @param string $role     役割
+     */
     public function loginAction() {
         // 		//Ip cache
         // 		$frontendOptions = array(
@@ -85,6 +91,10 @@ class UserController extends IController {
         
     }
 
+    /**
+     * 登録画面
+     * @param type $name Description
+     */
     public function registerAction() {
         $user = new Default_Model_Account();
         $form = new Default_Form_Register ();
@@ -159,6 +169,10 @@ class UserController extends IController {
         }
     }
 
+    /**
+     * ログアウト処理
+     * 
+     */
     public function logoutAction() {
         $auth = Zend_Auth::getInstance();
         $auth->clearIdentity();

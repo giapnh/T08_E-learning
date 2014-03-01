@@ -1,1 +1,60 @@
-Maintain
+
+<?php $this->headLink()->appendStylesheet($this->baseUrl() . "/public/css/admin-common-style.css"); ?>
+<?php $this->headLink()->appendStylesheet($this->baseUrl() . "/public/css/ta123_style.css"); ?>
+<?php $this->headLink()->appendStylesheet($this->baseUrl() . "/public/css/ta123_style2.css"); ?>
+<?php $this->headLink()->appendStylesheet($this->baseUrl() . "/public/css/common-style.css"); ?>
+
+<?php echo $this->render('admin-layout.phtml') ?>
+<style type="text/css">
+    .detail_layout_content td, .detail_layout_content input {
+        padding: 5px;
+    }
+    .detail_layout_content button {
+        margin: 10px 0px;
+    }
+</style>
+<div style="width: 1000px; margin: 20px auto">
+    <div class="detail_layout">
+        <div class="detail_layout_title">
+            <div class="detail_title_left title_left_1"></div>
+            <div class="detail_title_center title_center_1">マスタデータ</div>
+            <div class="detail_title_right title_right_1"></div>
+        </div>
+        <div class="detail_layout_content">
+            <table width="690">
+                <tr>
+                    <td width="80">授業の値段（万VND）</td>
+                    <td width="120"><input type="text" /></td>
+                </tr>
+                <tr>
+                    <td>授業の期限（日）</td>
+                    <td width="120"><input type="text" /></td>
+                </tr>
+                <tr>
+                    <td>資料の禁止回数</td>
+                    <td width="120"><input type="text" /></td>
+                </tr>
+                <tr>
+                    <td>課金情報を格納するフォルダ</td>
+                    <td width="120"><input type="text" /></td>
+                </tr>
+                <tr>
+                    <td>ログイン間違い回数</td>
+                    <td width="120"><input type="text" /></td>
+                </tr>
+                <tr>
+                    <td>自動ログアウト時間（時）</td>
+                    <td width="120"><input type="text" /></td>
+                </tr>
+                <tr>
+                    <td>自動バックアップ期間（日）</td>
+                    <td width="120"><input type="text" /></td>
+                </tr>
+            </table>
+            <div><button class="normal-button">更新</button></div>
+            <div class="res_step_t_r" style="margin-bottom: 20px;width: 685px"></div>
+            <div><button class="normal-button" style="width: 200px">システムをバックアップする</button></div>
+        </div>
+    </div>
+    <?php echo $this->render("right-banner.phtml") ?>
+</div>

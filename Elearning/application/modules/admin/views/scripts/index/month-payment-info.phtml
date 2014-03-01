@@ -1,1 +1,106 @@
-Month payment info
+
+<?php $this->headLink()->appendStylesheet($this->baseUrl() . "/public/css/admin-common-style.css"); ?>
+<?php $this->headLink()->appendStylesheet($this->baseUrl() . "/public/css/ta123_style.css"); ?>
+<?php $this->headLink()->appendStylesheet($this->baseUrl() . "/public/css/ta123_style2.css"); ?>
+<?php $this->headLink()->appendStylesheet($this->baseUrl() . "/public/css/common-style.css"); ?>
+
+<?php echo $this->render('admin-layout.phtml') ?>
+
+<div style="width: 1000px; margin: 20px auto">
+    <div class="detail_layout" style="width: 1000px">
+        <div class="detail_layout_title" style="width: 1000px">
+            <div class="detail_title_left title_left_1">I</div>
+            <div class="detail_title_center title_center_1" style="width: 938px">支払い情報</div>
+            <div class="detail_title_right title_right_1"></div>
+        </div>
+        <div class="detail_layout_content" style="width: 954px">
+            
+            <form>
+                <span><input type="text" style="padding: 5px;" placeholder="年"></span>
+                <span><input type="text" style="padding: 5px;" placeholder="月"></span>
+                <span><input type="submit" class="normal-button" value="見る" style="float: none"></span>
+            </form>
+            <div class="res_step_t_r" style="margin-bottom: 20px;width: 960px"></div>
+            <table>
+                <tr>
+                    <td>システム固有ＩＤ</td>
+                    <td>: ELS-UBT-GWK54M78</td>
+                </tr>
+                <tr>
+                    <td>本請求データの時間</td>
+                    <td>: 2013年4月</td>
+                </tr>
+                <tr>
+                    <td>作成時間</td>
+                    <td>: 2013年5月8日13時24分28秒</td>
+                </tr>
+                <tr>
+                    <td>作成者ID</td>
+                    <td>: kawachi</td>
+                </tr>
+                <tr>
+                    <td>作成者名前</td>
+                    <td>: 河内　元</td>
+                </tr>
+            </table>
+            <div class="res_step_t_r" style="margin-bottom: 20px;width: 960px"></div>
+            <table width="960" border="1" bordercolor="#d5d5d5" style="border-collapse:collapse" cellpadding="4" cellspacing="4">
+                <tr align="left" class="title_table" bordercolor="4f4f4f" style="background-color: rgb(251, 251, 251); background-position: initial initial; background-repeat: initial initial;">
+                    <td>登録ＩＤ</td>
+                    <td>名前</td>
+                    <td>請求金額</td>
+                    <td>住所</td>
+                    <td>電話番号</td>
+                    <td>請求区分</td>
+                    <td>クレジットカード番号</td>
+                </tr>
+                <tr align="left">
+                    <td class="orange">suzuki_hajime</td>
+                    <td>鈴木　肇</td>
+                    <td>335000</td>
+                    <td>1A Le Duan St., Hoan Kiem Dist</td>
+                    <td>042-3825-7999</td>
+                    <td>18</td>
+                    <td>09328024-7980-2312-3633-8632</td>
+                </tr>
+                <tr align="left">
+                    <td class="orange">suzuki_hajime</td>
+                    <td>鈴木　肇</td>
+                    <td>335000</td>
+                    <td>1A Le Duan St., Hoan Kiem Dist</td>
+                    <td>042-3825-7999</td>
+                    <td>18</td>
+                    <td>09328024-7980-2312-3633-8632</td>
+                </tr>
+                <tr align="left">
+                    <td class="orange">suzuki_hajime</td>
+                    <td>鈴木　肇</td>
+                    <td>335000</td>
+                    <td>1A Le Duan St., Hoan Kiem Dist</td>
+                    <td>042-3825-7999</td>
+                    <td>18</td>
+                    <td>09328024-7980-2312-3633-8632</td>
+                </tr>
+                <tr align="left">
+                    <td class="orange">suzuki_hajime</td>
+                    <td>鈴木　肇</td>
+                    <td>335000</td>
+                    <td>1A Le Duan St., Hoan Kiem Dist</td>
+                    <td>042-3825-7999</td>
+                    <td>18</td>
+                    <td>09328024-7980-2312-3633-8632</td>
+                </tr>
+                <tr align="left">
+                    <td class="orange">suzuki_hajime</td>
+                    <td>鈴木　肇</td>
+                    <td>335000</td>
+                    <td>1A Le Duan St., Hoan Kiem Dist</td>
+                    <td>042-3825-7999</td>
+                    <td>18</td>
+                    <td>09328024-7980-2312-3633-8632</td>
+                </tr>
+            </table>
+            <button class="normal-button" style="margin-top: 10px">TSVファイル作成</button>
+        </div>
+    </div>
+</div>
