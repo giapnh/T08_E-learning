@@ -27,6 +27,9 @@ class StudentController extends IController {
     }
 
     public function indexAction() {
+        // Check login
+        $user = new Default_Model_Account();
+        
         $this->initial();
     }
 

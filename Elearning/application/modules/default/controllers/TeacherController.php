@@ -16,18 +16,128 @@ class TeacherController extends IController {
         }
     }
 
-    public function init() {
+    /**
+     * If loged in, get user information
+     */
+    public function initial() {
         $auth = Zend_Auth::getInstance();
-        $infoUser = $auth->getIdentity();
-        //$this->view->fullName = $infoUser->full_name;
-        if (!$infoUser) {
-            $this->_redirect("user/login");
-        }
-        $this->user = $infoUser;
+        $infoUser = $auth->getStorage()->read();
+        $this->view->user_info = $infoUser;
     }
 
     public function indexAction() {
-        // 	   $this->redirect('student/mylession');
+        $this->initial();
+    }
+
+    public function profileAction() {
+        $this->initial();
+    }
+
+    /**
+     * プロファイが変更機能アクション
+     * @return type
+     */
+    public function profilechangeinfoAction() {
+        $this->initial();
+        $user = new Default_Model_Account();
+        if ($this->_request->isPost()) {
+            $data = $this->_request->getParams();
+            //Check empty
+            if (trim($data['username']) == '') {
+                return;
+            }
+
+            if (trim($data['fullname']) == '') {
+                $this->view->errorMessage = Message::$M009;
+                return;
+            }
+
+            if (trim($data['address']) == '') {
+                $this->view->errorMessage = Message::$M011;
+                return;
+            }
+
+            if (trim($data['phone']) == '') {
+                $this->view->errorMessage = Message::$M012;
+                return;
+            }
+
+            if (trim($data['bank_acc']) == '') {
+                $this->view->errorMessage = Message::$M013;
+                return;
+            }
+
+            $user->updateNewInfo($data);
+            $auth = Zend_Auth::getInstance();
+            $auth->getStorage()->write($user->getUserInfo($data['username']));
+            $this->view->user_info = $auth->getStorage()->read();
+            $this->_redirect('student/profile');
+        }
+    }
+
+    /**
+     * パスワードが変更機能アクション
+     */
+    public function changepasswordAction() {
+        $this->initial();
+        $user = new Default_Model_Account();
+        if ($this->_request->isPost()) {
+            $data = $this->_request->getParams();
+
+            if (trim($data['password']) == '') {
+                $this->view->errorMessage = Message::$M007;
+                return;
+            }
+
+            if (trim($data['new_password'] == '')) {
+                $this->view->errorMessage = Message::$M007;
+                return;
+            }
+            if (!$user->isValid($data['username'], $data['password'], '1')) {
+                $this->view->errorMessage = Message::$M0031;
+                return;
+            }
+
+            if (trim($data['new_password']) != trim($data['new_password_confirm'])) {
+                $this->view->errorMessage = Message::$M008;
+                return;
+            }
+
+            if (!preg_match(Code::$REGEX_PASSWORD, $data['password'])) {
+                $this->view->errorMessage = Message::$M007;
+                return;
+            }
+
+            $user->updatePassword($data);
+            $auth = Zend_Auth::getInstance();
+            $auth->getStorage()->write($user->getUserInfo($data['username']));
+            $this->view->user_info = $auth->getStorage()->read();
+            $this->_redirect('student/profile');
+        }
+    }
+
+    /**
+     * 秘密質問が変更機能アクション
+     */
+    public function changesecretqaAction() {
+        $this->initial();
+        $user = new Default_Model_Account();
+        if ($this->_request->isPost()) {
+            $data = $this->_request->getParams();
+            if (trim($data['secret_question'] == '')) {
+                $this->view->errorMessage = Message::$M014;
+                return;
+            }
+            if (trim($data['secret_answer'] == '')) {
+                $this->view->errorMessage = Message::$M015;
+                return;
+            }
+            $user->updateSecretQA($data);
+            $auth = Zend_Auth::getInstance();
+            $auth->getStorage()->write($user->getUserInfo($data['username']));
+            $this->view->user_info = $auth->getStorage()->read();
+            $this->_redirect('student/profile');
+        }
     }
 
     /**
@@ -112,7 +222,6 @@ class TeacherController extends IController {
         }
     }
 
-    
     protected function _findexts($filename) {
 
         $filename = strtolower($filename);
@@ -136,7 +245,7 @@ class TeacherController extends IController {
     public function lessonAction() {
         
     }
-    
+
     /**
      * ファイルを見る画面
      * @param type $name Description
@@ -144,7 +253,7 @@ class TeacherController extends IController {
     public function fileAction() {
         
     }
-    
+
     /**
      * 授業を更新する画面
      * @param type $name Description
@@ -152,7 +261,7 @@ class TeacherController extends IController {
     public function updateLessonAction() {
         
     }
-    
+
     /**
      * 授業の学生を見る画面
      * @param type $name Description
@@ -160,7 +269,7 @@ class TeacherController extends IController {
     public function studentsAction() {
         
     }
-    
+
     /**
      * 学生のテスト結果を見る画面
      * @param type $name Description
@@ -168,4 +277,5 @@ class TeacherController extends IController {
     public function studentResultAction() {
         
     }
+
 }
