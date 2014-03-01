@@ -1,0 +1,63 @@
+
+<form action="<?php echo $this->element->getAction();?>"
+	method="<?php echo $this->element->getMethod(); ?>"
+	enctype="multipart/form-data">
+	<div class="row-input">
+		<div class="title-les">タイトル:</div>
+		<div class="input-les">
+			<?php echo $this->element->title; ?>
+		</div>
+	</div>
+	<div class="row-input">
+		<div class="title-les">タグ:</div>
+		<div class="input-les">
+			<?php echo $this->element->tag; ?><br>
+		</div>
+	</div>
+	<div class="row-input">
+		<div class="title-les">説明:</div>
+		<div class="input-les">
+			<textarea class = "les_dec" name="les_dec"></textarea>
+		</div>
+	</div>
+	ファイルアップロード
+	<div id= "list_file">
+		<div class = "file_item">
+			<div class="row-input">
+				<div class="title-les">ファイル名:</div>
+				<div class="input-les">
+					<input type="text" name="file_title[]" id="file_title" value="" class="les_input file_title" maxlength="255"><br>
+				</div>
+			</div>
+			<div class="row-input">
+				<div class="title-les">説明:</div>
+				<div class="input-les">
+					<textarea class = "file_dec" name="file_dec[]"></textarea><br>
+				</div>
+			</div>
+			<div class="row_file">
+				<input type="file" name="file[]">
+			</div>
+		</div>
+		<div class = "file_item">
+			<div class="row-input">
+				<div class="title-les">ファイル名:</div>
+				<div class="input-les">
+					<input type="text" name="file_title[]" id="file_title" value="" class="les_input file_title" maxlength="255"><br>
+				</div>
+			</div>
+			<div class="row-input">
+				<div class="title-les">説明:</div>
+				<div class="input-les">
+					<textarea class = "file_dec" name="file_dec[]"></textarea> <br>
+				</div>
+			</div>
+			<div class="row_file">
+				<input type="file" name="file[]">
+			</div>
+		</div>
+		
+	</div>
+	<a href="#"　id= "add_file" >もう一つ</a>
+	<?php echo $this->element->submit; ?>
+</form>
