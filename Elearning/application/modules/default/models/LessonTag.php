@@ -8,4 +8,5 @@ class Default_Model_LessonTag extends Zend_Db_Table_Abstract {
 		parent::__construct();
 		$this->db = Zend_Registry::get('connectDB');
 	}
+        
 }
