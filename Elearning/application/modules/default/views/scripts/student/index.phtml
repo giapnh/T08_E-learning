@@ -32,8 +32,11 @@
             </div>
             <!--Function tab bar-->
             <div class="row-show">
-                <button style="margin-top: 10px;"  name="btn_tag" class="showlogfromm float-left">タグ</button>
-                <button style="margin-left: 10px; margin-top: 10px;" name="btn_teacher" class="register-cus float-left">先生</button>
+                <a href=""><button style="margin-top: 10px;"  name="btn_tag" class="showlogfromm float-left">タグ</button></a>
+                <a href="../student/index?type=1">
+                    <button style="margin-left: 10px; margin-top: 10px;" name="btn_teacher" class="register-cus float-left">
+                        先生</button>
+                </a>
                 <div  style="margin-top: 10px;" class="float-right">
                     <form action="#" style="height: 30px;">
                         <input type="text" name="q" class="input_search" placeholder="検索内容"/>
@@ -49,10 +52,12 @@
                             <td valign="top" class="containt_center_cen_left">
                                 <div style="width: 100%;"></div>
                                 <?php
-                                for ($i = 0; $i < 10; $i++) {
-                                    ?>
-                                    <button class="showlogfromm" style="margin-bottom: 5px;">タグ名</button>
-                                    <?php
+                                if (isset($this->tags)) {
+                                    for ($i = 0; $i < ; $i++) {
+                                        ?>
+                                        <button class="showlogfromm" style="margin-bottom: 5px;">タグ名</button>
+                                        <?php
+                                    }
                                 }
                                 ?>
                             </td>

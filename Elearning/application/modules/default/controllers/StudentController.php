@@ -28,9 +28,17 @@ class StudentController extends IController {
 
     public function indexAction() {
         // Check login
-        $user = new Default_Model_Account();
-        
+//        $user = new Default_Model_Account();
+
         $this->initial();
+        if ($this->_request->isGet()) {
+            echo 'Get';
+            echo $this->_request->getParam('type');
+            return;
+        }
+
+        $tags = new Default_Model_Tag();
+        $this->view->tags = $tags;
     }
 
     public function profileAction() {
