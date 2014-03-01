@@ -1,74 +1,123 @@
-
 <!DOCTYPE html>
 <html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta http-Equiv="Cache-Control" Content="no-cache">
-<meta http-Equiv="Pragma" Content="no-cache">
-<meta http-Equiv="Expires" Content="0">
-<link rel="stylesheet" type="text/css"
-	href="http://www.tienganh123.com/static/css/ta123_styles.css?v=3" />
-<script type="text/javascript"
-	src="http://www.tienganh123.com/static/js/libraries.js?v=4"></script>
-<script type="text/javascript"
-	src="http://www.tienganh123.com/static/js/jquery_ready.js?v=8"></script>
-<!--[if lte IE 10]>
-        <link rel="stylesheet" type="text/css" href="http://www.tienganh123.com/static/css/common.css">
-        <![endif]-->
-<!--[if IE 6]>
-        <link rel="stylesheet" type="text/css" href="http://www.tienganh123.com/static/css/ie6.css">
-        <![endif]-->
-<!--[if IE 7]>
-        <link rel="stylesheet" type="text/css" href="http://www.tienganh123.com/static/css/ie7.css">
-        <![endif]-->
-<!--[if IE 8]>
-        <link rel="stylesheet" type="text/css" href="http://www.tienganh123.com/static/css/ie8.css">
-        <![endif]-->
-<!--[if IE 9]>
-        <link rel="stylesheet" type="text/css" href="http://www.tienganh123.com/static/css/ie9.css">
-        <![endif]-->
-<!-- Tienganh123 lib -->
-<script type="text/javascript"
-	src="/file/dungchung/audioPlayer/ubanplayer/swfobject/swfobject.js"></script>
-<script src="http://www.tienganh123.com/static/js/libs_audio.js"></script>
-<script type="text/javascript"
-	src="http://www.tienganh123.com/static/js/audioPlayer/pickle/pickle.js"></script>
+    <body>
+    <center>
+        <div class="content" style="background: #F0F0F0;">
+            <div class="top_content clear banner">
+                <!--                <div class="logo" style="float: left;">
+                                    <a href="#"> <img width="230" height="58" src="#" alt="Logo">
+                                    </a>
+                                </div>-->
+                <div style="position: absolute; top: 120px; right: 70px; ">
+                    <a href="../user/logout"><font style="color: #7E3500; font-weight: bold; text-decoration: underline;">ログアウト</font>
+                    </a>
+                </div>
+                <div  class="topbar-username"><big>ようこそ!</bigF><?php echo $this->user_info['name']; ?></div>
+            </div>
+            <!--Menu Tab Bar-->
+            <div class="menus clear">
+                <div class="mn first_mn">
+                    <a class="home" href="../student/index">
+                        <font style="color: white;">ホーム</font>
+                    </a>
+                </div>
+                <div title="" class="mn"><a href="#"><font style="color: white;">授業</font></a>
+                </div>
+                <!--                <div class="mn" title=""><a href="#"><font style="color: white;">授業リスト</font></a>
+                                </div>-->
+                <div title="" class="mn "><a href="#"><font style="color: white;">支払い</a>
+                </div>
+                <div title="" class="mn "><a href="../student/profile"><font style="color: white;">プロファイル</font></a>
+                </div>
+            </div>
+            <!--Function tab bar-->
+            <div class="row-show">
+                <button style="margin-top: 10px;"  name="btn_tag" class="showlogfromm float-left">タグ</button>
+                <button style="margin-left: 10px; margin-top: 10px;" name="btn_teacher" class="register-cus float-left">先生</button>
+                <div  style="margin-top: 10px;" class="float-right">
+                    <form action="#" style="height: 30px;">
+                        <input type="text" name="q" class="input_search" placeholder="検索内容"/>
+                        <input  name="sa" style="width: 34px; height: 34px;" type="image" src="../public/images/bg_search_right.jpg">
+                    </form>
+                </div>
+            </div>
+            <!--Content tab bar-->
+            <div class="containt_center_cen clear">
+                <table class="list_lession_content"  cellpadding="0" cellspacing="0" border="0">
+                    <tbody>
+                        <tr>
+                            <td valign="top" class="containt_center_cen_left">
+                                <div style="width: 100%;"></div>
+                                <?php
+                                for ($i = 0; $i < 10; $i++) {
+                                    ?>
+                                    <button class="showlogfromm" style="margin-bottom: 5px;">タグ名</button>
+                                    <?php
+                                }
+                                ?>
+                            </td>
+                            <td valign="top" class="containt_center_cen_right">
+                                <?php
+                                for ($i = 0; $i < 10; $i++) {
+                                    ?>
+                                    <div class="row-show">
+                                        <div class="lession-content-left">
+                                            <div class="row-show">
+                                                <a href=""><div class="lession-title">C programming</div></a>
+                                            </div>
+                                            <hr class="title">
+                                            <div class="row-show">
+                                                <div class="lession-teacher"><b>先生: </b> ごんだい</div>
+                                                <div class="lession-time">2013年02月20日</div>
+                                            </div>
+                                            <hr class="title">
+                                            <div class="row-show">
+                                                <div id="lession-description" class="lession-description">この授業はCプログラミング言語について、教えてさせます。</div>
+                                            </div>
+                                            <div class="row-show">
+                                                <div class="lession-bottom">
+                                                    <img src="../public/images/num-like.png" width="15" height="15"> <font class="num-like-comment">100</font>
+                                                    <img src="../public/images/num-comment.png" width="15" height="15"> <font class="num-like-comment">100</font>
+                                                </div>
+                                                <div style="float: right; position: relative; top: 30px;bottom: 0;"><a href="../student/lession-detail" class="link-view-detail">詳細</a></div>
+                                            </div>
+                                        </div>  
 
+                                        <div class="lession-content-right">
+                                            <div class="row-show">
+                                                <a href=""><div class="lession-title">C programming</div></a>
+                                            </div>
+                                            <hr class="title">
+                                            <div class="row-show">
+                                                <div class="lession-teacher"><b>先生: </b> ごんだい</div>
+                                                <div class="lession-time">2013年02月20日</div>
+                                            </div>
+                                            <hr class="title">
+                                            <div class="row-show">
+                                                <div id="lession-description" class="lession-description">この授業はCプログラミング言語について、教えてさせます。</div>
+                                            </div>
+                                            <div class="row-show">
+                                                <div class="lession-bottom">
+                                                    <img src="../public/images/num-like.png" width="15" height="15"> <font class="num-like-comment">100</font>
+                                                    <img src="../public/images/num-comment.png" width="15" height="15"> <font class="num-like-comment">100</font>
+                                                </div>
+                                                <div style="float: right; position: relative; top: 30px;bottom: 0;"><a href="../student/lession-detail" class="link-view-detail">詳細</a></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php }
+                                ?>
 
-</head>
-<body>
-	<div class="bg_top">&nbsp;</div>
-	<div class="bg_center">
-		<div id="contents">
-			<div class="top_content clear">
-				<div class="logo">
-					<a href="#"> <img width="230" height="58" src="#" alt="Logo">
-					</a>
-				</div>
-				<div align="right" style="float: right; margin-top: 20px;">
-					<a href="../user/logout"><button class="register-cus">ログアウト</button>
-					</a>
-				</div>
-			</div>
-			<div class="menus clear">
-				<ul>
-					<li class="home mn"><a href="#"></a>
-					</li>
-					<li title="" class="mn first_mn"><a href="#">マイ授業</a>
-					</li>
-					<li class="mn" title=""><a href="#">授業リスト</a>
-					</li>
-					<li title="" class="mn "><a href="#">支払い</a>
-					</li>
-					<li title="" class="mn "><a href="javascript:;">プロファイル</a>
-					</li>
-					<li title="" class="mn "><a href="#">CommingSoon</a>
-					</li>
-				</ul>
-			</div>
-		</div>
-	</div>
-	
-	
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="row-show">Page indicator</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </center>
 </body>
 </html>

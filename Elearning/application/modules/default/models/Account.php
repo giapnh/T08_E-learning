@@ -114,7 +114,7 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
      * @param type $data ユーザの新しい情報
      */
     public function updateNewInfo($data) {
-        $ins_data = array(
+        $update_data = array(
             'name' => $data['fullname'],
             'birthday' => $data['day'] . '-' . $data['month'] . '-' . $data['year'],
             'address' => $data['address'],
@@ -124,7 +124,33 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
         );
         $username = $data['username'];
         $where = "username='$username'";
-        $this->update($ins_data, $where);
+        $this->update($update_data, $where);
+    }
+
+    /**
+     * ユーザのパスワードが変更機能アクション
+     * @param type $data
+     */
+    public function updatePassword($data) {
+        $update_data = array(
+            'password' => md5($data['username'] . '+' . $data['new_password'] . '+' . Code::$PASSWORD_CONST));
+        $username = $data['username'];
+        $where = "username='$username'";
+        $this->update($update_data, $where);
+    }
+
+    /**
+     * ユーザの秘密質問変更機能アクション
+     * @param type $data
+     */
+    public function updateSecretQA($data) {
+        $update_data = array(
+            'secret_question' => $data['secret_question'],
+            'secret_answer' => $data['secret_answer']
+        );
+        $username = $data['username'];
+        $where = "username='$username'";
+        $this->update($update_data, $where);
     }
 
 }

@@ -121,7 +121,7 @@ class UserController extends IController {
                 }
             }
 
-            if ($data['password'] != $data['repassword']) {
+            if (trim($data['password']) != trim($data['repassword'])) {
                 $this->view->errorMessage = Message::$M008;
                 return;
             }

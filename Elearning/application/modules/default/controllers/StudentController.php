@@ -65,6 +65,7 @@ class StudentController extends IController {
 
             if (trim($data['bank_acc']) == '') {
                 $this->view->errorMessage = Message::$M013;
+                return;
             }
 
             $user->updateNewInfo($data);
@@ -83,43 +84,61 @@ class StudentController extends IController {
         $user = new Default_Model_Account();
         if ($this->_request->isPost()) {
             $data = $this->_request->getParams();
-            //Check empty
-            if (trim($data['username']) == '') {
+
+            if (trim($data['password']) == '') {
+                $this->view->errorMessage = Message::$M007;
                 return;
             }
 
-            if (trim($data['fullname']) == '') {
-                $this->view->errorMessage = Message::$M009;
+            if (trim($data['new_password'] == '')) {
+                $this->view->errorMessage = Message::$M007;
+                return;
+            }
+            if (!$user->isValid($data['username'], $data['password'], '1')) {
+                $this->view->errorMessage = Message::$M0031;
                 return;
             }
 
-            if (trim($data['address']) == '') {
-                $this->view->errorMessage = Message::$M011;
+            if (trim($data['new_password']) != trim($data['new_password_confirm'])) {
+                $this->view->errorMessage = Message::$M008;
                 return;
             }
 
-            if (trim($data['phone']) == '') {
-                $this->view->errorMessage = Message::$M012;
+            if (!preg_match(Code::$REGEX_PASSWORD, $data['password'])) {
+                $this->view->errorMessage = Message::$M007;
                 return;
             }
 
-            if (trim($data['bank_acc']) == '') {
-                $this->view->errorMessage = Message::$M013;
-            }
-
-            $user->updateNewInfo($data);
+            $user->updatePassword($data);
             $auth = Zend_Auth::getInstance();
             $auth->getStorage()->write($user->getUserInfo($data['username']));
             $this->view->user_info = $auth->getStorage()->read();
             $this->_redirect('student/profile');
         }
-
-        /**
-         * 秘密質問が変更機能アクション
-         */
-        public function changesecretqaAction() {
-            $this->initial();
-        }
-
     }
-    
+
+    /**
+     * 秘密質問が変更機能アクション
+     */
+    public function changesecretqaAction() {
+        $this->initial();
+        $user = new Default_Model_Account();
+        if ($this->_request->isPost()) {
+            $data = $this->_request->getParams();
+            if (trim($data['secret_question'] == '')) {
+                $this->view->errorMessage = Message::$M014;
+                return;
+            }
+            if (trim($data['secret_answer'] == '')) {
+                $this->view->errorMessage = Message::$M015;
+                return;
+            }
+            $user->updateSecretQA($data);
+            $auth = Zend_Auth::getInstance();
+            $auth->getStorage()->write($user->getUserInfo($data['username']));
+            $this->view->user_info = $auth->getStorage()->read();
+            $this->_redirect('student/profile');
+        }
+    }
+
+}
