@@ -14,32 +14,141 @@
             <div class="detail_title_right title_right_1"></div>
         </div>
         <div class="detail_layout_content">
-            <button class="normal-button" style="float: right; margin-bottom: 10px;"><a href="#">管理者作成</a></button>
+            <table width="690" border="1" bordercolor="#d5d5d5" style="border-collapse:collapse" cellpadding="4" cellspacing="4">
+                <tr align="left" class="title_table" bordercolor="4f4f4f" style="background-color: rgb(251, 251, 251); background-position: initial initial; background-repeat: initial initial;">
+                    <td width="30">NO</td>
+                    <td width="120">
+                        <a href="?order_by=<?php 
+                            echo Admin_Model_User::$USERNAME;
+                            if ($this->orderBy == Admin_Model_User::$USERNAME) {
+                                if ($this->order == Admin_Model_User::$DESC) {
+                                    echo '&order='.Admin_Model_User::$INSC;
+                                } else {
+                                    echo '&order='.Admin_Model_User::$DESC;
+                                }
+                            } else {
+                                echo '&order='.Admin_Model_User::$DESC;
+                            }
+                        ?>">ユーザ名</a>
+                    </td>
+                    <td width="83"><a href="?order_by=<?php 
+                            echo Admin_Model_User::$NAME;
+                            if ($this->orderBy == Admin_Model_User::$NAME) {
+                                if ($this->order == Admin_Model_User::$DESC) {
+                                    echo '&order='.Admin_Model_User::$INSC;
+                                } else {
+                                    echo '&order='.Admin_Model_User::$DESC;
+                                }
+                            } else {
+                                echo '&order='.Admin_Model_User::$DESC;
+                            }
+                        ?>">名前</a></td>
+                    <td width="73"><a href="?order_by=<?php 
+                            echo Admin_Model_User::$ROLE;
+                            if ($this->orderBy == Admin_Model_User::$ROLE) {
+                                if ($this->order == Admin_Model_User::$DESC) {
+                                    echo '&order='.Admin_Model_User::$INSC;
+                                } else {
+                                    echo '&order='.Admin_Model_User::$DESC;
+                                }
+                            } else {
+                                echo '&order='.Admin_Model_User::$DESC;
+                            }
+                        ?>">役割</a></td>
+                    <td width="100"><a href="?order_by=<?php 
+                            echo Admin_Model_User::$STATUS;
+                            if ($this->orderBy == Admin_Model_User::$STATUS) {
+                                if ($this->order == Admin_Model_User::$DESC) {
+                                    echo '&order='.Admin_Model_User::$INSC;
+                                } else {
+                                    echo '&order='.Admin_Model_User::$DESC;
+                                }
+                            } else {
+                                echo '&order='.Admin_Model_User::$DESC;
+                            }
+                        ?>">ステータス</a></td>
+                </tr>
+                <?php 
+                    $count = 0;
+                    foreach ($this->users as $user) {   
+                        $count ++;
+                ?>
+                <tr align="left">
+                    <td class="orange"><?php echo $count ?></td>
+                    <td><a style="color: blue; text-decoration: underline" href="<?php 
+                            echo $this->baseUrl()."/admin/user/info?user_id=".$user[Admin_Model_User::$ID] 
+                        ?>"><?php echo $user[Admin_Model_User::$USERNAME] ?>
+                    </a></td>
+                    <td><?php echo $user[Admin_Model_User::$NAME] ?></td>
+                    <td><?php
+                        if ($user[Admin_Model_User::$ROLE] == '1') {
+                            echo "先生";
+                        } elseif ($user[Admin_Model_User::$ROLE] == '2') {
+                            echo "学生";
+                        } else {
+                            echo "エラー";
+                        }
+                    ?></td>
+                    <td><?php 
+                        if ($user['status'] == 1) {
+                            echo "許可された";
+                        } elseif ($user['status'] == 2) {
+                            echo "許可を待っている";
+                        } elseif ($user['status'] == 3) {
+                            echo "削除された";
+                        } else {
+                            echo "エラー";
+                        }
+                    ?></td>
+                </tr>
+                <?php
+                    }
+                ?>
+            </table>
+            <?php 
+                $page = $this->pager['page'];
+                $totalPages = $this->pager['totalPages'];
+                if ($this->pager['next'] != null) {
+                    $nextLink = "?page=".$this->pager['next'];
+                } else {
+                    $nextLink = "";
+                }
+                if ($this->pager['pre'] != null) {
+                    $preLink = "?page=".$this->pager['pre'];
+                } else {
+                    $preLink = "";
+                }
+            ?>
+            <?php echo $this->partial("pager.phtml", array('page'=>$page, 'total'=>$totalPages, 'next'=>$nextLink, 'pre'=>$preLink)) ?>
+        </div>
+        <div class="detail_layout_title">
+            <div class="detail_title_left title_left_1">II</div>
+            <div class="detail_title_center title_center_1">管理者リスト</div>
+            <div class="detail_title_right title_right_1"></div>
+        </div>
+        <div class="detail_layout_content">
+            <button class="normal-button" style="float: left; margin-bottom: 10px;"><a href="<?php echo $this->baseUrl()."/admin/user/add-admin" ?>">管理者作成</a></button>
             <table width="690" border="1" bordercolor="#d5d5d5" style="border-collapse:collapse" cellpadding="4" cellspacing="4">
                 <tr align="left" class="title_table" bordercolor="4f4f4f" style="background-color: rgb(251, 251, 251); background-position: initial initial; background-repeat: initial initial;">
                     <td width="30">NO</td>
                     <td width="120">ユーザ名</td>
-                    <td width="83">登録日</td>
-                    <td width="73">役割</td>
-                    <td width="100">ステータス</td>
+                    <td width="120">作成者</td>
                 </tr>
-                <tr align="left">
-                    <td class="orange">1</td>
-                    <td><a href="#">MinhTQ</a></td>
-                    <td>07/03/2014</td>
-                    <td>学生</td>
-                    <td>ユーザ</td>
+                <?php 
+                    $count = 0;
+                    foreach ($this->admins as $admin) { 
+                        $count ++;
+                ?>
+                <tr>
+                    <td width="30"><?php echo $count; ?></td>
+                    <td width="120"><a style="color: blue; text-decoration: underline;" href="<?php echo $this->baseUrl()."/admin/user/admin-info?user_id=".$admin[Admin_Model_Account::$id]; ?>"><?php echo $admin[Admin_Model_Account::$username] ?></td>
+                    <td width="120"><?php echo $admin['created'] ?></td>
                 </tr>
-               <tr align="left">
-                    <td class="orange">2</td>
-                    <td><a href="#">MinhTQ</a></td>
-                    <td>07/03/2014</td>
-                    <td>管理者</td>
-                    <td>許可を待っている</td>
-                </tr>
+                <?php } ?>
             </table>
-            <?php echo $this->partial("pager.phtml", array('page'=>1, 'total'=>10, 'next'=>"#", 'pre'=>"#")) ?>
         </div>
+        
     </div>
+    
     <?php echo $this->render("right-banner.phtml") ?>
 </div>
