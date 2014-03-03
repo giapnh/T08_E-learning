@@ -10,7 +10,7 @@
                                         </a>
                                     </div>-->
                     <div style="position: absolute; top: 120px; right: 70px; ">
-                        <a href="../user/logout"><font style="color: #7E3500; font-weight: bold; text-decoration: underline;">ログアウト</font>
+                        <a href="<?php echo $this->baseUrl() ?>/user/logout"><font style="color: #7E3500; font-weight: bold; text-decoration: underline;">ログアウト</font>
                         </a>
                     </div>
                     <div  class="topbar-username"><big>ようこそ!</bigF><?php echo $this->user_info['name']; ?></div>
@@ -18,7 +18,7 @@
                 <!--Menu Tab Bar-->
                 <div class="menus clear">
                     <div class="mn">
-                        <a class="home" href="../student/index">
+                        <a class="home" href="<?php echo $this->baseUrl() ?>/student/index">
                             <font style="color: white;">ホーム</font>
                         </a>
                     </div>
@@ -28,7 +28,7 @@
                                         </div>-->
                     <div title="" class="mn "><a href="#"><font style="color: white;">支払い</a>
                     </div>
-                    <div title="" class="mn first_mn"><a href="../student/profile"><font style="color: white;">プロファイル</font></a>
+                    <div title="" class="mn first_mn"><a href="<?php echo $this->baseUrl() ?>/student/profile"><font style="color: white;">プロファイル</font></a>
                     </div>
                 </div>
                 <div class="row-show" style="background: #F0F0F0;">
@@ -96,9 +96,9 @@
                                 ?></td>
                         </tr>
                         <tr col="3">
-                            <td><a href="../student/profileChangeInfo"><button class="showlogfromm">情報更新</button></a></td>
-                            <td><a href="../student/changePassword"><button class="showlogfromm">パスワード更新</button></a></td>
-                            <td style="width: 160px;"><a href="../student/changeSecretQA"><button class="showlogfromm">機密質問情報を更新</button></a></td>
+                            <td><a href="<?php echo $this->baseUrl() ?>/student/profileChangeInfo"><button class="showlogfromm">情報更新</button></a></td>
+                            <td><a href="<?php echo $this->baseUrl() ?>/student/changePassword"><button class="showlogfromm">パスワード更新</button></a></td>
+                            <td style="width: 160px;"><a href="<?php echo $this->baseUrl() ?>/student/changeSecretQA"><button class="showlogfromm">機密質問情報を更新</button></a></td>
                         </tr>
                     </table>
                 </div>

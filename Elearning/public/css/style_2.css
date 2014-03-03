@@ -231,9 +231,8 @@ font.num-like-comment{
     height: 19px;
     text-align: center;
     font-size: 15px;
-    color: #3680a0;
+    color: #069;
     font-weight: normal;
-    font-style: italic;
     text-align: center;
 }
 
@@ -337,15 +336,14 @@ tr.profile{
     border-color: #5a9301;
 }
 
-.icon-like, .icon-comment{
-    width: 15px;
-    height: 15px;
-}
-
 .icon-like{
-    background: url(../../public/images/num-like.png);
+    background: url(../../public/images/num-like.png) no-repeat;
+    background-size: 15px 15px;
+    border: none;
 }
 
 .icon-comment{
-    background: url(../../public/images/num-comment.png);
+    background: url(../../public/images/num-comment.png) no-repeat;
+    background-size: 15px 15px;
+    border: none;
 }
