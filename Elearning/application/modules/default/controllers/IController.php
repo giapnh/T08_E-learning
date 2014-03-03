@@ -1,5 +1,6 @@
 <?php
 
+require 'Code.php';
 require 'Message.php';
 
 class IController extends Zend_Controller_Action {

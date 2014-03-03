@@ -7,6 +7,7 @@ class Message {
     public static $M003 = "ユーザネームとパスワードが会っていないとか、このアカウントがまだ確認させない";
     public static $M0031 = "ユーザネームとパスワードが会っていない";
     public static $M004 = "この IP がロックさせている。%s 時後に戻してください";
+    public static $M0041 = "このアカウントがロックさせている。%s 時後に戻してください";
     public static $M005 = "このユーザが削除しました。システムの管理者に連絡してください";
     public static $M006 = "ユーザネームが無効";
     public static $M007 = "パスワードが無効";
@@ -39,4 +40,5 @@ class Message {
     //Add register message
     public static $M034 = "アカウントは存在してしまった";
     public static $M035 = "このIPでログインできない";
+
 }

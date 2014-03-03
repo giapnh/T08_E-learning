@@ -7,7 +7,7 @@ class Code {
     public static $REGEX_PASSWORD = "/^[a-zZ-Z][A-Za-z0-9._-]{5,29}$/";
     public static $LOCK_COUNT = 5; //ログイン間違い回数
     public static $SESSION_TIME = 86400; //自動ログアウト時間（時）
-    public static $LOGIN_FAIL_LOCK_TIME = 3600; //ロック時間
+    public static $LOGIN_FAIL_LOCK_TIME = 10; //ロック時間
     public static $COMA_PRICE = 20000; //学生が使用する場合、１コマにつき暫定２万ドン。
     public static $TEACHER_FEE_RATE = 60; //先生の課金率（%）
     public static $LESSON_DEADLINE = 10; //授業の期限（日）
@@ -17,3 +17,5 @@ class Code {
     public static $PASSWORD_CONST = 100;
 
 }
+
+?>

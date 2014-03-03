@@ -24,10 +24,8 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
                 ->where('username=?', $username);
         $result = $this->getAdapter()->fetchAll($query);
         if ($result) {
-            echo "Exits";
             return true;
         } else {
-            echo "Not Exits";
             return false;
         }
     }
@@ -77,8 +75,21 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
      * @param type $username
      */
     public function incLoginFailure($username) {
+        $where = "username='$username'";
+        $curr_count = $this->getFailCount($username);
         $data = array(
-            'fail_login_count' => "'fail_login_count'+1"
+            'fail_login_count' => $curr_count + 1
+        );
+        $this->update($data, $where);
+    }
+
+    public function getFailCount($username) {
+        return $this->fetchRow("username='$username'")['fail_login_count'];
+    }
+
+    public function resetFailCount($username) {
+        $data = array(
+            'fail_login_count' => 0
         );
         $where = "username='$username'";
         $this->update($data, $where);
