@@ -28,6 +28,24 @@ class Admin_Model_User extends Zend_Db_Table_Abstract {
     public static $DESC = "DESC";
     public static $INSC = "ASC";
     
+    public static $USER_STATUS_AVAILABLE = 1;
+    public static $USER_STATUS_WAITING = 2;
+    public static $USER_STATUS_DELETED = 3;
+
+    /**
+     * 
+     * @param type $userId
+     */
+    public function getUser($userId) {
+        $users = $this->find($userId);
+        
+        if ($users) {
+            return $users[0];
+        } else {
+            return false;
+        }
+    }
+    
     /**
      * ユーザリストを取る
      * 

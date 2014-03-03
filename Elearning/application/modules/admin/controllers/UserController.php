@@ -75,9 +75,14 @@ class Admin_UserController extends IController {
     
     /**
      * ユーザ情報画面
+     * 
+     * @param string $user_id ユーザID
      */
     public function infoAction() {
+        $userId = $this->_request->getParam('user_id');
         
+        $userModel = new Admin_Model_User();
+        $this->view->user = $userModel->getUser($userId);
     }
     
     /**

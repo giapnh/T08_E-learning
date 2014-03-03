@@ -66,7 +66,7 @@ ul.grid {padding:0;}
 .bg_top{        
     position: absolute;
     width: 100%;
-    background: url(http://data.tienganh123.com/images/v2/home/bg_body_top.jpg) repeat-x transparent;
+    background: url(../images/bg_body_top.jpg) repeat-x transparent;
     height: 303px; z-index: 9;
 
 }
@@ -88,7 +88,7 @@ ul.grid {padding:0;}
 }  
 .bg_center{
     position: absolute; width: 100%;
-    background: url(http://data.tienganh123.com/images/v2/home/bg_body_center.jpg); z-index: 999; margin-top: -1px;
+    background: url(../images/bg_body_center.jpg); z-index: 999; margin-top: -1px;
 }
 .bg_bottom{
     float: left;
@@ -121,7 +121,7 @@ ul.grid {padding:0;}
 .action ul{padding: 0;margin: 0;}
 .action ul li{float: left;text-align: left;}
 .reg_card{
-    background-image: url(http://data.tienganh123.com/images/v2/home/home_new.png);
+    background-image: url(../images/home_new.png);
     background-position: 90px -2386px;
     padding-right: 10px;
     line-height:31px ;    
@@ -129,14 +129,14 @@ ul.grid {padding:0;}
 .other-login{width: 248px;float: right;margin-top: 11px;clear: both;}
 .other-login span{font-weight: normal;float: left;line-height: 31px;height: 31px;}
 .other-login a{margin-left: 11px;float: left;}
-.icon-fb-b{background: url(http://data.tienganh123.com/images/v2/home/home_new.png) -118px -2573px no-repeat;display: inline-block;width: 30px;height: 30px;}
-.icon-fb-b:hover{background: url(http://data.tienganh123.com/images/v2/home/home_new.png) -243px -2573px no-repeat;}
-.icon-gg-b{background: url(http://data.tienganh123.com/images/v2/home/home_new.png) -161px -2573px no-repeat;display: inline-block;width: 30px;height: 30px;}
-.icon-gg-b:hover{background: url(http://data.tienganh123.com/images/v2/home/home_new.png) -286px -2573px no-repeat;}
-.icon-yh-b{background: url(http://data.tienganh123.com/images/v2/home/home_new.png) -203px -2573px no-repeat;display: inline-block;width: 30px;height: 30px;}
-.icon-yh-b:hover{background: url(http://data.tienganh123.com/images/v2/home/home_new.png) -328px -2573px no-repeat;}
+.icon-fb-b{background: url(../images/home_new.png) -118px -2573px no-repeat;display: inline-block;width: 30px;height: 30px;}
+.icon-fb-b:hover{background: url(../images/home_new.png) -243px -2573px no-repeat;}
+.icon-gg-b{background: url(../images/home_new.png) -161px -2573px no-repeat;display: inline-block;width: 30px;height: 30px;}
+.icon-gg-b:hover{background: url(../images/home_new.png) -286px -2573px no-repeat;}
+.icon-yh-b{background: url(../images/home_new.png) -203px -2573px no-repeat;display: inline-block;width: 30px;height: 30px;}
+.icon-yh-b:hover{background: url(../images/home_new.png) -328px -2573px no-repeat;}
 .box_dt_fast{display:none;margin-top: -10px;_margin-top: 0px; width:220px; min-height:150px;position:absolute;margin-left: -60px;_margin-left: -210px;z-index: 9999999;}
-.box_dt_ar {position:relative; z-index:10; width:16px; float:left; height:8px; background: url(http://data.tienganh123.com/images/v2/home/home_new.png) no-repeat; margin:4px 0 0 154px;_top: 7px;background-position: -9px -2231px;}
+.box_dt_ar {position:relative; z-index:10; width:16px; float:left; height:8px; background: url(../images/home_new.png) no-repeat; margin:4px 0 0 154px;_top: 7px;background-position: -9px -2231px;}
 .box_dt_in {line-height: normal; width:198px;_width:230px; padding:8px 10px 8px 22px; float:left; margin-top:-1px; background:#fff; border:1px solid #dddddd; border-radius:3px;}
 .box_dt_row { width:100%; float:left; padding:7px 0; background:url(http://data.tienganh123.com/images/v2/home/line_dt_box.jpg) center bottom no-repeat}
 a.box_dt_row { color:#0081a1;}
@@ -150,10 +150,10 @@ a:hover .box_dt_row  { color:#cf6b00;}
 }
 .showlogfromm,.register-cus{float: left;border-radius:1px ;color: white !important;}
 .showlogfromm:hover{
-    background:#408107 url(http://data.tienganh123.com/images/v2/home/home_new.png) -109px -2614px no-repeat;;
+    background:#408107 url(../images/home_new.png) -109px -2614px no-repeat;;
 }
 .register-cus:hover{background: #3C3C3C}
-.showlogfromm{background:#52A20B url(http://data.tienganh123.com/images/v2/home/home_new.png) -109px -2614px no-repeat; width: 84px;display: inline-block;padding-left: 32px;color: white;}
+.showlogfromm{background:#52A20B url(../images/home_new.png) -109px -2614px no-repeat; width: 84px;display: inline-block;padding-left: 32px;color: white;}
 .register-cus{background:#585858 ;width: 120px;display: inline-block;padding-left: 11px;color: white;margin-left: 1px;}
 .ac_log div{}
 
@@ -191,7 +191,7 @@ a:hover .box_dt_row  { color:#cf6b00;}
     padding: 0 !important;
 }
 .home a{
-	background: url(http://data.tienganh123.com/images/v2/home/home_new.png) no-repeat;
+	background: url(../images/home_new.png) no-repeat;
     background-position: -298px -1566px;
     padding: 16px 52px 14.5px 0;
     width: 50px;
@@ -208,7 +208,7 @@ a:hover .box_dt_row  { color:#cf6b00;}
     z-index: 999999;  
 }
 .hover_mn_new a{color: white;}
-.active_home{background: url(http://data.tienganh123.com/images/v2/home/home_new.png) no-repeat !important;background-position: -298px -1509px !important;}
+.active_home{background: url(../images/home_new.png) no-repeat !important;background-position: -298px -1509px !important;}
 .active_home_again{background:url(http://data.tienganh123.com/images/v2/home/bg_menu_left.png) 0 0 no-repeat !important}
 #arrow{
     position: absolute;
@@ -281,7 +281,7 @@ a:hover .box_dt_row  { color:#cf6b00;}
     float:left;
 }
 .content_des_one h3 a{color: #0080A0;}
-.nums{float: left;width: 20px; height: 22px;line-height: 20px;text-align: center; margin: 5px 6px 0 6px;color: #828282;font-weight: bold;background:url(http://data.tienganh123.com/images/v2/home/home_new.png) no-repeat;background-position: -10px -2063px;} 
+.nums{float: left;width: 20px; height: 22px;line-height: 20px;text-align: center; margin: 5px 6px 0 6px;color: #828282;font-weight: bold;background:url(../images/home_new.png) no-repeat;background-position: -10px -2063px;} 
 .nums2 {margin: 9px 6px;background: none;}
 .des_c{float: left; font-weight: normal;font-size: 11px; line-height:14px;width: 240px;}
 .des_c h3 {margin-bottom:3px;}
@@ -339,7 +339,7 @@ a:hover .box_dt_row  { color:#cf6b00;}
     border-top: 1px solid #DDDDDD;
 }
 .vbv2_danhngon_tit{margin: 7px 0 0 110px;}
-.vbv2_bottom_dn{height: 18px;width: 1005px;background: url(http://data.tienganh123.com/images/v2/home/home_new.png) no-repeat;background-position: -10px -1052px;float: left;margin-left: -5px;margin-top: -1px;}
+.vbv2_bottom_dn{height: 18px;width: 1005px;background: url(../images/home_new.png) no-repeat;background-position: -10px -1052px;float: left;margin-left: -5px;margin-top: -1px;}
 .danhngon img{ position:absolute; margin-left:4px;}
 .danhngon_content{
     font-weight: normal;
@@ -364,7 +364,7 @@ a:hover .box_dt_row  { color:#cf6b00;}
     float: left;
     height: 9px;
     width: 100%;
-    background: url(http://data.tienganh123.com/images/v2/home/home_new.png) no-repeat; background-position: -15px -1003px;;
+    background: url(../images/home_new.png) no-repeat; background-position: -15px -1003px;;
     _margin-top: 5px;  
 }
 .containt_center_cen{
@@ -398,7 +398,7 @@ a:hover .box_dt_row  { color:#cf6b00;}
     float: left;
     width: 100%;
     height: 6px;
-    background: url(http://data.tienganh123.com/images/v2/home/home_new.png) no-repeat;
+    background: url(../images/home_new.png) no-repeat;
      background-position: -15px -1030px;
 }
 /* info cont */
@@ -674,7 +674,7 @@ a:hover .des_cont_three_left {background: url(http://data.tienganh123.com/images
     background: url(http://data.tienganh123.com/images/v2/home/bg_footer_repeat_y.png) 0 0 repeat-y;
     font-size: 12px;
 }
-.bootom_footer{background:url(http://data.tienganh123.com/images/v2/home/home_new.png) no-repeat;height: 10px;float: left;width: 1010px;margin-left: -5px;background-position: -10px -1076px;}
+.bootom_footer{background:url(../images/home_new.png) no-repeat;height: 10px;float: left;width: 1010px;margin-left: -5px;background-position: -10px -1076px;}
 .footer_info{
     float: left;
     width: 620px;
@@ -2416,10 +2416,10 @@ ol#controls li a:focus, #prevBtn a:focus, #nextBtn a:focus{outline:none;}
 #scrollbar1 {  width: 100%; margin: 3px 0 0px; }
 #scrollbar1 .viewport { width: 305px;height: 260px; overflow: hidden; position: absolute; }
 #scrollbar1 .overview {list-style: none; position: absolute; left: 0; top: 0; padding: 0; margin: 0; }
-#scrollbar1 .scrollbar{ background-image: url(http://data.tienganh123.com/images/v2/home/home_new.png) ;background-position: -10px -10px; position: relative; float: right; width: 10px; }
+#scrollbar1 .scrollbar{ background-image: url(../images/home_new.png) ;background-position: -10px -10px; position: relative; float: right; width: 10px; }
 #scrollbar1 .track { background: transparent url(http://data.tienganh123.com/images/v2/home/bg-scrollbar-trackend-y.png) no-repeat 0 100%; height: 100%; width:10px; position: relative; padding: 0 1px; }
-#scrollbar1 .thumb { background: transparent url(http://data.tienganh123.com/images/v2/home/home_new.png) no-repeat ;background-position: -10px -900px; height: 20px; cursor: pointer; overflow: hidden; position: absolute; top: 0; left: 0px;z-index: 99999; border-radius:10px;}
-#scrollbar1 .thumb .end { background: transparent url(http://data.tienganh123.com/images/v2/home/home_new.png) no-repeat;background-position: -10px -900px; overflow: hidden; height: 5px; width: 6px; }
+#scrollbar1 .thumb { background: transparent url(../images/home_new.png) no-repeat ;background-position: -10px -900px; height: 20px; cursor: pointer; overflow: hidden; position: absolute; top: 0; left: 0px;z-index: 99999; border-radius:10px;}
+#scrollbar1 .thumb .end { background: transparent url(../images/home_new.png) no-repeat;background-position: -10px -900px; overflow: hidden; height: 5px; width: 6px; }
 #scrollbar1 .disable { display: none; }
 .noSelect { user-select: none; -o-user-select: none; -moz-user-select: none; -khtml-user-select: none; -webkit-user-select: none; }
 
@@ -4319,12 +4319,12 @@ div.PKL_thinker.off{
 .line-lg{height:20px;width: 481px ;background: url(http://data.tienganh123.com/images/v2/home/soc.png) no-repeat;content: "";}
 .row-input-other{clear: both;float: left;width: 100%;background: #F8F8F8;margin-bottom: -15px;height: 124px;margin-top: 10px;}
 .row-input-other li{float: left;line-height: 48px;margin-right: 18px;}
-.icon-fb{background: url(http://data.tienganh123.com/images/v2/home/home_new.png) no-repeat -119px -2518px;width: 175px;height: 43px;display: inline-block;}
-.icon-fb:hover{background: url(http://data.tienganh123.com/images/v2/home/home_new.png) no-repeat -120px -2646px;}
-.icon-gg{background: url(http://data.tienganh123.com/images/v2/home/home_new.png) no-repeat -304px -2518px;width: 175px;height: 43px;display: inline-block;}
-.icon-gg:hover{background: url(http://data.tienganh123.com/images/v2/home/home_new.png) no-repeat -305px -2646px;}
-.icon-yh{background: url(http://data.tienganh123.com/images/v2/home/home_new.png) no-repeat -488px -2518px;width: 175px;height: 43px;display: inline-block;}
-.icon-yh:hover{background: url(http://data.tienganh123.com/images/v2/home/home_new.png) no-repeat -489px -2646px;}
+.icon-fb{background: url(../images/home_new.png) no-repeat -119px -2518px;width: 175px;height: 43px;display: inline-block;}
+.icon-fb:hover{background: url(../images/home_new.png) no-repeat -120px -2646px;}
+.icon-gg{background: url(../images/home_new.png) no-repeat -304px -2518px;width: 175px;height: 43px;display: inline-block;}
+.icon-gg:hover{background: url(../images/home_new.png) no-repeat -305px -2646px;}
+.icon-yh{background: url(../images/home_new.png) no-repeat -488px -2518px;width: 175px;height: 43px;display: inline-block;}
+.icon-yh:hover{background: url(../images/home_new.png) no-repeat -489px -2646px;}
 .maxacnhan{background: url(http://data.tienganh123.com/images/v2/home/maxacnhan.jpg) no-repeat;width: 155px;}
 .maxacnhan input{border: none;width: 140px;height: 18px;margin-left: 2px;margin-top: 2px;}
 .recure-lg{margin-left: -6px !important;}
