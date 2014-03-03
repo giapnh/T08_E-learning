@@ -1,5 +1,4 @@
 <?php
-
 require_once 'IController.php';
 
 class Admin_IndexController extends IController {

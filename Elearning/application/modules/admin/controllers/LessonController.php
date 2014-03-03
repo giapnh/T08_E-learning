@@ -1,4 +1,5 @@
 <?php
+require_once 'IController.php';
 class Admin_LessonController extends IController {
     /**
      * 授業リスト画面
