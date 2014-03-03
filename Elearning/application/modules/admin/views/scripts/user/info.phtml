@@ -17,38 +17,46 @@
             <table>
                 <tr>
                     <td width="200">ユーザ名</td>
-                    <td>minhtq</td>
+                    <td><?php echo $this->user[Admin_Model_User::$USERNAME] ?></td>
                     <td></td>
                 </tr>
                 <tr>
                     <td>名前</td>
-                    <td>クアン・ミン</td>
+                    <td><?php echo $this->user[Admin_Model_User::$NAME] ?></td>
                     <td></td>
                 </tr>
                 <tr>
                     <td>生年月日</td>
-                    <td>1991年2月23日</td>
+                    <td><?php echo $this->user[Admin_Model_User::$BIRTHDAY] ?></td>
                     <td></td>
                 </tr>
                 <tr>
                     <td>住所</td>
-                    <td>ハノイ</td>
+                    <td><?php echo $this->user[Admin_Model_User::$ADDRESS] ?></td>
                     <td></td>
                 </tr>
                 <tr>
                     <td>電話番号</td>
-                    <td>０９８７６５４３２１</td>
+                    <td><?php echo $this->user[Admin_Model_User::$PHONE] ?></td>
                     <td></td>
                 </tr>
                 <tr>
                     <td>クレジットカード情報</td>
-                    <td>1234-5678-9011</td>
+                    <td><?php echo $this->user[Admin_Model_User::$BANK_ACCOUNT] ?></td>
                     <td></td>
                 </tr>
                 <tr>
                     <td>ステータス</td>
-                    <td>許可を待っている</td>
+                    <td><?php 
+                        if ($this->user[Admin_Model_User::$STATUS] == Admin_Model_User::$USER_STATUS_AVAILABLE) {
+                            echo "可用";
+                        } else {
+                            echo "許可を待っている";
+                        }
+                    ?></td>
+                    <?php if ($this->user[Admin_Model_User::$STATUS] == Admin_Model_User::$USER_STATUS_WAITING) { ?>
                     <td><button class="normal-button">許可をする</button></td>
+                    <?php } ?>
                 </tr>
             </table>
         </div>

@@ -1,11 +1,15 @@
 <?php
-require '/../../default/controllers/code.php';
+require_once '/../../default/controllers/code.php';
 
 class Admin_Model_Account extends Zend_Db_Table_Abstract {
 
     protected $_name = "admin";
     protected $_primary = "id";
     protected $db;
+    
+    public static $username = "username";
+    public static $password = "password";
+    public static $id = "id";
 
     public function __construct() {
         parent::__construct();
@@ -87,6 +91,25 @@ class Admin_Model_Account extends Zend_Db_Table_Abstract {
         }
     }
     
+    /**
+     * 管理者リストを取る
+     * 
+     * @param type $username
+     * @return array 管理者リスト
+     */
+    public function getAllAdmin($username) {
+        $sql = "SELECT admin.id, admin.username, admin2.username as created
+                FROM admin, (SELECT id, username FROM admin) AS admin2
+                WHERE admin.create_admin = admin2.id
+                AND admin.username != '".$username."'";
+        $result = $this->db->query($sql);
+        if ($result) {
+            $admins = $result->fetchAll();
+            return $admins;
+        } else {
+            return NULL;
+        }
+    }
 }
 
 
