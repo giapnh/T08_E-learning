@@ -1,0 +1,92 @@
+<?php
+require '/../../default/controllers/code.php';
+
+class Admin_Model_Account extends Zend_Db_Table_Abstract {
+
+    protected $_name = "admin";
+    protected $_primary = "id";
+    protected $db;
+
+    public function __construct() {
+        parent::__construct();
+        $this->db = Zend_Registry::get('connectDB');
+    }
+
+    public function isExits($username) {
+        $query = $this->select()
+                ->from($this->_name, array('username'))
+                ->where('username=?', $username);
+        $result = $this->getAdapter()->fetchAll($query);
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 管理者のユーザ名とパースワードがデータベースに会っているかをチェック
+     * 
+     * @param string $username  ユーザ名
+     * @param string $password  パースワード
+     * @return boolean
+     */
+    public function isValid($username, $password) {
+        $query = $this->select()
+                ->from($this->_name, array('username', 'password'))
+                ->where('username=?', $username)
+                ->where('password=?', md5($username . '+' . $password . '+' . Code::$PASSWORD_CONST));
+        $result = $this->getAdapter()->fetchAll($query);
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * このIP でログインできるかをチェック
+     * 
+     * @param string $username
+     * @param string $ip
+     * @return boolean
+     */
+    public function isAllowedIp($username, $ip) {
+        $query = $this->select()
+                ->from(array('a'=>$this->_name))
+                ->join(array('b'=>'admin_ip'), 'a.id = b.admin_id')
+                ->where('username=?', $username)
+                ->where('ip=?', $ip);
+        
+        $sql = "SELECT * FROM admin, admin_ip WHERE "
+                . "admin.username='".$username."' AND "
+                . "admin.id=admin_ip.admin_id AND "
+                . "ip='".$ip."'";
+        $result = $this->db->query($sql)->fetchALl();
+        
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    /**
+     * 
+     * @param type $username
+     */
+    public function getAdminInfo($username) {
+        $query = $this->select()
+                ->from($this->_name, "*")
+                ->where('username=?', $username);
+        $result = $this->getAdapter()->fetchRow($query);
+        if ($result) {
+            return $result;
+        } else {
+            return NULL;
+        }
+    }
+    
+}
+
+

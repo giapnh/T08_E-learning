@@ -1,5 +1,5 @@
 <?php
-class Admin_IndexController extends Zend_Controller_Action {
+class Admin_IndexController extends IController {
     
     public function indexAction() {
 //            $muser=new Default_Model_Account;

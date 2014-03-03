@@ -38,5 +38,5 @@ class Message {
     public static $M033 = "本当にデータベースをバックアップしますか？";
     //Add register message
     public static $M034 = "アカウントは存在してしまった";
-
+    public static $M035 = "このIPでログインできない";
 }

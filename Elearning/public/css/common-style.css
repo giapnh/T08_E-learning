@@ -171,7 +171,7 @@ a:hover .box_dt_row  { color:#cf6b00;}
     float: left;  
     margin: 10px 0 10px;
     width: 100%;
-    background: url(http://data.tienganh123.com/images/v2/home/bg_menu_center.png) repeat-x;
+    background: url(../images/bg_menu_center.png) repeat-x;
     font-weight: bold;  
 }
 .menus ul{position: static;}
@@ -181,7 +181,7 @@ a:hover .box_dt_row  { color:#cf6b00;}
     line-height: 48px;
     padding: 0 9px;
     font-size:12px;
-    background: url(http://data.tienganh123.com/images/v2/home/menu_arrow.png) 1px 0px no-repeat; 
+    background: url(../images/menu_arrow.png) 1px 0px no-repeat; 
 }
 .menus li a:hover{color: white;}
 .home{
