@@ -1,0 +1,19 @@
+<?php if ($this->pageCount): ?>
+    <div style="" align="center">
+        <?php
+        if (isset($this->previous)) {
+            echo '<a href="' . $this->url(array('page' => $this->previous)) . '"> < Previous</a> | ';
+        }
+        foreach ($this->pagesInRange as $page) {
+            if ($page != $this->current) {
+                echo '<a href="' . $this->url(array('page' => $page)) . '">' . $page . '</a> | ';
+            } else {
+                echo $page . ' | ';
+            }
+        }
+        if (isset($this->next)) {
+            echo '<a href="' . $this->url(array('page' => $this->next)) . '">Next ></a>';
+        }
+        ?>
+    </div>
+<?php endif; ?>

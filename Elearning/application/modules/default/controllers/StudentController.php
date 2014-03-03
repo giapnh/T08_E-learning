@@ -41,6 +41,14 @@ class StudentController extends IController {
                 $this->view->type = 2;
             }
         }
+
+        $lessons = new Default_Model_Lesson();
+        $paginator = Zend_Paginator::factory($lessons->listAll());
+        $paginator->setItemCountPerPage(6);
+        $paginator->setPageRange(3);
+        $currentPage = $this->_request->getParam('page', 1);
+        $paginator->setCurrentPageNumber($currentPage);
+        $this->view->data = $paginator;
     }
 
     public function profileAction() {

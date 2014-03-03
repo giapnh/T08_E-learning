@@ -110,7 +110,7 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
                 ->from($this->_name, "name")
                 ->where('status=?', "1")
                 ->where('role=?', "2");
-        return $this->getAdapter()->fetchAll($query)->toArray();
+        return $this->getAdapter()->fetchAll($query);
     }
 
     /**

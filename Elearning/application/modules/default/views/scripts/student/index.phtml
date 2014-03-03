@@ -48,7 +48,7 @@
                 <tbody>
                     <tr>
                         <td valign="top" class="containt_center_cen_left">
-                            <div style="width: 100%"><input type="text"></div>
+                            <div style="width: 100%"><input type="text" style="width: 90%; margin-left: 10px; border: none; background: #7E3500; height: 25px;"></div>
                             <div style="width: 100%;"></div>
                             <?php
                             /* タグが表現の倍は */
@@ -88,7 +88,8 @@
                         </td>
                         <td valign="top" class="containt_center_cen_right">
                             <?php
-                            for ($i = 0; $i < 10; $i++) {
+                            echo count($this->data);
+                            foreach ($this->data as $item) {
                                 ?>
                                 <div class="row-show">
                                     <div class="lession-content-left">
@@ -140,12 +141,13 @@
 
                         </td>
                     </tr>
-
-                    <tr>
-                        <td class="row-show">Page indicator</td>
-                    </tr>
                 </tbody>
             </table>
+            <div>
+                <?php
+                echo $this->paginationControl($this->data, 'Sliding', 'student/pageinator.phtml');
+                ?>
+            </div>
         </div>
     </div>
 </center>
