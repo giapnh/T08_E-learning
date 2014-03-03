@@ -13,6 +13,11 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
         $this->db = Zend_Registry::get('connectDB');
     }
 
+    /**
+     * ユーザネームが存在かどうチェックする
+     * @param type $username
+     * @return boolean
+     */
     public function isExits($username) {
         $query = $this->select()
                 ->from($this->_name, array('username'))
@@ -27,6 +32,13 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
         }
     }
 
+    /**
+     * ユーザが正しいかどうかチェッする
+     * @param type $username
+     * @param type $password
+     * @param type $role
+     * @return boolean
+     */
     public function isValid($username, $password, $role) {
         $query = $this->select()
                 ->from($this->_name, array('username', 'password', 'role'))
@@ -42,6 +54,12 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
         }
     }
 
+    /**
+     * Ip アドレスがチェックする
+     * @param type $username
+     * @param type $curr_ip
+     * @return boolean
+     */
     public function checkIpValid($username, $curr_ip) {
         $query = $this->select()
                 ->from($this->_name, array('username', 'last_login_ip'))
@@ -81,6 +99,33 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
         } else {
             return NULL;
         }
+    }
+
+    /**
+     * 先生リストが取る
+     * @return list 先生リスト
+     */
+    public function listTeacher() {
+        $query = $this->select()
+                ->from($this->_name, "name")
+                ->where('status=?', "1")
+                ->where('role=?', "2");
+        return $this->getAdapter()->fetchAll($query)->toArray();
+    }
+
+    /**
+     * 学生リストが取る
+     * @return list 学生リスト
+     */
+    public function listStudent() {
+        $query = $this->select()
+                ->from($this->_name, "username")
+                ->where('role=?', "1");
+        return $this->getAdapter()->fetchAll($query)->toArray();
+    }
+
+    public function listAll() {
+        return $this->fetchAll()->toArray();
     }
 
     /**

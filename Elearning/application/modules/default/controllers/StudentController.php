@@ -28,17 +28,19 @@ class StudentController extends IController {
 
     public function indexAction() {
         // Check login
-//        $user = new Default_Model_Account();
-
         $this->initial();
         if ($this->_request->isGet()) {
-            echo 'Get';
-            echo $this->_request->getParam('type');
-            return;
+            $get_type = $this->_request->getParam('type');
+            if ($get_type == null || $get_type == 1) {
+                $tags = new Default_Model_Tag();
+                $this->view->tags = $tags->listAll();
+                $this->view->type = 1;
+            } else {
+                $users = new Default_Model_Account();
+                $this->view->teachers = $users->listTeacher();
+                $this->view->type = 2;
+            }
         }
-
-        $tags = new Default_Model_Tag();
-        $this->view->tags = $tags;
     }
 
     public function profileAction() {
