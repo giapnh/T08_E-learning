@@ -1,5 +1,5 @@
 <?php
-class Admin_LessonController extends Zend_Controller_Action {
+class Admin_LessonController extends IController {
     /**
      * 授業リスト画面
      */

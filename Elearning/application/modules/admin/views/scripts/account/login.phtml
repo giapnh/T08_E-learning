@@ -11,25 +11,26 @@
                 <div class="yellow_title_left">管理者ログイン</div>
             </div>
         </div>
-        <form action="#"
-              method="post">
+        <form action="<?php echo $this->form->getAction(); ?>"
+              method="<?php echo $this->form->getMethod(); ?>">
             <div class="row-input">
                 <div class="title-lgu">ユーザ名:</div>
                 <div class="input-lg">
-                    <input type="text" />
-                    <?php // echo $this->element->username; ?>
+                    <?php echo $this->form->username; ?>
                 </div>
             </div>
             <div class="row-input">
                 <div class="title-lgp">パースワード:</div>
                 <div class="input-lg">
-                    <input type="password" />
-                    <?php // echo $this->element->password; ?>
+                    <?php echo $this->form->password; ?>
                 </div>
             </div>
             <div class="row-input">
                 <input type="checkbox" alt="Remember me" value=""
                        name="rememberPass"> 私を覚えている
+            </div>
+            <div class="row-input">
+                <div style="color: red"><?php echo $this->errorMessage; ?></div>
             </div>
             <div class="row-input" style="margin-top: 10px; margin-left: 250px;"
                  align="center">
@@ -41,5 +42,4 @@
             </div>
         </form>
     </div>
-    <?php // echo $this->dt["errorMessage"]; ?>
 </center>
