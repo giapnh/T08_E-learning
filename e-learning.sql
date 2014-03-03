@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 01, 2014 at 12:15 PM
+-- Generation Time: Mar 02, 2014 at 05:28 AM
 -- Server version: 5.5.32
 -- PHP Version: 5.4.16
 
@@ -313,16 +313,20 @@ CREATE TABLE IF NOT EXISTS `user` (
   `fail_login_count` int(11) NOT NULL DEFAULT '0',
   `last_login_time` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=15 ;
 
 --
 -- Dumping data for table `user`
 --
 
 INSERT INTO `user` (`id`, `username`, `first_password`, `password`, `name`, `sex`, `email`, `birthday`, `address`, `phone`, `bank_account`, `first_secret_question`, `first_secret_answer`, `secret_question`, `secret_answer`, `role`, `status`, `last_login_ip`, `fail_login_count`, `last_login_time`) VALUES
-(7, 'giap_huu', '58aee8e76dfdf89c2d5c41de957767e8', '58aee8e76dfdf89c2d5c41de957767e8', 'Nguyá»…n Há»¯u GiÃ¡p', 0, 'hgbk.it@gmail.com', '17-4-1998', 'Hoang Mai', '01664643234', '711A948594898', '1+1=', '2', '1+1=', '2', 1, 2, NULL, 0, NULL),
-(8, 'giapnh', '521fa11ddef0190b157ce6f5aa602659', 'c4ec9911d93f93e36dcb77bd18c3e3d7', 'Nguyá»…n Há»¯u GiÃ¡p', 0, 'hgbk.it@gmail.com', '29-2-1995', 'Hoang Mai', '01664643234', '711A948594898', '1+1=', '2', '1+1=', '23', 1, 1, NULL, 0, NULL),
-(9, 'kachimasu', '32b3c555e5eeb9e9f7e3b41cf62a2771', '32b3c555e5eeb9e9f7e3b41cf62a2771', 'Nguyá»…n Há»¯u GiÃ¡p', 0, 'hgbk.it@gmail.com', '1-3-2012', 'HoÃ ng Mai', '01664643234', '711A948594898', '1+1=', '2', '1+1=', '2', 2, 1, NULL, 0, NULL);
+(7, 'giap_huu', '58aee8e76dfdf89c2d5c41de957767e8', '58aee8e76dfdf89c2d5c41de957767e8', 'Nguyễn Hữu Giáp', 0, 'hgbk.it@gmail.com', '17-4-1998', 'Hoang Mai', '01664643234', '711A948594898', '1+1=', '2', '1+1=', '2', 1, 1, NULL, 0, NULL),
+(8, 'giapnh', '521fa11ddef0190b157ce6f5aa602659', 'c4ec9911d93f93e36dcb77bd18c3e3d7', 'Nguyễn Hữu Giáp', 0, 'hgbk.it@gmail.com', '29-2-1995', 'Hoang Mai', '01664643234', '711A948594898', '1+1=', '2', '1+1=', '23', 1, 1, NULL, 0, NULL),
+(10, 'giap2000', 'd12f981e91d84b699f4d15b9de6bb3f3', 'd12f981e91d84b699f4d15b9de6bb3f3', 'Nguyễn Hữu Giáp', 0, 'hgbk.it@gmail.com', '19-2-1996', 'Quận Hoàng Mai, Hà Nội', '01664643234', '711A948594898', '1+1=', '2', '1+1=', '2', 2, 1, NULL, 0, NULL),
+(11, 'giap2001', 'd12f981e91d84b699f4d15b9de6bb3f3', 'd12f981e91d84b699f4d15b9de6bb3f3', 'Nguyễn Hữu Giáp', 0, 'hgbk.it@gmail.com', '19-2-1996', 'Quận Hoàng Mai, Hà Nội', '01664643234', '711A948594898', '1+1=', '2', '1+1=', '2', 2, 1, NULL, 0, NULL),
+(12, 'giap2002', 'd12f981e91d84b699f4d15b9de6bb3f3', 'd12f981e91d84b699f4d15b9de6bb3f3', 'Nguyễn Hữu Giáp', 0, 'hgbk.it@gmail.com', '19-2-1996', 'Quận Hoàng Mai, Hà Nội', '01664643234', '711A948594898', '1+1=', '2', '1+1=', '2', 2, 1, NULL, 0, NULL),
+(13, 'giapnh1', '521fa11ddef0190b157ce6f5aa602659', 'c4ec9911d93f93e36dcb77bd18c3e3d7', 'Nguyễn Hữu Giáp', 0, 'hgbk.it@gmail.com', '29-2-1995', 'Hoang Mai', '01664643234', '711A948594898', '1+1=', '2', '1+1=', '23', 1, 1, NULL, 0, NULL),
+(14, 'giapnh2', '521fa11ddef0190b157ce6f5aa602659', 'c4ec9911d93f93e36dcb77bd18c3e3d7', 'Nguyễn Hữu Giáp', 0, 'hgbk.it@gmail.com', '29-2-1995', 'Hoang Mai', '01664643234', '711A948594898', '1+1=', '2', '1+1=', '23', 1, 1, NULL, 0, NULL);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

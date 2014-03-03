@@ -11,4 +11,8 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
         $this->db = Zend_Registry::get('connectDB');
     }
 
+    public function listAll() {
+        return $this->fetchAll()->toArray();
+    }
+
 }
