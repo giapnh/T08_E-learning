@@ -38,7 +38,7 @@
             <div  style="margin-top: 10px;" class="float-right">
                 <form action="#" style="height: 30px;">
                     <input type="text" name="q" class="input_search" placeholder="検索内容"/>
-                    <input  name="sa" style="width: 34px; height: 34px;" type="image" src="../public/images/bg_search_right.jpg">
+                    <input  name="sa" type="button" class="button-search" value="検索">
                 </form>
             </div>
         </div>
@@ -88,53 +88,60 @@
                         </td>
                         <td valign="top" class="containt_center_cen_right">
                             <?php
-                            echo count($this->data);
+                            $counter = 0;
                             foreach ($this->data as $item) {
-                                ?>
-                                <div class="row-show">
-                                    <div class="lession-content-left">
-                                        <div class="row-show">
-                                            <a href=""><div class="lession-title">C programming</div></a>
-                                        </div>
-                                        <hr class="title">
-                                        <div class="row-show">
-                                            <div class="lession-teacher"><b>先生: </b> ごんだい</div>
-                                            <div class="lession-time">2013年02月20日</div>
-                                        </div>
-                                        <hr class="title">
-                                        <div class="row-show">
-                                            <div id="lession-description" class="lession-description">この授業はCプログラミング言語について、教えてさせます。</div>
-                                        </div>
-                                        <div class="row-show">
-                                            <div class="lession-bottom">
-                                                <img src="../public/images/num-like.png" width="15" height="15"> <font class="num-like-comment">100</font>
-                                                <img src="../public/images/num-comment.png" width="15" height="15"> <font class="num-like-comment">100</font>
+                                $counter ++;
+                                if ($counter % 2 == 1) {
+                                    ?>
+                                    <div class="row-show">
+                                        <div class="lession-content-left">
+                                            <div class="row-show">
+                                                <a href=""><div class="lession-title">C programming</div></a>
                                             </div>
-                                            <div style="float: right; position: relative; top: 30px;bottom: 0;"><a href="../student/lession-detail" class="link-view-detail">詳細</a></div>
-                                        </div>
-                                    </div>  
-
-                                    <div class="lession-content-right">
-                                        <div class="row-show">
-                                            <a href=""><div class="lession-title">C programming</div></a>
-                                        </div>
-                                        <hr class="title">
-                                        <div class="row-show">
-                                            <div class="lession-teacher"><b>先生: </b> ごんだい</div>
-                                            <div class="lession-time">2013年02月20日</div>
-                                        </div>
-                                        <hr class="title">
-                                        <div class="row-show">
-                                            <div id="lession-description" class="lession-description">この授業はCプログラミング言語について、教えてさせます。</div>
-                                        </div>
-                                        <div class="row-show">
-                                            <div class="lession-bottom">
-                                                <img src="../public/images/num-like.png" width="15" height="15"> <font class="num-like-comment">100</font>
-                                                <img src="../public/images/num-comment.png" width="15" height="15"> <font class="num-like-comment">100</font>
+                                            <hr class="title">
+                                            <div class="row-show">
+                                                <div class="lession-teacher"><b>先生: </b> ごんだい</div>
+                                                <div class="lession-time">2013年02月20日</div>
                                             </div>
-                                            <div style="float: right; position: relative; top: 30px;bottom: 0;"><a href="../student/lession-detail" class="link-view-detail">詳細</a></div>
+                                            <hr class="title">
+                                            <div class="row-show">
+                                                <div id="lession-description" class="lession-description">この授業はCプログラミング言語について、教えてさせます。</div>
+                                            </div>
+                                            <div class="row-show">
+                                                <div class="lession-bottom">
+                                                    <img src="../public/images/num-like.png" width="15" height="15"> <font class="num-like-comment">100</font>
+                                                    <img src="../public/images/num-comment.png" width="15" height="15"> <font class="num-like-comment">100</font>
+                                                </div>
+                                                <div style="float: right; position: relative; top: 30px;bottom: 0;"><a href="../student/lession-detail" class="link-view-detail">詳細</a></div>
+                                            </div>
+                                        </div>  
+                                        <?php
+                                    } else if ($counter % 2 == 0) {
+                                        ?>
+                                        <div class="lession-content-right">
+                                            <div class="row-show">
+                                                <a href=""><div class="lession-title">C programming</div></a>
+                                            </div>
+                                            <hr class="title">
+                                            <div class="row-show">
+                                                <div class="lession-teacher"><b>先生: </b> ごんだい</div>
+                                                <div class="lession-time">2013年02月20日</div>
+                                            </div>
+                                            <hr class="title">
+                                            <div class="row-show">
+                                                <div id="lession-description" class="lession-description">この授業はCプログラミング言語について、教えてさせます。</div>
+                                            </div>
+                                            <div class="row-show">
+                                                <div class="lession-bottom">
+                                                    <img src="../public/images/num-like.png" width="15" height="15"> <font class="num-like-comment">100</font>
+                                                    <img src="../public/images/num-comment.png" width="15" height="15"> <font class="num-like-comment">100</font>
+                                                </div>
+                                                <div style="float: right; position: relative; top: 30px;bottom: 0;"><a href="../student/lession-detail" class="link-view-detail">詳細</a></div>
+                                            </div>
                                         </div>
-                                    </div>
+                                        <?php
+                                    }
+                                    ?>
                                 </div>
                             <?php }
                             ?>
@@ -143,10 +150,12 @@
                     </tr>
                 </tbody>
             </table>
-            <div>
-                <?php
-                echo $this->paginationControl($this->data, 'Sliding', 'student/pageinator.phtml');
-                ?>
+            <div class="paging">
+                <div class="paging-center">
+                    <?php
+                    echo $this->paginationControl($this->data, 'Sliding', 'pageinator.phtml');
+                    ?>
+                </div>
             </div>
         </div>
     </div>

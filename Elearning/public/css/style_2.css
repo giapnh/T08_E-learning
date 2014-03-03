@@ -77,6 +77,23 @@
     color: white;
 }
 
+.button-search{
+    color: white;
+    font-weight: bold;
+    width: 60px;
+    height: 32px;
+    font-size: 18px;
+    margin-left: 2px;
+    border-style: none;
+    border-radius: 3px;
+    background: #5a9301;
+    border: none;
+}
+
+.button-search:hover{
+    background:  #3f8300;
+}
+
 .register-cus {
     background: #585858;
     width: 120px;
@@ -267,4 +284,68 @@ tr.profile{
 
 .font-bold{
     font-weight: bold;
+}
+
+.paging{
+    width: 80%; 
+    margin: 0px auto;
+    float: right;
+    background: #F0F0F0;
+    border-style: solid;
+    border-width: thin;
+}
+
+.paging-center{
+    margin: 0px auto;
+    width: 20%;
+}
+
+.paging-item, .paging-item-curr{
+    text-align: center;
+    float: left;
+    font-weight: bold;
+    width: 30px;
+    padding: 3px;
+    margin: 1px;
+    border-style: solid;
+    border-color: #000;
+    border-width: thin;
+}
+
+.paging-item{
+    background: whitesmoke;
+}
+
+.paging-item-curr{
+    background: #F37B00;
+}
+
+.paging-item:hover, .paging-item-curr:hover{
+    background: #857E1A;
+}
+
+.paging-next-prev{
+    float: left;
+    width: 40px;
+    color: #000;
+    background: whitesmoke;
+    border-style: solid;
+    border-width: thin;
+    margin: 1px;
+    padding: 3px;
+    font-weight: bold;
+    border-color: #5a9301;
+}
+
+.icon-like, .icon-comment{
+    width: 15px;
+    height: 15px;
+}
+
+.icon-like{
+    background: url(../../public/images/num-like.png);
+}
+
+.icon-comment{
+    background: url(../../public/images/num-comment.png);
 }
