@@ -14,6 +14,12 @@
             <div class="detail_title_right title_right_1"></div>
         </div>
         <div class="detail_layout_content">
+            <?php foreach ($this->messages as $message) { ?>
+            <div style="color: green"><?php echo $message; ?></div>
+            <?php } ?>
+            <?php foreach ($this->errorMessages as $errorMessage) { ?>
+            <div style="color: red"><?php echo $errorMessage; ?></div>
+            <?php } ?>
             <table width="690" border="1" bordercolor="#d5d5d5" style="border-collapse:collapse" cellpadding="4" cellspacing="4">
                 <tr align="left" class="title_table" bordercolor="4f4f4f" style="background-color: rgb(251, 251, 251); background-position: initial initial; background-repeat: initial initial;">
                     <td width="30">NO</td>

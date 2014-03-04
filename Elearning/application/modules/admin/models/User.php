@@ -42,7 +42,7 @@ class Admin_Model_User extends Zend_Db_Table_Abstract {
         if ($users) {
             return $users[0];
         } else {
-            return false;
+            return NULL;
         }
     }
     
@@ -84,5 +84,82 @@ class Admin_Model_User extends Zend_Db_Table_Abstract {
             'pre' => $pre,
             'users' => $result
         );
+    }
+    
+    /**
+     * ユーザを許可する
+     * 
+     * @param int $userId   ユーザ名
+     * @return boolean
+     */
+    public function accept($userId) {
+        try {
+            $this->update(
+                    array('status'=>  self::$USER_STATUS_AVAILABLE), 
+                    "status=".self::$USER_STATUS_WAITING." AND id='".$userId."'");
+            return true;
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+    
+    /**
+     * 初期のパースワードのリセットする
+     * 
+     * @param int $userId
+     * @return boolean
+     */
+    public function resetPassword($userId) {
+        $user = $this->getUser($userId);
+        if ($user == NULL) {
+            return false;
+        } else {
+            try {
+                $this->update(
+                    array('password'=>$user[self::$FIRST_PASSWORD]), 
+                    "id='".$userId."'");
+                return true;
+            } catch (Exception $e) {
+                return false;
+            }
+        }
+    }
+    
+    /**
+     * 初期のVerifyコードにリセットする
+     * 
+     * @param int $userId
+     * @return boolean
+     */
+    public function resetVerifyCode($userId) {
+        $user = $this->getUser($userId);
+        if ($user == NULL) {
+            return false;
+        } else {
+            try {
+                $this->update(
+                    array(self::$SECRET_QUESTION=>$user[self::$FIRST_SECRET_QUESTION],
+                        self::$SECRET_ANSWER=>$user[self::$FIRST_SECRET_ANSWER]), 
+                    "id='".$userId."'");
+                return true;
+            } catch (Exception $e) {
+                return false;
+            }
+        }
+    }
+    
+    /**
+     * ユーザを削除する
+     * 
+     * @param int $userId
+     * @return boolean
+     */
+    public function deleteUser($userId) {
+        try {
+            $this->delete("id='".$userId."'");
+            return true;
+        } catch (Exception $e) {
+            return false;
+        }
     }
 }

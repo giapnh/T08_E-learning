@@ -2,6 +2,7 @@
 
 require_once 'IController.php';
 require_once 'AccountController.php';
+require_once '/../../default/controllers/Message.php';
 
 class Admin_UserController extends IController {
     
@@ -71,6 +72,11 @@ class Admin_UserController extends IController {
         $currentUsername = $data['username'];
         $admins = $adminModel->getAllAdmin($currentUsername);
         $this->view->admins = $admins;
+        
+        $messages = $this->_helper->FlashMessenger->getMessages('updateInfoSuccess');
+        $this->view->messages = $messages;
+        $errorMessages = $this->_helper->FlashMessenger->getMessages('updateInfoError');
+        $this->view->errorMessages = $errorMessages;
     }
     
     /**
@@ -83,17 +89,87 @@ class Admin_UserController extends IController {
         
         $userModel = new Admin_Model_User();
         $this->view->user = $userModel->getUser($userId);
+        $messages = $this->_helper->FlashMessenger->getMessages('updateInfoSuccess');
+        $this->view->messages = $messages;
+        $errorMessages = $this->_helper->FlashMessenger->getMessages('updateInfoError');
+        $this->view->errorMessages = $errorMessages;
     }
     
     /**
-     * 管理者の情報画面
+     * 許可する処理
+     * 
+     * @param string user_id ユーザ名
+     */
+    public function acceptAction() {
+        $userId = $this->_request->getParam('user_id');
+        $userModel = new Admin_Model_User();
+        if ($userModel->accept($userId) == true) {
+            $this->_helper->FlashMessenger->addMessage(Message::$M036, 'updateInfoSuccess');
+        } else {
+            $this->_helper->FlashMessenger->addMessage(Message::$M040, 'updateInfoError');
+        }
+        $this->redirect("/admin/user/info?user_id=".$userId);
+    }
+    
+    /**
+     * 初期のパースワードにリセットする処理
+     * 
+     * @param string user_id ユーザ名
+     */
+    public function resetPasswordAction() {
+        $userId = $this->_request->getParam('user_id');
+        $userModel = new Admin_Model_User();
+        if ($userModel->resetPassword($userId) == true) {
+            $this->_helper->FlashMessenger->addMessage(Message::$M037, 'updateInfoSuccess');
+        } else {
+            $this->_helper->FlashMessenger->addMessage(Message::$M041, 'updateInfoError');
+        }
+        $this->redirect("/admin/user/info?user_id=".$userId);
+    }
+    
+    /**
+     * 初期のVerifyコードにリセットする処理
+     * 
+     * @param string user_id ユーザ名
+     */
+    public function resetVerifycodeAction() {
+        $userId = $this->_request->getParam('user_id');
+        $userModel = new Admin_Model_User();
+        if ($userModel->resetPassword($userId) == true) {
+            $this->_helper->FlashMessenger->addMessage(Message::$M038, 'updateInfoSuccess');
+        } else {
+            $this->_helper->FlashMessenger->addMessage(Message::$M042, 'updateInfoError');
+        }
+        $this->redirect("/admin/user/info?user_id=".$userId);
+    }
+    
+    /**
+     * ユーザを削除する処理
+     * 
+     * @param string user_id Description
+     */
+    public function deleteAction() {
+        $userId = $this->_request->getParam('user_id');
+        $userModel = new Admin_Model_User();
+        if ($userModel->deleteUser($userId) == true) {
+            $this->_helper->FlashMessenger->addMessage(Message::$M039, 'updateInfoSuccess');
+        } else {
+            $this->_helper->FlashMessenger->addMessage(Message::$M043, 'updateInfoError');
+        }
+        $this->redirect("/admin/user");
+    }
+    
+    /**
+     * 管理者の情報処理
+     * 
+     * 
      */
     public function adminInfoAction() {
         
     }
     
     /**
-     * 管理者を追加画面
+     * 管理者を追加処理
      */
     public function addAdminAction() {
         

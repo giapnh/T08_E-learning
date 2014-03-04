@@ -3,8 +3,34 @@
 <?php $this->headLink()->appendStylesheet($this->baseUrl() . "/public/css/ta123_style.css"); ?>
 <?php $this->headLink()->appendStylesheet($this->baseUrl() . "/public/css/ta123_style2.css"); ?>
 <?php $this->headLink()->appendStylesheet($this->baseUrl() . "/public/css/common-style.css"); ?>
+<?php $this->headScript()->appendFile($this->baseUrl('/public/js/jquery.min.js')); ?>
 
 <?php echo $this->render('admin-layout.phtml') ?>
+
+<script type="text/javascript">
+$(document).ready(function(){
+    $("#btn-accept").click(function(){
+        if (confirm("このユーザを許可するのを同意しますか？")) {
+            window.top.location = "<?php echo $this->baseUrl()."/admin/user/accept?user_id=".$this->user[Admin_Model_User::$ID]; ?>";
+        }
+    });
+    $("#btn-reset-password").click(function(){
+        if (confirm("このユーザを許可するのを同意しますか？")) {
+            window.top.location = "<?php echo $this->baseUrl()."/admin/user/reset-password?user_id=".$this->user[Admin_Model_User::$ID]; ?>";
+        }
+    });
+    $("#btn-reset-verifycode").click(function(){
+        if (confirm("このユーザを許可するのを同意しますか？")) {
+            window.top.location = "<?php echo $this->baseUrl()."/admin/user/reset-verifycode?user_id=".$this->user[Admin_Model_User::$ID]; ?>";
+        }
+    });
+    $("#btn-delete").click(function(){
+        if (confirm("このユーザを許可するのを同意しますか？")) {
+            window.top.location = "<?php echo $this->baseUrl()."/admin/user/delete?user_id=".$this->user[Admin_Model_User::$ID]; ?>";
+        }
+    });
+});
+</script>
 
 <div style="width: 1000px; margin: 20px auto">
     <div class="detail_layout">
@@ -14,6 +40,12 @@
             <div class="detail_title_right title_right_1"></div>
         </div>
         <div class="detail_layout_content">
+            <?php foreach ($this->messages as $message) { ?>
+            <div style="color: green"><?php echo $message; ?></div>
+            <?php } ?>
+            <?php foreach ($this->errorMessages as $errorMessage) { ?>
+            <div style="color: red"><?php echo $errorMessage; ?></div>
+            <?php } ?>        
             <table>
                 <tr>
                     <td width="200">ユーザ名</td>
@@ -55,16 +87,16 @@
                         }
                     ?></td>
                     <?php if ($this->user[Admin_Model_User::$STATUS] == Admin_Model_User::$USER_STATUS_WAITING) { ?>
-                    <td><button class="normal-button">許可をする</button></td>
+                    <td><button class="normal-button" id="btn-accept">許可をする</button></td>
                     <?php } ?>
                 </tr>
             </table>
         </div>
         <div class="detail_layout_content">
             <div style="width: 520px; margin: 0px auto">
-                <button class="normal-button" style="width: 150px; margin: 0px 10px">パースワードリセット</button>
-                <button class="normal-button" style="width: 150px; margin: 0px 10px">「Verifycode」リセット</button>
-                <button class="normal-button" style="width: 150px; margin: 0px 10px">ユーザを削除</button>
+                <button class="normal-button" id="btn-reset-password" style="width: 150px; margin: 0px 10px">パースワードリセット</button>
+                <button class="normal-button" id="btn-reset-verifycode" style="width: 150px; margin: 0px 10px">「Verifycode」リセット</button>
+                <button class="normal-button" id="btn-delete" style="width: 150px; margin: 0px 10px">ユーザを削除</button>
             </div>
         </div>
     </div>
