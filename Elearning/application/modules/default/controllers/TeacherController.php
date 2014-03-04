@@ -1,6 +1,6 @@
 <?php
 
-require 'IController.php';
+require_once 'IController.php';
 
 //require 'RegisterController.php';
 class TeacherController extends IController {
@@ -145,10 +145,11 @@ class TeacherController extends IController {
      * @param type $name Description
      * @return type
      */
-    public function createLessonAction() {
-        return;
-        $form = new Default_Form_CreateLesson();
-        $this->view->form = $form;
+    public function createlessonAction() {
+        $this->initial();
+//        return;
+//        $form = new Default_Form_CreateLesson();
+//        $this->view->form = $form;
         if ($this->_request->isPost()) {
             $parram = $this->_getAllParams();
             Zend_Debug::dump($this->_getAllParams());

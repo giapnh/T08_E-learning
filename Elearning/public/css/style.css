@@ -810,12 +810,7 @@ a:hover .box_dt_row {
     _margin-top: 5px;
 }
 
-.containt_center_cen {
-    float: left;
-    width: 100%;
-    _margin-top: -8px;
-    background:#F9F9F9;
-}
+
 
 .containt_center_bot {
     float: left;
@@ -4254,22 +4249,6 @@ a .vd_oth_text,a:hover .vd_oth_text {
     margin-top: 4px;
 }
 
-.res_input {
-    width: 271px;
-    height: 25px;
-    padding-left: 5px;
-    border: 1px solid #b5b5b5;
-    cursor: text;
-    font-size: 14px;
-    border-radius: 4px;
-    background:
-        url(http://data.tienganh123.com/images/v2/home/rs_bg_input.jpg) top
-        repeat-x;
-    color: #333;
-    *padding-top: 10px !important;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-}
 
 .res_input_code {
     width: 140px;

@@ -93,6 +93,22 @@
 .button-search:hover{
     background:  #3f8300;
 }
+.res_input {
+    width: 271px;
+    height: 25px;
+    padding-left: 5px;
+    border: 1px solid #b5b5b5;
+    cursor: text;
+    font-size: 14px;
+    border-radius: 4px;
+    background:
+        url(../../public/images/rs_bg_input.jpg) top
+        repeat-x;
+    color: #333;
+    *padding-top: 10px !important;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+}
 
 .register-cus {
     background: #585858;
@@ -124,7 +140,12 @@
     text-decoration-line: underline;
     margin-bottom: 2px;
 }
-
+.containt_center_cen {
+    float: left;
+    width: 100%;
+    _margin-top: -8px;
+    background:#D6E9DC;
+}
 .lession-content-left{
     width: 48%;
     float: left;
@@ -157,6 +178,21 @@
     padding: 5px;
 }
 
+.create-lession-content{
+    width: 60%;
+    background: #960;
+    border-width:thin;
+    border-style: initial;
+    border-color: #F37B00;
+    border-radius: 3px;
+    box-shadow: 2px 2px 2px #888888;
+    text-decoration: underline;
+    text-decoration-line: underline;
+    margin-bottom: 5px;
+    margin-top: 10px;
+    padding: 5px;
+}
+
 .lession-title{
     width: 100%;
     font-size: 16px;
@@ -165,6 +201,21 @@
     float: left;
     color: #000000;
 }
+.lesson-dec{
+    width: 250px;
+    height: 50px;
+}
+
+.file_item{
+    margin-top: 10px;
+    width: 80%;
+    padding: 5px;
+    border-style: solid;
+    border-width: thin;
+    border-color: #3680a0;
+    border-radius: 3px;
+}
+
 .lession-teacher{
     float: left;
     color: #111;
@@ -221,6 +272,8 @@ hr{
 }
 div.row-show{
     width: 100%;
+    margin: 0px auto;
+    padding-top: 10px;
 }
 
 .center{

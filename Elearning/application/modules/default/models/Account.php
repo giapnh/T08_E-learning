@@ -1,6 +1,6 @@
 <?php
 
-require '/../controllers/Code.php';
+require_once '/../controllers/Code.php';
 
 class Default_Model_Account extends Zend_Db_Table_Abstract {
 
