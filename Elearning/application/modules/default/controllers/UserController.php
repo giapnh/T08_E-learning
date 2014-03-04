@@ -15,18 +15,18 @@ class UserController extends IController {
      * @param string $role     役割
      */
     public function loginAction() {
-        // 		//Ip cache
-        // 		$frontendOptions = array(
-        // 				'lifetime' => Code::$LOGIN_FAIL_LOCK_TIME, // cache lifetime of 2 hours
-        // 				'automatic_serialization' => true
-        // 		);
-        // 		$backendOptions = array(
-        // 				'cache_dir' => 'C:/Users/Public' // Directory where to put the cache files
-        // 		);
-        // 		$cache = Zend_Cache::factory('Core',
-        // 				'File',
-        // 				$frontendOptions,
-        // 				$backendOptions);
+//         		//Ip cache
+//         		$frontendOptions = array(
+//         				'lifetime' => Code::$LOGIN_FAIL_LOCK_TIME, // cache lifetime of 2 hours
+//         				'automatic_serialization' => true
+//         		);
+//         		$backendOptions = array(
+//         				'cache_dir' => 'C:/Users/Public' // Directory where to put the cache files
+//         		);
+//         		$cache = Zend_Cache::factory('Core',
+//         				'File',
+//         				$frontendOptions,
+//         				$backendOptions);
         // 		// see if a cache already exists:
         // 		if($result = $cache->load('ip_locking')) {
         // 			// 			$cache->save($result, 'myresult');
@@ -34,6 +34,15 @@ class UserController extends IController {
         // 			// cache hit! shout so that we know
         // 			echo "This one is from cache!\n\n";
         // 		}
+        //Ip cache
+        $frontendOptions = array(
+            'lifetime' => Code::$LOGIN_FAIL_LOCK_TIME, // cache lifetime of 2 hours
+            'automatic_serialization' => true
+        );
+        $backendOptions = array(
+            'cache_dir' => 'C:/Users/Public' // Directory where to put the cache files
+        );
+        $cache = Zend_Cache::factory('Core', 'File', $frontendOptions, $backendOptions);
         $form = new Default_Form_Login ();
         $this->view->form = $form;
         if ($this->_request->isPost()) {
@@ -49,13 +58,12 @@ class UserController extends IController {
             } else if (trim($paswd) == '') {
                 $this->view->errorMessage = Message::$M002;
                 return;
-
             } else {
                 if ($authAdapter->getFailCount($uname) == 5) {
                     // see if a cache already exists:
                     // If user being lock
                     if ($result = $cache->load($uname)) {
-//                        $this->view->errorMessage = str_replace('%s', "" . Code::$LOGIN_FAIL_LOCK_TIME, Message::$M0041);
+                        $this->view->errorMessage = str_replace('%s', "" . Code::$LOGIN_FAIL_LOCK_TIME, Message::$M0041);
                         return;
                     } else {
                         $authAdapter->resetFailCount($uname);
