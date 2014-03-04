@@ -48,4 +48,6 @@ class Message {
     public static $M041 = "エラー：ユーザのパースワードをリセットするのが失敗しました";
     public static $M042 = "エラー：ユーザのVerifyコードをリセットするのが失敗しました";
     public static $M043 = "エラー：ユーザを削除できません";
+    public static $M044 = "マースターデータを更新しました";
+    public static $M045 = "マースターデータを更新するのが失敗しました";
 }

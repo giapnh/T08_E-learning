@@ -21,37 +21,52 @@
             <div class="detail_title_right title_right_1"></div>
         </div>
         <div class="detail_layout_content">
-            <table width="690">
-                <tr>
-                    <td width="80">授業の値段（万VND）</td>
-                    <td width="120"><input type="text" /></td>
-                </tr>
-                <tr>
-                    <td>授業の期限（日）</td>
-                    <td width="120"><input type="text" /></td>
-                </tr>
-                <tr>
-                    <td>資料の禁止回数</td>
-                    <td width="120"><input type="text" /></td>
-                </tr>
-                <tr>
-                    <td>課金情報を格納するフォルダ</td>
-                    <td width="120"><input type="text" /></td>
-                </tr>
-                <tr>
-                    <td>ログイン間違い回数</td>
-                    <td width="120"><input type="text" /></td>
-                </tr>
-                <tr>
-                    <td>自動ログアウト時間（時）</td>
-                    <td width="120"><input type="text" /></td>
-                </tr>
-                <tr>
-                    <td>自動バックアップ期間（日）</td>
-                    <td width="120"><input type="text" /></td>
-                </tr>
-            </table>
-            <div><button class="normal-button">更新</button></div>
+            <?php if ($this->message) { ?>
+            <div style="color: blue"><?php echo $this->message; ?></div>
+            <?php } ?>
+            <?php if ($this->errorMessage) { ?>
+            <div style="color: red"><?php echo $this->errorMessage; ?></div>
+            <?php } ?>
+            <form method="post" action>
+                <table width="690">
+                    <tr>
+                        <td width="80">授業の値段（万VND）</td>
+                        <td width="120"><input type="text" name="coma_price" value="<?php 
+                            echo $this->masterData[Admin_Model_Master::$KEY_COMA_PRICE] ?>"/></td>
+                    </tr>
+                    <tr>
+                        <td width="80">先生の利益率（パーセント）</td>
+                        <td width="120"><input type="text" name="teacher_fee_rate" value="<?php 
+                            echo $this->masterData[Admin_Model_Master::$KEY_TEACHER_FEE_RATE] ?>" /></td>
+                    </tr>
+                    <tr>
+                        <td>授業のファイルを格納フォールダ</td>
+                        <td width="120"><input type="text" name="file_location" value="<?php 
+                            echo $this->masterData[Admin_Model_Master::$KEY_FILE_LOCATION] ?>" /></td>
+                    </tr>
+                    <tr>
+                        <td>コマの勉強期間（日）</td>
+                        <td width="120"><input type="text" name="lesson_deadline" value="<?php 
+                            echo $this->masterData[Admin_Model_Master::$KEY_LESSON_DEADLINE] ?>" /></td>
+                    </tr>
+                    <tr>
+                        <td>間違いログインできる回数</td>
+                        <td width="120"><input type="text" name="login_fail_lock_time" value="<?php 
+                            echo $this->masterData[Admin_Model_Master::$KEY_LOGIN_FAIL_LOCK_TIME] ?>" /></td>
+                    </tr>
+                    <tr>
+                        <td>違犯できる回数</td>
+                        <td width="120"><input type="text" name="violation_time" value="<?php 
+                            echo $this->masterData[Admin_Model_Master::$KEY_VIOLATION_TIME] ?>" /></td>
+                    </tr>
+                    <tr>
+                        <td>自動バックアップ期間（日）</td>
+                        <td width="120"><input type="text" name="backup_time" value="<?php 
+                            echo $this->masterData[Admin_Model_Master::$KEY_BACKUP_TIME] ?>" /></td>
+                    </tr>
+                </table>
+                <div><input type="submit" class="normal-button" value="更新" /></div>
+            </form>
             <div class="res_step_t_r" style="margin-bottom: 20px;width: 685px"></div>
             <div><button class="normal-button" style="width: 200px">システムをバックアップする</button></div>
         </div>
