@@ -1,5 +1,4 @@
 <?php
-
 require_once 'Code.php';
 require_once 'Message.php';
 

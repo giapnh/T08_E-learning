@@ -40,5 +40,14 @@ class Message {
     //Add register message
     public static $M034 = "アカウントは存在してしまった";
     public static $M035 = "このIPでログインできない";
-
+    public static $M036 = "ユーザを許可するのが完成しました";
+    public static $M037 = "ユーザのパースワードをリセットするのが完成しました";
+    public static $M038 = "ユーザのVerifyコードをリセットするのが完成しました";
+    public static $M039 = "ユーザが削除されました";
+    public static $M040 = "エラー：ユーザを許可するのが失敗しました";
+    public static $M041 = "エラー：ユーザのパースワードをリセットするのが失敗しました";
+    public static $M042 = "エラー：ユーザのVerifyコードをリセットするのが失敗しました";
+    public static $M043 = "エラー：ユーザを削除できません";
+    public static $M044 = "マースターデータを更新しました";
+    public static $M045 = "マースターデータを更新するのが失敗しました";
 }

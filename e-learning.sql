@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.0.4.1
+-- version 4.0.4
 -- http://www.phpmyadmin.net
 --
--- Host: 127.0.0.1
--- Generation Time: Mar 02, 2014 at 05:28 AM
--- Server version: 5.5.32
--- PHP Version: 5.4.16
+-- Host: localhost
+-- Generation Time: Mar 04, 2014 at 09:48 AM
+-- Server version: 5.6.12-log
+-- PHP Version: 5.4.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 --
 -- Database: `elearning`
 --
-CREATE DATABASE IF NOT EXISTS `elearning` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+CREATE DATABASE IF NOT EXISTS `elearning` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
 USE `elearning`;
 
 -- --------------------------------------------------------
@@ -37,7 +37,14 @@ CREATE TABLE IF NOT EXISTS `admin` (
   `fail_login` int(11) NOT NULL,
   `log_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `admin`
+--
+
+INSERT INTO `admin` (`id`, `username`, `password`, `create_admin`, `status`, `fail_login`, `log_time`) VALUES
+(1, 'superadmin', 'acf7d0837ef13c218906f4875462d734', 1, 1, 0, '2014-03-04 07:36:58');
 
 -- --------------------------------------------------------
 
@@ -191,6 +198,34 @@ CREATE TABLE IF NOT EXISTS `like` (
   `lesson_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `master`
+--
+
+CREATE TABLE IF NOT EXISTS `master` (
+  `master_key` varchar(100) NOT NULL,
+  `master_value` varchar(100) NOT NULL,
+  PRIMARY KEY (`master_key`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `master`
+--
+
+INSERT INTO `master` (`master_key`, `master_value`) VALUES
+('BACKUP_TIME', '30'),
+('COMA_PRICE', '20000'),
+('FILE_LOCATION', 'E:Documents'),
+('LESSON_DEADLINE', '7'),
+('LOCK_COUNT', '5'),
+('LOGIN_FAIL_LOCK_TIME', '3600'),
+('PASSWORD_CONST', '100'),
+('SESSION_TIME', '86400'),
+('TEACHER_FEE_RATE', '60'),
+('VIOLATION_TIME', '10');
 
 -- --------------------------------------------------------
 

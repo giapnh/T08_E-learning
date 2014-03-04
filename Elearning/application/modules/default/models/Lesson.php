@@ -15,12 +15,4 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
         return $this->fetchAll()->toArray();
     }
 
-    public function listOnTag($tag) {
-        
-    }
-
-    public function listOnTeacher($teacher) {
-        
-    }
-
 }
