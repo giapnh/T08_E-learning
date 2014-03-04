@@ -1,1 +1,115 @@
-<?php echo $this->form?>
+<center>
+    <div class="content" style="background: #F0F0F0;">
+        <div class="top_content clear banner">
+            <div style="position: absolute; top: 120px; right: 70px; ">
+                <a href="<?php echo $this->baseUrl(); ?>/user/logout"><font style="color: #7E3500; font-weight: bold; text-decoration: underline;">ログアウト</font>
+                </a>
+            </div>
+            <div  class="topbar-username"><big>ようこそ!</bigF><?php echo $this->user_info['name']; ?></div>
+        </div>
+        <!--Menu Tab Bar-->
+        <div class="menus clear">
+            <div class="mn first_mn">
+                <a class="home" href="<?php echo $this->baseUrl(); ?>/teacher/index">
+                    <font style="color: white;">授業</font>
+                </a>
+            </div>
+            <div title="" class="mn "><a href="#"><font style="color: white;">支払い</a>
+            </div>
+            <div title="" class="mn "><a href="<?php echo $this->baseUrl(); ?>/teacher/profile"><font style="color: white;">プロファイル</font></a>
+            </div>
+        </div>
+        <div class="containt_center_cen clear" style="margin: 0px auto;">
+            <form action="" method="post"
+                  enctype="multipart/form-data">
+                <table border="0" cellpadding="5" cellspacing="5" style="background: #E1E1E1;width: 60%; border-style: solid; border-width: thin; border-radius: 4px; padding: 10px;">
+                    <tbody>
+                        <tr>
+                            <td colspan="2">
+                                授業作る
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>タイトル</td>
+                            <td> <input type="text" name="title" id="les_title" class="res_input"></td>
+                        </tr>
+
+                        <tr>
+                            <td>タグ</td>
+                            <td><input type="text" name="tag" id="les_tag" class="res_input"></td>
+                        </tr>
+
+                        <tr>
+                            <td>説明</td>
+                            <td><textarea name="les_dec" class="lesson-dec"></textarea></td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="2">
+                                <b>  ファイルアップロード</b>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="2">
+                                <!--Item 1-->
+                                <div id= "list_file">
+                                    <div class = "file_item">
+                                        <div>ファイル１</div>
+                                        <table>
+                                            <tr>
+                                                <td>ファイル名</td>
+                                                <td>
+                                                    <input type="text" name="file_title[]" id="file_title" value="" class="les_input file_title" maxlength="255"><br>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>説明</td>
+                                                <td>
+                                                    <textarea class = "file_dec" name="file_dec[]"></textarea><br>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2">
+                                                    <input type="file" name="file[]" id="file_name">
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <!--Item 2-->
+                                    <div class = "file_item">
+                                        <div>ファイル2</div>
+                                        <table>
+                                            <tr>
+                                                <td>ファイル名</td>
+                                                <td>
+                                                    <input type="text" name="file_title[]" id="file_title" value="" class="les_input file_title" maxlength="255"><br>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>説明</td>
+                                                <td>
+                                                    <textarea class = "file_dec" name="file_dec[]"></textarea><br>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2">
+                                                    <input type="file" name="file[]">
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <!--And more-->
+                                        <a href="#"　id= "add_file" ><img src="<?php echo $this->baseUrl(); ?>/public/images/ic_add.png"><b>もう一つ</b></a>
+                                    </div>
+
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+        </div>
+
+        <input type="submit" name="submit" id="les_submit" class="showlogfromm">
+        </form>
+    </div>
+</center>

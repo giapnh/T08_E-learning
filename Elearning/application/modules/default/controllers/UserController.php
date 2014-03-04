@@ -1,6 +1,6 @@
 <?php
 
-require 'IController.php';
+require_once 'IController.php';
 
 class UserController extends IController {
 
@@ -65,7 +65,7 @@ class UserController extends IController {
                     // see if a cache already exists:
                     // If user being lock
                     if ($result = $cache->load($uname)) {
-                        $this->view->errorMessage = str_replace('%s', "" . Code::$LOGIN_FAIL_LOCK_TIME, Message::$M0041);
+//                        $this->view->errorMessage = str_replace('%s', "" . Code::$LOGIN_FAIL_LOCK_TIME, Message::$M0041);
                         return;
                     } else {
                         $authAdapter->resetFailCount($uname);

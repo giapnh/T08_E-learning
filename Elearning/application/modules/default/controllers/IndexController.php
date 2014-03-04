@@ -1,6 +1,6 @@
 <?php
 
-require 'IController.php';
+require_once 'IController.php';
 
 //require 'RegisterController.php';
 

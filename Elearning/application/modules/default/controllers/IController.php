@@ -1,7 +1,7 @@
 <?php
 
-require 'Code.php';
-require 'Message.php';
+require_once 'Code.php';
+require_once 'Message.php';
 
 class IController extends Zend_Controller_Action {
 
