@@ -96,9 +96,11 @@ class Admin_Model_User extends Zend_Db_Table_Abstract {
         try {
             $this->update(
                     array('status'=>  self::$USER_STATUS_AVAILABLE), 
-                    "WHERE status=".self::$USER_STATUS_WAITING." AND id='".$userId."'");
+                    "status='".self::$USER_STATUS_WAITING."' AND id='".$userId."'");
             return true;
         } catch (Exception $e) {
+            echo $e->getMessage();
+            die();
             return false;
         }
     }
