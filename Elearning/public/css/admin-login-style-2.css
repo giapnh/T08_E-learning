@@ -81,7 +81,6 @@
     font-size: 16px;
     font-weight: bold;
     text-decoration-line: underline;
-    float: left;
     color: #000000;
 }
 .lession-teacher{
@@ -97,9 +96,7 @@
     font-style: italic;
 }
 .lession-description{
-    max-height: 25px;
     float: left;
-    margin-left: 5px;
     font-family: cursive;
     font-size: small;
     color: #111;

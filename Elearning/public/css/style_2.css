@@ -18,6 +18,37 @@
     right: 30px;
 }
 
+
+
+.mn {
+    border-style: solid;
+    border-width:thin;
+    border-color: #00a7a1;
+    float: left;
+    height: 35px;
+    width: 80px;
+    line-height: 35px;
+    padding: 0 9px;
+    font-size: 14px;
+    color: white;
+    font-weight: bold;
+    background:#51A007;
+}
+.mn:hover{
+    background: #d0e6ff;
+}
+.home {
+    background: url(../../public/images/ic-home.png) no-repeat;
+    background-size: 35px 35px;
+    width: 80px;
+    height: 35px;
+    float: left;
+    padding-left: 25px;
+}
+.first_mn {
+    background: yellowgreen;
+}
+
 .content{
     width: 1000px;
     float: left; 
@@ -177,6 +208,7 @@
     text-decoration-line: underline;
     margin-bottom: 5px;
     padding: 5px;
+
 }
 
 .create-lession-content{
@@ -230,9 +262,8 @@
     font-style: italic;
 }
 .lession-description{
-    max-height: 25px;
     float: left;
-    margin-left: 5px;
+    height: 60px;
     font-family: cursive;
     font-size: small;
     color: #111;
@@ -241,7 +272,7 @@
 .lession-bottom{
     float:left;
     position: relative;
-    top: 30px;
+    /*top: 30px;*/
     bottom: 0px;
     left: 10px;
 }
@@ -274,7 +305,7 @@ hr{
 div.row-show{
     width: 100%;
     margin: 0px auto;
-    padding-top: 10px;
+    padding-top: 20px;
 }
 
 .center{
@@ -282,13 +313,10 @@ div.row-show{
 }
 
 font.num-like-comment{
-    height: 19px;
-    text-align: center;
     font-size: 15px;
     color: #3680a0;
     font-weight: normal;
     font-style: italic;
-    text-align: center;
 }
 
 .float-left{
@@ -341,12 +369,11 @@ tr.profile{
 }
 
 .paging{
-    width: 80%; 
+    width: 80%;
     margin: 0px auto;
+    margin-right: 30px;
     float: right;
-    background: #F0F0F0;
-    border-style: solid;
-    border-width: thin;
+    background: #D6E9DC;
 }
 
 .paging-center{

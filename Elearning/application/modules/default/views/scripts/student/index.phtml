@@ -90,62 +90,73 @@
                             <?php
                             $counter = 0;
                             foreach ($this->data as $item) {
-                                $counter ++;
-                                if ($counter % 2 == 1) {
+
+                                if ($counter % 2 == 0) {
                                     ?>
                                     <div class="row-show">
                                         <div class="lession-content-left">
-                                            <div class="row-show">
-                                                <a href=""><div class="lession-title">C programming</div></a>
-                                            </div>
-                                            <hr class="title">
-                                            <div class="row-show">
-                                                <div class="lession-teacher"><b>先生: </b> ごんだい</div>
-                                                <div class="lession-time">2013年02月20日</div>
-                                            </div>
-                                            <hr class="title">
-                                            <div class="row-show">
-                                                <div id="lession-description" class="lession-description">この授業はCプログラミング言語について、教えてさせます。</div>
-                                            </div>
-                                            <div class="row-show">
-                                                <div class="lession-bottom">
-                                                    <img src="../public/images/num-like.png" width="15" height="15"> <font class="num-like-comment">100</font>
-                                                    <img src="../public/images/num-comment.png" width="15" height="15"> <font class="num-like-comment">100</font>
-                                                </div>
-                                                <div style="float: right; position: relative; top: 30px;bottom: 0;"><a href="../student/lession-detail" class="link-view-detail">詳細</a></div>
-                                            </div>
-                                        </div>  
-                                        <?php
-                                    } else if ($counter % 2 == 0) {
-                                        ?>
-                                        <div class="lession-content-right">
-                                            <div class="row-show">
-                                                <a href=""><div class="lession-title">C programming</div></a>
-                                            </div>
-                                            <hr class="title">
-                                            <div class="row-show">
-                                                <div class="lession-teacher"><b>先生: </b> ごんだい</div>
-                                                <div class="lession-time">2013年02月20日</div>
-                                            </div>
-                                            <hr class="title">
-                                            <div class="row-show">
-                                                <div id="lession-description" class="lession-description">この授業はCプログラミング言語について、教えてさせます。</div>
-                                            </div>
-                                            <div class="row-show">
-                                                <div class="lession-bottom">
-                                                    <img src="../public/images/num-like.png" width="15" height="15"> <font class="num-like-comment">100</font>
-                                                    <img src="../public/images/num-comment.png" width="15" height="15"> <font class="num-like-comment">100</font>
-                                                </div>
-                                                <div style="float: right; position: relative; top: 30px;bottom: 0;"><a href="../student/lession-detail" class="link-view-detail">詳細</a></div>
-                                            </div>
+                                            <table cellpadding="1" cellspacing="4" border="0" style="width: 100%;margin: 0px auto;">
+                                                <tbody>
+                                                    <tr>
+                                                        <td style="width: 100%;" colspan="1" class="lession-title"><?php echo $item['title']; ?></td>
+                                                    </tr>
+                                                    <tr><td><hr></td></tr>
+                                                    <tr>
+                                                        <td class="lession-teacher"><b>先生: </b> ごんだい</td>
+                                                        <td class="lession-time"><?php echo $item['create_time']; ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="lession-description" style="width: 100%;" colspan="2"><?php echo $item['description']; ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <img src="../public/images/num-like.png" width="15" height="15"> <font class="num-like-comment"><?php echo $item['like']; ?></font>
+                                                            <img src="../public/images/num-view.png" width="15" height="15"> <font class="num-like-comment"><?php echo $item['view']; ?></font>
+                                                            <a href="../student/lession-detail"  class="link-view-detail float-right">詳細</a>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                                         </div>
                                         <?php
-                                    }
-                                    ?>
-                                </div>
-                            <?php }
-                            ?>
+                                    } else if ($counter % 2 == 1) {
+                                        ?>
+                                        <div class="lession-content-right">
+                                            <table cellpadding="1" cellspacing="4" border="0" style="width: 100%;margin: 0px auto;">
+                                                <tbody>
+                                                    <tr>
+                                                        <td style="width: 100%;" colspan="2" class="lession-title"><?php echo $item['title']; ?></td>
+                                                    </tr>
+                                                    <tr><td><hr></td></tr>
+                                                    <tr style="width: 100%;">
+                                                        <td class="lession-teacher"><b>先生: </b> ごんだい</td>
+                                                        <td class="lession-time"><?php echo $item['create_time']; ?></td>
+                                                    </tr>
+                                                    <tr class="lession-description" style="width: 100%;">
+                                                        <td colspan="2"><?php echo $item['description']; ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <img src="../public/images/num-like.png" width="15" height="15"> <font class="num-like-comment"><?php echo $item['like']; ?></font>
+                                                            <img src="../public/images/num-view.png" width="15" height="15"> <font class="num-like-comment"><?php echo $item['view']; ?></font>
+                                                            <a href="../student/lession-detail"  class="link-view-detail float-right">詳細</a>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <?php
+                                }
+                                $counter ++;
+                                ?>
 
+                                <?php
+                            }
+                            if ($counter % 2 == 0) {
+                                echo "</div>";
+                            }
+                            ?>
                         </td>
                     </tr>
                 </tbody>
