@@ -40,7 +40,7 @@ class UserController extends IController {
             'automatic_serialization' => true
         );
         $backendOptions = array(
-            'cache_dir' => 'C:/Users/Public' // Directory where to put the cache files
+            'cache_dir' => 'C:/' // Directory where to put the cache files
         );
         $cache = Zend_Cache::factory('Core', 'File', $frontendOptions, $backendOptions);
         $form = new Default_Form_Login ();

@@ -7,7 +7,7 @@
                                 </a>
                             </div>-->
             <div style="position: absolute; top: 120px; right: 70px; ">
-                <a href="<?php echo $this->baseUrl() ?>/user/logout"><font style="color: #7E3500; font-weight: bold; text-decoration: underline;">ログアウト</font>
+                <a href="<?php echo $this->baseUrl(); ?>/user/logout"><font style="color: #7E3500; font-weight: bold; text-decoration: underline;">ログアウト</font>
                 </a>
             </div>
             <div  class="topbar-username"><big>ようこそ!</bigF><?php echo $this->user_info['name']; ?></div>
@@ -25,24 +25,33 @@
                             </div>-->
             <div title="" class="mn "><a href="#"><font style="color: white;">支払い</a>
             </div>
-            <div title="" class="mn "><a href="<?php echo $this->baseUrl() ?>/student/profile"><font style="color: white;">プロファイル</font></a>
+            <div title="" class="mn "><a href="<?php echo $this->baseUrl(); ?>/student/profile"><font style="color: white;">プロファイル</font></a>
             </div>
         </div>
-        <!--Function tab bar-->
-        <div class="row-show">
-            <a href="<?php echo $this->baseUrl() ?>/student/index?type=1"><button style="margin-top: 10px;"  name="btn_tag" class="showlogfromm float-left">タグ</button></a>
-            <a href="<?php echo $this->baseUrl() ?>/student/index?type=2">
-                <button style="margin-left: 10px; margin-top: 10px;" name="btn_teacher" class="register-cus float-left">
-                    先生</button>
-            </a>
-            <div  style="margin-top: 10px;" class="float-right">
-                <form action="#" style="height: 30px;">
-                    <input type="text" name="q" class="input_search" placeholder="検索内容"/>
-                    <input  name="sa" type="button" class="button-search" value="検索">
-                </form>
+        <div class="row-show float-left">
+            <div  style="margin: 0px auto;">
+                <div style="width: 80%; color: black;" class="lesson_register_content">
+                    <div class="float-left" >タイトル：<?php echo $this->lessonInfo['title']; ?></div>
+                    <div class="row-show">
+                        <table cellpadding="0" cellspacing="0" border="0">
+                            <tbody>
+                                <tr>
+                                    <td colspan="2">Tag1, tag2</td>
+                                </tr>
+                                <tr>
+                                    <td>説明</td>
+                                    <td><?php echo $this->lessonInfo['description']; ?></td>
+                                </tr>
+                                <tr>
+                                    <td>作成した日</td>
+                                    <td><?php echo $this->lessonInfo['create_time']; ?>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
-        <!--Content tab bar-->
-        
     </div>
 </center>

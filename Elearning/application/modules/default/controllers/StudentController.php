@@ -31,24 +31,35 @@ class StudentController extends IController {
         $this->initial();
         if ($this->_request->isGet()) {
             $get_type = $this->_request->getParam('type');
+            $tagId = $this->_request->getParam('tagId');
+            $teacherId = $this->_request->getParam('teacherId');
             if ($get_type == null || $get_type == 1) {
                 $tags = new Default_Model_Tag();
                 $this->view->tags = $tags->listAll();
                 $this->view->type = 1;
+
+                $lessons = new Default_Model_Lesson();
+                $paginator = Zend_Paginator::factory($lessons->listWithTag($tagId));
+                $paginator->setItemCountPerPage(6);
+                $paginator->setPageRange(3);
+                $this->view->numpage = $paginator->count();
+                $currentPage = $this->_request->getParam('page', 1);
+                $paginator->setCurrentPageNumber($currentPage);
+                $this->view->data = $paginator;
             } else {
                 $users = new Default_Model_Account();
                 $this->view->teachers = $users->listTeacher();
                 $this->view->type = 2;
+                $lessons = new Default_Model_Lesson();
+                $paginator = Zend_Paginator::factory($lessons->listWithTeacher($teacherId));
+                $paginator->setItemCountPerPage(6);
+                $paginator->setPageRange(3);
+                $this->view->numpage = $paginator->count();
+                $currentPage = $this->_request->getParam('page', 1);
+                $paginator->setCurrentPageNumber($currentPage);
+                $this->view->data = $paginator;
             }
         }
-
-        $lessons = new Default_Model_Lesson();
-        $paginator = Zend_Paginator::factory($lessons->listAll());
-        $paginator->setItemCountPerPage(6);
-        $paginator->setPageRange(3);
-        $currentPage = $this->_request->getParam('page', 1);
-        $paginator->setCurrentPageNumber($currentPage);
-        $this->view->data = $paginator;
     }
 
     public function profileAction() {
@@ -159,6 +170,18 @@ class StudentController extends IController {
             $auth->getStorage()->write($user->getUserInfo($data['username']));
             $this->view->user_info = $auth->getStorage()->read();
             $this->_redirect('student/profile');
+        }
+    }
+
+    public function registerlessonAction() {
+        $this->initial();
+        $lessonModel = new Default_Model_Lesson();
+        if ($this->_request->isGet()) {
+            $lesson_id = $this->_request->getParam('id');
+            $info = $lessonModel->findLessonById($lesson_id);
+            // Number of student join to this course
+
+            $this->view->lessonInfo = $info;
         }
     }
 
