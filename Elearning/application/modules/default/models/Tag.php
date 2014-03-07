@@ -28,4 +28,13 @@ class Default_Model_Tag extends Zend_Db_Table_Abstract {
         return $this->fetchAll()->toArray();
     }
 
+    public function getAllTagOfLesson($lessonId) {
+        $select = $this->getAdapter()->select();
+        $select->from(array('t' => 'tag'))
+                ->join(array('lt' => 'lesson_tag'), 't.id=lt.tag_id')
+                ->where("lt.lesson_id=$lessonId")
+                ->group('t.id');
+        return $this->getAdapter()->fetchAll($select);
+    }
+
 }

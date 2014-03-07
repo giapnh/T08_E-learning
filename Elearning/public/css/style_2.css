@@ -68,6 +68,7 @@
     margin-top: 5px;
     height: 30px;
 }
+
 .tag-item:hover{
     background: #3680a0;
 }
@@ -82,8 +83,8 @@
 }
 .teacher-item:hover{
     background: #408107;
-    color: whitesmoke;
 }
+
 .showlogfromm,.register-cus {
     float: left;
     border-style: none;
@@ -194,7 +195,7 @@
     border-width: thin;
     border-style: initial;
     border-color: #F37B00;
-    height: 155px;
+    height: 160px;
     border-radius: 1px;
     box-shadow: 2px 2px 2px #BEC570;
     text-decoration: underline;
@@ -209,7 +210,7 @@
     border-width: thin;
     border-style: initial;
     border-color: #F37B00;
-    height: 155px;
+    height: 160px;
     border-radius: 1px;
     box-shadow: 2px 2px 2px #BEC570;
     text-decoration: underline;
@@ -233,13 +234,13 @@
 }
 
 .lession-title{
-    width: 100%;
     font-size: 16px;
     font-weight: bold;
     max-width: 100%;
-    text-decoration-line: underline;
     float: left;
-    color: #000000;
+    color: white;
+    padding: 5px;
+    background: #51A007;
 }
 .lesson-dec{
     width: 250px;

@@ -31,21 +31,55 @@
         <div class="row-show float-left">
             <div  style="margin: 0px auto;">
                 <div style="width: 80%; color: black;" class="lesson_register_content">
-                    <div class="float-left" >タイトル：<?php echo $this->lessonInfo['title']; ?></div>
+                    <div class="float-left" style="text-align: left; background: #51A007; width: 100%; color: white; font-weight: bold; padding-top: 10px; padding-bottom: 10px;">
+                        <font style="padding-left: 30px;"><?php echo $this->lessonInfo['title']; ?></font>
+                    </div>
                     <div class="row-show">
-                        <table cellpadding="0" cellspacing="0" border="0">
+                        <table cellpadding="0" cellspacing="0" border="1"  style="border: none; text-align: center;">
                             <tbody>
                                 <tr>
-                                    <td colspan="2">Tag1, tag2</td>
-                                </tr>
-                                <tr>
-                                    <td>説明</td>
-                                    <td><?php echo $this->lessonInfo['description']; ?></td>
-                                </tr>
-                                <tr>
-                                    <td>作成した日</td>
-                                    <td><?php echo $this->lessonInfo['create_time']; ?>
+                                    <td>タグ</td>
+                                    <td style="text-align: left; height: 30px;">
+                                        <?php
+                                        foreach ($this->tagsInfo as $tag) {
+                                            ?>
+                                            <div style="border: none; float: left; margin: 1px; border-radius: 4px; padding: 5px; background: #51A007; color: white;"> <?php echo $tag['tag_name']; ?>
+                                            </div>
+                                            <?php
+                                        }
+                                        ?>
                                     </td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 100px; text-align: center;">説明</td>
+                                    <td style="text-align: left;"><?php echo $this->lessonInfo['description']; ?></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: center;">作成した日</td>
+                                    <td style="height: 30px; font-weight: bold; font-size: 14px;">
+                                        <?php
+                                        $time = $this->lessonInfo['create_time'];
+                                        $correct = explode(" ", $time)[0];
+                                        $arr = explode("-", $correct);
+                                        $year = $arr[0];
+                                        $mon = $arr[1];
+                                        $day = $arr[2];
+                                        echo $year . "年" . $mon . "月" . $day . "日";
+                                        ?>
+
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>学生数</td>
+                                    <td style="height: 30px; font-weight: bold; font-size: 14px;">
+                                        <?php
+                                        echo $this->numStudent;
+                                        ?></td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2" style="text-align: left; height: 30px; padding-left: 10px; font-weight: bold; font-size: 14px;">アップロードしたファイル</td>
                                 </tr>
                             </tbody>
                         </table>

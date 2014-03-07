@@ -30,8 +30,8 @@
         </div>
         <!--Function tab bar-->
         <div class="row-show">
-            <a href="<?php echo $this->baseUrl(); ?>/student/index?type=1"><button style="margin-top: 10px;"  name="btn_tag" class="showlogfromm float-left">タグ</button></a>
-            <a href="<?php echo $this->baseUrl(); ?>/student/index?type=2">
+            <a href="<?php echo $this->baseUrl(); ?>/student/index?type=1&tagId=0"><button style="margin-top: 10px;"  name="btn_tag" class="showlogfromm float-left">タグ</button></a>
+            <a href="<?php echo $this->baseUrl(); ?>/student/index?type=2&teacherId=0">
                 <button style="margin-left: 10px; margin-top: 10px;" name="btn_teacher" class="register-cus float-left">
                     先生</button>
             </a>
@@ -55,22 +55,48 @@
                             $type = $this->type;
                             if ($type == 1) {
                                 ?>
-                                <a href="<?php echo $this->baseUrl(); ?>/student/index?tagId=0"><button class="tag-item">全部</button></a>
+                                <a href="<?php echo $this->baseUrl(); ?>/student/index?type=1&tagId=0">
+                                    <button class="<?php
+                                    if ($this->tagId == 0) {
+                                        echo "teacher-item"; // If selected
+                                    } else {
+                                        echo "tag-item";
+                                    }
+                                    ?>">全部
+                                    </button></a>
                                 <?php
                             } else {
                                 ?>
-                                <a href="<?php echo $this->baseUrl(); ?>/student/index?teacherId=0"><button class="tag-item">全部</button></a>
+                                <a href="<?php echo $this->baseUrl(); ?>/student/index?type=2&teacherId=0">
+                                    <button class="
+                                    <?php
+                                    if ($this->tagId == 0) {
+                                        echo "tag-item"; // If selected
+                                    } else {
+                                        echo "teacher-item";
+                                    }
+                                    ?>">
+                                        全部
+                                    </button>
+                                </a>
                                 <?php
                             }
                             if ($type == 1) {
                                 if (isset($this->tags)) {
                                     for ($i = 0; $i < count($this->tags); $i++) {
                                         ?>
-                                        <a href="<?php echo $this->baseUrl(); ?>/student/index?tagId=<?php echo $this->tags[$i]['id'] ?>">
-                                            <button class="tag-item">
-                                                <?php
-                                                echo $this->tags[$i]['tag_name'];
-                                                ?>
+                                        <a href="<?php echo $this->baseUrl(); ?>/student/index?type=1&tagId=<?php echo $this->tags[$i]['id'] ?>">
+                                            <button class="
+                                            <?php
+                                            if ($this->tagId == $this->tags[$i]['id']) {
+                                                echo "teacher-item"; // If selected
+                                            } else {
+                                                echo "tag-item";
+                                            }
+                                            ?>">
+                                                        <?php
+                                                        echo $this->tags[$i]['tag_name'];
+                                                        ?>
                                             </button>
                                         </a>
                                         <?php
@@ -83,17 +109,24 @@
                                 if (isset($this->teachers)) {
                                     for ($i = 0; $i < count($this->teachers); $i++) {
                                         ?>
-                                        <a href="<?php echo $this->baseUrl(); ?>/student/index?teacherId=<?php echo $this->teachers[$i]['id'] ?>"> 
-                                            <button class="teacher-item">
-                                                <?php
-                                                echo $this->teachers[$i]['name'];
-                                                ?>
+                                        <a href="<?php echo $this->baseUrl(); ?>/student/index?type=2&teacherId=<?php echo $this->teachers[$i]['id']; ?>"> 
+                                            <button class="
+                                            <?php
+                                            if ($this->teacherId == $this->teachers[$i]['id']) {
+                                                echo "tag-item"; // If selected
+                                            } else {
+                                                echo "teacher-item";
+                                            }
+                                            ?>
+                                                    ">
+                                                        <?php
+                                                        echo $this->teachers[$i]['name'];
+                                                        ?>
                                             </button>
                                         </a>
                                         <?php
                                     }
                                 } else {
-                                    echo $type;
                                     echo "先生がいない";
                                 }
                             }
@@ -103,7 +136,6 @@
                             <?php
                             $counter = 0;
                             foreach ($this->data as $item) {
-
                                 if ($counter % 2 == 0) {
                                     ?>
                                     <div class="row-show">

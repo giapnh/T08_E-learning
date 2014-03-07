@@ -118,7 +118,7 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
      */
     public function listTeacher() {
         $query = $this->select()
-                ->from($this->_name, "name")
+                ->from($this->_name, "*")
                 ->where('status=?', "1")
                 ->where('role=?', "2");
         return $this->getAdapter()->fetchAll($query);

@@ -30,7 +30,6 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
         if ($teacher == 0) {
             return $this->listAll();
         }
-
         $select = $this->getAdapter()->select();
         $select->from(array('l' => 'lesson'))
                 ->join(array('u' => 'user'), 'l.teacher_id = u.id')

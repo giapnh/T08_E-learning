@@ -33,11 +33,12 @@ class StudentController extends IController {
             $get_type = $this->_request->getParam('type');
             $tagId = $this->_request->getParam('tagId');
             $teacherId = $this->_request->getParam('teacherId');
+            $this->view->tagId = $tagId;
+            $this->view->teacherId = $teacherId;
             if ($get_type == null || $get_type == 1) {
                 $tags = new Default_Model_Tag();
                 $this->view->tags = $tags->listAll();
                 $this->view->type = 1;
-
                 $lessons = new Default_Model_Lesson();
                 $paginator = Zend_Paginator::factory($lessons->listWithTag($tagId));
                 $paginator->setItemCountPerPage(6);
@@ -176,12 +177,16 @@ class StudentController extends IController {
     public function registerlessonAction() {
         $this->initial();
         $lessonModel = new Default_Model_Lesson();
+        $tagModel = new Default_Model_Tag();
+        $learnModel = new Default_Model_Learn();
         if ($this->_request->isGet()) {
             $lesson_id = $this->_request->getParam('id');
             $info = $lessonModel->findLessonById($lesson_id);
             // Number of student join to this course
-
+            $tagInfo = $tagModel->getAllTagOfLesson($lesson_id);
             $this->view->lessonInfo = $info;
+            $this->view->tagsInfo = $tagInfo;
+            $this->view->numStudent = $learnModel->countStudenJoinLesson($lesson_id)[0];
         }
     }
 
