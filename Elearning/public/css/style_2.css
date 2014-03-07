@@ -86,7 +86,6 @@
 }
 
 .showlogfromm,.register-cus {
-    float: left;
     border-style: none;
     border-radius: 4px;
     color: white !important;
@@ -450,4 +449,11 @@ tr.profile{
 
 .icon-comment{
     background: url(../../public/images/num-comment.png);
+}
+
+.td-left{
+    width: 150px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 15px;
 }

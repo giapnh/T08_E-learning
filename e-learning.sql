@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.0.4
+-- version 4.0.4.1
 -- http://www.phpmyadmin.net
 --
--- Host: localhost
--- Generation Time: Mar 04, 2014 at 09:48 AM
--- Server version: 5.6.12-log
--- PHP Version: 5.4.12
+-- Host: 127.0.0.1
+-- Generation Time: Mar 07, 2014 at 08:14 AM
+-- Server version: 5.5.32
+-- PHP Version: 5.4.16
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -115,9 +115,18 @@ CREATE TABLE IF NOT EXISTS `learn` (
   `student_id` int(11) NOT NULL,
   `lesson_id` int(11) NOT NULL,
   `register_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `status` int(11) NOT NULL,
+  `status` int(11) NOT NULL COMMENT '1: Active, 0:Lock',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data for table `learn`
+--
+
+INSERT INTO `learn` (`id`, `student_id`, `lesson_id`, `register_time`, `status`) VALUES
+(1, 7, 1, '2014-03-07 06:51:14', 1),
+(2, 7, 1, '2014-03-07 06:51:33', 1),
+(3, 8, 1, '2014-03-07 06:51:43', 1);
 
 -- --------------------------------------------------------
 
@@ -142,14 +151,14 @@ CREATE TABLE IF NOT EXISTS `lesson` (
 --
 
 INSERT INTO `lesson` (`id`, `teacher_id`, `title`, `description`, `view`, `like`, `create_time`, `status`) VALUES
-(1, 9, 'IT日本語', '用件定義、外部設計、内部設計、コーディング、テスト', 0, 0, '2014-03-01 11:02:36', 1),
-(2, 9, 'C プログラミング言語', '基本的なC言語プログラミング。', 0, 0, '2014-03-01 10:57:28', 1),
-(3, 9, '英語', '簡単な文法、漢字、会話、読解', 0, 0, '2014-03-01 11:02:33', 1),
-(4, 9, '数学', '数学', 0, 0, '2014-03-01 11:03:26', 0),
-(5, 9, '数学', '数学', 0, 0, '2014-03-01 11:03:44', 0),
-(6, 9, '数学', '数学', 0, 0, '2014-03-01 11:03:49', 0),
-(7, 9, '数学', '数学', 0, 0, '2014-03-01 11:03:54', 0),
-(8, 9, '数学', '数学', 0, 0, '2014-03-01 11:03:58', 0);
+(1, 9, 'IT日本語', '英: Information technology、IT（あいてぃー））は、情報処理特にコンピュータなどの基礎あるいは応用技術の総称。通信 (communication) を含める場合はICTと言う。\n米国のITAAの定義では「コンピュータをベースとした情報システム、特にアプリケーションソフトウェアやコンピュータのハードウェアなどの研究、デザイン、開発、インプリメンテーション、サポート (Technical support) あるいはマネジメント」である[1]。ITは電子的なコンピュータやコンピュータソフトウェアを使用して、情報に対するセキュリティ、変換、保管、処理、転送、入出力、検索などを取り扱う。', 0, 0, '2014-03-06 09:07:03', 1),
+(2, 9, 'C プログラミング言語', '第1回「プログラミング言語Cについて知ろう」では、Cの成り立ちから特徴、その用途までを説明しました。なぜ、Cを学ぶことが重要なのかが理解できたと思います。', 0, 0, '2014-03-06 09:42:24', 1),
+(3, 9, '英語', 'えいごであそぼ. こどもたちに英語に親しんで興味を持ってもらうことを目的とした番組です。 番組キャラクターたちと一緒に絵本の世界を楽しみながら、こどもたちが「英語を話してみたい」と思えるような構成を目指しています。', 0, 0, '2014-03-06 09:43:06', 1),
+(4, 9, '数学', '出典を追加して記事の信頼性向上にご協力ください。（2012年1月）. 本記事では数学（すうがく、ギリシア語: μαθηματικά, ラテン語: mathematica, 英語: mathematics）について解説する。 目次. 1 概要; 2 歴史; 3 研究; 4 分野; 5 数学に関する賞; 6 脚注; 7 参考 ...', 0, 0, '2014-03-06 09:43:28', 0),
+(5, 11, '数学', '出典を追加して記事の信頼性向上にご協力ください。（2012年1月）. 本記事では数学（すうがく、ギリシア語: μαθηματικά, ラテン語: mathematica, 英語: mathematics）について解説する。 目次. 1 概要; 2 歴史; 3 研究; 4 分野; 5 数学に関する賞; 6 脚注; 7 参考 ...', 0, 0, '2014-03-07 01:04:23', 0),
+(6, 11, '数学', '出典を追加して記事の信頼性向上にご協力ください。（2012年1月）. 本記事では数学（すうがく、ギリシア語: μαθηματικά, ラテン語: mathematica, 英語: mathematics）について解説する。 目次. 1 概要; 2 歴史; 3 研究; 4 分野; 5 数学に関する賞; 6 脚注; 7 参考 ...', 0, 0, '2014-03-07 01:04:26', 0),
+(7, 11, '数学', '出典を追加して記事の信頼性向上にご協力ください。（2012年1月）. 本記事では数学（すうがく、ギリシア語: μαθηματικά, ラテン語: mathematica, 英語: mathematics）について解説する。 目次. 1 概要; 2 歴史; 3 研究; 4 分野; 5 数学に関する賞; 6 脚注; 7 参考 ...', 0, 0, '2014-03-07 01:04:29', 0),
+(8, 12, '数学', '出典を追加して記事の信頼性向上にご協力ください。（2012年1月）. 本記事では数学（すうがく、ギリシア語: μαθηματικά, ラテン語: mathematica, 英語: mathematics）について解説する。 目次. 1 概要; 2 歴史; 3 研究; 4 分野; 5 数学に関する賞; 6 脚注; 7 参考 ...', 0, 0, '2014-03-07 01:04:35', 0);
 
 -- --------------------------------------------------------
 
@@ -164,7 +173,16 @@ CREATE TABLE IF NOT EXISTS `lesson_file` (
   `description` varchar(512) NOT NULL,
   `location` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data for table `lesson_file`
+--
+
+INSERT INTO `lesson_file` (`id`, `lesson_id`, `filename`, `description`, `location`) VALUES
+(1, 1, 'File PDF', 'Bai hoc chuong 1', '/public/file/lesson/1/'),
+(2, 1, 'File MP3', 'Bai nghe chuong 1', '/public/file/lesson/1/'),
+(3, 1, 'File TSV', 'Bai Test chuong 1', '/public/file/lesson/1/');
 
 -- --------------------------------------------------------
 
@@ -177,14 +195,18 @@ CREATE TABLE IF NOT EXISTS `lesson_tag` (
   `lesson_id` int(11) NOT NULL,
   `tag_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
 --
 -- Dumping data for table `lesson_tag`
 --
 
 INSERT INTO `lesson_tag` (`id`, `lesson_id`, `tag_id`) VALUES
-(1, 1, 4);
+(1, 1, 4),
+(2, 1, 1),
+(3, 1, 2),
+(4, 2, 1),
+(5, 2, 2);
 
 -- --------------------------------------------------------
 
@@ -355,12 +377,12 @@ CREATE TABLE IF NOT EXISTS `user` (
 --
 
 INSERT INTO `user` (`id`, `username`, `first_password`, `password`, `name`, `sex`, `email`, `birthday`, `address`, `phone`, `bank_account`, `first_secret_question`, `first_secret_answer`, `secret_question`, `secret_answer`, `role`, `status`, `last_login_ip`, `fail_login_count`, `last_login_time`) VALUES
-(7, 'giap_huu', '58aee8e76dfdf89c2d5c41de957767e8', '58aee8e76dfdf89c2d5c41de957767e8', 'Nguyễn Hữu Giáp', 0, 'hgbk.it@gmail.com', '17-4-1998', 'Hoang Mai', '01664643234', '711A948594898', '1+1=', '2', '1+1=', '2', 1, 1, NULL, 0, NULL),
+(7, 'giap_huu', '58aee8e76dfdf89c2d5c41de957767e8', '58aee8e76dfdf89c2d5c41de957767e8', 'いちのせ', 0, 'hgbk.it@gmail.com', '17-4-1998', 'Hoang Mai', '01664643234', '711A948594898', '1+1=', '2', '1+1=', '2', 1, 1, NULL, 0, NULL),
 (8, 'giapnh', '521fa11ddef0190b157ce6f5aa602659', 'c4ec9911d93f93e36dcb77bd18c3e3d7', 'Nguyễn Hữu Giáp', 0, 'hgbk.it@gmail.com', '29-2-1995', 'Hoang Mai', '01664643234', '711A948594898', '1+1=', '2', '1+1=', '23', 1, 1, NULL, 0, NULL),
-(10, 'giap2000', 'd12f981e91d84b699f4d15b9de6bb3f3', 'd12f981e91d84b699f4d15b9de6bb3f3', 'Nguyễn Hữu Giáp', 0, 'hgbk.it@gmail.com', '19-2-1996', 'Quận Hoàng Mai, Hà Nội', '01664643234', '711A948594898', '1+1=', '2', '1+1=', '2', 2, 1, NULL, 0, NULL),
-(11, 'giap2001', 'd12f981e91d84b699f4d15b9de6bb3f3', 'd12f981e91d84b699f4d15b9de6bb3f3', 'Nguyễn Hữu Giáp', 0, 'hgbk.it@gmail.com', '19-2-1996', 'Quận Hoàng Mai, Hà Nội', '01664643234', '711A948594898', '1+1=', '2', '1+1=', '2', 2, 1, NULL, 0, NULL),
-(12, 'giap2002', 'd12f981e91d84b699f4d15b9de6bb3f3', 'd12f981e91d84b699f4d15b9de6bb3f3', 'Nguyễn Hữu Giáp', 0, 'hgbk.it@gmail.com', '19-2-1996', 'Quận Hoàng Mai, Hà Nội', '01664643234', '711A948594898', '1+1=', '2', '1+1=', '2', 2, 1, NULL, 0, NULL),
-(13, 'giapnh1', '521fa11ddef0190b157ce6f5aa602659', 'c4ec9911d93f93e36dcb77bd18c3e3d7', 'Nguyễn Hữu Giáp', 0, 'hgbk.it@gmail.com', '29-2-1995', 'Hoang Mai', '01664643234', '711A948594898', '1+1=', '2', '1+1=', '23', 1, 1, NULL, 0, NULL),
+(9, 'giap2000', 'd12f981e91d84b699f4d15b9de6bb3f3', 'd12f981e91d84b699f4d15b9de6bb3f3', 'ごんだい', 0, 'hgbk.it@gmail.com', '19-2-1996', 'Quận Hoàng Mai, Hà Nội', '01664643234', '711A948594898', '1+1=', '2', '1+1=', '2', 2, 1, NULL, 0, NULL),
+(11, 'giap2001', 'd12f981e91d84b699f4d15b9de6bb3f3', 'd12f981e91d84b699f4d15b9de6bb3f3', '作間', 0, 'hgbk.it@gmail.com', '19-2-1996', 'Quận Hoàng Mai, Hà Nội', '01664643234', '711A948594898', '1+1=', '2', '1+1=', '2', 2, 1, NULL, 0, NULL),
+(12, 'giap2002', 'd12f981e91d84b699f4d15b9de6bb3f3', 'd12f981e91d84b699f4d15b9de6bb3f3', '竹本', 0, 'hgbk.it@gmail.com', '19-2-1996', 'Quận Hoàng Mai, Hà Nội', '01664643234', '711A948594898', '1+1=', '2', '1+1=', '2', 2, 1, NULL, 0, NULL),
+(13, 'giapnh1', '521fa11ddef0190b157ce6f5aa602659', 'c4ec9911d93f93e36dcb77bd18c3e3d7', '山本', 0, 'hgbk.it@gmail.com', '29-2-1995', 'Hoang Mai', '01664643234', '711A948594898', '1+1=', '2', '1+1=', '23', 1, 1, NULL, 0, NULL),
 (14, 'giapnh2', '521fa11ddef0190b157ce6f5aa602659', 'c4ec9911d93f93e36dcb77bd18c3e3d7', 'Nguyễn Hữu Giáp', 0, 'hgbk.it@gmail.com', '29-2-1995', 'Hoang Mai', '01664643234', '711A948594898', '1+1=', '2', '1+1=', '23', 1, 1, NULL, 0, NULL);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

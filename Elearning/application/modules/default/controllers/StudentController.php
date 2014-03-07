@@ -179,14 +179,22 @@ class StudentController extends IController {
         $lessonModel = new Default_Model_Lesson();
         $tagModel = new Default_Model_Tag();
         $learnModel = new Default_Model_Learn();
+        $lfileModel = new Default_Model_LessonFile();
         if ($this->_request->isGet()) {
-            $lesson_id = $this->_request->getParam('id');
-            $info = $lessonModel->findLessonById($lesson_id);
-            // Number of student join to this course
-            $tagInfo = $tagModel->getAllTagOfLesson($lesson_id);
-            $this->view->lessonInfo = $info;
-            $this->view->tagsInfo = $tagInfo;
-            $this->view->numStudent = $learnModel->countStudenJoinLesson($lesson_id)[0];
+            $do = $this->_request->getParam('do');
+            if ($do == 'view') {
+                $lesson_id = $this->_request->getParam('id');
+                $info = $lessonModel->findLessonById($lesson_id);
+                // Number of student join to this course
+                $tagInfo = $tagModel->getAllTagOfLesson($lesson_id);
+                $this->view->isLearn = $learnModel->;
+                $this->view->lessonInfo = $info;
+                $this->view->tagsInfo = $tagInfo;
+                $this->view->numStudent = $learnModel->countStudenJoinLesson($lesson_id)[0];
+                $this->view->filesInfo = $lfileModel->listFileOfLesson($lesson_id);
+            } else if ($do == 'submit') {
+                
+            }
         }
     }
 

@@ -38,7 +38,7 @@
                         <table cellpadding="0" cellspacing="0" border="1"  style="border: none; text-align: center;">
                             <tbody>
                                 <tr>
-                                    <td>タグ</td>
+                                    <td class="td-left">タグ</td>
                                     <td style="text-align: left; height: 30px;">
                                         <?php
                                         foreach ($this->tagsInfo as $tag) {
@@ -51,11 +51,11 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td style="width: 100px; text-align: center;">説明</td>
-                                    <td style="text-align: left;"><?php echo $this->lessonInfo['description']; ?></td>
+                                    <td class="td-left">説明</td>
+                                    <td style="text-align: left; padding: 10px; font-size: 14px; line-height: 18px;"><?php echo $this->lessonInfo['description']; ?></td>
                                 </tr>
                                 <tr>
-                                    <td style="text-align: center;">作成した日</td>
+                                    <td class="td-left">作成した日</td>
                                     <td style="height: 30px; font-weight: bold; font-size: 14px;">
                                         <?php
                                         $time = $this->lessonInfo['create_time'];
@@ -71,7 +71,7 @@
                                 </tr>
 
                                 <tr>
-                                    <td>学生数</td>
+                                    <td class="td-left">学生数</td>
                                     <td style="height: 30px; font-weight: bold; font-size: 14px;">
                                         <?php
                                         echo $this->numStudent;
@@ -80,6 +80,46 @@
 
                                 <tr>
                                     <td colspan="2" style="text-align: left; height: 30px; padding-left: 10px; font-weight: bold; font-size: 14px;">アップロードしたファイル</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <table cellpadding="3" cellspacing="3" style="width: 90%; float: right;">
+                                            <tbody>
+                                                <?php
+                                                $count = 0;
+                                                foreach ($this->filesInfo as $file) {
+                                                    $count ++;
+                                                    ?>
+                                                    <tr>
+                                                        <td style="width: 5%;"><?php echo $count; ?></td>
+                                                        <td style="width: 30%;">
+                                                            <a href="#" style="text-decoration: underline; font-style: italic; color: #069;">
+                                                                <?php echo $file['filename']; ?>
+                                                            </a>
+                                                        </td>
+                                                        <td style="width: 60%;"><?php echo $file['description']; ?></td>
+                                                    </tr>
+                                                <?php } ?>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2" style="font-size: 15px; text-align: left; padding: 10px;">
+                                        この授業を7日の勉強を買います<br>
+                                        値段:<span style="color: green; font-size: 18px; font-weight: bold;">2万VND</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" style="padding: 10px;">
+                                        <div style="margin: 0px auto; width: 100%;">
+                                            <a href="<?php echo $this->baseUrl(); ?>/student/registerLesson?do=submit&lessonId=<?php echo $this->lessonInfo['id']; ?>">
+                                                <button class="showlogfromm">買います</button>
+                                            </a>
+                                            <button class="register-cus" onclick="javascript:history.go(-1);">キャンセル</button>
+                                        </div>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
