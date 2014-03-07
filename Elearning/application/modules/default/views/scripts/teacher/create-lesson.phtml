@@ -1,3 +1,50 @@
+<style type="text/css">
+    .visible {
+        display: block;
+    }
+    .not_visible {
+        display: none;
+    }
+</style>
+<?php $this->headScript()->appendFile($this->baseUrl('/public/js/jquery.min.js')); ?>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#btn_add_tag").click(function(){
+            
+            return false;
+        });
+        $("#btn_clear_tags").click(function(){
+            
+            return false;
+        });
+        $("#btn_more_file").click(function(){
+            var itemHtml = "<div class='file_item'>" +
+                                "<div>ファイル１</div>" +
+                                "<table>"+
+                                    "<tr>"+
+                                        "<td>ファイル名</td>"+
+                                        "<td>"+
+                                            "<input type='text' name='file_title[]' class='les_input file_title' maxlength='255'><br>"+
+                                        "</td>"+
+                                    "</tr>"+
+                                    "<tr>"+
+                                        "<td>説明</td>"+
+                                        "<td>"+
+                                            "<textarea class='file_dec' name='file_dec[]'></textarea><br>"+
+                                        "</td>"+
+                                    "</tr>"+
+                                    "<tr>"+
+                                        "<td colspan='2'>"+
+                                            "<input type='file' name='file[]' id='file_1'>"+
+                                        "</td>"+
+                                    "</tr>"+
+                                "</table>"+
+                            "</div>";
+            $("#list_file").append(itemHtml);
+            return false;
+        });
+    });
+</script>
 <center>
     <div class="content" style="background: #F0F0F0;">
         <div class="top_content clear banner">
@@ -33,10 +80,20 @@
                             <td>タイトル</td>
                             <td> <input type="text" name="title" id="les_title" class="res_input"></td>
                         </tr>
-
+                        <tr>
+                            <td></td>
+                            <td>
+                                <span>タグ1、タグ2、タグ3</span>
+                                <button style="float: right" id="btn_clear_tags">クリア</button>
+                            </td>
+                        </tr>
                         <tr>
                             <td>タグ</td>
-                            <td><input type="text" name="tag" id="les_tag" class="res_input"></td>
+                            <td>
+                                <input type="text" name="tag" id="les_tag" class="res_input">
+                                <button id="btn_add_tag" style="float: right">追加</button>
+                                <div id="tag_error_msg" style="color: red">* タグを入力してください</div>
+                            </td>
                         </tr>
 
                         <tr>
@@ -71,37 +128,20 @@
                                             </tr>
                                             <tr>
                                                 <td colspan="2">
-                                                    <input type="file" name="file[]" id="file_name">
+                                                    <input type="file" name="file[]" id="file_1">
+                                                    <script type="text/javascript">
+                                                        $("#file_1").change(function(){
+                                                            if ($("#btn_more_file").hasClass('not_visible')) {
+                                                                $("#btn_more_file").removeClass('not_visible');
+                                                                $("#btn_more_file").addClass('visible');
+                                                            }
+                                                        });
+                                                    </script>
                                                 </td>
                                             </tr>
                                         </table>
                                     </div>
-                                    <!--Item 2-->
-                                    <div class = "file_item">
-                                        <div>ファイル2</div>
-                                        <table>
-                                            <tr>
-                                                <td>ファイル名</td>
-                                                <td>
-                                                    <input type="text" name="file_title[]" id="file_title" value="" class="les_input file_title" maxlength="255"><br>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>説明</td>
-                                                <td>
-                                                    <textarea class = "file_dec" name="file_dec[]"></textarea><br>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="2">
-                                                    <input type="file" name="file[]">
-                                                </td>
-                                            </tr>
-                                        </table>
-                                        <!--And more-->
-                                        <a href="#"　id= "add_file" ><img src="<?php echo $this->baseUrl(); ?>/public/images/ic_add.png"><b>もう一つ</b></a>
-                                    </div>
-
+                                    <button id="btn_more_file" class="not_visible">もう一つ</button>
                                 </div>
                             </td>
                         </tr>
