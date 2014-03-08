@@ -5,10 +5,18 @@
     .not_visible {
         display: none;
     }
+    .res_input {
+        width: 400px;
+    }
+    .lesson-dec, .file_dec {
+        width: 400px;
+        height: 100px;
+    }
 </style>
 <?php $this->headScript()->appendFile($this->baseUrl('/public/js/jquery.min.js')); ?>
 <script type="text/javascript">
     $(document).ready(function(){
+        var fileCount = 0;
         $("#btn_add_tag").click(function(){
             
             return false;
@@ -17,30 +25,41 @@
             
             return false;
         });
+        $("#file_0").change(function(){
+            if ($("#btn_more_file").hasClass('not_visible')) {
+                $("#btn_more_file").removeClass('not_visible');
+                $("#btn_more_file").addClass('visible');
+            }
+        });
         $("#btn_more_file").click(function(){
+            fileCount += 1;
             var itemHtml = "<div class='file_item'>" +
                                 "<div>ファイル１</div>" +
                                 "<table>"+
                                     "<tr>"+
-                                        "<td>ファイル名</td>"+
+                                        "<td style='width: 52px'></td>"
                                         "<td>"+
-                                            "<input type='text' name='file_title[]' class='les_input file_title' maxlength='255'><br>"+
+                                            "<input type='file' name='file["+fileCount+"]' id='file_"+fileCount+"'>"+
                                         "</td>"+
                                     "</tr>"+
                                     "<tr>"+
                                         "<td>説明</td>"+
                                         "<td>"+
-                                            "<textarea class='file_dec' name='file_dec[]'></textarea><br>"+
-                                        "</td>"+
-                                    "</tr>"+
-                                    "<tr>"+
-                                        "<td colspan='2'>"+
-                                            "<input type='file' name='file[]' id='file_1'>"+
+                                            "<textarea class='file_dec' name='file_dec["+fileCount+"]'></textarea><br>"+
                                         "</td>"+
                                     "</tr>"+
                                 "</table>"+
                             "</div>";
             $("#list_file").append(itemHtml);
+            $("#btn_more_file").removeClass('visible');
+            $("#btn_more_file").addClass('not_visible');
+            $("#file_"+fileCount).change(function(){
+                if ($("#btn_more_file").hasClass('not_visible')) {
+                    $("#btn_more_file").removeClass('not_visible');
+                    $("#btn_more_file").addClass('visible');
+                }
+            });
+            
             return false;
         });
     });
@@ -67,8 +86,7 @@
             </div>
         </div>
         <div class="containt_center_cen clear" style="margin: 0px auto;">
-            <form action="" method="post"
-                  enctype="multipart/form-data">
+            <form action="" method="post" enctype="multipart/form-data">
                 <table border="0" cellpadding="5" cellspacing="5" style="background: #E1E1E1;width: 60%; border-style: solid; border-width: thin; border-radius: 4px; padding: 10px;">
                     <tbody>
                         <tr>
@@ -77,7 +95,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>タイトル</td>
+                            <td style="width: 52px;">タイトル</td>
                             <td> <input type="text" name="title" id="les_title" class="res_input"></td>
                         </tr>
                         <tr>
@@ -115,41 +133,31 @@
                                         <div>ファイル１</div>
                                         <table>
                                             <tr>
-                                                <td>ファイル名</td>
+                                                <td style="width: 52px;"></td>
                                                 <td>
-                                                    <input type="text" name="file_title[]" id="file_title" value="" class="les_input file_title" maxlength="255"><br>
+                                                    <input type="file" name="file[0]" id="file_0">
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td>説明</td>
                                                 <td>
-                                                    <textarea class = "file_dec" name="file_dec[]"></textarea><br>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="2">
-                                                    <input type="file" name="file[]" id="file_1">
-                                                    <script type="text/javascript">
-                                                        $("#file_1").change(function(){
-                                                            if ($("#btn_more_file").hasClass('not_visible')) {
-                                                                $("#btn_more_file").removeClass('not_visible');
-                                                                $("#btn_more_file").addClass('visible');
-                                                            }
-                                                        });
-                                                    </script>
+                                                    <textarea class="file_dec" name="file_dec[0]"></textarea><br>
                                                 </td>
                                             </tr>
                                         </table>
                                     </div>
-                                    <button id="btn_more_file" class="not_visible">もう一つ</button>
                                 </div>
+                                <button id="btn_more_file" class="not_visible">もう一つ</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <input type="submit" name="submit" id="les_submit" class="showlogfromm">
                             </td>
                         </tr>
                     </tbody>
                 </table>
+            </form>
         </div>
-
-        <input type="submit" name="submit" id="les_submit" class="showlogfromm">
-        </form>
     </div>
 </center>
