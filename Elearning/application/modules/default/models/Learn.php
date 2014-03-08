@@ -34,15 +34,6 @@ class Default_Model_Learn extends Zend_Db_Table_Abstract {
         }
     }
 
-    public function listTeacherByStudent($student) {
-        $select = $this->getAdapter()->select();
-        $select->from('learn')
-                ->join('lesson', 'learn.lesson_id=lesson.id')
-                ->join('user', 'lesson.teacher_id=user.id')
-                ->where('user.id=?', $student);
-        return $this->getAdapter()->fetchAll($select);
-    }
-
     public function countStudenJoinLesson($lessonId) {
         return $this->getAdapter()->fetchOne("SELECT COUNT(*) AS count FROM learn WHERE lesson_id=$lessonId");
     }
@@ -51,7 +42,7 @@ class Default_Model_Learn extends Zend_Db_Table_Abstract {
         $ins_data = array(
             'student_id' => $studentId,
             'lesson_id' => $lessonId,
-            'status' => '0' // Wait for confirm by admin
+            'status' => '1'
         );
         $this->insert($ins_data);
     }

@@ -209,4 +209,14 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
         $this->update($update_data, $where);
     }
 
+    public function listTeacherByStudent($student) {
+        $select = $this->getAdapter()->select();
+        $select->from('user')
+                ->joinInner('lesson', 'lesson.teacher_id=user.id', NULL)
+                ->joinInner('learn', 'learn.lesson_id=lesson.id', NULL)
+                ->where('learn.student_id=?', $student)
+                ->group('user.id');
+        return $this->getAdapter()->fetchAll($select);
+    }
+
 }

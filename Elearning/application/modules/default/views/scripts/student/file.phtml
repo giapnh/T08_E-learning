@@ -1,1 +1,126 @@
-<?php echo $this->render('student-nav.phtml') ?>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<center>
+    <div class="content" style="background: #F0F0F0;">
+        <div class="top_content clear banner">
+            <!--                <div class="logo" style="float: left;">
+                                <a href="#"> <img width="230" height="58" src="#" alt="Logo">
+                                </a>
+                            </div>-->
+            <div style="position: absolute; top: 120px; right: 70px; ">
+                <a href="<?php echo $this->baseUrl(); ?>/user/logout"><font style="color: #7E3500; font-weight: bold; text-decoration: underline;">ログアウト</font>
+                </a>
+            </div>
+            <div  class="topbar-username"><big>ようこそ!</bigF><?php echo $this->user_info['name']; ?></div>
+        </div>
+        <!--Menu Tab Bar-->
+        <div class="menus clear">
+            <div class="mn">
+                <a class="home" href="<?php echo $this->baseUrl() ?>/student/index">
+                    <font style="color: white;">ホーム</font>
+                </a>
+            </div>
+            <div title="" class="mn first_mn"><a href="<?php echo $this->baseUrl(); ?>/student/myLesson"><font style="color: white;">マイ授業</font></a>
+            </div>
+            <!--                <div class="mn" title=""><a href="#"><font style="color: white;">授業リスト</font></a>
+                            </div>-->
+            <div title="" class="mn "><a href="#"><font style="color: white;">支払い</a>
+            </div>
+            <div title="" class="mn "><a href="<?php echo $this->baseUrl(); ?>/student/profile"><font style="color: white;">プロファイル</font></a>
+            </div>
+        </div>
+
+        <div class="row-show float-left">
+            <div class="lesson_register_content" style="width: 98%;">
+                <table cellpadding='0' cellspacing='0' border='0' style="width: 100%;">
+                    <tbody>
+                        <tr>
+                            <td colspan="2">
+                                <div class="full-width lesson-big-title">
+                                    <?php echo $this->lessonInfo['title']; ?>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr valign="top">
+                            <!--Left content-->
+                            <td style="width: 22%; padding-top: 5px;">
+                                <div class="full-width" style="font-weight: bolder; color: white; padding-top: 3px; padding-bottom: 3px; font-size: 16px; background: #51A007; width: 100%;">
+                                    ファイル一覧
+                                </div>
+                                <?php
+                                $count = 0;
+                                foreach ($this->files as $file) {
+                                    $count++;
+                                    $fileType = explode(".", $file['filename'])[1];
+                                    if ($fileType == 'pdf') {
+                                        ?>
+                                        <a href="<?php echo $this->baseUrl(); ?>/student/file?lessonId=<?php echo $this->lessonInfo['id']; ?>&currentFile=<?php echo $file['filename']; ?>">
+                                            <div class="full-width" style="font-size: 16px; font-weight: bold; margin: 5px;">
+                                                <font style="color: #7E3500">
+                                                <?php echo $count . '.'; ?>
+                                                </font>
+                                                <?php echo $file['filename']; ?>
+                                                <img src="<?php echo $this->baseUrl(); ?>/public/images/pdf.png" width="16" height="16">
+                                            </div>
+                                        </a>           
+                                        <?php
+                                    } else if ($fileType == 'mp3') {
+                                        ?>
+                                        <a href="<?php echo $this->baseUrl(); ?>/student/file?lessonId=<?php echo $this->lessonInfo['id']; ?>&currentFile=<?php echo $file['filename']; ?>">
+                                            <div class="full-width" style="font-size: 16px;  font-weight: bold; margin: 5px;">
+                                                <font style="color: #7E3500">
+                                                <?php echo $count . '.'; ?>
+                                                </font>
+                                                <?php echo $file['filename']; ?>
+                                                <img src="<?php echo $this->baseUrl(); ?>/public/images/audio.png" width="16" height="16">
+                                            </div>
+                                        </a>              
+                                        <?php
+                                    } else if ($fileType = 'png' || $fileType == 'jpg' || $fileType == 'jpeg') {
+                                        ?>
+                                        <?php
+                                    } else if ($fileType == 'tsv') {
+                                        ?>
+                                        <a href="<?php echo $this->baseUrl(); ?>/student/file?lessonId=<?php echo $this->lessonInfo['id']; ?>&currentFile=<?php echo $file['filename']; ?>">
+                                            <div class="full-width" style="font-size: 16px;  font-weight: bold; margin: 5px;">
+                                                <font style="color: #7E3500">
+                                                <?php echo $count . '.'; ?>
+                                                </font>
+                                                <?php echo $file['filename']; ?>
+                                                <img src="<?php echo $this->baseUrl(); ?>/public/images/test.png" width="16" height="16">
+                                            </div>
+                                        </a> 
+                                        <?php
+                                    }
+                                }
+                                ?>
+
+                            </td>
+                            <!--View-->
+                            <td style="padding-top: 5px; border-left-style: solid;border-left-width: thin; border-left-color: #7E3500">
+                                <div class="full-width" style="font-weight: bolder; color: white; padding-top: 3px; padding-bottom: 3px; font-size: 16px; background: #51A007;">
+                                    ファイル内容
+                                </div>
+                                <div style="margin: 10px; width: 95%; height: 500px; border-color: #007F9F; border-style: solid; border-width: thin; box-shadow: 0px 2px 3px;">
+                                    <!--Content here-->
+                                    <?php
+                                    $currentFile = explode(".", $this->currentFile)[1];
+                                    if ($currentFile == 'pdf') {
+                                        ?>
+                                        <embed src = "<?php echo $this->baseUrl(); ?>/public/files/<?php echo $this->lessonInfo['id']; ?>/<?php echo $this->currentFile; ?>"
+                                               width = "100%" height = "100%">
+                                               <?php
+                                           } else if ($currentFile == 'mp3') {
+                                               ?>
+                                        <embed height="150" width="100%" src="<?php echo $this->baseUrl(); ?>/public/files/<?php echo $this->lessonInfo['id']; ?>/<?php echo $this->currentFile; ?>">
+                                        <?php
+                                    }
+                                    ?>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</center>
