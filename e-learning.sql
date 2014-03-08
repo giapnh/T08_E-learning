@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 07, 2014 at 08:14 AM
+-- Generation Time: Mar 08, 2014 at 09:47 PM
 -- Server version: 5.5.32
 -- PHP Version: 5.4.16
 
@@ -115,18 +115,19 @@ CREATE TABLE IF NOT EXISTS `learn` (
   `student_id` int(11) NOT NULL,
   `lesson_id` int(11) NOT NULL,
   `register_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `status` int(11) NOT NULL COMMENT '1: Active, 0:Lock',
+  `status` int(11) NOT NULL DEFAULT '1' COMMENT '1: Active, 0:Lock',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=15 ;
 
 --
 -- Dumping data for table `learn`
 --
 
 INSERT INTO `learn` (`id`, `student_id`, `lesson_id`, `register_time`, `status`) VALUES
-(1, 7, 1, '2014-03-07 06:51:14', 1),
-(2, 7, 1, '2014-03-07 06:51:33', 1),
-(3, 8, 1, '2014-03-07 06:51:43', 1);
+(11, 8, 9, '2014-03-09 08:56:43', 1),
+(12, 8, 1, '2014-03-09 08:56:41', 1),
+(13, 8, 2, '2014-03-09 08:56:37', 1),
+(14, 8, 3, '2014-03-09 08:28:55', 1);
 
 -- --------------------------------------------------------
 
@@ -155,7 +156,7 @@ INSERT INTO `lesson` (`id`, `teacher_id`, `title`, `description`, `view`, `like`
 (2, 9, 'C プログラミング言語', '第1回「プログラミング言語Cについて知ろう」では、Cの成り立ちから特徴、その用途までを説明しました。なぜ、Cを学ぶことが重要なのかが理解できたと思います。', 0, 0, '2014-03-06 09:42:24', 1),
 (3, 9, '英語', 'えいごであそぼ. こどもたちに英語に親しんで興味を持ってもらうことを目的とした番組です。 番組キャラクターたちと一緒に絵本の世界を楽しみながら、こどもたちが「英語を話してみたい」と思えるような構成を目指しています。', 0, 0, '2014-03-06 09:43:06', 1),
 (4, 9, '数学', '出典を追加して記事の信頼性向上にご協力ください。（2012年1月）. 本記事では数学（すうがく、ギリシア語: μαθηματικά, ラテン語: mathematica, 英語: mathematics）について解説する。 目次. 1 概要; 2 歴史; 3 研究; 4 分野; 5 数学に関する賞; 6 脚注; 7 参考 ...', 0, 0, '2014-03-06 09:43:28', 0),
-(5, 11, '数学', '出典を追加して記事の信頼性向上にご協力ください。（2012年1月）. 本記事では数学（すうがく、ギリシア語: μαθηματικά, ラテン語: mathematica, 英語: mathematics）について解説する。 目次. 1 概要; 2 歴史; 3 研究; 4 分野; 5 数学に関する賞; 6 脚注; 7 参考 ...', 0, 0, '2014-03-07 01:04:23', 0),
+(5, 11, '数学', '出典を追加して記事の信頼性向上にご協力ください。（2012年1月）. 本記事では数学（すうがく、ギリシア語:ラテン語: mathematica, 英語: mathematics）について解説する。 目次. 1 概要; 2 歴史; 3 研究; 4 分野; 5 数学に関する賞; 6 脚注; 7 参考 ...', 0, 0, '2014-03-09 06:28:44', 0),
 (6, 11, '数学', '出典を追加して記事の信頼性向上にご協力ください。（2012年1月）. 本記事では数学（すうがく、ギリシア語: μαθηματικά, ラテン語: mathematica, 英語: mathematics）について解説する。 目次. 1 概要; 2 歴史; 3 研究; 4 分野; 5 数学に関する賞; 6 脚注; 7 参考 ...', 0, 0, '2014-03-07 01:04:26', 0),
 (7, 11, '数学', '出典を追加して記事の信頼性向上にご協力ください。（2012年1月）. 本記事では数学（すうがく、ギリシア語: μαθηματικά, ラテン語: mathematica, 英語: mathematics）について解説する。 目次. 1 概要; 2 歴史; 3 研究; 4 分野; 5 数学に関する賞; 6 脚注; 7 参考 ...', 0, 0, '2014-03-07 01:04:29', 0),
 (8, 12, '数学', '出典を追加して記事の信頼性向上にご協力ください。（2012年1月）. 本記事では数学（すうがく、ギリシア語: μαθηματικά, ラテン語: mathematica, 英語: mathematics）について解説する。 目次. 1 概要; 2 歴史; 3 研究; 4 分野; 5 数学に関する賞; 6 脚注; 7 参考 ...', 0, 0, '2014-03-07 01:04:35', 0);
@@ -180,9 +181,9 @@ CREATE TABLE IF NOT EXISTS `lesson_file` (
 --
 
 INSERT INTO `lesson_file` (`id`, `lesson_id`, `filename`, `description`, `location`) VALUES
-(1, 1, 'File PDF', 'Bai hoc chuong 1', '/public/file/lesson/1/'),
-(2, 1, 'File MP3', 'Bai nghe chuong 1', '/public/file/lesson/1/'),
-(3, 1, 'File TSV', 'Bai Test chuong 1', '/public/file/lesson/1/');
+(1, 1, '内部設計.pdf', 'Bai hoc chuong 1', '/public/files/1/内部設計.pdf'),
+(2, 1, 'test.mp3', 'Bai nghe chuong 1', '/public/files/1/test.mp3'),
+(3, 1, 'test.tsv', 'Bai Test chuong 1', '/public/files/1/test.tsv');
 
 -- --------------------------------------------------------
 
@@ -206,7 +207,7 @@ INSERT INTO `lesson_tag` (`id`, `lesson_id`, `tag_id`) VALUES
 (2, 1, 1),
 (3, 1, 2),
 (4, 2, 1),
-(5, 2, 2);
+(5, 3, 2);
 
 -- --------------------------------------------------------
 
