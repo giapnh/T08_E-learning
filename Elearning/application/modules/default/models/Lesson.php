@@ -12,7 +12,10 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
     }
 
     public function listAll() {
-        return $this->fetchAll()->toArray();
+        $select = $this->getAdapter()->select();
+        $select->from('lesson')
+                ->join('user', 'lesson.teacher_id=user.id', array('name'));
+        return $this->getAdapter()->fetchAll($select);
     }
 
     public function listWithTag($tag) {
@@ -22,6 +25,7 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
         $select = $this->getAdapter()->select();
         $select->from(array('l' => 'lesson'))
                 ->join(array('lt' => 'lesson_tag'), 'l.id = lt.lesson_id')
+                ->join('user', 'l.teacher_id=user.id', array('name'))
                 ->where("lt.tag_id=$tag");
         return $this->getAdapter()->fetchAll($select);
     }
@@ -33,7 +37,43 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
         $select = $this->getAdapter()->select();
         $select->from(array('l' => 'lesson'))
                 ->join(array('u' => 'user'), 'l.teacher_id = u.id')
+                ->join('user', 'l.teacher_id=user.id', array('name'))
                 ->where("l.teacher_id=$teacher");
+        return $this->getAdapter()->fetchAll($select);
+    }
+
+    public function listAllByStudent($student) {
+        $select = $this->getAdapter()->select();
+        $select->from('lesson')
+                ->join('user', 'lesson.teacher_id=user.id', array('name'))
+                ->join('learn', 'learn.lesson_id=lesson.id')
+                ->where("learn.student_id=$student");
+        return $this->getAdapter()->fetchAll($select);
+    }
+
+    public function listWithTagByStudent($tag, $studentId) {
+        if ($tag == 0) {
+            return $this->listAllByStudent($studentId);
+        }
+        $select = $this->getAdapter()->select();
+        $select->from(array('l' => 'lesson'))
+                ->join(array('lt' => 'lesson_tag'), 'l.id = lt.lesson_id')
+                ->join('user', 'l.teacher_id=user.id', array('name'))
+                ->where("lt.tag_id=$tag")
+                ->where('l.student_id=?', $studentId);
+        return $this->getAdapter()->fetchAll($select);
+    }
+
+    public function listWithTeacherByStudent($teacher, $studentId) {
+        if ($teacher == 0) {
+            return $this->listAllByStudent($studentId);
+        }
+        $select = $this->getAdapter()->select();
+        $select->from(array('l' => 'lesson'))
+                ->join(array('u' => 'user'), 'l.teacher_id = u.id')
+                ->join('user', 'l.teacher_id=user.id', array('name'))
+                ->where("l.teacher_id=$teacher")
+                ->where('l.student_id=?', $studentId);
         return $this->getAdapter()->fetchAll($select);
     }
 
@@ -42,7 +82,11 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
      * @param type $id
      */
     public function findLessonById($lessonId) {
-        return $this->fetchRow("id='$lessonId'");
+        $select = $this->getAdapter()->select();
+        $select->from('lesson')
+                ->where('lesson.id=?', $lessonId)
+                ->join('user', 'lesson.teacher_id=user.id');
+        return $this->getAdapter()->fetchRow($select);
     }
 
     /**

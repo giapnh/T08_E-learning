@@ -182,18 +182,64 @@ class StudentController extends IController {
         $lfileModel = new Default_Model_LessonFile();
         if ($this->_request->isGet()) {
             $do = $this->_request->getParam('do');
+            $this->view->do = $do;
+            $lesson_id = $this->_request->getParam('lessonId');
             if ($do == 'view') {
-                $lesson_id = $this->_request->getParam('id');
                 $info = $lessonModel->findLessonById($lesson_id);
                 // Number of student join to this course
                 $tagInfo = $tagModel->getAllTagOfLesson($lesson_id);
-                $this->view->isLearn = $learnModel->;
                 $this->view->lessonInfo = $info;
                 $this->view->tagsInfo = $tagInfo;
                 $this->view->numStudent = $learnModel->countStudenJoinLesson($lesson_id)[0];
                 $this->view->filesInfo = $lfileModel->listFileOfLesson($lesson_id);
             } else if ($do == 'submit') {
-                
+                $isLearn = $learnModel->isStudentLearn(Zend_Auth::getInstance()->getStorage()->read()['id'], $lesson_id);
+                $this->view->isLearn = $isLearn;
+                if ($isLearn == 0) {
+                    $this->view->notify = "前に、あなたはこの授業に登録した！";
+                } else {
+                    //Add to db
+                    $learnModel->doRegisterLesson(Zend_Auth::getInstance()->getStorage()->read()['id'], $lesson_id);
+                    $this->view->notify = "おめでとう！授業登録が成功した！管理者は確認しているが、お待ちください！";
+                }
+            }
+        }
+    }
+
+    public function mylessonAction() {
+        $this->initial();
+        $auth = Zend_Auth::getInstance();
+        $infoUser = $auth->getStorage()->read();
+        if ($this->_request->isGet()) {
+            $get_type = $this->_request->getParam('type');
+            $tagId = $this->_request->getParam('tagId');
+            $teacherId = $this->_request->getParam('teacherId');
+            $this->view->tagId = $tagId;
+            $this->view->teacherId = $teacherId;
+            if ($get_type == null || $get_type == 1) {
+                $tags = new Default_Model_Tag();
+                $this->view->tags = $tags->listAllTagByStudent($infoUser['id']);
+                $this->view->type = 1;
+                $lessons = new Default_Model_Lesson();
+                $paginator = Zend_Paginator::factory($lessons->listWithTagByStudent($tagId, $infoUser['id']));
+                $paginator->setItemCountPerPage(6);
+                $paginator->setPageRange(3);
+                $this->view->numpage = $paginator->count();
+                $currentPage = $this->_request->getParam('page', 1);
+                $paginator->setCurrentPageNumber($currentPage);
+                $this->view->data = $paginator;
+            } else {
+                $learn = new Default_Model_Learn();
+                $this->view->teachers = $learn->listTeacherByStudent($infoUser['id']);
+                $this->view->type = 2;
+                $lessons = new Default_Model_Lesson();
+                $paginator = Zend_Paginator::factory($lessons->listWithTeacherByStudent($teacherId, $infoUser['id']));
+                $paginator->setItemCountPerPage(6);
+                $paginator->setPageRange(3);
+                $this->view->numpage = $paginator->count();
+                $currentPage = $this->_request->getParam('page', 1);
+                $paginator->setCurrentPageNumber($currentPage);
+                $this->view->data = $paginator;
             }
         }
     }
