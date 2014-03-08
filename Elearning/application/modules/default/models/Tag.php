@@ -37,4 +37,15 @@ class Default_Model_Tag extends Zend_Db_Table_Abstract {
         return $this->getAdapter()->fetchAll($select);
     }
 
+    public function listAllTagByStudent($studentId) {
+        $select = $this->getAdapter()->select();
+        $select->from('tag')
+                ->join('lesson_tag', 'lesson_tag.tag_id = tag.id')
+                ->join('lesson', 'lesson.id = lesson_tag.lesson_id')
+                ->join('learn', 'learn.lesson_id = lesson.id')
+                ->join('user', 'user.id = learn.student_id')
+                ->where('user.id = ?', $studentId);
+        return $this->getAdapter()->fetchAll($select);
+    }
+
 }

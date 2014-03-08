@@ -29,62 +29,143 @@
             </div>
         </div>
         <div class="row-show float-left">
-            <div  style="margin: 0px auto;">
-                <div style="width: 80%; color: black;" class="lesson_register_content">
-                    <div class="float-left" style="text-align: left; background: #51A007; width: 100%; color: white; font-weight: bold; padding-top: 10px; padding-bottom: 10px;">
-                        <font style="padding-left: 30px;"><?php echo $this->lessonInfo['title']; ?></font>
-                    </div>
-                    <div class="row-show">
-                        <table cellpadding="0" cellspacing="0" border="1"  style="border: none; text-align: center;">
-                            <tbody>
-                                <tr>
-                                    <td>タグ</td>
-                                    <td style="text-align: left; height: 30px;">
-                                        <?php
-                                        foreach ($this->tagsInfo as $tag) {
-                                            ?>
-                                            <div style="border: none; float: left; margin: 1px; border-radius: 4px; padding: 5px; background: #51A007; color: white;"> <?php echo $tag['tag_name']; ?>
-                                            </div>
+            <?php if ($this->do == 'view') { ?>
+                <div  style="margin: 0px auto;">
+                    <div style="width: 80%; color: black;" class="lesson_register_content">
+                        <div class="float-left" style="text-align: left; background: #51A007; width: 100%; color: white; font-weight: bold; padding-top: 10px; padding-bottom: 10px;">
+                            <font style="padding-left: 30px;"><?php
+                            echo $this->lessonInfo['title'];
+                            ?></font>
+                            <font style="padding-left: 10px; color: #F0F0F0;"><?php
+                            echo '(' . $this->lessonInfo['name'] . '先生)';
+                            ?></font>
+
+                        </div>
+                        <div class="row-show">
+                            <table cellpadding="0" cellspacing="0" border="1"  style="border: none; text-align: center;">
+                                <tbody>
+                                    <tr>
+                                        <td class="td-left">タグ</td>
+                                        <td style="text-align: left; height: 30px;">
                                             <?php
-                                        }
-                                        ?>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="width: 100px; text-align: center;">説明</td>
-                                    <td style="text-align: left;"><?php echo $this->lessonInfo['description']; ?></td>
-                                </tr>
-                                <tr>
-                                    <td style="text-align: center;">作成した日</td>
-                                    <td style="height: 30px; font-weight: bold; font-size: 14px;">
-                                        <?php
-                                        $time = $this->lessonInfo['create_time'];
-                                        $correct = explode(" ", $time)[0];
-                                        $arr = explode("-", $correct);
-                                        $year = $arr[0];
-                                        $mon = $arr[1];
-                                        $day = $arr[2];
-                                        echo $year . "年" . $mon . "月" . $day . "日";
-                                        ?>
+                                            foreach ($this->tagsInfo as $tag) {
+                                                ?>
+                                                <div style="border: none; float: left; margin: 1px; border-radius: 4px; padding: 5px; background: #51A007; color: white;"> <?php echo $tag['tag_name']; ?>
+                                                </div>
+                                                <?php
+                                            }
+                                            ?>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="td-left">説明</td>
+                                        <td style="text-align: left; padding: 10px; font-size: 14px; line-height: 18px;"><?php echo $this->lessonInfo['description']; ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="td-left">作成した日</td>
+                                        <td style="height: 30px; font-weight: bold; font-size: 14px;">
+                                            <?php
+                                            $time = $this->lessonInfo['create_time'];
+                                            $correct = explode(" ", $time)[0];
+                                            $arr = explode("-", $correct);
+                                            $year = $arr[0];
+                                            $mon = $arr[1];
+                                            $day = $arr[2];
+                                            echo $year . "年" . $mon . "月" . $day . "日";
+                                            ?>
 
-                                    </td>
-                                </tr>
+                                        </td>
+                                    </tr>
 
-                                <tr>
-                                    <td>学生数</td>
-                                    <td style="height: 30px; font-weight: bold; font-size: 14px;">
-                                        <?php
-                                        echo $this->numStudent;
-                                        ?></td>
-                                </tr>
+                                    <tr>
+                                        <td class="td-left">学生数</td>
+                                        <td style="height: 30px; font-weight: bold; font-size: 14px;">
+                                            <?php
+                                            echo $this->numStudent;
+                                            ?></td>
+                                    </tr>
 
-                                <tr>
-                                    <td colspan="2" style="text-align: left; height: 30px; padding-left: 10px; font-weight: bold; font-size: 14px;">アップロードしたファイル</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                                    <tr>
+                                        <td colspan="2" style="text-align: left; height: 30px; padding-left: 10px; font-weight: bold; font-size: 14px;">アップロードしたファイル</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <table cellpadding="3" cellspacing="3" style="width: 90%; float: right;">
+                                                <tbody>
+                                                    <?php
+                                                    $count = 0;
+                                                    foreach ($this->filesInfo as $file) {
+                                                        $count ++;
+                                                        ?>
+                                                        <tr>
+                                                            <td style="width: 5%;"><?php echo $count; ?></td>
+                                                            <td style="width: 30%;">
+                                                                <a href="#" style="text-decoration: underline; font-style: italic; color: #069;">
+                                                                    <?php echo $file['filename']; ?>
+                                                                </a>
+                                                            </td>
+                                                            <td style="width: 60%;"><?php echo $file['description']; ?></td>
+                                                        </tr>
+                                                    <?php } ?>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="2" style="font-size: 15px; text-align: left; padding: 10px;">
+                                            この授業を7日の勉強を買います<br>
+                                            値段:<span style="color: green; font-size: 18px; font-weight: bold;">2万VND</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" style="padding: 10px;">
+                                            <div style="margin: 0px auto; width: 100%;">
+                                                <a href="<?php echo $this->baseUrl(); ?>/student/registerLesson?do=submit&lessonId=<?php echo $this->lessonInfo['id']; ?>">
+                                                    <button class="showlogfromm">登録</button>
+                                                </a>
+                                                <button class="register-cus" onclick="javascript:history.go(-1);">キャンセル</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
+                <?php
+            } else {
+                ?>
+                <div  style="margin: 0px auto; min-height: 400px;">
+                    <table cellpadding="2" cellspacing="2" style="width: 80%; border-style: solid;border-width: thin; border-color: #069;">
+                        <tbody>
+                            <tr>
+                                <td style="width: 100%; height: 30px; color: white; font-weight: bold; padding-left: 10px; font-size: 20px; background: #51A007;">システム報告</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold; font-size: 17px;height: 100px; text-align: center;"><?php echo $this->notify; ?></td>
+                            </tr>
+                            <tr>
+                                <td style="height: 50px; text-align: center;">
+                                    <?php
+                                    if (isset($this->isLearn)) {
+                                        if ($this->isLearn == 0) {
+                                            ?>
+                                            <!--Show lesson-->
+                                            <a href="<?php echo $this->baseUrl(); ?>/student/learn"><button class="showlogfromm">授業が勉強する</button></a>
+                                            <?php
+                                        }
+                                    }
+                                    ?>
+                                    <!--Back-->
+                                    <a href="<?php echo $this->baseUrl(); ?>/student/myLesson"><button class="register-cus">マイ授業</button></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <?php
+                }
+                ?>
             </div>
         </div>
     </div>
