@@ -1,26 +1,133 @@
+<!--
+@Controller: teacher
+@Action: index
+-->
 <center>
     <div class="content" style="background: #F0F0F0;">
-        <div class="top_content clear banner">
-            <div style="position: absolute; top: 120px; right: 70px; ">
-                <a href="<?php echo $this->baseUrl(); ?>/user/logout"><font style="color: #7E3500; font-weight: bold; text-decoration: underline;">ログアウト</font>
+        <?php 
+            echo $this->partial("teacher/teacher-top.phtml", array('username'=>$this->user_info['name']));
+        ?>
+        <font style="color: white;">
+            <!--Function tab bar-->
+            <div class="row-show">
+                <a href="../student/index?type=1">
+                    <button style="margin-top: 10px;" name="btn_tag" class="showlogfromm float-left">タグ
+                    </button>
                 </a>
-            </div>
-            <div  class="topbar-username"><big>ようこそ!</bigF><?php echo $this->user_info['name']; ?></div>
-        </div>
-        <!--Menu Tab Bar-->
-        <div class="menus clear">
-            <div class="mn first_mn">
-                <a class="home" href="<?php echo $this->baseUrl(); ?>/teacher/index">
-                    <font style="color: white;">授業</font>
+                <a href="../student/index?type=2">
+                    <button style="margin-left: 10px; margin-top: 10px;" name="btn_teacher" class="register-cus float-left">
+                        先生</button>
                 </a>
+                <a href="<?php echo $this->baseUrl()."/teacher/create-lesson" ?>">
+                    <button style="margin-left: 10px; margin-top: 10px;" name="btn_teacher" class="register-cus float-right">
+                        <img class="float-left" src="<?php echo $this->baseUrl()."/public/images/create.png" ?>" />
+                        <div class="float-left" style="padding: 4px;">授業作成</div>
+                    </button>
+                </a>
+                <div style="margin-top: 10px;" class="float-right">
+                    <form action="#" style="height: 30px;">
+                        <input type="text" name="q" class="input_search" placeholder="検索内容">
+                        <input name="sa" type="button" class="button-search" value="検索">
+                    </form>
+                </div>
             </div>
-            <div title="" class="mn "><a href="#"><font style="color: white;">支払い</a>
+            <!--Content tab bar-->
+            <div class="containt_center_cen clear">
+                <table class="list_lession_content" cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                        <td valign="top" class="containt_center_cen_left">
+                            <div style="width: 100%"><input type="text" class="input_search" style="width: 90%; margin-left: 10px; border: none; height: 25px;"></div>
+                            <div style="width: 100%;"></div>
+                            <a href="/Elearning/student/index?type=1&amp;tagId=0">
+                                <button class="teacher-item">全部</button>
+                            </a>
+                            <a href="/Elearning/student/index?type=1&amp;tagId=0">
+                                <button class="teacher-item">全部</button>
+                            </a>
+                            <a href="/Elearning/student/index?type=1&amp;tagId=0">
+                                <button class="teacher-item">全部</button>
+                            </a>
+                            <a href="/Elearning/student/index?type=1&amp;tagId=0">
+                                <button class="teacher-item">全部</button>
+                            </a>
+                            <a href="/Elearning/student/index?type=1&amp;tagId=0">
+                                <button class="teacher-item">全部</button>
+                            </a>
+                        </td>
+                        <td valign="top" class="containt_center_cen_right">
+                            <div class="row-show">
+                                <div class="lession-content-left">
+                                    <a href="<?php echo $this->baseUrl()."/teacher/lesson?id=1" ?>">
+                                        <table cellpadding="1" cellspacing="4" border="0" style="width: 100%;margin: 0px auto;">
+                                            <tbody>
+                                                <tr>
+                                                    <td style="width: 100%;" colspan="1" class="lession-title">IT日本語</td>
+                                                </tr>
+                                                <tr><td><hr></td></tr>
+                                                <tr>
+                                                    <td class="lession-teacher"><b>先生: </b> ごんだい</td>
+                                                    <td class="lession-time">2014-03-01 18:02:36</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="lession-description lesson-description-correct" style="width: 100%;" colspan="2">用件定義、外部設計、内部設計、コーディング、テスト</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <img src="/Elearning/public/images/num-like.png" width="15" height="15"> <font class="num-like-comment">0</font>
+                                                        <img src="/Elearning/public/images/num-view.png" width="15" height="15"> <font class="num-like-comment">0</font>
+                                                        <a href="/Elearning/student/registerLesson?id=1" class="link-view-detail float-right">詳細</a>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </a>
+                                </div>
+                                        
+                                <div class="lession-content-right">
+                                    <a href="<?php echo $this->baseUrl()."/teacher/lesson?id=2" ?>">
+                                        <table cellpadding="1" cellspacing="4" border="0" style="width: 100%;margin: 0px auto;">
+                                            <tbody>
+                                                <tr>
+                                                    <td style="width: 100%;" colspan="2" class="lession-title">C プログラミング言語</td>
+                                                </tr>
+                                                <tr><td><hr></td></tr>
+                                                <tr style="width: 100%;">
+                                                    <td class="lession-teacher"><b>先生: </b> ごんだい</td>
+                                                    <td class="lession-time">2014-03-01 17:57:28</td>
+                                                </tr>
+                                                <tr class="lession-description lesson-description-correct" style="width: 100%;">
+                                                    <td colspan="2">基本的なC言語プログラミング。</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <img src="/Elearning/public/images/num-like.png" width="15" height="15"> <font class="num-like-comment">0</font>
+                                                        <img src="/Elearning/public/images/num-view.png" width="15" height="15"> <font class="num-like-comment">0</font>
+                                                        <a href="/Elearning/student/registerLesson?id=2" class="link-view-detail float-right">詳細</a>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <div class="paging">
+                    <div class="paging-center">
+                        <a href="">
+                            <div class="paging-item-curr">1</div>
+                        </a>
+                        <a href="/Elearning/student/index/page/2">
+                            <div class="paging-item">2</div>
+                        </a>
+                        <div class="paging-next-prev">
+                            <a href="/Elearning/student/index/page/2">次</a>
+                        </div>     
+                    </div>
+                </div>
             </div>
-            <div title="" class="mn "><a href="<?php echo $this->baseUrl(); ?>/teacher/profile"><font style="color: white;">プロファイル</font></a>
-            </div>
-        </div>
-
-       
+        </font></big>
 
     </div>
 </center>

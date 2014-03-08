@@ -145,7 +145,7 @@ class TeacherController extends IController {
      * @param type $name Description
      * @return type
      */
-    public function createlessonAction() {
+    public function createLessonAction() {
         $this->initial();
 //        return;
 //        $form = new Default_Form_CreateLesson();
@@ -244,7 +244,7 @@ class TeacherController extends IController {
      * @param type $name Description
      */
     public function lessonAction() {
-        
+        $this->initial();
     }
 
     /**
@@ -278,5 +278,13 @@ class TeacherController extends IController {
     public function studentResultAction() {
         
     }
-
+    
+    /**
+     * 課金情報処理
+     * 
+     * 
+     */
+    public function paymentAction() {
+        $this->initial();
+    }
 }
