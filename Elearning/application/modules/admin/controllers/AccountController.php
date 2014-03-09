@@ -1,7 +1,7 @@
 <?php
 
 require_once 'IController.php';
-require '/../../default/controllers/Message.php';
+require_once '/../../default/controllers/Message.php';
 
 class Admin_AccountController extends IController {
     
