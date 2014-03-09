@@ -81,7 +81,7 @@ class Admin_AccountController extends IController {
                     // ホームページに移転する
                     $this->redirect("/admin/user");
                 } else {
-                    $this->view->errorMessage = Message::$M0034;
+                    $this->view->errorMessage = Message::$M0031;
                 }
                 
             } else {

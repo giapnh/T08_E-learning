@@ -1,11 +1,16 @@
 -- phpMyAdmin SQL Dump
 -- version 4.0.4.1
+-- version 4.0.4
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 08, 2014 at 09:47 PM
+-- Generation Time: Mar 07, 2014 at 08:14 AM
 -- Server version: 5.5.32
 -- PHP Version: 5.4.16
+-- Host: localhost
+-- Generation Time: Mar 09, 2014 at 01:01 PM
+-- Server version: 5.6.12-log
+-- PHP Version: 5.4.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -115,19 +120,24 @@ CREATE TABLE IF NOT EXISTS `learn` (
   `student_id` int(11) NOT NULL,
   `lesson_id` int(11) NOT NULL,
   `register_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `status` int(11) NOT NULL DEFAULT '1' COMMENT '1: Active, 0:Lock',
+  `status` int(11) NOT NULL COMMENT '1: Active, 0:Lock',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=15 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `learn`
 --
 
 INSERT INTO `learn` (`id`, `student_id`, `lesson_id`, `register_time`, `status`) VALUES
-(11, 8, 9, '2014-03-09 08:56:43', 1),
-(12, 8, 1, '2014-03-09 08:56:41', 1),
-(13, 8, 2, '2014-03-09 08:56:37', 1),
-(14, 8, 3, '2014-03-09 08:28:55', 1);
+(1, 7, 1, '2014-03-07 06:51:14', 1),
+(2, 7, 1, '2014-03-07 06:51:33', 1),
+(3, 8, 1, '2014-03-07 06:51:43', 1);
+
+(1, 7, 1, '2014-03-07 06:51:14', 1),
+(2, 7, 1, '2014-03-07 06:51:33', 1),
+(3, 8, 1, '2014-03-07 06:51:43', 1),
+(4, 16, 1, '2014-03-08 18:22:21', 1);
 
 -- --------------------------------------------------------
 
@@ -146,6 +156,7 @@ CREATE TABLE IF NOT EXISTS `lesson` (
   `status` int(11) NOT NULL DEFAULT '0' COMMENT '1: Active; 0: inactive',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=28 ;
 
 --
 -- Dumping data for table `lesson`
@@ -156,10 +167,30 @@ INSERT INTO `lesson` (`id`, `teacher_id`, `title`, `description`, `view`, `like`
 (2, 9, 'C プログラミング言語', '第1回「プログラミング言語Cについて知ろう」では、Cの成り立ちから特徴、その用途までを説明しました。なぜ、Cを学ぶことが重要なのかが理解できたと思います。', 0, 0, '2014-03-06 09:42:24', 1),
 (3, 9, '英語', 'えいごであそぼ. こどもたちに英語に親しんで興味を持ってもらうことを目的とした番組です。 番組キャラクターたちと一緒に絵本の世界を楽しみながら、こどもたちが「英語を話してみたい」と思えるような構成を目指しています。', 0, 0, '2014-03-06 09:43:06', 1),
 (4, 9, '数学', '出典を追加して記事の信頼性向上にご協力ください。（2012年1月）. 本記事では数学（すうがく、ギリシア語: μαθηματικά, ラテン語: mathematica, 英語: mathematics）について解説する。 目次. 1 概要; 2 歴史; 3 研究; 4 分野; 5 数学に関する賞; 6 脚注; 7 参考 ...', 0, 0, '2014-03-06 09:43:28', 0),
-(5, 11, '数学', '出典を追加して記事の信頼性向上にご協力ください。（2012年1月）. 本記事では数学（すうがく、ギリシア語:ラテン語: mathematica, 英語: mathematics）について解説する。 目次. 1 概要; 2 歴史; 3 研究; 4 分野; 5 数学に関する賞; 6 脚注; 7 参考 ...', 0, 0, '2014-03-09 06:28:44', 0),
+(5, 11, '数学', '出典を追加して記事の信頼性向上にご協力ください。（2012年1月）. 本記事では数学（すうがく、ギリシア語: μαθηματικά, ラテン語: mathematica, 英語: mathematics）について解説する。 目次. 1 概要; 2 歴史; 3 研究; 4 分野; 5 数学に関する賞; 6 脚注; 7 参考 ...', 0, 0, '2014-03-07 01:04:23', 0),
 (6, 11, '数学', '出典を追加して記事の信頼性向上にご協力ください。（2012年1月）. 本記事では数学（すうがく、ギリシア語: μαθηματικά, ラテン語: mathematica, 英語: mathematics）について解説する。 目次. 1 概要; 2 歴史; 3 研究; 4 分野; 5 数学に関する賞; 6 脚注; 7 参考 ...', 0, 0, '2014-03-07 01:04:26', 0),
 (7, 11, '数学', '出典を追加して記事の信頼性向上にご協力ください。（2012年1月）. 本記事では数学（すうがく、ギリシア語: μαθηματικά, ラテン語: mathematica, 英語: mathematics）について解説する。 目次. 1 概要; 2 歴史; 3 研究; 4 分野; 5 数学に関する賞; 6 脚注; 7 参考 ...', 0, 0, '2014-03-07 01:04:29', 0),
 (8, 12, '数学', '出典を追加して記事の信頼性向上にご協力ください。（2012年1月）. 本記事では数学（すうがく、ギリシア語: μαθηματικά, ラテン語: mathematica, 英語: mathematics）について解説する。 目次. 1 概要; 2 歴史; 3 研究; 4 分野; 5 数学に関する賞; 6 脚注; 7 参考 ...', 0, 0, '2014-03-07 01:04:35', 0);
+(8, 12, '数学', '出典を追加して記事の信頼性向上にご協力ください。（2012年1月）. 本記事では数学（すうがく、ギリシア語: μαθηματικά, ラテン語: mathematica, 英語: mathematics）について解説する。 目次. 1 概要; 2 歴史; 3 研究; 4 分野; 5 数学に関する賞; 6 脚注; 7 参考 ...', 0, 0, '2014-03-07 01:04:35', 0),
+(9, 15, 'Test title', 'test Description', 0, 0, '2014-03-09 09:27:50', 1),
+(10, 15, 'Test title', 'test description', 0, 0, '2014-03-09 09:57:08', 1),
+(11, 15, 'Test title', 'test description', 0, 0, '2014-03-09 09:57:32', 1),
+(12, 15, 'Test title', 'Test des', 0, 0, '2014-03-09 11:19:37', 1),
+(13, 15, 'Test title', 'Test des', 0, 0, '2014-03-09 11:20:17', 1),
+(14, 15, 'Test title', 'Test des', 0, 0, '2014-03-09 11:21:22', 1),
+(15, 15, 'Test title', 'Test des', 0, 0, '2014-03-09 11:23:13', 1),
+(16, 15, 'Test title', 'description', 0, 0, '2014-03-09 11:24:44', 1),
+(17, 15, 'Test title', 'adsf', 0, 0, '2014-03-09 12:01:19', 1),
+(18, 15, 'Test title', 'asdf', 0, 0, '2014-03-09 12:02:45', 1),
+(19, 15, 'Test title', 'asdf', 0, 0, '2014-03-09 12:04:00', 1),
+(20, 15, 'Test title', 'asdf', 0, 0, '2014-03-09 12:05:43', 1),
+(21, 15, 'Test title', 'asdf', 0, 0, '2014-03-09 12:06:49', 1),
+(22, 15, 'Test title', 'asdf', 0, 0, '2014-03-09 12:07:20', 1),
+(23, 15, 'a', 'asdf', 0, 0, '2014-03-09 12:21:47', 1),
+(24, 15, 'Test title', 'asdf', 0, 0, '2014-03-09 12:23:08', 1),
+(25, 15, 'Test title', 'asdf', 0, 0, '2014-03-09 12:24:28', 1),
+(26, 15, 'asdf', 'adsf', 0, 0, '2014-03-09 12:47:50', 1),
+(27, 15, 'Test title', 'asdfasdfa', 0, 0, '2014-03-09 12:48:39', 1);
 
 -- --------------------------------------------------------
 
@@ -172,18 +203,27 @@ CREATE TABLE IF NOT EXISTS `lesson_file` (
   `lesson_id` int(11) NOT NULL,
   `filename` varchar(255) NOT NULL,
   `description` varchar(512) NOT NULL,
+  `description` varchar(512) DEFAULT NULL,
+  `title` varchar(200) DEFAULT NULL,
+  `subtitle` varchar(200) DEFAULT NULL,
   `location` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=26 ;
 
 --
 -- Dumping data for table `lesson_file`
 --
 
 INSERT INTO `lesson_file` (`id`, `lesson_id`, `filename`, `description`, `location`) VALUES
-(1, 1, '内部設計.pdf', 'Bai hoc chuong 1', '/public/files/1/内部設計.pdf'),
-(2, 1, 'test.mp3', 'Bai nghe chuong 1', '/public/files/1/test.mp3'),
-(3, 1, 'test.tsv', 'Bai Test chuong 1', '/public/files/1/test.tsv');
+(1, 1, 'File PDF', 'Bai hoc chuong 1', '/public/file/lesson/1/'),
+(2, 1, 'File MP3', 'Bai nghe chuong 1', '/public/file/lesson/1/'),
+(3, 1, 'File TSV', 'Bai Test chuong 1', '/public/file/lesson/1/');
+INSERT INTO `lesson_file` (`id`, `lesson_id`, `filename`, `description`, `title`, `subtitle`, `location`) VALUES
+(22, 26, '02W-02-E-Learningシステムテスト用TSVファイルサンプル.tsv', '', 'This is test title', 'This is test subtitle', 'files\\26\\13943692700.html'),
+(23, 27, 'img_file.png', '', '', '', 'files\\27\\13943693190.png'),
+(24, 27, '02W-02-E-Learningシステムテスト用TSVファイルサンプル.tsv', '', 'This is test title', 'This is test subtitle', 'files\\27\\13943693191.html'),
+(25, 27, 'Trà My Idol,Hoàng Rapper – Cần Lắm.mp3', '', '', '', 'files\\27\\13943693192.mp3');
 
 -- --------------------------------------------------------
 
@@ -207,7 +247,7 @@ INSERT INTO `lesson_tag` (`id`, `lesson_id`, `tag_id`) VALUES
 (2, 1, 1),
 (3, 1, 2),
 (4, 2, 1),
-(5, 3, 2);
+(5, 2, 2);
 
 -- --------------------------------------------------------
 
@@ -326,6 +366,8 @@ CREATE TABLE IF NOT EXISTS `test_result` (
   `learn_id` int(11) NOT NULL,
   `test_file_id` int(11) NOT NULL,
   `point` int(11) NOT NULL,
+  `file_id` int(11) NOT NULL,
+  `result` varchar(1000) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
@@ -372,6 +414,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `last_login_time` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=15 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=17 ;
 
 --
 -- Dumping data for table `user`
@@ -385,6 +428,9 @@ INSERT INTO `user` (`id`, `username`, `first_password`, `password`, `name`, `sex
 (12, 'giap2002', 'd12f981e91d84b699f4d15b9de6bb3f3', 'd12f981e91d84b699f4d15b9de6bb3f3', '竹本', 0, 'hgbk.it@gmail.com', '19-2-1996', 'Quận Hoàng Mai, Hà Nội', '01664643234', '711A948594898', '1+1=', '2', '1+1=', '2', 2, 1, NULL, 0, NULL),
 (13, 'giapnh1', '521fa11ddef0190b157ce6f5aa602659', 'c4ec9911d93f93e36dcb77bd18c3e3d7', '山本', 0, 'hgbk.it@gmail.com', '29-2-1995', 'Hoang Mai', '01664643234', '711A948594898', '1+1=', '2', '1+1=', '23', 1, 1, NULL, 0, NULL),
 (14, 'giapnh2', '521fa11ddef0190b157ce6f5aa602659', 'c4ec9911d93f93e36dcb77bd18c3e3d7', 'Nguyễn Hữu Giáp', 0, 'hgbk.it@gmail.com', '29-2-1995', 'Hoang Mai', '01664643234', '711A948594898', '1+1=', '2', '1+1=', '23', 1, 1, NULL, 0, NULL);
+(14, 'giapnh2', '521fa11ddef0190b157ce6f5aa602659', 'c4ec9911d93f93e36dcb77bd18c3e3d7', 'Nguyễn Hữu Giáp', 0, 'hgbk.it@gmail.com', '29-2-1995', 'Hoang Mai', '01664643234', '711A948594898', '1+1=', '2', '1+1=', '23', 1, 1, NULL, 0, NULL),
+(15, 'thayminh', '8a24e37323013b964ea7191be423fc19', '8a24e37323013b964ea7191be423fc19', 'Tran Quang Minh', 0, 'tminh_1234@yahoo.com', '16-8-2000', '45 Trần Đại Nghĩa', '09887654321', '711A12334534', 'abc', 'xyz', 'abc', 'xyz', 2, 1, NULL, 1, NULL),
+(16, 'minhtq', '071998693c1568527a785191acb1491c', '071998693c1568527a785191acb1491c', 'Tran Quang Minh', 0, 'tminh_1234@yahoo.com', '27-8-1998', '45 Trần Đại Nghĩa', '09887654321', '711A12334534', 'abc', 'xyz', 'abc', 'xyz', 1, 1, NULL, 1, NULL);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

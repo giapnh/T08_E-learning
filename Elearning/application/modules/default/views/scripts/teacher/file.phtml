@@ -1,1 +1,22 @@
-File view
+<div class="content" style="background: #F0F0F0;">
+    <center>
+        <?php 
+            echo $this->partial("teacher/teacher-top.phtml", array('username'=>$this->user_info['name']));
+        ?>
+    </center>
+    <div class="file_container">
+        <div style="width: 200px; float: left;  border: 1px solid yellowgreen;">
+            <div>Filename 1</div>
+            <div>Filename 2</div>
+            <div>Filename 3</div>
+            <div>Filename 4</div>
+            <div>Filename 5</div>
+        </div>
+        <div style="width: 600px; float: left; border: 1px solid yellowgreen; ">
+            <form action="#" method="post">
+                <?php echo $this->testHtml; ?>
+                <input type="submit" value="結果を見る">
+            </form>
+        </div>
+    </div>
+</div>
