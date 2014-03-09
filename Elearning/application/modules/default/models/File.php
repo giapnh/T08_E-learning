@@ -119,6 +119,8 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
     public function tsvFileToTest($fileName, $info, $description) {
         $target = APPLICATION_PATH . "\\..\\" . self::$UPLOAD_DIR . "\\" . $fileName;
         $this->tmp = file($target);
+        var_dump($this->tmp);
+        die();
         $this->fileToLines();
         
         $title = $this->readTestTitle();
