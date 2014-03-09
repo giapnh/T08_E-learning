@@ -15,7 +15,7 @@
         <!--Menu Tab Bar-->
         <div class="menus clear">
             <div class="mn">
-                <a class="home" href="<?php echo $this->baseUrl(); ?>/student/myLesson">
+                <a class="home" href="<?php echo $this->baseUrl(); ?>/student/index">
                     <font style="color: white;">ホーム</font>
                 </a>
             </div>
@@ -157,7 +157,15 @@
                                                         <td>
                                                             <img src="<?php echo $this->baseUrl(); ?>/public/images/num-like.png" width="15" height="15"> <font class="num-like-comment"><?php echo $item['like']; ?></font>
                                                             <img src="<?php echo $this->baseUrl(); ?>/public/images/num-view.png" width="15" height="15"> <font class="num-like-comment"><?php echo $item['view']; ?></font>
-                                                            <a href="<?php echo $this->baseUrl(); ?>/student/registerLesson?do=view&lessonId=<?php echo $item['id']; ?>"  class="link-view-detail float-right">詳細</a>
+                                                            <?php if ($item['status'] == 1) { ?>
+                                                                <a href="<?php echo $this->baseUrl(); ?>/student/file?lessonId=<?php echo $item['id']; ?>"  class="link-view-detail float-right">詳細</a>
+                                                                <img src="<?php echo $this->baseUrl(); ?>/public/images/confirmed.png" width="15" height="15" class="float-right">
+                                                            <?php } else {
+                                                                ?>
+                                                                <a href="javascript:alert('この授業はロックしています！');"  class="link-view-detail float-right">詳細</a>
+                                                                <img src="<?php echo $this->baseUrl(); ?>/public/images/lock.png" width="15" height="15" class="float-right">
+                                                            <?php }
+                                                            ?>
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -184,7 +192,15 @@
                                                         <td>
                                                             <img src="<?php echo $this->baseUrl(); ?>/public/images/num-like.png" width="15" height="15"> <font class="num-like-comment"><?php echo $item['like']; ?></font>
                                                             <img src="<?php echo $this->baseUrl(); ?>/public/images/num-view.png" width="15" height="15"> <font class="num-like-comment"><?php echo $item['view']; ?></font>
-                                                            <a href="<?php echo $this->baseUrl(); ?>/student/registerLesson?do=view&lessonId=<?php echo $item['id']; ?>"  class="link-view-detail float-right">詳細</a>
+                                                            <?php if ($item['status'] == 1) { ?>
+                                                                <a href="<?php echo $this->baseUrl(); ?>/student/file?lessonId=<?php echo $item['id']; ?>"  class="link-view-detail float-right">詳細</a>
+                                                                <img src="<?php echo $this->baseUrl(); ?>/public/images/confirmed.png" width="15" height="15" class="float-right">
+                                                            <?php } else {
+                                                                ?>
+                                                                <a href="javascript:alert('この授業はロックしています！');"  class="link-view-detail float-right">詳細</a>
+                                                                <img src="<?php echo $this->baseUrl(); ?>/public/images/lock.png" width="15" height="15" class="float-right">
+                                                            <?php }
+                                                            ?>
                                                         </td>
                                                     </tr>
                                                 </tbody>

@@ -19,7 +19,7 @@
                     <font style="color: white;">ホーム</font>
                 </a>
             </div>
-            <div title="" class="mn"><a href="#"><font style="color: white;">マイ授業</font></a>
+            <div title="" class="mn"><a href="<?php echo $this->baseUrl(); ?>/student/myLesson"><font style="color: white;">マイ授業</font></a>
             </div>
             <!--                <div class="mn" title=""><a href="#"><font style="color: white;">授業リスト</font></a>
                             </div>-->
@@ -32,7 +32,7 @@
             <?php if ($this->do == 'view') { ?>
                 <div  style="margin: 0px auto;">
                     <div style="width: 80%; color: black;" class="lesson_register_content">
-                        <div class="float-left" style="text-align: left; background: #51A007; width: 100%; color: white; font-weight: bold; padding-top: 10px; padding-bottom: 10px;">
+                        <div class="float-left lesson-big-title">
                             <font style="padding-left: 30px;"><?php
                             echo $this->lessonInfo['title'];
                             ?></font>
@@ -122,7 +122,7 @@
                                         <td colspan="2" style="padding: 10px;">
                                             <div style="margin: 0px auto; width: 100%;">
                                                 <a href="<?php echo $this->baseUrl(); ?>/student/registerLesson?do=submit&lessonId=<?php echo $this->lessonInfo['id']; ?>">
-                                                    <button class="showlogfromm">登録</button>
+                                                    <button class="showlogfromm">システムの規則を同意して買います</button>
                                                 </a>
                                                 <button class="register-cus" onclick="javascript:history.go(-1);">キャンセル</button>
                                             </div>
@@ -147,16 +147,9 @@
                             </tr>
                             <tr>
                                 <td style="height: 50px; text-align: center;">
-                                    <?php
-                                    if (isset($this->isLearn)) {
-                                        if ($this->isLearn == 0) {
-                                            ?>
-                                            <!--Show lesson-->
-                                            <a href="<?php echo $this->baseUrl(); ?>/student/learn"><button class="showlogfromm">授業が勉強する</button></a>
-                                            <?php
-                                        }
-                                    }
-                                    ?>
+                                    <!--Show lesson-->
+                                    <a href="<?php echo $this->baseUrl(); ?>/student/file?lessonId=<?php echo $this->lessonId; ?>">
+                                        <button class="showlogfromm">授業が勉強する</button></a>
                                     <!--Back-->
                                     <a href="<?php echo $this->baseUrl(); ?>/student/myLesson"><button class="register-cus">マイ授業</button></a>
                                 </td>

@@ -1,7 +1,12 @@
 -- phpMyAdmin SQL Dump
+-- version 4.0.4.1
 -- version 4.0.4
 -- http://www.phpmyadmin.net
 --
+-- Host: 127.0.0.1
+-- Generation Time: Mar 07, 2014 at 08:14 AM
+-- Server version: 5.5.32
+-- PHP Version: 5.4.16
 -- Host: localhost
 -- Generation Time: Mar 09, 2014 at 01:01 PM
 -- Server version: 5.6.12-log
@@ -117,6 +122,7 @@ CREATE TABLE IF NOT EXISTS `learn` (
   `register_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `status` int(11) NOT NULL COMMENT '1: Active, 0:Lock',
   PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 --
@@ -124,6 +130,10 @@ CREATE TABLE IF NOT EXISTS `learn` (
 --
 
 INSERT INTO `learn` (`id`, `student_id`, `lesson_id`, `register_time`, `status`) VALUES
+(1, 7, 1, '2014-03-07 06:51:14', 1),
+(2, 7, 1, '2014-03-07 06:51:33', 1),
+(3, 8, 1, '2014-03-07 06:51:43', 1);
+
 (1, 7, 1, '2014-03-07 06:51:14', 1),
 (2, 7, 1, '2014-03-07 06:51:33', 1),
 (3, 8, 1, '2014-03-07 06:51:43', 1),
@@ -145,6 +155,7 @@ CREATE TABLE IF NOT EXISTS `lesson` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `status` int(11) NOT NULL DEFAULT '0' COMMENT '1: Active; 0: inactive',
   PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=28 ;
 
 --
@@ -159,6 +170,7 @@ INSERT INTO `lesson` (`id`, `teacher_id`, `title`, `description`, `view`, `like`
 (5, 11, '数学', '出典を追加して記事の信頼性向上にご協力ください。（2012年1月）. 本記事では数学（すうがく、ギリシア語: μαθηματικά, ラテン語: mathematica, 英語: mathematics）について解説する。 目次. 1 概要; 2 歴史; 3 研究; 4 分野; 5 数学に関する賞; 6 脚注; 7 参考 ...', 0, 0, '2014-03-07 01:04:23', 0),
 (6, 11, '数学', '出典を追加して記事の信頼性向上にご協力ください。（2012年1月）. 本記事では数学（すうがく、ギリシア語: μαθηματικά, ラテン語: mathematica, 英語: mathematics）について解説する。 目次. 1 概要; 2 歴史; 3 研究; 4 分野; 5 数学に関する賞; 6 脚注; 7 参考 ...', 0, 0, '2014-03-07 01:04:26', 0),
 (7, 11, '数学', '出典を追加して記事の信頼性向上にご協力ください。（2012年1月）. 本記事では数学（すうがく、ギリシア語: μαθηματικά, ラテン語: mathematica, 英語: mathematics）について解説する。 目次. 1 概要; 2 歴史; 3 研究; 4 分野; 5 数学に関する賞; 6 脚注; 7 参考 ...', 0, 0, '2014-03-07 01:04:29', 0),
+(8, 12, '数学', '出典を追加して記事の信頼性向上にご協力ください。（2012年1月）. 本記事では数学（すうがく、ギリシア語: μαθηματικά, ラテン語: mathematica, 英語: mathematics）について解説する。 目次. 1 概要; 2 歴史; 3 研究; 4 分野; 5 数学に関する賞; 6 脚注; 7 参考 ...', 0, 0, '2014-03-07 01:04:35', 0);
 (8, 12, '数学', '出典を追加して記事の信頼性向上にご協力ください。（2012年1月）. 本記事では数学（すうがく、ギリシア語: μαθηματικά, ラテン語: mathematica, 英語: mathematics）について解説する。 目次. 1 概要; 2 歴史; 3 研究; 4 分野; 5 数学に関する賞; 6 脚注; 7 参考 ...', 0, 0, '2014-03-07 01:04:35', 0),
 (9, 15, 'Test title', 'test Description', 0, 0, '2014-03-09 09:27:50', 1),
 (10, 15, 'Test title', 'test description', 0, 0, '2014-03-09 09:57:08', 1),
@@ -190,17 +202,23 @@ CREATE TABLE IF NOT EXISTS `lesson_file` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `lesson_id` int(11) NOT NULL,
   `filename` varchar(255) NOT NULL,
+  `description` varchar(512) NOT NULL,
   `description` varchar(512) DEFAULT NULL,
   `title` varchar(200) DEFAULT NULL,
   `subtitle` varchar(200) DEFAULT NULL,
   `location` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=26 ;
 
 --
 -- Dumping data for table `lesson_file`
 --
 
+INSERT INTO `lesson_file` (`id`, `lesson_id`, `filename`, `description`, `location`) VALUES
+(1, 1, 'File PDF', 'Bai hoc chuong 1', '/public/file/lesson/1/'),
+(2, 1, 'File MP3', 'Bai nghe chuong 1', '/public/file/lesson/1/'),
+(3, 1, 'File TSV', 'Bai Test chuong 1', '/public/file/lesson/1/');
 INSERT INTO `lesson_file` (`id`, `lesson_id`, `filename`, `description`, `title`, `subtitle`, `location`) VALUES
 (22, 26, '02W-02-E-Learningシステムテスト用TSVファイルサンプル.tsv', '', 'This is test title', 'This is test subtitle', 'files\\26\\13943692700.html'),
 (23, 27, 'img_file.png', '', '', '', 'files\\27\\13943693190.png'),
@@ -311,14 +329,59 @@ INSERT INTO `tag` (`id`, `tag_name`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `test_detail`
+--
+
+CREATE TABLE IF NOT EXISTS `test_detail` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `file_id` int(11) NOT NULL,
+  `comment` varchar(512) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `subtitle` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `test_question`
+--
+
+CREATE TABLE IF NOT EXISTS `test_question` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `file_id` int(11) NOT NULL,
+  `question` varchar(512) NOT NULL,
+  `true` varchar(5) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `test_result`
 --
 
 CREATE TABLE IF NOT EXISTS `test_result` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `learn_id` int(11) NOT NULL,
+  `test_file_id` int(11) NOT NULL,
+  `point` int(11) NOT NULL,
   `file_id` int(11) NOT NULL,
   `result` varchar(1000) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `test_user_answer`
+--
+
+CREATE TABLE IF NOT EXISTS `test_user_answer` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `test_result_id` int(11) NOT NULL,
+  `test_question_id` int(11) NOT NULL,
+  `selected` varchar(5) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
@@ -350,6 +413,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `fail_login_count` int(11) NOT NULL DEFAULT '0',
   `last_login_time` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=15 ;
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=17 ;
 
 --
@@ -363,6 +427,7 @@ INSERT INTO `user` (`id`, `username`, `first_password`, `password`, `name`, `sex
 (11, 'giap2001', 'd12f981e91d84b699f4d15b9de6bb3f3', 'd12f981e91d84b699f4d15b9de6bb3f3', '作間', 0, 'hgbk.it@gmail.com', '19-2-1996', 'Quận Hoàng Mai, Hà Nội', '01664643234', '711A948594898', '1+1=', '2', '1+1=', '2', 2, 1, NULL, 0, NULL),
 (12, 'giap2002', 'd12f981e91d84b699f4d15b9de6bb3f3', 'd12f981e91d84b699f4d15b9de6bb3f3', '竹本', 0, 'hgbk.it@gmail.com', '19-2-1996', 'Quận Hoàng Mai, Hà Nội', '01664643234', '711A948594898', '1+1=', '2', '1+1=', '2', 2, 1, NULL, 0, NULL),
 (13, 'giapnh1', '521fa11ddef0190b157ce6f5aa602659', 'c4ec9911d93f93e36dcb77bd18c3e3d7', '山本', 0, 'hgbk.it@gmail.com', '29-2-1995', 'Hoang Mai', '01664643234', '711A948594898', '1+1=', '2', '1+1=', '23', 1, 1, NULL, 0, NULL),
+(14, 'giapnh2', '521fa11ddef0190b157ce6f5aa602659', 'c4ec9911d93f93e36dcb77bd18c3e3d7', 'Nguyễn Hữu Giáp', 0, 'hgbk.it@gmail.com', '29-2-1995', 'Hoang Mai', '01664643234', '711A948594898', '1+1=', '2', '1+1=', '23', 1, 1, NULL, 0, NULL);
 (14, 'giapnh2', '521fa11ddef0190b157ce6f5aa602659', 'c4ec9911d93f93e36dcb77bd18c3e3d7', 'Nguyễn Hữu Giáp', 0, 'hgbk.it@gmail.com', '29-2-1995', 'Hoang Mai', '01664643234', '711A948594898', '1+1=', '2', '1+1=', '23', 1, 1, NULL, 0, NULL),
 (15, 'thayminh', '8a24e37323013b964ea7191be423fc19', '8a24e37323013b964ea7191be423fc19', 'Tran Quang Minh', 0, 'tminh_1234@yahoo.com', '16-8-2000', '45 Trần Đại Nghĩa', '09887654321', '711A12334534', 'abc', 'xyz', 'abc', 'xyz', 2, 1, NULL, 1, NULL),
 (16, 'minhtq', '071998693c1568527a785191acb1491c', '071998693c1568527a785191acb1491c', 'Tran Quang Minh', 0, 'tminh_1234@yahoo.com', '27-8-1998', '45 Trần Đại Nghĩa', '09887654321', '711A12334534', 'abc', 'xyz', 'abc', 'xyz', 1, 1, NULL, 1, NULL);

@@ -17,7 +17,6 @@ class Default_Model_Tag extends Zend_Db_Table_Abstract {
                 ->where("tag_name = ?", $tag_name);
         $result = $this->db->fetchRow($select);
         Zend_Debug::dump($result);
-        echo $select;
         if ($result)
             return $result["id"];
         else
@@ -31,7 +30,7 @@ class Default_Model_Tag extends Zend_Db_Table_Abstract {
     public function getAllTagOfLesson($lessonId) {
         $select = $this->getAdapter()->select();
         $select->from(array('t' => 'tag'))
-                ->join(array('lt' => 'lesson_tag'), 't.id=lt.tag_id')
+                ->joinInner(array('lt' => 'lesson_tag'), 't.id=lt.tag_id', NULL)
                 ->where("lt.lesson_id=$lessonId")
                 ->group('t.id');
         return $this->getAdapter()->fetchAll($select);
@@ -39,12 +38,24 @@ class Default_Model_Tag extends Zend_Db_Table_Abstract {
 
     public function listAllTagByStudent($studentId) {
         $select = $this->getAdapter()->select();
-        $select->from('tag')
-                ->join('lesson_tag', 'lesson_tag.tag_id = tag.id')
-                ->join('lesson', 'lesson.id = lesson_tag.lesson_id')
-                ->join('learn', 'learn.lesson_id = lesson.id')
-                ->join('user', 'user.id = learn.student_id')
-                ->where('user.id = ?', $studentId);
+        $select->from(array('t' => 'tag'), "*")
+                ->joinInner('lesson_tag', 'lesson_tag.tag_id = t.id', NULL)
+                ->joinInner('lesson', 'lesson.id = lesson_tag.lesson_id', NULL)
+                ->joinInner('learn', 'learn.lesson_id = lesson.id', NULL)
+                ->joinInner('user', 'user.id = learn.student_id', NULL)
+                ->where('user.id = ?', $studentId)
+                ->group('t.id');
+        return $this->getAdapter()->fetchAll($select);
+    }
+
+    public function listAllLessonWithTagByStudent($tag, $studentId) {
+        $select = $this->getAdapter()->select();
+        $select->from(array('t' => 'tag'))
+                ->where("t.id=$tag")
+                ->joinInner(array('lt' => 'lesson_tag'), 't.id = lt.tag_id', NULL)
+                ->joinInner('lesson', 'lesson.id=learn.lesson_id')
+                ->joinInner('learn', 'lesson.lesson_id=learn.lesson_id', NULL)
+                ->where('learn.student_id=?', $studentId);
         return $this->getAdapter()->fetchAll($select);
     }
 

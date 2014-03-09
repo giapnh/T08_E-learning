@@ -70,7 +70,7 @@
                                 <a href="<?php echo $this->baseUrl(); ?>/student/index?type=2&teacherId=0">
                                     <button class="
                                     <?php
-                                    if ($this->tagId == 0) {
+                                    if ($this->teacherId == 0) {
                                         echo "tag-item"; // If selected
                                     } else {
                                         echo "teacher-item";
@@ -157,7 +157,7 @@
                                                         <td>
                                                             <img src="<?php echo $this->baseUrl(); ?>/public/images/num-like.png" width="15" height="15"> <font class="num-like-comment"><?php echo $item['like']; ?></font>
                                                             <img src="<?php echo $this->baseUrl(); ?>/public/images/num-view.png" width="15" height="15"> <font class="num-like-comment"><?php echo $item['view']; ?></font>
-                                                            <a href="<?php echo $this->baseUrl(); ?>/student/registerLesson?do=view&lessonId=<?php echo $item['id']; ?>"  class="link-view-detail float-right">詳細</a>
+                                                            <a href="<?php echo $this->baseUrl(); ?>/student/lessonDetail?do=view&lessonId=<?php echo $item['id']; ?>"  class="link-view-detail float-right">詳細</a>
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -184,7 +184,7 @@
                                                         <td>
                                                             <img src="<?php echo $this->baseUrl(); ?>/public/images/num-like.png" width="15" height="15"> <font class="num-like-comment"><?php echo $item['like']; ?></font>
                                                             <img src="<?php echo $this->baseUrl(); ?>/public/images/num-view.png" width="15" height="15"> <font class="num-like-comment"><?php echo $item['view']; ?></font>
-                                                            <a href="<?php echo $this->baseUrl(); ?>/student/registerLesson?do=view&lessonId=<?php echo $item['id']; ?>"  class="link-view-detail float-right">詳細</a>
+                                                            <a href="<?php echo $this->baseUrl(); ?>/student/lessonDetail?do=view&lessonId=<?php echo $item['id']; ?>"  class="link-view-detail float-right">詳細</a>
                                                         </td>
                                                     </tr>
                                                 </tbody>

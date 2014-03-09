@@ -24,8 +24,8 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
         }
         $select = $this->getAdapter()->select();
         $select->from(array('l' => 'lesson'))
-                ->join(array('lt' => 'lesson_tag'), 'l.id = lt.lesson_id')
-                ->join('user', 'l.teacher_id=user.id', array('name'))
+                ->joinInner(array('lt' => 'lesson_tag'), 'l.id = lt.lesson_id')
+                ->joinInner('user', 'l.teacher_id=user.id', array('name'))
                 ->where("lt.tag_id=$tag");
         return $this->getAdapter()->fetchAll($select);
     }
@@ -36,8 +36,8 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
         }
         $select = $this->getAdapter()->select();
         $select->from(array('l' => 'lesson'))
-                ->join(array('u' => 'user'), 'l.teacher_id = u.id')
-                ->join('user', 'l.teacher_id=user.id', array('name'))
+                ->joinInner(array('u' => 'user'), 'l.teacher_id = u.id')
+                ->joinInner('user', 'l.teacher_id=user.id', array('name'))
                 ->where("l.teacher_id=$teacher");
         return $this->getAdapter()->fetchAll($select);
     }
@@ -45,35 +45,31 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
     public function listAllByStudent($student) {
         $select = $this->getAdapter()->select();
         $select->from('lesson')
-                ->join('user', 'lesson.teacher_id=user.id', array('name'))
-                ->join('learn', 'learn.lesson_id=lesson.id')
+                ->joinInner('user', 'lesson.teacher_id=user.id', array('name'))
+                ->joinInner('learn', 'learn.lesson_id=lesson.id', array('status'))
                 ->where("learn.student_id=$student");
         return $this->getAdapter()->fetchAll($select);
     }
 
-    public function listWithTagByStudent($tag, $studentId) {
-        if ($tag == 0) {
-            return $this->listAllByStudent($studentId);
-        }
+    public function findLessonWithTagByStudent($tagId, $studentId) {
         $select = $this->getAdapter()->select();
-        $select->from(array('l' => 'lesson'))
-                ->join(array('lt' => 'lesson_tag'), 'l.id = lt.lesson_id')
-                ->join('user', 'l.teacher_id=user.id', array('name'))
-                ->where("lt.tag_id=$tag")
-                ->where('l.student_id=?', $studentId);
+        $select->from('lesson')
+                ->joinInner('lesson_tag', 'lesson.id=lesson_tag.lesson_id', NULL)
+                ->where('lesson_tag.tag_id=?', $tagId)
+                ->joinInner('learn', 'learn.lesson_id=lesson_tag.lesson_id', array('status'))
+                ->joinInner('user', 'user.id=lesson.teacher_id', array('name'))
+                ->where('learn.student_id=?', $studentId);
         return $this->getAdapter()->fetchAll($select);
     }
 
-    public function listWithTeacherByStudent($teacher, $studentId) {
-        if ($teacher == 0) {
-            return $this->listAllByStudent($studentId);
-        }
+    public function findLessonWithTeacherByStudent($teacher, $studentId) {
         $select = $this->getAdapter()->select();
-        $select->from(array('l' => 'lesson'))
-                ->join(array('u' => 'user'), 'l.teacher_id = u.id')
-                ->join('user', 'l.teacher_id=user.id', array('name'))
-                ->where("l.teacher_id=$teacher")
-                ->where('l.student_id=?', $studentId);
+        $select->from('lesson')
+                ->joinInner('learn', 'lesson.id=learn.lesson_id', array('status'))
+                ->where('lesson.teacher_id=?', $teacher)
+                ->where('learn.student_id=?', $studentId)
+                ->joinInner('user', 'user.id=lesson.teacher_id', array(name));
+        echo $select;
         return $this->getAdapter()->fetchAll($select);
     }
 
@@ -84,8 +80,8 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
     public function findLessonById($lessonId) {
         $select = $this->getAdapter()->select();
         $select->from('lesson')
-                ->where('lesson.id=?', $lessonId)
-                ->join('user', 'lesson.teacher_id=user.id');
+                ->where('lesson.id = ?', $lessonId)
+                ->joinInner('user', 'lesson.teacher_id = user.id', array('name'));
         return $this->getAdapter()->fetchRow($select);
     }
 

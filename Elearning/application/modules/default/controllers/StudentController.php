@@ -174,6 +174,24 @@ class StudentController extends IController {
         }
     }
 
+    public function lessondetailAction() {
+        $this->initial();
+        $lessonModel = new Default_Model_Lesson();
+        $tagModel = new Default_Model_Tag();
+        $learnModel = new Default_Model_Learn();
+        $lfileModel = new Default_Model_LessonFile();
+        if ($this->_request->isGet()) {
+            $lesson_id = $this->_request->getParam('lessonId');
+            $info = $lessonModel->findLessonById($lesson_id);
+            // Number of student join to this course
+            $tagInfo = $tagModel->getAllTagOfLesson($lesson_id);
+            $this->view->lessonInfo = $info;
+            $this->view->tagsInfo = $tagInfo;
+            $this->view->numStudent = $learnModel->countStudenJoinLesson($lesson_id)[0];
+            $this->view->filesInfo = $lfileModel->listFileOfLesson($lesson_id);
+        }
+    }
+
     public function registerlessonAction() {
         $this->initial();
         $lessonModel = new Default_Model_Lesson();
@@ -197,10 +215,12 @@ class StudentController extends IController {
                 $this->view->isLearn = $isLearn;
                 if ($isLearn == 0) {
                     $this->view->notify = "前に、あなたはこの授業に登録した！";
+                    $this->view->lessonId = $lesson_id;
                 } else {
                     //Add to db
                     $learnModel->doRegisterLesson(Zend_Auth::getInstance()->getStorage()->read()['id'], $lesson_id);
-                    $this->view->notify = "おめでとう！授業登録が成功した！管理者は確認しているが、お待ちください！";
+                    $this->view->notify = "おめでとう！授業登録が成功した！";
+                    $this->view->lessonId = $lesson_id;
                 }
             }
         }
@@ -221,7 +241,11 @@ class StudentController extends IController {
                 $this->view->tags = $tags->listAllTagByStudent($infoUser['id']);
                 $this->view->type = 1;
                 $lessons = new Default_Model_Lesson();
-                $paginator = Zend_Paginator::factory($lessons->listWithTagByStudent($tagId, $infoUser['id']));
+                if ($tagId == 0) {
+                    $paginator = Zend_Paginator::factory($lessons->listAllByStudent($infoUser['id']));
+                } else {
+                    $paginator = Zend_Paginator::factory($lessons->findLessonWithTagByStudent($tagId, $infoUser['id']));
+                }
                 $paginator->setItemCountPerPage(6);
                 $paginator->setPageRange(3);
                 $this->view->numpage = $paginator->count();
@@ -229,17 +253,41 @@ class StudentController extends IController {
                 $paginator->setCurrentPageNumber($currentPage);
                 $this->view->data = $paginator;
             } else {
-                $learn = new Default_Model_Learn();
-                $this->view->teachers = $learn->listTeacherByStudent($infoUser['id']);
+                $account = new Default_Model_Account();
+                $this->view->teachers = $account->listTeacherByStudent($infoUser['id']);
                 $this->view->type = 2;
                 $lessons = new Default_Model_Lesson();
-                $paginator = Zend_Paginator::factory($lessons->listWithTeacherByStudent($teacherId, $infoUser['id']));
+                if ($teacherId == 0) {
+                    $paginator = Zend_Paginator::factory($lessons->listAllByStudent($infoUser['id']));
+                } else {
+                    $paginator = Zend_Paginator::factory($lessons->findLessonWithTeacherByStudent($teacherId, $infoUser['id']));
+                }
                 $paginator->setItemCountPerPage(6);
                 $paginator->setPageRange(3);
                 $this->view->numpage = $paginator->count();
                 $currentPage = $this->_request->getParam('page', 1);
                 $paginator->setCurrentPageNumber($currentPage);
                 $this->view->data = $paginator;
+            }
+        }
+    }
+
+    public function fileAction() {
+        $this->initial();
+        $lessonModel = new Default_Model_Lesson();
+        $lessonFileModel = new Default_Model_LessonFile();
+        if ($this->_request->isGet()) {
+            $lessonId = $this->_request->getParam('lessonId');
+            $currentFile = $this->_request->getParam('currentFile');
+
+            $lessonInfo = $lessonModel->findLessonById($lessonId);
+            $this->view->lessonInfo = $lessonInfo;
+            $files = $lessonFileModel->listFileOfLesson($lessonId);
+            $this->view->files = $files;
+            if ($currentFile == NULL) {
+                $this->view->currentFile = $files[0]['filename'];
+            } else {
+                $this->view->currentFile = $currentFile;
             }
         }
     }
