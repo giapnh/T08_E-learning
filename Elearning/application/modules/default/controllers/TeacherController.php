@@ -6,6 +6,7 @@ require_once 'IController.php';
 class TeacherController extends IController {
 
     protected $user;
+    protected $currentTeacherId;
 
     public function preDispatch() {
         $auth = Zend_Auth::getInstance();
@@ -23,6 +24,7 @@ class TeacherController extends IController {
         $auth = Zend_Auth::getInstance();
         $infoUser = $auth->getStorage()->read();
         $this->view->user_info = $infoUser;
+        $this->currentTeacherId = $infoUser['id'];
     }
 
     public function indexAction() {
@@ -153,51 +155,42 @@ class TeacherController extends IController {
         if ($this->_request->isPost()) {
             $param = $this->_getAllParams();
             
-            /*
-             * ファイルリストをアープロードする
-             */
-//            Zend_Debug::dump($this->_getAllParams());
+            // Check title
+            if ((!isset($param['title'])) || $param['title'] == '') {
+                $this->view->errorMessage = Message::$M020;
+                return;
+            }
             
+            // Check description
+            if ((!isset($param['description'])) || $param['description'] == '') {
+                $this->view->errorMessage = Message::$M046;
+                return;
+            }
+            
+            // Save file
             $fileModel = new Default_Model_File();
-            $lessonId = 1;
-            $fileModel->exercuteFiles($lessonId, $param["file_dec"]);
+            if (!$fileModel->exercuteFiles($param["file_dec"])) {
+                $this->view->errorMessage = Message::$M023;
+                return;
+            }
             
-            /**
-             * 授業の情報を取る
-             */
-//            if (count($listFiles) >= 0) {
-//                $lessonModel = new Default_Model_Lesson();
-//                $les_id = $lessonModel->insert(array(
-//                    "teacher_id" => $this->user->id,
-//                    "title" => $parram["title"],
-//                    "description" => $parram["les_dec"],
-//                    "status" => 1
-//                ));
-//                $tags = explode("、", $parram["tag"]);
-//                $tagModel = new Default_Model_Tag();
-//                $leTagModel = new Default_Model_LessonTag();
-//                $lesFileModel = new Default_Model_LessonFile();
-//                foreach ($tags as $tag) {
-//                    if (trim($tag)) {
-//                        $tag_id = $tagModel->isExistTag($tag);
-//                        if (!$tag_id) {
-//                            $tag_id = $tagModel->insert(array("tag_name" => $tag));
-//                        }
-//                        $leTagModel->insert(array(
-//                            "lesson_id" => $les_id,
-//                            "tag_id" => $tag_id
-//                        ));
-//                    }
-//                }
-//                foreach ($listFiles as $file) {
-//                    $lesFileModel->insert(array(
-//                        "lesson_id" => $les_id,
-//                        "filename" => $file["filename"],
-//                        "description" => $file["description"],
-//                        "location" => $file["location"]
-//                    ));
-//                }
-//            }
+            // Check tag
+            if (!isset($param['tags'])) {
+                $this->view->errorMessage = Message::$M021;
+                return;
+            }
+            
+            // Save lesson
+            $lessonModel = new Default_Model_TeacherLesson();
+            $title = $param['title'];
+            $description = $param['description'];
+            $lessonId = $lessonModel->createLesson($this->currentTeacherId, $title, $description);
+            
+            // Save files
+            $fileModel->createFilesData($lessonId);
+            
+            // Redirect
+            $this->redirect("teacher/lesson");
         }
     }
 
@@ -214,7 +207,12 @@ class TeacherController extends IController {
      * @param type $name Description
      */
     public function fileAction() {
+        $this->initial();
         
+        $fileLocation = "13942932700.html";
+        $file = file(APPLICATION_PATH . Default_Model_File::$UPLOAD_DIR . $fileLocation);
+        $testHtml = implode("", $file);
+        $this->view->testHtml = $testHtml;
     }
 
     /**

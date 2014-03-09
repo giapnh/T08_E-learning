@@ -7,23 +7,34 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
     protected $_primary = "id";
     protected $db;
     protected $adapter = null;
-    protected $lessonId;
     protected $tmp;
     protected $lines;
+    public $fileSaved;
 
-    public static $UPLOAD_DIR = '\..\files\\';
+//    public static $UPLOAD_DIR = '\..\files\\';
+    public static $UPLOAD_DIR = 'files';
     
     public static $ID = "id";
     public static $LESSON_ID = "lesson_id";
     public static $FILENAME = "filename";
     public static $DESCRIPTION = "description";
     public static $LOCATION = "location";
+    public static $TITLE = "title";
+    public static $SUBTITLE = "subtitle";
     public static $TSV_KEY_TITLE = "TestTitle";
     public static $TSV_KEY_SUBTITLE = "TestSubTitle";
     public static $TSV_KEY_END = "End";
 
-    public function exercuteFiles($lessonId, $fileDescriptions) {
-        $this->lessonId = $lessonId;
+    public static $FILE_TYPE_TEST = 1;
+    public static $FILE_TYPE_NORMAL = 2;
+
+    public function __construct() {
+        parent::__construct();
+        $this->db = Zend_Registry::get('connectDB');
+    }
+    
+    public function exercuteFiles($fileDescriptions) {
+        $this->fileSaved = array();
         if ($this->adapter == null) {
              $this->adapter = new Zend_File_Transfer_Adapter_Http();
         }
@@ -38,6 +49,10 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
             }
         }
         
+        if ($k == 0) {
+            return false;
+        }
+        
         return true;
     }
     
@@ -45,7 +60,7 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
         $ext = $this->_findexts($info['name']);
         if ($ext == "tsv") {
             return $this->exercuteTsvFile($file, $info, $description, $index);
-        } else if ($ext == "mp3" || $ext == "pdf" || $ext == "png" || $ext == "jpg") {
+        } else if ($ext == "mp4" || $ext == "mp3" || $ext == "pdf" || $ext == "png" || $ext == "jpg") {
             return $this->exercuteNormalFile($file, $info, $description, $index);
         } else {
             return false;
@@ -64,35 +79,36 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
         $ext = $this->_findexts($info['name']);
         $fileName = time() . $index . '.' . $ext;
 
-        $target = APPLICATION_PATH . self::$UPLOAD_DIR . $fileName;
+        $target = APPLICATION_PATH . "\\..\\" . self::$UPLOAD_DIR . "\\" .$fileName;
         $this->adapter->addFilter('Rename', array('target' => $target,
             'overwrite' => true));
         if (!$this->adapter->receive($file)) {
             $message = $this->adapter->getMessages();
             return false;
         } else {
-            $insertData = array(
-                self::$LESSON_ID => $this->lessonId,
-                self::$FILENAME => $info['name'],
-                self::$DESCRIPTION => $description,
-                self::$LOCATION => $fileName
+            $this->fileSaved[] = array(
+                "type" => self::$FILE_TYPE_NORMAL,
+                "filename" => $info['name'],
+                "location" => $fileName,
+                "description" => $description,
+                "title" => "",
+                "subtitle" => "",
             );
-            $this->insert($insertData);
             return true;
         }
     }
 
     public function exercuteTsvFile($file, $info, $description, $index) {
-        $fileName = time() . $index . '.tsv';
-        $target = APPLICATION_PATH . self::$UPLOAD_DIR . $fileName;
+        $fileName = time() . $index . '.html';
+        $target = APPLICATION_PATH . "\\..\\" . self::$UPLOAD_DIR . "\\" . $fileName;
         $this->adapter->addFilter('Rename', array('target' => $target,
             'overwrite' => true));
         if (!$this->adapter->receive($file)) {
             $message = $this->adapter->getMessages();
-            die($message);
+//            die($message);
             return false;
         } else {
-            if ($this->tsvFileToTest($target)) {
+            if ($this->tsvFileToTest($fileName, $info, $description)) {
                 return true;
             } else {
                 return false;
@@ -100,8 +116,9 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
         }
     }
     
-    public function tsvFileToTest($filename) {
-        $this->tmp = file($filename);
+    public function tsvFileToTest($fileName, $info, $description) {
+        $target = APPLICATION_PATH . "\\..\\" . self::$UPLOAD_DIR . "\\" . $fileName;
+        $this->tmp = file($target);
         $this->fileToLines();
         
         $title = $this->readTestTitle();
@@ -120,18 +137,29 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
         do {
             $question = $this->readQuestion($questionIndex);
             
-            var_dump($question);
             if ($question == null) {
-                die();
+//                die($questionIndex.": Question read error");
                 return false;
             }
-            $questions[] = $question;
-            $questionIndex ++;
-        } while (count($question)!=0);
+            if ($question["question"]!=null) {
+                $questions[] = $question;
+                $questionIndex ++;
+            }
+        } while ($question["question"]!=null);
         
-        // TODO: Save test info
-        var_dump($questions);
-        die();
+        $html = $this->createTestHtml($questions);
+        file_put_contents($target, $html);
+        
+        $this->fileSaved[] = array(
+            "type" => self::$FILE_TYPE_TEST,
+            "filename" => $info['name'],
+            "description" => $description,
+            "title" => $title,
+            "subtitle" => $subtitle,
+            "location" => $fileName
+        );
+        
+        return true;
     }
     
     protected function fileToLines() {
@@ -177,14 +205,16 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
     protected function readQuestion($questionIndex) {
         $nextLine = $this->nextLine();
         if ($nextLine[0] == self::$TSV_KEY_END) {
-            return array();
+            return array("question" => null);
         }
         
         if (!isset($nextLine[1]) || !isset($nextLine[2])) {
+//            die("Format errro");
             return null;
         }
         
         $question = array();
+        $question["index"] = $questionIndex;
         if ($nextLine[0] == "Q(".$questionIndex.")" && $nextLine[1] = "QS") {
             $question["question"] = $nextLine[2];
         }
@@ -194,6 +224,7 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
         do {
             $nextLine = $this->nextLine();
             if (!isset($nextLine[1]) || !isset($nextLine[2])) {
+//                die("Answer error");
                 return null;
             }
             if ($nextLine[0] == "Q(".$questionIndex.")" && $nextLine[1] == "S(".$answerCount.")") {
@@ -203,6 +234,7 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
         } while($nextLine[1]=="S(".($answerCount-1).")");
         
         if ($nextLine[1] != "KS") {
+//            die("Ks error");
             return null;
         }
         $question["trueAnswer"] = preg_split("/[()]/", $nextLine[2])[1] + 0;
@@ -215,6 +247,57 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
         $nextLineIndex = array_keys($this->lines)[0];
         unset($this->lines[$nextLineIndex]);
         return $nextLine;
+    }
+    
+    protected function createTestHtml($questions) {
+        $testHtml = "<div class='test_container'>\n";
+        foreach ($questions as $question) {
+            $questionHtml = $this->createQuestionHtml($question);
+            $testHtml .= $questionHtml;
+        }
+        $testHtml .= "</div>";
+        
+        return $testHtml;
+    }
+    
+    protected function createQuestionHtml($question) {
+        $questionHtml = "<div class='question_container'>\n";
+        $questionHtml .= "\t<div class='question'>Q".$question["index"].": ".$question["question"]."</div>\n";
+        $questionHtml .="\t<div class='answers'>\n";
+        
+        foreach ($question["answers"] as $index => $answer) {
+            $questionHtml .= "\t\t<input type='radio' name='Q".$question["index"]."' value='".($index + 1)."' >".$answer."<br>\n";
+        }
+        
+        $questionHtml .= "\t</div>\n</div>\n";
+        
+        return $questionHtml;
+    }
+    
+    public function createFilesData($lessonId) {
+        $testModel = new Default_Model_Test();
+        
+        // Create lesson folder
+        $fileFolder = APPLICATION_PATH . "\\..\\" . self::$UPLOAD_DIR . "\\";
+        $lessonFolder = $fileFolder . $lessonId;
+        if (!file_exists($lessonFolder)) {
+            mkdir($lessonFolder, 0777, true);
+        }
+        
+        foreach ($this->fileSaved as $fileInfo) {
+            copy($fileFolder.$fileInfo['location'], $lessonFolder."/".$fileInfo['location']);
+            unlink($fileFolder.$fileInfo['location']);
+            
+            $insertData = array(
+                self::$LESSON_ID => $lessonId,
+                self::$FILENAME => $fileInfo['filename'],
+                self::$DESCRIPTION => $fileInfo['description'],
+                self::$TITLE => $fileInfo['title'],
+                self::$SUBTITLE => $fileInfo['subtitle'],
+                self::$LOCATION => self::$UPLOAD_DIR."\\".$lessonId."\\".$fileInfo['location']
+            );
+            $this->insert($insertData);
+        }
     }
 }
 ?>
