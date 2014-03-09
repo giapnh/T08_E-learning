@@ -103,7 +103,7 @@
 
 .showlogfromm {
     background: #5a9301;
-    min-width: 120px;
+    min-width: 80px;
     max-width: 300px;
     height: 35px;
     color: white;
@@ -144,9 +144,10 @@
 
 .register-cus {
     background: #585858;
-    width: 120px;
     height: 35px;
     display: inline-table;
+    min-width: 80px;
+    max-width: 300px;
     color: white;
     margin-left: 2px;
 }

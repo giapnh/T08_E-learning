@@ -7,10 +7,12 @@
         <?php echo $this->headLink() ?>   
         <?php echo $this->headScript() ?>      
     </head>
-    <body>  
-        <?php
-        echo $this->layout()->content;
-        ?> 
+    <body oncontextmenu="return false;">  
+        <div style=" padding-left: 180px;">
+            <?php
+            echo $this->layout()->content;
+            ?> 
+        </div>
     </body>
 </html>
 

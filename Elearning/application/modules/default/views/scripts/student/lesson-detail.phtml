@@ -28,7 +28,7 @@
             <div title="" class="mn "><a href="<?php echo $this->baseUrl(); ?>/student/profile"><font style="color: white;">プロファイル</font></a>
             </div>
         </div>
-        <div class="row-show float-left">
+        <div class="row-show float-left" style="margin-bottom: 40px;">
             <div  style="margin: 0px auto;">
                 <div style="width: 80%; color: black;" class="lesson_register_content">
                     <div class="float-left lesson-big-title" >
@@ -133,9 +133,48 @@
                             <td style="background: whitesmoke; height: 30px;">
                                 <img src="<?php echo $this->baseUrl(); ?>/public/images/num-like.png" width="15" height="15" > <font class="num-like-comment" style="margin-right: 16px;"><?php echo $this->lessonInfo['like']; ?></font>
                                 <img src="<?php echo $this->baseUrl(); ?>/public/images/num-view.png" width="15" height="15"> <font class="num-like-comment" style="margin-right: 16px;"><?php echo $this->lessonInfo['view']; ?></font>
-                                <img src="<?php echo $this->baseUrl(); ?>/public/images/num-comment.png" width="15" height="15"> <font class="num-like-comment" style="margin-right: 16px;"><?php echo $this->lessonInfo['view']; ?></font>
+                                <img src="<?php echo $this->baseUrl(); ?>/public/images/num-comment.png" width="15" height="15"> <font class="num-like-comment" style="margin-right: 16px;"><?php echo $this->numComment; ?></font>
                             </td>
                         </tr> 
+
+                        <tr>
+                            <td style="text-align: center; margin: 0px auto;">
+                                <?php
+                                if (isset($this->comments)) {
+                                    foreach ($this->comments as $comment) {
+                                        ?>
+                                        <div style="width: 70%;text-align: left;background: #DFF2F8; margin-left: 100px; margin-top: 5px; margin-bottom: 5px;box-shadow: 2px 2px 2px; border-style: solid; border-width: thin; border-radius: 1px;">
+                                            <div class="full-width" style="padding-left: 20px;padding-top: 10px; font-weight: bolder; font-size: 16px; color: #7E3500">
+                                                <?php
+                                                if ($comment['role'] == 1) {
+                                                    echo "学生:";
+                                                } else {
+                                                    echo "先生:";
+                                                }
+                                                echo $comment['name'];
+                                                ?>
+                                            </div>
+                                            <div class="full-width" style="padding-left: 50px; font-size: 12px; color: #A66322; font-style: italic;">
+                                                <?php
+                                                $raw = $comment['time'];
+                                                $arr = explode(" ", $raw);
+                                                $ymd = explode("-", $arr[0]);
+                                                $hsm = explode(":", $arr[1]);
+                                                echo $ymd[0] . "年" . $ymd[1] . "月" . $ymd[2] . "日" . "-" . $hsm[0] . "時" . $hsm[1] . "分";
+                                                ?>
+                                            </div>
+                                            <div class="full-width" style="padding-left: 50px; font-size: 14px;"><?php
+                                                echo $comment['comment'];
+                                                ?>
+                                            </div>
+
+                                        </div>
+                                        <?php
+                                    }
+                                }
+                                ?>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>

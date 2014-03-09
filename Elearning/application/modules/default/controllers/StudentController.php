@@ -179,10 +179,14 @@ class StudentController extends IController {
         $lessonModel = new Default_Model_Lesson();
         $tagModel = new Default_Model_Tag();
         $learnModel = new Default_Model_Learn();
+        $commentModel = new Default_Model_Comment();
         $lfileModel = new Default_Model_LessonFile();
         if ($this->_request->isGet()) {
             $lesson_id = $this->_request->getParam('lessonId');
+            $lessonModel->incrementView($lesson_id);
             $info = $lessonModel->findLessonById($lesson_id);
+            $this->view->numComment = $commentModel->countCommentOnLesson($lesson_id);
+            $this->view->comments = $commentModel->getAllCommentOfLesson($lesson_id);
             // Number of student join to this course
             $tagInfo = $tagModel->getAllTagOfLesson($lesson_id);
             $this->view->lessonInfo = $info;
@@ -224,6 +228,33 @@ class StudentController extends IController {
                 }
             }
         }
+    }
+
+    public function mylessondetailAction() {
+        $this->initial();
+        $lessonModel = new Default_Model_Lesson();
+        $tagModel = new Default_Model_Tag();
+        $learnModel = new Default_Model_Learn();
+        $commentModel = new Default_Model_Comment();
+        $lfileModel = new Default_Model_LessonFile();
+        if ($this->_request->isGet()) {
+            $lesson_id = $this->_request->getParam('lessonId');
+        }
+        if ($this->_request->isPost()) {
+            $lesson_id = $this->_request->getParam('lessonId');
+            $comment = $this->_request->getParam('comment');
+            $commentModel->addComment($lesson_id, Zend_Auth::getInstance()->getStorage()->read()['id'], $comment);
+        }
+        $lessonModel->incrementView($lesson_id);
+        $info = $lessonModel->findLessonById($lesson_id);
+        $this->view->numComment = $commentModel->countCommentOnLesson($lesson_id);
+        $this->view->comments = $commentModel->getAllCommentOfLesson($lesson_id);
+        // Number of student join to this course
+        $tagInfo = $tagModel->getAllTagOfLesson($lesson_id);
+        $this->view->lessonInfo = $info;
+        $this->view->tagsInfo = $tagInfo;
+        $this->view->numStudent = $learnModel->countStudenJoinLesson($lesson_id)[0];
+        $this->view->filesInfo = $lfileModel->listFileOfLesson($lesson_id);
     }
 
     public function mylessonAction() {
@@ -276,19 +307,27 @@ class StudentController extends IController {
         $this->initial();
         $lessonModel = new Default_Model_Lesson();
         $lessonFileModel = new Default_Model_LessonFile();
+        $filecommentModel = new Default_Model_FileComment();
+        $repordModel = new Default_Model_CopyrightReport();
         if ($this->_request->isGet()) {
             $lessonId = $this->_request->getParam('lessonId');
             $currentFile = $this->_request->getParam('currentFile');
+        }
 
-            $lessonInfo = $lessonModel->findLessonById($lessonId);
-            $this->view->lessonInfo = $lessonInfo;
-            $files = $lessonFileModel->listFileOfLesson($lessonId);
-            $this->view->files = $files;
-            if ($currentFile == NULL) {
-                $this->view->currentFile = $files[0]['filename'];
-            } else {
-                $this->view->currentFile = $currentFile;
+        if ($this->_request->isPost()) {
+            $report = $this->_request->getParam('report_content');
+            if ($report != NULL) {
+                
             }
+        }
+        $lessonInfo = $lessonModel->findLessonById($lessonId);
+        $this->view->lessonInfo = $lessonInfo;
+        $files = $lessonFileModel->listFileOfLesson($lessonId);
+        $this->view->files = $files;
+        if ($currentFile == NULL) {
+            $this->view->currentFile = $files[0]['filename'];
+        } else {
+            $this->view->currentFile = $currentFile;
         }
     }
 

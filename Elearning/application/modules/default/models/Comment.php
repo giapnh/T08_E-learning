@@ -1,8 +1,8 @@
 <?php
 
-class Default_Model_Learn extends Zend_Db_Table_Abstract {
+class Default_Model_Comment extends Zend_Db_Table_Abstract {
 
-    protected $_name = "learn";
+    protected $_name = "comment";
     protected $_primary = "id";
     protected $db;
 
@@ -15,36 +15,29 @@ class Default_Model_Learn extends Zend_Db_Table_Abstract {
         return $this->fetchAll()->toArray();
     }
 
-    /**
-     * 授業に学生が勉強したかどうかチェックする機能
-     * @param type $studentId
-     * @param type $lesson
-     * @return int
-     */
-    public function isStudentLearn($studentId, $lesson) {
+    public function countCommentOnLesson($lessonId) {
         $select = $this->getAdapter()->select();
-        $select->from(array('l' => 'learn'), "*")
-                ->where("student_id=?", $studentId)
-                ->where("lesson_id=?", $lesson)
-                ->where('NOW() - INTERVAL 7 DAY < register_time');
-        if ($this->getAdapter()->fetchRow($select) != NULL) {
-            return 0; //Unsuccesful
-        } else {
-            return 1; //Succesful
-        }
+        $select->from(array('cm' => 'comment'), array('num_comment' => 'COUNT(user_id)'))
+                ->where("lesson_id='$lessonId'")
+                ->group('cm.user_id');
+        return $this->getAdapter()->fetchRow($select)['num_comment'];
     }
 
-    public function countStudenJoinLesson($lessonId) {
-        return $this->getAdapter()->fetchOne("SELECT COUNT(*) AS count FROM learn WHERE lesson_id=$lessonId");
+    public function getAllCommentOfLesson($lesson_id) {
+        $select = $this->getAdapter()->select();
+        $select->from(array('cmt' => 'comment'))
+                ->joinInner('user', 'cmt.user_id=user.id', array('name', 'role'))
+                ->where("cmt.lesson_id='$lesson_id'");
+        return $this->getAdapter()->fetchAll($select);
     }
 
-    public function doRegisterLesson($studentId, $lessonId) {
-        $ins_data = array(
-            'student_id' => $studentId,
+    public function addComment($lessonId, $studentId, $comment) {
+        $data = array(
+            'user_id' => $studentId,
             'lesson_id' => $lessonId,
-            'status' => '0' // Wait for confirm by admin
+            'comment' => $comment
         );
-        $this->insert($ins_data);
+        $this->insert($data);
     }
 
 }

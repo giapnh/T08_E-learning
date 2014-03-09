@@ -85,12 +85,13 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
         return $this->getAdapter()->fetchRow($select);
     }
 
-    /**
-     * 
-     * @param type $lessonId
-     */
-    public function getNumStudentJoinToCourseById($lessonId) {
-        
+    public function incrementView($lessonId) {
+        $view = $this->fetchRow("id='$lessonId'")['view'];
+        $update = array(
+            'view' => $view + 1
+        );
+        $where = "id='$lessonId'";
+        $this->update($update, $where);
     }
 
 }

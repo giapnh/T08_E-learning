@@ -6,7 +6,7 @@ img {
 body {
     margin: 0;
     background: url(../../public/images/bg_body_center.jpg);
-    padding-left: 180px;
+   
 }
 body.home {
     background: url(../../public/images/bg_body_center.jpg);
