@@ -311,21 +311,24 @@ class StudentController extends IController {
         $repordModel = new Default_Model_CopyrightReport();
         if ($this->_request->isGet()) {
             $lessonId = $this->_request->getParam('lessonId');
-            $currentFile = $this->_request->getParam('currentFile');
+            $currentFileId = $this->_request->getParam('fileId');
         }
-
         if ($this->_request->isPost()) {
+            $lessonId = $this->_request->getParam('lessonId');
+            $currentFileId = $this->_request->getParam('fileId');
             $report = $this->_request->getParam('report_content');
             if ($report != NULL) {
-                
+                $repordModel->addReport(Zend_Auth::getInstance()->getStorage()->read()['id'], $fileId, $report);
             }
         }
+
+        $currentFile = $lessonFileModel->findFileById($currentFileId);
         $lessonInfo = $lessonModel->findLessonById($lessonId);
         $this->view->lessonInfo = $lessonInfo;
         $files = $lessonFileModel->listFileOfLesson($lessonId);
         $this->view->files = $files;
         if ($currentFile == NULL) {
-            $this->view->currentFile = $files[0]['filename'];
+            $this->view->currentFile = $files[0];
         } else {
             $this->view->currentFile = $currentFile;
         }

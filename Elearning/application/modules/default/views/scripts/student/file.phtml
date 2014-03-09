@@ -85,6 +85,15 @@
                                         <?php
                                     } else if ($fileType = 'png' || $fileType == 'jpg' || $fileType == 'jpeg') {
                                         ?>
+                                        <a href="<?php echo $this->baseUrl(); ?>/student/file?lessonId=<?php echo $this->lessonInfo['id']; ?>&currentFile=<?php echo $file['filename']; ?>">
+                                            <div class="full-width" style="font-size: 16px;  font-weight: bold; margin: 5px;">
+                                                <font style="color: #7E3500">
+                                                <?php echo $count . '.'; ?>
+                                                </font>
+                                                <?php echo $file['filename']; ?>
+                                                <img src="<?php echo $this->baseUrl(); ?>/public/images/image.png" width="16" height="16">
+                                            </div>
+                                        </a> 
                                         <?php
                                     } else if ($fileType == 'tsv') {
                                         ?>
@@ -111,23 +120,23 @@
                                 <div style="margin: 10px; width: 95%;min-height: 500px;max-height: 800px; border-color: #007F9F; border-style: solid; border-width: thin; box-shadow: 0px 2px 3px;">
                                     <!--Content here-->
                                     <?php
-                                    $currentFile = explode(".", $this->currentFile)[1];
+                                    $currentFile = explode(".", $this->currentFile['filename'])[1];
                                     if ($currentFile == 'pdf') {
                                         ?>
-                                        <embed src = "<?php echo $this->baseUrl(); ?>/files/<?php echo $this->lessonInfo['id']; ?>/<?php echo $this->currentFile; ?>"
+                                        <embed src = "<?php echo $this->baseUrl(); ?>/files/<?php echo $this->lessonInfo['id']; ?>/<?php echo $this->currentFile['location']; ?>"
                                                width = "100%" height = "600px;">
                                                <?php
                                            } else if ($currentFile == 'mp3') {
                                                ?>
                                         <audio controls>
-                                            <source src="<?php echo $this->baseUrl(); ?>/files/<?php echo $this->lessonInfo['id']; ?>/<?php echo $this->currentFile; ?>" type="audio/mpeg">
+                                            <source src="<?php echo $this->baseUrl(); ?>/files/<?php echo $this->lessonInfo['id']; ?>/<?php echo $this->currentFile['location']; ?>" type="audio/mpeg">
                                             <embed height="100" width="90%" src="<?php echo $this->baseUrl(); ?>/files/<?php echo $this->lessonInfo['id']; ?>/<?php echo $this->currentFile; ?>">
                                         </audio>
                                         <?php
                                     } else if ($currentFile == 'mp4') {
                                         ?>
                                         <video width="100%" autoplay="false" controls>
-                                            <source src="<?php echo $this->baseUrl(); ?>/files/<?php echo $this->lessonInfo['id']; ?>/<?php echo $this->currentFile; ?>" type="video/mp4">
+                                            <source src="<?php echo $this->baseUrl(); ?>/files/<?php echo $this->lessonInfo['id']; ?>/<?php echo $this->currentFile['location']; ?>" type="video/mp4">
                                         </video>                                    
                                         <?php
                                     }
@@ -145,11 +154,16 @@
                                         $("#btn_report").show();
                                     }
 
+                                    function hideReport() {
+                                        $("#report_form").hide();
+                                        $("#btn_report").hide();
+                                    }
+
                                 </script>
                                 <div id="report_form" style="display: none; width: 60%; margin-left: 100px; border: none; border-radius: 4px;">
                                     <form method="post">
                                         <textarea cols="60" name="report" rows="5" placeholder="理由" style="border-style: solid; border-width: medium; border-radius: 3px;"></textarea>
-                                        <input type="submit" value="賛成" class="showlogfromm" style="width: 80px; height: 30px; margin-left: 180px;">
+                                        <input type="submit" onclick="hideReport();" value="賛成" class="showlogfromm" style="width: 80px; height: 30px; margin-left: 180px;">
                                         <input id="btn_sen_report" onclick="hideReportForm();" type="button" value="キャンセル" class="register-cus" style="width: 80px; height: 30px;">
                                     </form>
                                 </div>

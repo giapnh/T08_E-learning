@@ -11,6 +11,10 @@ class Default_Model_LessonFile extends Zend_Db_Table_Abstract {
         $this->db = Zend_Registry::get('connectDB');
     }
 
+    public function findFileById($fileId) {
+        return $this->fetchRow("id='$fileId'");
+    }
+
     public function listFileOfLesson($lessonId) {
         $select = $this->getAdapter()->select();
         $select->from(array('lf' => 'lesson_file'), "*")
