@@ -318,7 +318,8 @@ class StudentController extends IController {
             $currentFileId = $this->_request->getParam('fileId');
             $report = $this->_request->getParam('report_content');
             if ($report != NULL) {
-                $repordModel->addReport(Zend_Auth::getInstance()->getStorage()->read()['id'], $fileId, $report);
+                $repordModel->addReport(Zend_Auth::getInstance()->getStorage()->read()['id'], $currentFileId, $report);
+                $this->view->reportNotify = Message::$M047;
             }
         }
 

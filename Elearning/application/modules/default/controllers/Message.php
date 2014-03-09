@@ -50,6 +50,7 @@ class Message {
     public static $M043 = "エラー：ユーザを削除できません";
     public static $M044 = "マースターデータを更新しました";
     public static $M045 = "マースターデータを更新するのが失敗しました";
-    
     public static $M046 = "授業の説明を入力してください";
+    public static $M047 = "違犯レポートが送りました！ありがとうございます。";
+
 }
