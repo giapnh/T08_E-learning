@@ -10,14 +10,6 @@
         <font style="color: white;">
             <!--Function tab bar-->
             <div class="row-show">
-                <a href="../student/index?type=1">
-                    <button style="margin-top: 10px;" name="btn_tag" class="showlogfromm float-left">タグ
-                    </button>
-                </a>
-                <a href="../student/index?type=2">
-                    <button style="margin-left: 10px; margin-top: 10px;" name="btn_teacher" class="register-cus float-left">
-                        先生</button>
-                </a>
                 <a href="<?php echo $this->baseUrl()."/teacher/create-lesson" ?>">
                     <button style="margin-left: 10px; margin-top: 10px;" name="btn_teacher" class="register-cus float-right">
                         <img class="float-left" src="<?php echo $this->baseUrl()."/public/images/create.png" ?>" />
@@ -35,24 +27,29 @@
             <div class="containt_center_cen clear">
                 <table class="list_lession_content" cellpadding="0" cellspacing="0" border="0">
                     <tr>
-                        <td valign="top" class="containt_center_cen_left">
-                            <div style="width: 100%"><input type="text" class="input_search" style="width: 90%; margin-left: 10px; border: none; height: 25px;"></div>
+                        <td valign="top" class="containt_center_cen_left" style="margin-top: 14px;">
+                            <div style="width: 100%; height: 20px;" class="lession-title">タグリスト</div>
                             <div style="width: 100%;"></div>
-                            <a href="/Elearning/student/index?type=1&amp;tagId=0">
-                                <button class="teacher-item">全部</button>
-                            </a>
-                            <a href="/Elearning/student/index?type=1&amp;tagId=0">
-                                <button class="teacher-item">全部</button>
-                            </a>
-                            <a href="/Elearning/student/index?type=1&amp;tagId=0">
-                                <button class="teacher-item">全部</button>
-                            </a>
-                            <a href="/Elearning/student/index?type=1&amp;tagId=0">
-                                <button class="teacher-item">全部</button>
-                            </a>
-                            <a href="/Elearning/student/index?type=1&amp;tagId=0">
-                                <button class="teacher-item">全部</button>
-                            </a>
+                            <?php
+                            for ($i = 0; $i < count($this->tags); $i++) {
+                                ?>
+                                <a href="<?php echo $this->baseUrl(); ?>/teacher/index?tag_id=<?php echo $this->tags[$i]['id'] ?>">
+                                    <button class="
+                                    <?php
+                                    if ($this->tagId == $this->tags[$i]['id']) {
+                                        echo "teacher-item"; // If selected
+                                    } else {
+                                        echo "tag-item";
+                                    }
+                                    ?>">
+                                                <?php
+                                                echo $this->tags[$i]['tag_name'];
+                                                ?>
+                                    </button>
+                                </a>
+                                <?php
+                            }
+                            ?>
                         </td>
                         <td valign="top" class="containt_center_cen_right">
                             <div class="row-show">
@@ -75,7 +72,6 @@
                                                     <td>
                                                         <img src="/Elearning/public/images/num-like.png" width="15" height="15"> <font class="num-like-comment">0</font>
                                                         <img src="/Elearning/public/images/num-view.png" width="15" height="15"> <font class="num-like-comment">0</font>
-                                                        <a href="/Elearning/student/registerLesson?id=1" class="link-view-detail float-right">詳細</a>
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -102,7 +98,6 @@
                                                     <td>
                                                         <img src="/Elearning/public/images/num-like.png" width="15" height="15"> <font class="num-like-comment">0</font>
                                                         <img src="/Elearning/public/images/num-view.png" width="15" height="15"> <font class="num-like-comment">0</font>
-                                                        <a href="/Elearning/student/registerLesson?id=2" class="link-view-detail float-right">詳細</a>
                                                     </td>
                                                 </tr>
                                             </tbody>

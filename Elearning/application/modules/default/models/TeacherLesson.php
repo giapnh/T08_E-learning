@@ -26,7 +26,7 @@ class Default_Model_TeacherLesson extends Zend_Db_Table_Abstract {
      * @param string $description
      * @return int
      */
-    public function createLesson($teacherId, $title, $description) {
+    public function createLesson($teacherId, $title, $description, $tags) {
         $insertData = array(
                 self::$TEACHER_ID => $teacherId,
                 self::$TITLE => $title,

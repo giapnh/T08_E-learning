@@ -29,8 +29,44 @@ class TeacherController extends IController {
         $this->view->headLink()->appendStylesheet($baseurl . "/public/css/admin-common-style.css");
     }
 
+    /**
+     * 先生の授業リスト処理
+     * 
+     */
     public function indexAction() {
         $this->initial();
+        
+        $lessons = new Default_Model_Lesson();
+        $tagId = $this->_request->getParam('tag_id');
+        $tags = new Default_Model_Tag();
+        
+        $this->view->tagId = $tagId;
+        $this->view->tags = $tags->listAll();
+        $this->view->type = 1;
+        
+        $paginator = Zend_Paginator::factory($lessons->listTeacherLessonsByTag($this->currentTeacherId, $tagId));
+        $paginator->setItemCountPerPage(6);
+        $paginator->setPageRange(3);
+        $this->view->numpage = $paginator->count();
+        $currentPage = $this->_request->getParam('page', 1);
+        $paginator->setCurrentPageNumber($currentPage);
+        $this->view->data = $paginator;
+        
+//        foreach($this->view->data as $item) {
+//            var_dump($item);
+//        }
+//        die();
+
+        if ($this->_request->isPost()) {
+//            $keyword = $this->_request->getParam('keyword');
+//            $paginator = Zend_Paginator::factory($lessons->findByKeyword($keyword));
+//            $paginator->setItemCountPerPage(6);
+//            $paginator->setPageRange(3);
+//            $this->view->numpage = $paginator->count();
+//            $currentPage = $this->_request->getParam('page', 1);
+//            $paginator->setCurrentPageNumber($currentPage);
+//            $this->view->data = $paginator;
+        }
     }
 
     public function profileAction() {
@@ -186,7 +222,7 @@ class TeacherController extends IController {
             $lessonModel = new Default_Model_TeacherLesson();
             $title = $param['title'];
             $description = $param['description'];
-            $lessonId = $lessonModel->createLesson($this->currentTeacherId, $title, $description);
+            $lessonId = $lessonModel->createLesson($this->currentTeacherId, $title, $description, $param['tags']);
 
             // Save files
             $fileModel->createFilesData($lessonId);
@@ -202,6 +238,7 @@ class TeacherController extends IController {
      */
     public function lessonAction() {
         $this->initial();
+        
     }
 
     /**
