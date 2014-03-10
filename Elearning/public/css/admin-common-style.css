@@ -12,6 +12,7 @@ and open the template in the editor.
     background: #52A20B;
     width: 120px;
     padding: 5px;
+    cursor: pointer;
 }
 .register-cus {
     width: 120px;

@@ -52,5 +52,8 @@ class Message {
     public static $M045 = "マースターデータを更新するのが失敗しました";
     public static $M046 = "授業の説明を入力してください";
     public static $M047 = "違犯レポートが送りました！ありがとうございます。";
-
+    public static $M048 = "ユーザが存在していない";
+    public static $M049 = "IPを入力してください";
+    public static $M050 = "このIPが存在している";
+    public static $M051 = "IPを追加するのが完成しました";
 }

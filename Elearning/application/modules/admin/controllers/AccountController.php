@@ -2,11 +2,13 @@
 
 require_once 'IController.php';
 require_once '/../../default/controllers/Message.php';
+require_once '/../../default/controllers/Code.php';
 
 class Admin_AccountController extends IController {
     
     public static $ADMIN_ROLE = 3;
-
+    private $currentUser;
+    
     public function init(){
         parent::init();
     }
@@ -23,6 +25,8 @@ class Admin_AccountController extends IController {
                 if ($this->_request->getActionName() != 'login') {
                     $this->_redirect('admin/account/login');
                 }
+            } else {
+                $this->currentUser = $data;
             }
         } elseif ($this->_request->getActionName() != 'login') {
             $this->_redirect('admin/account/login');
@@ -33,7 +37,19 @@ class Admin_AccountController extends IController {
      * 管理者の個人情報画面
      */
     public function indexAction() {
+        $adminModel = new Admin_Model_Admin();
         
+        $create_admin = $adminModel->getAdminById($this->currentUser['create_admin'])['username'];
+        $this->currentUser['created'] = $create_admin;
+        
+        $this->view->adminInfo = $this->currentUser;
+        
+        $this->view->allowedIp = $adminModel->getAllowedIp($this->currentUser['id']);
+        
+        $messages = $this->_helper->FlashMessenger->getMessages('updateInfoSuccess');
+        $this->view->messages = $messages;
+        $errorMessages = $this->_helper->FlashMessenger->getMessages('updateInfoError');
+        $this->view->errorMessages = $errorMessages;
     }
 
     /**
@@ -95,9 +111,43 @@ class Admin_AccountController extends IController {
      * IP追加画面
      */
     public function addIpAction() {
+//        $userId = $this->_request->getParam('user_id');
+        $userId = $this->currentUser['id'];
         
+        if ($this->_request->isPost()) {
+            $ip = $this->_request->getParam('ip');
+            
+            if ($ip == "") {
+                $this->view->errorMessage = Message::$M049;
+                return;
+            }
+            if (!preg_match(Code::$REGEX_IP, $ip)) {
+                $this->view->errorMessage = Message::$M027;
+                return;
+            }
+            $adminModel = new Admin_Model_Admin();
+            if ($adminModel->isAllowedIp($userId, $ip)) {
+                $this->view->errorMessage = Message::$M049;
+                return;
+            }
+            if (!$adminModel->getAdminById($userId)) {
+                $this->view->errorMessage = Message::$M048;
+                return;
+            }
+            $adminModel->addIp($userId, $ip);
+            $this->_helper->FlashMessenger->addMessage(Message::$M051, 'updateInfoSuccess');
+            $this->redirect("admin/account");
+        }
     }
 
+    /**
+     * IPを削除処理
+     * 
+     */
+    public function deleteIpAction() {
+        $this->redirect("admin/account");
+    }
+    
     /**
      * 「Verify」コード更新画面
      */

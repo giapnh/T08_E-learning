@@ -169,9 +169,42 @@ class Admin_UserController extends IController {
      * 
      */
     public function adminInfoAction() {
+        $userId = $this->_request->getParam('user_id');
+        $adminModel = new Admin_Model_Admin();
         
+        $adminInfo = $adminModel->getAdminById($userId);
+        if ($adminInfo == null) {
+            $this->view->errorMessage = Message::$M048;
+        } else {
+            $this->view->allowedIp = $adminModel->getAllowedIp($adminInfo['id']);
+        }
+        $this->view->adminInfo = $adminInfo;
+        
+        $messages = $this->_helper->FlashMessenger->getMessages('updateInfoSuccess');
+        $this->view->messages = $messages;
+        $errorMessages = $this->_helper->FlashMessenger->getMessages('updateInfoError');
+        $this->view->errorMessages = $errorMessages;
     }
     
+    /**
+     * 管理者を削除処理
+     * 
+     * 
+     * 
+     */
+    public function deleteAdminAction() {
+        $userId = $this->_request->getParam('user_id');
+        $adminModel = new Admin_Model_Admin();
+        
+        if ($adminModel->deleteUser($userId)) {
+            $this->_helper->FlashMessenger->addMessage(Message::$M039, 'updateInfoSuccess');
+        } else {
+            $this->_helper->FlashMessenger->addMessage(Message::$M043, 'updateInfoError');
+        }
+        $this->redirect("admin/user/admin-info?user_id=".$userId);
+    }
+
+
     /**
      * 管理者を追加処理
      */
@@ -209,8 +242,40 @@ class Admin_UserController extends IController {
                 return;
             }
             
-            $adminModel->createAdmin($this->currentUser['id'], $username, $password);
+            $adminModel->createAdmin($this->currentUser['id'], $username, md5($username . '+' . $password . '+' . Code::$PASSWORD_CONST));
             $this->redirect("admin/user");
+        }
+    }
+    
+    /**
+     * 管理者のログインできるIPを追加処理
+     */
+    public function addIpAction() {
+        $userId = $this->_request->getParam('user_id');
+        
+        if ($this->_request->isPost()) {
+            $ip = $this->_request->getParam('ip');
+            
+            if ($ip == "") {
+                $this->view->errorMessage = Message::$M049;
+                return;
+            }
+            if (!preg_match(Code::$REGEX_IP, $ip)) {
+                $this->view->errorMessage = Message::$M027;
+                return;
+            }
+            $adminModel = new Admin_Model_Admin();
+            if ($adminModel->isAllowedIp($userId, $ip)) {
+                $this->view->errorMessage = Message::$M049;
+                return;
+            }
+            if (!$adminModel->getAdminById($userId)) {
+                $this->view->errorMessage = Message::$M048;
+                return;
+            }
+            $adminModel->addIp($userId, $ip);
+            $this->_helper->FlashMessenger->addMessage(Message::$M051, 'updateInfoSuccess');
+            $this->redirect("admin/user/admin-info?user_id=".$userId);
         }
     }
     

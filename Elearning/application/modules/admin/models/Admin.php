@@ -38,7 +38,7 @@ class Admin_Model_Admin extends Zend_Db_Table_Abstract {
     public function getAdminByUsername($username) {
         $query = $this->select()
                 ->from($this->_name, "*")
-                ->where("username=?",$username);
+                ->where(self::$USERNAME."=?",$username);
         $result = $this->getAdapter()->fetchAll($query);
         if ($result == null) {
             return null;
@@ -47,4 +47,74 @@ class Admin_Model_Admin extends Zend_Db_Table_Abstract {
         }
     }
     
+    public function getAdminById($userId) {
+        $sql = "SELECT admin.id, admin.username, admin2.username as created
+                FROM admin, (SELECT id, username FROM admin) AS admin2
+                WHERE admin.create_admin = admin2.id
+                AND admin.id = '".$userId."'";
+        $result = $this->db->query($sql)->fetchAll();
+        if ($result == null) {
+            return null;
+        } else {
+            return $result[0];
+        }
+    }
+    
+    public function getAllowedIp($userId) {
+        $sql = "SELECT * FROM admin_ip WHERE admin_id=".$userId;
+        $result = $this->db->query($sql)->fetchALl();
+        
+        if ($result) {
+            return $result;
+        } else {
+            return null;
+        }
+    }
+    
+    /**
+     * 管理者を削除する
+     * 
+     * @param int $userId
+     * @return boolean
+     */
+    public function deleteUser($userId) {
+        try {
+            $this->delete("id='".$userId."'");
+        } catch (Exception $e) {
+            return false;
+        }
+        return true;
+    }
+    
+    /**
+     * このIP でログインできるかをチェック
+     * 
+     * @param string $username
+     * @param string $ip
+     * @return boolean
+     */
+    public function isAllowedIp($userId, $ip) {
+        $sql = "SELECT * FROM admin, admin_ip WHERE "
+                . "admin.id='".$userId."' AND "
+                . "admin.id=admin_ip.admin_id AND "
+                . "ip='".$ip."'";
+        $result = $this->db->query($sql)->fetchALl();
+        
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    /**
+     * ログインできるIPを追加
+     * 
+     * @param id $userId
+     * @param string $ip
+     */
+    public function addIp($userId, $ip) {
+        $sql = "INSERT INTO admin_ip VALUES(NULL, '$userId','$ip')";
+        $this->db->query($sql);
+    }
 }

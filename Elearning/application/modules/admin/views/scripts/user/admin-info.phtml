@@ -2,7 +2,18 @@
 <?php $this->headLink()->appendStylesheet($this->baseUrl() . "/public/css/common-style.css"); ?>
 <?php $this->headLink()->appendStylesheet($this->baseUrl() . "/public/css/ta123_style.css"); ?>
 <?php $this->headLink()->appendStylesheet($this->baseUrl() . "/public/css/ta123_style2.css"); ?>
+<?php $this->headScript()->appendFile($this->baseUrl('/public/js/jquery.min.js')); ?>
 <?php echo $this->render('admin-layout.phtml') ?>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $(".btn-delete").click(function(){
+            if (confirm("このユーザを削除するのを同意しますか？")) {
+                window.top.location = "<?php echo $this->baseUrl()."/admin/user/delete-admin?user_id=".$this->adminInfo[Admin_Model_Admin::$ID]; ?>";
+            }
+        });
+    });
+</script>
 
 <div style="width: 1000px; margin: 0px auto;">
     
@@ -13,19 +24,31 @@
             <div class="detail_title_right title_right_1"></div>
         </div>
         <div class="detail_layout_content">
+            <?php foreach ($this->messages as $message) { ?>
+            <div style="color: green"><?php echo $message; ?></div>
+            <?php } ?>
+            <?php foreach ($this->errorMessages as $errorMessage) { ?>
+            <div style="color: red"><?php echo $errorMessage; ?></div>
+            <?php } ?>
+            <div style="color: red">
+                <?php if (isset($this->errorMessage)) {echo $this->errorMessage;} ?>
+            </div>
+            <?php if ($this->adminInfo != null) { ?>
             <table>
                 <tr>
                     <td><span class="span_text_1" style="width: 100px;">ユーザ名</span></td>
-                    <td>: minhtq</td>
+                    <td>: <?php echo $this->adminInfo[Admin_Model_Admin::$USERNAME] ?></td>
                 </tr>
                 <tr>
                     <td><span class="span_text_1" style="width: 100px;">作成した人</span></td>
-                    <td>:giapnh</td>
+                    <td>: <?php echo $this->adminInfo["created"] ?></td>
                 </tr>
             </table>
-            <button class="normal-button">削除</button>
+            <button class="normal-button btn-delete">削除</button>
+            <?php } ?>
         </div>
 
+        <?php if ($this->adminInfo != null) { ?>
         <div class="detail_layout_title">
             <div class="detail_title_left title_left_1">II</div>
             <div class="detail_title_center title_center_1">ログインできるIPリスト</div>
@@ -33,21 +56,26 @@
         </div>
         <div class="detail_layout_content">
             <table>
+                <?php 
+                    if ($this->allowedIp) {
+                        foreach ($this->allowedIp as $ip) { 
+                ?>
                 <tr>
-                    <td>192.168.1.2</td>
-                    <td style="color: red">X</td>
+                    <td><?php echo $ip['ip'] ?></td>
                 </tr>
+                <?php   }
+                    } else {
+                        ?>
                 <tr>
-                    <td>192.168.1.2</td>
-                    <td style="color: red">X</td>
+                    <td style="color: red">ログインできるIPがない</td>
                 </tr>
-                <tr>
-                    <td>192.168.1.2</td>
-                    <td style="color: red">X</td>
-                </tr>
+                <?php
+                    }
+                ?>
             </table>
-            <button class="normal-button">IP追加</button>
+            <a href="<?php echo $this->baseUrl()."/admin/user/add-ip?user_id=".$this->adminInfo[Admin_Model_Admin::$ID]; ?>"><button class="normal-button">IP追加</button></a>
         </div>
+        <?php } ?>
     </div>
     
     <?php echo $this->render("right-banner.phtml") ?>

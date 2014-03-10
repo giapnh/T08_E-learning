@@ -159,9 +159,9 @@ class Admin_Model_User extends Zend_Db_Table_Abstract {
     public function deleteUser($userId) {
         try {
             $this->delete("id='".$userId."'");
-            return true;
         } catch (Exception $e) {
             return false;
         }
+        return true;
     }
 }
