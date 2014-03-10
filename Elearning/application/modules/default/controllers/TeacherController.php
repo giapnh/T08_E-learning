@@ -43,15 +43,14 @@ class TeacherController extends IController {
      */
     public function indexAction() {
         $this->initial();
-        
         $lessons = new Default_Model_Lesson();
         $tagId = $this->_request->getParam('tag_id');
         $tags = new Default_Model_Tag();
-        
+
         $this->view->tagId = $tagId;
         $this->view->tags = $tags->listAll();
         $this->view->type = 1;
-        
+
         $paginator = Zend_Paginator::factory($lessons->listTeacherLessonsByTag($this->currentTeacherId, $tagId));
         $paginator->setItemCountPerPage(6);
         $paginator->setPageRange(3);
@@ -59,7 +58,7 @@ class TeacherController extends IController {
         $currentPage = $this->_request->getParam('page', 1);
         $paginator->setCurrentPageNumber($currentPage);
         $this->view->data = $paginator;
-        
+
 //        foreach($this->view->data as $item) {
 //            var_dump($item);
 //        }
@@ -201,7 +200,7 @@ class TeacherController extends IController {
         if ($this->_request->isPost()) {
             $param = $this->_getAllParams();
             var_dump($param);
-            
+
             // Check title
             if ((!isset($param['title'])) || $param['title'] == '') {
                 $this->view->errorMessage = Message::$M020;
@@ -247,7 +246,6 @@ class TeacherController extends IController {
      */
     public function lessonAction() {
         $this->initial();
-        
     }
 
     /**
