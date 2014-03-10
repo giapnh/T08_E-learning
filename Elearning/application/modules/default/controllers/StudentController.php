@@ -253,6 +253,7 @@ class StudentController extends IController {
             $comment = $this->_request->getParam('comment');
             $commentModel->addComment($lesson_id, Zend_Auth::getInstance()->getStorage()->read()['id'], $comment);
         }
+
         $lessonModel->incrementView($lesson_id);
         $info = $lessonModel->findLessonById($lesson_id);
         $this->view->numComment = $commentModel->countCommentOnLesson($lesson_id);
@@ -269,45 +270,54 @@ class StudentController extends IController {
         $this->initial();
         $auth = Zend_Auth::getInstance();
         $infoUser = $auth->getStorage()->read();
-        if ($this->_request->isGet()) {
-            $get_type = $this->_request->getParam('type');
-            $tagId = $this->_request->getParam('tagId');
-            $teacherId = $this->_request->getParam('teacherId');
-            $this->view->tagId = $tagId;
-            $this->view->teacherId = $teacherId;
-            if ($get_type == null || $get_type == 1) {
-                $tags = new Default_Model_Tag();
-                $this->view->tags = $tags->listAllTagByStudent($infoUser['id']);
-                $this->view->type = 1;
-                $lessons = new Default_Model_Lesson();
-                if ($tagId == 0) {
-                    $paginator = Zend_Paginator::factory($lessons->listAllByStudent($infoUser['id']));
-                } else {
-                    $paginator = Zend_Paginator::factory($lessons->findLessonWithTagByStudent($tagId, $infoUser['id']));
-                }
-                $paginator->setItemCountPerPage(6);
-                $paginator->setPageRange(3);
-                $this->view->numpage = $paginator->count();
-                $currentPage = $this->_request->getParam('page', 1);
-                $paginator->setCurrentPageNumber($currentPage);
-                $this->view->data = $paginator;
+        $lessons = new Default_Model_Lesson();
+        $get_type = $this->_request->getParam('type');
+        $tagId = $this->_request->getParam('tagId');
+        $teacherId = $this->_request->getParam('teacherId');
+        $this->view->tagId = $tagId;
+        $this->view->teacherId = $teacherId;
+        if ($get_type == null || $get_type == 1) {
+            $tags = new Default_Model_Tag();
+            $this->view->tags = $tags->listAllTagByStudent($infoUser['id']);
+            $this->view->type = 1;
+            if ($tagId == 0) {
+                $paginator = Zend_Paginator::factory($lessons->listAllByStudent($infoUser['id']));
             } else {
-                $account = new Default_Model_Account();
-                $this->view->teachers = $account->listTeacherByStudent($infoUser['id']);
-                $this->view->type = 2;
-                $lessons = new Default_Model_Lesson();
-                if ($teacherId == 0) {
-                    $paginator = Zend_Paginator::factory($lessons->listAllByStudent($infoUser['id']));
-                } else {
-                    $paginator = Zend_Paginator::factory($lessons->findLessonWithTeacherByStudent($teacherId, $infoUser['id']));
-                }
-                $paginator->setItemCountPerPage(6);
-                $paginator->setPageRange(3);
-                $this->view->numpage = $paginator->count();
-                $currentPage = $this->_request->getParam('page', 1);
-                $paginator->setCurrentPageNumber($currentPage);
-                $this->view->data = $paginator;
+                $paginator = Zend_Paginator::factory($lessons->findLessonWithTagByStudent($tagId, $infoUser['id']));
             }
+            $paginator->setItemCountPerPage(6);
+            $paginator->setPageRange(3);
+            $this->view->numpage = $paginator->count();
+            $currentPage = $this->_request->getParam('page', 1);
+            $paginator->setCurrentPageNumber($currentPage);
+            $this->view->data = $paginator;
+        } else {
+            $account = new Default_Model_Account();
+            $this->view->teachers = $account->listTeacherByStudent($infoUser['id']);
+            $this->view->type = 2;
+            $lessons = new Default_Model_Lesson();
+            if ($teacherId == 0) {
+                $paginator = Zend_Paginator::factory($lessons->listAllByStudent($infoUser['id']));
+            } else {
+                $paginator = Zend_Paginator::factory($lessons->findLessonWithTeacherByStudent($teacherId, $infoUser['id']));
+            }
+            $paginator->setItemCountPerPage(6);
+            $paginator->setPageRange(3);
+            $this->view->numpage = $paginator->count();
+            $currentPage = $this->_request->getParam('page', 1);
+            $paginator->setCurrentPageNumber($currentPage);
+            $this->view->data = $paginator;
+        }
+
+        if ($this->_request->isPost()) {
+            $keyword = $this->_request->getParam('keyword');
+            $paginator = Zend_Paginator::factory($lessons->findByKeyword($keyword));
+            $paginator->setItemCountPerPage(6);
+            $paginator->setPageRange(3);
+            $this->view->numpage = $paginator->count();
+            $currentPage = $this->_request->getParam('page', 1);
+            $paginator->setCurrentPageNumber($currentPage);
+            $this->view->data = $paginator;
         }
     }
 

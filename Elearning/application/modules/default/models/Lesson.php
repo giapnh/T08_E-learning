@@ -94,18 +94,23 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
         $this->update($update, $where);
     }
 
+    /**
+     * 検索機能：先生名、タイトル、。。。 
+     * @param type $keyword
+     * @return type
+     */
     public function findByKeyword($keyword) {
         $select = $this->getAdapter()->select();
+//        $keyword = utf8_encode($keyword);
         $select->from('lesson')
                 ->joinInner('user', 'lesson.teacher_id=user.id', array('name'))
                 ->joinInner('lesson_tag', 'lesson.id=lesson_tag.lesson_id')
                 ->joinInner('tag', 'lesson_tag.tag_id=tag.id', array('tag_name'))
-                ->where("BINARY name LIKE '%$keyword%'")
-                ->orWhere("tag_name LIKE '%$keyword%'")
+                ->where("name LIKE '%$keyword%'")
+                ->orWhere("tag_name  LIKE '%$keyword%'")
                 ->orWhere("title LIKE '%$keyword%'")
                 ->orWhere("description LIKE '%$keyword%'")
                 ->group('lesson.id');
-        echo $select;
         return $this->getAdapter()->fetchAll($select);
     }
 
