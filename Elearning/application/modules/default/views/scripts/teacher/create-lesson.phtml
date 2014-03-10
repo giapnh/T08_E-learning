@@ -88,25 +88,9 @@
 </script>
 <center>
     <div class="content" style="background: #F0F0F0;">
-        <div class="top_content clear banner">
-            <div style="position: absolute; top: 120px; right: 70px; ">
-                <a href="<?php echo $this->baseUrl(); ?>/user/logout"><font style="color: #7E3500; font-weight: bold; text-decoration: underline;">ログアウト</font>
-                </a>
-            </div>
-            <div  class="topbar-username"><big>ようこそ!</bigF><?php echo $this->user_info['name']; ?></div>
-        </div>
-        <!--Menu Tab Bar-->
-        <div class="menus clear">
-            <div class="mn first_mn">
-                <a class="home" href="<?php echo $this->baseUrl(); ?>/teacher/index">
-                    <font style="color: white;">授業</font>
-                </a>
-            </div>
-            <div title="" class="mn "><a href="#"><font style="color: white;">支払い</a>
-            </div>
-            <div title="" class="mn "><a href="<?php echo $this->baseUrl(); ?>/teacher/profile"><font style="color: white;">プロファイル</font></a>
-            </div>
-        </div>
+        <?php 
+            echo $this->partial("teacher/teacher-top.phtml", array('username'=>$this->user_info['name']));
+        ?>
         <div class="containt_center_cen clear" style="margin: 0px auto;">
             <form action="" method="post" enctype="multipart/form-data">
                 <div class="error_message" style="color: red;">

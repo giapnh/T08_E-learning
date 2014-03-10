@@ -3,10 +3,12 @@
 require_once 'IController.php';
 require_once 'AccountController.php';
 require_once '/../../default/controllers/Message.php';
+require_once '/../../default/controllers/Code.php';
 
 class Admin_UserController extends IController {
     
     public static $PAGE_LIMIT = 10;
+    private $currentUser;
 
     /**
      * ログイン情報をチェック
@@ -20,6 +22,8 @@ class Admin_UserController extends IController {
                 if ($this->_request->getActionName() != 'login') {
                     $this->_redirect('admin/account/login');
                 }
+            } else {
+                $this->currentUser = $data;
             }
         } elseif ($this->_request->getActionName() != 'login') {
             $this->_redirect('admin/account/login');
@@ -172,7 +176,42 @@ class Admin_UserController extends IController {
      * 管理者を追加処理
      */
     public function addAdminAction() {
-        
+        $params = $this->getAllParams();
+        if ($this->_request->isPost()) {
+            $username = $params["username"];
+            $password = $params["password"];
+            $passwordConfirm = $params["password_confirm"];
+            
+            if (!(isset($username)) || $username == "") {
+                $this->view->errorMessage = Message::$M001;
+                return;
+            }
+            if (!(isset($password)) || $password == "") {
+                $this->view->errorMessage = Message::$M002;
+                return;
+            }
+            if (!preg_match(Code::$REGEX_USERNAME, $username)) {
+                $this->view->errorMessage = Message::$M006;
+                return;
+            }
+            if (!preg_match(Code::$REGEX_PASSWORD, $password)) {
+                $this->view->errorMessage = Message::$M007;
+                return;
+            }
+            if ($passwordConfirm != $password) {
+                $this->view->errorMessage = Message::$M008;
+                return;
+            }
+            
+            $adminModel = new Admin_Model_Admin();
+            if ($adminModel->getAdminByUsername($username) != null) {
+                $this->view->errorMessage = Message::$M034;
+                return;
+            }
+            
+            $adminModel->createAdmin($this->currentUser['id'], $username, $password);
+            $this->redirect("admin/user");
+        }
     }
     
 }
