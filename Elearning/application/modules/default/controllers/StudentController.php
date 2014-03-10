@@ -14,6 +14,14 @@ class StudentController extends IController {
             if ($this->_request->getActionName() != 'login') {
                 $this->_redirect('user/login');
             }
+        } else {
+            //学生チェックする
+            $auth = Zend_Auth::getInstance();
+            $infoUser = $auth->getStorage()->read();
+            if ($infoUser['id'] != 1) {
+                $auth->clearIdentity();
+                $this->_redirect('user/login');
+            }
         }
     }
 
