@@ -59,11 +59,6 @@ class TeacherController extends IController {
         $currentPage = $this->_request->getParam('page', 1);
         $paginator->setCurrentPageNumber($currentPage);
         $this->view->data = $paginator;
-        
-//        foreach($this->view->data as $item) {
-//            var_dump($item);
-//        }
-//        die();
 
         if ($this->_request->isPost()) {
 //            $keyword = $this->_request->getParam('keyword');

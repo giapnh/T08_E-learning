@@ -30,12 +30,22 @@
                         <td valign="top" class="containt_center_cen_left" style="margin-top: 14px;">
                             <div style="width: 100%; height: 20px;" class="lession-title">タグリスト</div>
                             <div style="width: 100%;"></div>
+                                <a href="<?php echo $this->baseUrl(); ?>/teacher/index">
+                                    <button class="<?php 
+                                        if ($this->tagId == 0) {
+                                            echo "teacher-item"; // If selected
+                                        } else {
+                                            echo "tag-item";
+                                        }
+                                    ?>">
+                                        全部
+                                    </button>
+                                </a>
                             <?php
                             for ($i = 0; $i < count($this->tags); $i++) {
                                 ?>
                                 <a href="<?php echo $this->baseUrl(); ?>/teacher/index?tag_id=<?php echo $this->tags[$i]['id'] ?>">
-                                    <button class="
-                                    <?php
+                                    <button class="<?php
                                     if ($this->tagId == $this->tags[$i]['id']) {
                                         echo "teacher-item"; // If selected
                                     } else {
@@ -66,7 +76,7 @@
                                                     </tr>
                                                     <tr><td><hr></td></tr>
                                                     <tr>
-                                                        <td class="lession-teacher"><b>先生: </b><?php echo $item['name']; ?></td>
+                                                        <td class="lession-teacher"></td>
                                                         <td class="lession-time"><?php echo $item['create_time']; ?></td>
                                                     </tr>
                                                     <tr>
@@ -93,7 +103,7 @@
                                                     </tr>
                                                     <tr><td><hr></td></tr>
                                                     <tr style="width: 100%;">
-                                                        <td class="lession-teacher"><b>先生: </b><?php echo $item['name'] ?></td>
+                                                        <td class="lession-teacher"></td>
                                                         <td class="lession-time"><?php echo $item['create_time']; ?></td>
                                                     </tr>
                                                     <tr class="lession-description lesson-description-correct" style="width: 100%;">
@@ -103,7 +113,7 @@
                                                         <td>
                                                             <img src="<?php echo $this->baseUrl(); ?>/public/images/num-like.png" width="15" height="15"> <font class="num-like-comment"><?php echo $item['like']; ?></font>
                                                             <img src="<?php echo $this->baseUrl(); ?>/public/images/num-view.png" width="15" height="15"> <font class="num-like-comment"><?php echo $item['view']; ?></font>
-                                                            <a href="<?php echo $this->baseUrl(); ?>/student/lesson?lesson_id=<?php echo $item['id']; ?>"  class="link-view-detail float-right">詳細</a>
+                                                            <a href="<?php echo $this->baseUrl(); ?>/teacher/lesson?lesson_id=<?php echo $item['id']; ?>"  class="link-view-detail float-right">詳細</a>
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -126,15 +136,10 @@
                 </table>
                 <div class="paging">
                     <div class="paging-center">
-                        <a href="">
-                            <div class="paging-item-curr">1</div>
-                        </a>
-                        <a href="/Elearning/student/index/page/2">
-                            <div class="paging-item">2</div>
-                        </a>
-                        <div class="paging-next-prev">
-                            <a href="/Elearning/student/index/page/2">次</a>
-                        </div>     
+                        <?php
+                        if ($this->numpage > 1)
+                            echo $this->paginationControl($this->data, 'Sliding', 'pageinator.phtml');
+                        ?>
                     </div>
                 </div>
             </div>
