@@ -14,6 +14,14 @@ class TeacherController extends IController {
             if ($this->_request->getActionName() != 'login') {
                 $this->_redirect('user/login');
             }
+        } else {
+            //学生チェックする
+            $auth = Zend_Auth::getInstance();
+            $infoUser = $auth->getStorage()->read();
+            if ($infoUser['role'] != 2) {
+                $auth->clearIdentity();
+                $this->_redirect('user/login');
+            }
         }
     }
 
@@ -275,12 +283,12 @@ class TeacherController extends IController {
         } else {
             $this->view->currentFile = $currentFile;
         }
-        
+
         $this->view->fileModel = new Default_Model_File();
         $this->view->controller = $this;
         $this->view->lessonId = $lessonId;
     }
-    
+
     public function getTestHtml($testId) {
         $fileModel = new Default_Model_File();
         return $fileModel->getTestHtml($testId);
