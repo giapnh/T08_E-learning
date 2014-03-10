@@ -15,10 +15,9 @@ class StudentController extends IController {
                 $this->_redirect('user/login');
             }
         } else {
-            //学生チェックする
-            $auth = Zend_Auth::getInstance();
             $infoUser = $auth->getStorage()->read();
-            if ($infoUser['id'] != 1) {
+            if ($infoUser['role'] != 1) {
+                //学生チェックする
                 $auth->clearIdentity();
                 $this->_redirect('user/login');
             }

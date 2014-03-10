@@ -18,7 +18,7 @@ class TeacherController extends IController {
             //学生チェックする
             $auth = Zend_Auth::getInstance();
             $infoUser = $auth->getStorage()->read();
-            if ($infoUser['id'] != 2) {
+            if ($infoUser['role'] != 2) {
                 $auth->clearIdentity();
                 $this->_redirect('user/login');
             }
