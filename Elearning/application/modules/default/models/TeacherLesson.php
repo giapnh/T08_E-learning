@@ -33,7 +33,19 @@ class Default_Model_TeacherLesson extends Zend_Db_Table_Abstract {
                 self::$DESCRIPTION => $description,
                 self::$STATUS => self::$LESSON_STATUS_AVAILABLE
             );
-        return $this->insert($insertData);
+        $lessonId = $this->insert($insertData);
+        $tagModel = new Default_Model_Tag();
+        $lessonTagModel = new Default_Model_LessonTag();
+        
+        foreach ($tags as $tag) {
+            $tagId = $tagModel->isExistTag($tag);
+            if (!$tagId) {
+                $tagId = $tagModel->insert(array("tag_name"=>$tag));
+            }
+            $lessonTagModel->insert(array("lesson_id"=>$lessonId, "tag_id"=>$tagId));
+        }
+        
+        return $lessonId;
     }
     
 }

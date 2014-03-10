@@ -200,7 +200,8 @@ class TeacherController extends IController {
 //        $this->view->form = $form;
         if ($this->_request->isPost()) {
             $param = $this->_getAllParams();
-
+            var_dump($param);
+            
             // Check title
             if ((!isset($param['title'])) || $param['title'] == '') {
                 $this->view->errorMessage = Message::$M020;

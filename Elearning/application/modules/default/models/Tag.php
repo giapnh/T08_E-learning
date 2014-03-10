@@ -58,5 +58,5 @@ class Default_Model_Tag extends Zend_Db_Table_Abstract {
                 ->where('learn.student_id=?', $studentId);
         return $this->getAdapter()->fetchAll($select);
     }
-
+        
 }
