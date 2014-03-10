@@ -69,8 +69,11 @@
     border-color: #F37B00;
     box-shadow: 5px 5px 5px #888888;
 }
-
-
+hr{
+    width: 98%;
+    color: #F37B00;
+    margin-top: 4px;
+}
 .tag-item,.teacher-item{
     font-weight: bold;
     width: 90%;
@@ -469,6 +472,11 @@ tr.profile{
     font-weight: bold;
     font-size: 15px;
 }
+
+.td-right{
+    width: 650px;
+}
+
 .lesson-big-title{
     text-align: center;
     background: #51A007;

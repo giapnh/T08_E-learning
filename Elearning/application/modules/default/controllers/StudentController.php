@@ -360,4 +360,9 @@ class StudentController extends IController {
         }
     }
 
+    public function paymentAction() {
+        $this->initial();
+        //TODO
+    }
+
 }
