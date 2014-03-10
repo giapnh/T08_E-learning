@@ -321,5 +321,12 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
         $fileLines = file(APPLICATION_PATH . "\\..\\" . $fileInfo['location']);
         return implode("\n", $fileLines);
     }
+    
+    public function getFileByLesson($lessonId) {
+        $query = $this->select()
+                ->from($this->_name, "*")
+                ->where('lesson_id=?', $lessonId);
+        return $this->getAdapter()->fetchAll($query);
+    }
 }
 ?>

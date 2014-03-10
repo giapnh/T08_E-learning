@@ -20,10 +20,15 @@
         float: left;
     }
     #lesson_container .tags span {
-        text-decoration: underline;
+        padding: 5px;
+        margin-right: 10px;
+        border-radius: 5px;
+        background-color: green;
+        color: white;
     }
     #lesson_container .created_date {
         margin-top: 20px;
+        font-size: 14px;
         color: gray;
     }
     #lesson_container .description {
@@ -31,7 +36,7 @@
         float: right;
         border: 1px solid yellowgreen;
         padding: 5px;
-        min-height: 100px;
+        height: 180px;
         margin-bottom: 10px;
         margin-left: 10px;
     }
@@ -68,6 +73,7 @@
         margin: 5px;
     }
     .file_name {
+        overflow: auto;
         line-height: 50px;
         width: 200px;
         height: 50px;
@@ -113,27 +119,40 @@
     </center>
     <div id="lesson_container">
         <div class="description">
-            これは授業の説明ばらばら。。。これは授業の説明ばらばら。。。これは授業の説明ばらばら。。。これは授業の説明ばらばら。。。これは授業の説明ばらばら。。。
+            <?php echo $this->lessonInfo['description']; ?>
         </div>
-        <div>
+        <div style="height: 200px;">
             <div class="title">IT日本語</div>
             <div class="tag_label">タグ:　</div>
             <div class="tags">
-                <span>IT</span>、
-                <span>日本語</span>、
-                <span>日本語</span>、
-                <span>日本語</span>、
-                <span>日本語</span>
+                <?php foreach ($this->tags as $tag) {
+                    echo "<span>".$tag['tag_name']."</span>";
+                }
+                ?>
             </div>
-            <div class="created_date">2014年3月8日</div>
+            <div class="created_date">
+                <?php
+                    $time = $this->lessonInfo['create_time'];
+                    $correct = explode(" ", $time)[0];
+                    $arr = explode("-", $correct);
+                    $year = $arr[0];
+                    $mon = $arr[1];
+                    $day = $arr[2];
+                    echo $year . "年" . $mon . "月" . $day . "日";
+                ?>
+            </div>
             <div class="like" style="width: 100%; margin: 10px 0px;">
                 <span>
-                    <img src="/Elearning/public/images/num-like.png" width="15" height="15">
-                    <span>100</span>
+                    <img src="<?php echo $this->baseUrl(); ?>/public/images/num-like.png" width="15" height="15">
+                    <span><?php echo $this->lessonInfo['like'] ?></span>
                 </span>
                 <span>
-                    <img src="/Elearning/public/images/num-view.png" width="15" height="15">
-                    <span>200</span>
+                    <img src="<?php echo $this->baseUrl(); ?>/public/images/num-view.png" width="15" height="15">
+                    <span><?php echo $this->lessonInfo['view'] ?></span>
+                </span>
+                <span>
+                    <img src="<?php echo $this->baseUrl(); ?>/public/images/student.png" width="15" height="15">
+                    <span><?php echo $this->lessonInfo['students_num'] ?></span>
                 </span>
             </div>
         </div>
@@ -142,34 +161,32 @@
                 <div class="file_name_label">ファイル名</div>
                 <div class="file_description_label">説明</div>
             </div>
+            <?php 
+                foreach ($this->files as $file) {
+                    $fileLocation = $file['location'];
+                    $ext = explode('.', $fileLocation)[1];
+                    if ($ext == 'pdf') {
+                        $icon = "pdf.png";
+                    } else if ($ext == 'jpg' ||$ext == 'jpge' ) {
+                        $icon = "img_file.png";
+                    } else if ($ext == 'mp3') {
+                        $icon = "mp3.png";
+                    } else if ($ext == 'mp4') {
+                        $icon = "video.png";
+                    } else if ($ext == 'html') {
+                        $icon = "test.png";
+                    }
+            ?>
             <div class="file_container">
-                <a href="<?php echo $this->baseUrl()."/teacher/file" ?>">
-                    <div class="file_type"><img src="<?php echo $this->baseUrl()."/public/images/pdf.png" ?>"></div>
-                    <div class="file_name">ファイル1</div>
-                    <div class="file_description">ファイルの説明</div>
+                <a href="<?php echo $this->baseUrl()."/teacher/file?file_id=".$file['id']; ?>">
+                    <div class="file_type"><img src="<?php echo $this->baseUrl()."/public/images/".$icon ?>"></div>
+                    <div class="file_name"><?php echo $file['filename']; ?></div>
+                    <div class="file_description"><?php echo $file['description'] ?></div>
                 </a>
             </div>
-            <div class="file_container">
-                <a href="<?php echo $this->baseUrl()."/teacher/file" ?>">
-                    <div class="file_type"><img src="<?php echo $this->baseUrl()."/public/images/test.png" ?>"></div>
-                    <div class="file_name">ファイル1</div>
-                    <div class="file_description">ファイルの説明</div>
-                </a>
-            </div>
-            <div class="file_container">
-                <a href="<?php echo $this->baseUrl()."/teacher/file" ?>">
-                    <div class="file_type"><img src="<?php echo $this->baseUrl()."/public/images/mp3.png" ?>"></div>
-                    <div class="file_name">ファイル1</div>
-                    <div class="file_description">ファイルの説明</div>
-                </a>
-            </div>
-            <div class="file_container">
-                <a href="<?php echo $this->baseUrl()."/teacher/file" ?>">
-                    <div class="file_type"><img src="<?php echo $this->baseUrl()."/public/images/img_file.png" ?>"></div>
-                    <div class="file_name">ファイル1</div>
-                    <div class="file_description">ファイルの説明</div>
-                </a>
-            </div>
+            <?php
+                }
+            ?>
         </div>
     </div>
     <div id="comment_container">

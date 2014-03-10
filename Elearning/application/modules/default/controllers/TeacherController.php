@@ -232,7 +232,7 @@ class TeacherController extends IController {
             $fileModel->createFilesData($lessonId);
 
             // Redirect
-            $this->redirect("teacher/lesson");
+            $this->redirect("teacher/lesson?lesson_id=".$lessonId);
         }
     }
 
@@ -242,7 +242,24 @@ class TeacherController extends IController {
      */
     public function lessonAction() {
         $this->initial();
+        $lessonId = $this->_request->getParam('lesson_id');
+        $lessonModel = new Default_Model_Lesson();
+        $fileModel = new Default_Model_File();
+        $lessonTagModel = new Default_Model_LessonTag();
+        $commentModel = new Default_Model_Comment();
+        $learnModel = new Default_Model_Learn();
         
+        $lesson = $lessonModel->findLessonById($lessonId);
+        $files = $fileModel->getFileByLesson($lessonId);
+        $tags = $lessonTagModel->getTagsByLesson($lessonId);
+        $comments = $commentModel->getAllCommentOfLesson($lessonId);
+        $studentsNum = $learnModel->countStudenJoinLesson($lessonId);
+        $lesson['students_num'] = $studentsNum;
+        
+        $this->view->lessonInfo = $lesson;
+        $this->view->files = $files;
+        $this->view->tags = $tags;
+        $this->view->comments = $comments;
     }
 
     /**
