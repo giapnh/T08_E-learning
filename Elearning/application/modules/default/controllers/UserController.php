@@ -59,7 +59,7 @@ class UserController extends IController {
                 $this->view->errorMessage = Message::$M002;
                 return;
             } else {
-                if ($authAdapter->getFailCount($uname) == 5) {
+                if ($authAdapter->getFailCount($uname) >= 5) {
                     // see if a cache already exists:
                     // If user being lock
                     if ($result = $cache->load($uname)) {

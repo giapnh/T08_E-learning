@@ -23,7 +23,7 @@
             </div>
             <!--                <div class="mn" title=""><a href="#"><font style="color: white;">授業リスト</font></a>
                             </div>-->
-            <div title="" class="mn "><a href="#"><font style="color: white;">支払い</a>
+            <div title="" class="mn "><a href="<?php echo $this->baseUrl(); ?>/student/payment"><font style="color: white;">支払い</a>
             </div>
             <div title="" class="mn "><a href="<?php echo $this->baseUrl(); ?>/student/profile"><font style="color: white;">プロファイル</font></a>
             </div>
@@ -31,7 +31,7 @@
 
         <div class="row-show float-left">
             <div class="lesson_register_content" style="width: 98%;">
-                <div class="full-width lesson-big-title">
+                <div class="full-width" style="color: green; font-size: 20px; font-weight: bolder;">
                     <?php echo $this->lessonInfo['title']; ?>
                 </div>
                 <table cellpadding='1' cellspacing='0' border='0' style="width: 100%;border-width: thin;border-style: solid;">

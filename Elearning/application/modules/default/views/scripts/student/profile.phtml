@@ -18,22 +18,21 @@
                 <!--Menu Tab Bar-->
                 <div class="menus clear">
                     <div class="mn">
-                        <a class="home" href="../student/index">
+                        <a class="home" href="<?php echo $this->baseUrl() ?>/student/index">
                             <font style="color: white;">ホーム</font>
                         </a>
                     </div>
-                    <div title="" class="mn"><a href="#"><font style="color: white;">マイ授業</font></a>
+                    <div title="" class="mn"><a href="<?php echo $this->baseUrl(); ?>/student/myLesson"><font style="color: white;">マイ授業</font></a>
                     </div>
-                    <!--                    <div class="mn" title=""><a href="#"><font style="color: white;">授業リスト</font></a>
-                                        </div>-->
-                    <div title="" class="mn "><a href="#"><font style="color: white;">支払い</a>
+
+                    <div title="" class="mn "><a href="<?php echo $this->baseUrl(); ?>/student/payment"><font style="color: white;">支払い</a>
                     </div>
-                    <div title="" class="mn first_mn"><a href="../student/profile"><font style="color: white;">プロファイル</font></a>
+                    <div title="" class="mn first_mn"><a href="<?php echo $this->baseUrl(); ?>/student/profile"><font style="color: white;">プロファイル</font></a>
                     </div>
                 </div>
                 <div class="row-show" style="background: #F0F0F0;">
                     <font style="text-align: center; color: #bb670a; font-size: 23px; width: 100%; float: left; margin-top: 20px;margin-bottom: 20px; font-weight: bold;">ユーザ情報</font>
-                    <table cellpadding="10" cellspacing="1" style="border-style: double; border-color: #093; width: 50%;padding-left: 40px;">
+                    <table cellpadding="10" cellspacing="1" style="border-style: double; border-color: #093; width: 50%;padding-left: 30px; float: left; margin-left: 250px; margin-bottom: 20px;">
                         <tr class="profile">
                             <!--ユーザネーム-->
                             <td>

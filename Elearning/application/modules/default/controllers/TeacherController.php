@@ -43,15 +43,14 @@ class TeacherController extends IController {
      */
     public function indexAction() {
         $this->initial();
-        
         $lessons = new Default_Model_Lesson();
         $tagId = $this->_request->getParam('tag_id');
         $tags = new Default_Model_Tag();
-        
+
         $this->view->tagId = $tagId;
         $this->view->tags = $tags->listAll();
         $this->view->type = 1;
-        
+
         $paginator = Zend_Paginator::factory($lessons->listTeacherLessonsByTag($this->currentTeacherId, $tagId));
         $paginator->setItemCountPerPage(6);
         $paginator->setPageRange(3);
@@ -59,7 +58,10 @@ class TeacherController extends IController {
         $currentPage = $this->_request->getParam('page', 1);
         $paginator->setCurrentPageNumber($currentPage);
         $this->view->data = $paginator;
-
+//        foreach($this->view->data as $item) {
+//            var_dump($item);
+//        }
+//        die();
         if ($this->_request->isPost()) {
 //            $keyword = $this->_request->getParam('keyword');
 //            $paginator = Zend_Paginator::factory($lessons->findByKeyword($keyword));
@@ -195,8 +197,7 @@ class TeacherController extends IController {
 //        $this->view->form = $form;
         if ($this->_request->isPost()) {
             $param = $this->_getAllParams();
-//            var_dump($param);
-            
+            var_dump($param);
             // Check title
             if ((!isset($param['title'])) || $param['title'] == '') {
                 $this->view->errorMessage = Message::$M020;
@@ -242,6 +243,7 @@ class TeacherController extends IController {
      */
     public function lessonAction() {
         $this->initial();
+<<<<<<< .mine
         $lessonId = $this->_request->getParam('lesson_id');
         $lessonModel = new Default_Model_Lesson();
         $fileModel = new Default_Model_File();
@@ -249,6 +251,15 @@ class TeacherController extends IController {
         $commentModel = new Default_Model_Comment();
         $learnModel = new Default_Model_Learn();
         
+=======
+
+
+
+
+
+
+
+>>>>>>> .theirs
         $lesson = $lessonModel->findLessonById($lessonId);
         $files = $fileModel->getFileByLesson($lessonId);
         $tags = $lessonTagModel->getTagsByLesson($lessonId);

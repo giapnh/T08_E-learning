@@ -21,9 +21,8 @@
             </div>
             <div title="" class="mn"><a href="<?php echo $this->baseUrl(); ?>/student/myLesson"><font style="color: white;">マイ授業</font></a>
             </div>
-            <!--                <div class="mn" title=""><a href="#"><font style="color: white;">授業リスト</font></a>
-                            </div>-->
-            <div title="" class="mn "><a href="#"><font style="color: white;">支払い</a>
+
+            <div title="" class="mn "><a href="<?php echo $this->baseUrl(); ?>/student/payment"><font style="color: white;">支払い</a>
             </div>
             <div title="" class="mn "><a href="<?php echo $this->baseUrl(); ?>/student/profile"><font style="color: white;">プロファイル</font></a>
             </div>
@@ -41,11 +40,11 @@
 
                     </div>
                     <div class="row-show">
-                        <table cellpadding="0" cellspacing="0" border="1"  style="border: none; text-align: center;">
+                        <table cellpadding="0" cellspacing="0" border="1"  style="float: left;border: none; text-align: center;">
                             <tbody>
                                 <tr>
                                     <td class="td-left">タグ</td>
-                                    <td style="text-align: left; height: 30px;">
+                                    <td class="td-right" style="text-align: left; height: 30px;">
                                         <?php
                                         foreach ($this->tagsInfo as $tag) {
                                             ?>
@@ -126,7 +125,7 @@
                 </div>
             </div>
             <!--Lesson other information--> 
-            <div style="width: 80%; margin: 0px auto;">
+            <div style="width: 80%; margin-left: 100px; float: left;">
                 <table cellpadding="0" cellspacing="0" border="1"  style="width: 100%; border: none; text-align: center;">
                     <tbody>
                         <tr>
