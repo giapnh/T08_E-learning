@@ -52,59 +52,75 @@
                             ?>
                         </td>
                         <td valign="top" class="containt_center_cen_right">
-                            <div class="row-show">
-                                <div class="lession-content-left">
-                                    <a href="<?php echo $this->baseUrl()."/teacher/lesson?id=1" ?>">
-                                        <table cellpadding="1" cellspacing="4" border="0" style="width: 100%;margin: 0px auto;">
-                                            <tbody>
-                                                <tr>
-                                                    <td style="width: 100%;" colspan="1" class="lession-title">IT日本語</td>
-                                                </tr>
-                                                <tr><td><hr></td></tr>
-                                                <tr>
-                                                    <td class="lession-teacher"><b>先生: </b> ごんだい</td>
-                                                    <td class="lession-time">2014-03-01 18:02:36</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="lession-description lesson-description-correct" style="width: 100%;" colspan="2">用件定義、外部設計、内部設計、コーディング、テスト</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <img src="/Elearning/public/images/num-like.png" width="15" height="15"> <font class="num-like-comment">0</font>
-                                                        <img src="/Elearning/public/images/num-view.png" width="15" height="15"> <font class="num-like-comment">0</font>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </a>
-                                </div>
-                                        
-                                <div class="lession-content-right">
-                                    <a href="<?php echo $this->baseUrl()."/teacher/lesson?id=2" ?>">
-                                        <table cellpadding="1" cellspacing="4" border="0" style="width: 100%;margin: 0px auto;">
-                                            <tbody>
-                                                <tr>
-                                                    <td style="width: 100%;" colspan="2" class="lession-title">C プログラミング言語</td>
-                                                </tr>
-                                                <tr><td><hr></td></tr>
-                                                <tr style="width: 100%;">
-                                                    <td class="lession-teacher"><b>先生: </b> ごんだい</td>
-                                                    <td class="lession-time">2014-03-01 17:57:28</td>
-                                                </tr>
-                                                <tr class="lession-description lesson-description-correct" style="width: 100%;">
-                                                    <td colspan="2">基本的なC言語プログラミング。</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <img src="/Elearning/public/images/num-like.png" width="15" height="15"> <font class="num-like-comment">0</font>
-                                                        <img src="/Elearning/public/images/num-view.png" width="15" height="15"> <font class="num-like-comment">0</font>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </a>
-                                </div>
-                            </div>
+                            <?php
+                            $counter = 0;
+                            foreach ($this->data as $item) {
+                                if ($counter % 2 == 0) {
+                                    ?>
+                                    <div class="row-show">
+                                        <div class="lession-content-left">
+                                            <table cellpadding="1" cellspacing="4" border="0" style="width: 100%;margin: 0px auto;">
+                                                <tbody>
+                                                    <tr>
+                                                        <td style="width: 100%;" colspan="1" class="lession-title"><?php echo $item['title']; ?></td>
+                                                    </tr>
+                                                    <tr><td><hr></td></tr>
+                                                    <tr>
+                                                        <td class="lession-teacher"><b>先生: </b><?php echo $item['name']; ?></td>
+                                                        <td class="lession-time"><?php echo $item['create_time']; ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="lession-description lesson-description-correct" style="width: 100%;" colspan="2"><?php echo $item['description']; ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <img src="<?php echo $this->baseUrl(); ?>/public/images/num-like.png" width="15" height="15"> <font class="num-like-comment"><?php echo $item['like']; ?></font>
+                                                            <img src="<?php echo $this->baseUrl(); ?>/public/images/num-view.png" width="15" height="15"> <font class="num-like-comment"><?php echo $item['view']; ?></font>
+                                                            <a href="<?php echo $this->baseUrl(); ?>/teacher/lesson?lesson_id=<?php echo $item['id']; ?>"  class="link-view-detail float-right">詳細</a>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <?php
+                                    } else if ($counter % 2 == 1) {
+                                        ?>
+                                        <div class="lession-content-right">
+                                            <table cellpadding="1" cellspacing="4" border="0" style="width: 100%;margin: 0px auto;">
+                                                <tbody>
+                                                    <tr>
+                                                        <td style="width: 100%;" colspan="2" class="lession-title"><?php echo $item['title']; ?></td>
+                                                    </tr>
+                                                    <tr><td><hr></td></tr>
+                                                    <tr style="width: 100%;">
+                                                        <td class="lession-teacher"><b>先生: </b><?php echo $item['name'] ?></td>
+                                                        <td class="lession-time"><?php echo $item['create_time']; ?></td>
+                                                    </tr>
+                                                    <tr class="lession-description lesson-description-correct" style="width: 100%;">
+                                                        <td colspan="2"><?php echo $item['description']; ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <img src="<?php echo $this->baseUrl(); ?>/public/images/num-like.png" width="15" height="15"> <font class="num-like-comment"><?php echo $item['like']; ?></font>
+                                                            <img src="<?php echo $this->baseUrl(); ?>/public/images/num-view.png" width="15" height="15"> <font class="num-like-comment"><?php echo $item['view']; ?></font>
+                                                            <a href="<?php echo $this->baseUrl(); ?>/student/lesson?lesson_id=<?php echo $item['id']; ?>"  class="link-view-detail float-right">詳細</a>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <?php
+                                }
+                                $counter ++;
+                                ?>
+
+                                <?php
+                            }
+                            if ($counter % 2 == 0) {
+                                echo "</div>";
+                            }
+                            ?>
                         </td>
                     </tr>
                 </table>

@@ -35,7 +35,7 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
             return $this->listWithTeacher($teacher);
         }
         $select = $this->getAdapter()->select();
-        $select->from(array('l' => 'lesson'))
+        $select->from(array('l' => 'lesson'), array("id as l_id"))
                 ->joinInner(array('lt' => 'lesson_tag'), 'l.id = lt.lesson_id')
                 ->joinInner('user', 'l.teacher_id=user.id', array('name'))
                 ->where("lt.tag_id=$tag and l.teacher_id=$teacher");
