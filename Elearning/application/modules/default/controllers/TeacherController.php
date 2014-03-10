@@ -58,12 +58,10 @@ class TeacherController extends IController {
         $currentPage = $this->_request->getParam('page', 1);
         $paginator->setCurrentPageNumber($currentPage);
         $this->view->data = $paginator;
-
 //        foreach($this->view->data as $item) {
 //            var_dump($item);
 //        }
 //        die();
-
         if ($this->_request->isPost()) {
 //            $keyword = $this->_request->getParam('keyword');
 //            $paginator = Zend_Paginator::factory($lessons->findByKeyword($keyword));
@@ -200,7 +198,6 @@ class TeacherController extends IController {
         if ($this->_request->isPost()) {
             $param = $this->_getAllParams();
             var_dump($param);
-
             // Check title
             if ((!isset($param['title'])) || $param['title'] == '') {
                 $this->view->errorMessage = Message::$M020;

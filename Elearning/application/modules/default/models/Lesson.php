@@ -31,14 +31,16 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
     }
     
     public function listTeacherLessonsByTag($teacher, $tag) {
-        if ($tag == 0) {
-            return $this->listWithTeacher($teacher);
-        }
         $select = $this->getAdapter()->select();
-        $select->from(array('l' => 'lesson'))
-                ->joinInner(array('lt' => 'lesson_tag'), 'l.id = lt.lesson_id')
-                ->joinInner('user', 'l.teacher_id=user.id', array('name'))
-                ->where("lt.tag_id=$tag and l.teacher_id=$teacher");
+        if ($tag == 0) {
+            $select->from($this->_name)
+                ->where("teacher_id=$teacher");
+        } else {
+            $select->from(array('a'=>'lesson'))
+                ->join(array('b'=>'lesson_tag'), 'a.id = b.lesson_id')
+                ->where("b.id=$tag and a.teacher_id=$teacher");
+        }
+        
         return $this->getAdapter()->fetchAll($select);
     }
 

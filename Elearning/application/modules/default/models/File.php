@@ -156,7 +156,8 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
             "description" => $description,
             "title" => $title,
             "subtitle" => $subtitle,
-            "location" => $fileName
+            "location" => $fileName,
+            "questions" => $questions
         );
         
         return true;
@@ -238,6 +239,7 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
             return null;
         }
         $question["trueAnswer"] = preg_split("/[()]/", $nextLine[2])[1] + 0;
+        $question["point"] = $nextLine[3];
         
         return $question;
     }
@@ -283,10 +285,10 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
             mkdir($lessonFolder, 0777, true);
         }
         
+        $questionModel = new Default_Model_Question();
+        
         foreach ($this->fileSaved as $fileInfo) {
-            copy($fileFolder.$fileInfo['location'], $lessonFolder."/".$fileInfo['location']);
-            unlink($fileFolder.$fileInfo['location']);
-            
+            // Save file info
             $insertData = array(
                 self::$LESSON_ID => $lessonId,
                 self::$FILENAME => $fileInfo['filename'],
@@ -295,7 +297,18 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
                 self::$SUBTITLE => $fileInfo['subtitle'],
                 self::$LOCATION => self::$UPLOAD_DIR."\\".$lessonId."\\".$fileInfo['location']
             );
-            $this->insert($insertData);
+            $fileId = $this->insert($insertData);
+            
+            // Save questions
+            if ($fileInfo['type'] == self::$FILE_TYPE_TEST) {
+                foreach($fileInfo['questions'] as $question) {
+                    $questionModel->createQuestion($fileId, $question);
+                }
+            }
+            
+            // Copy file to lesson folder
+            copy($fileFolder.$fileInfo['location'], $lessonFolder."/".$fileInfo['location']);
+            unlink($fileFolder.$fileInfo['location']);
         }
     }
     
