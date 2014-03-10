@@ -25,6 +25,8 @@ class TeacherController extends IController {
         $infoUser = $auth->getStorage()->read();
         $this->view->user_info = $infoUser;
         $this->currentTeacherId = $infoUser['id'];
+        $baseurl = $this->_request->getbaseurl();
+        $this->view->headLink()->appendStylesheet($baseurl . "/public/css/admin-common-style.css");
     }
 
     public function indexAction() {
@@ -208,11 +210,43 @@ class TeacherController extends IController {
      */
     public function fileAction() {
         $this->initial();
+        $lessonModel = new Default_Model_Lesson();
+        $lessonFileModel = new Default_Model_LessonFile();
+        $filecommentModel = new Default_Model_FileComment();
+        $repordModel = new Default_Model_CopyrightReport();
+        if ($this->_request->isGet()) {
+            $lessonId = $this->_request->getParam('lessonId');
+            $currentFileId = $this->_request->getParam('fileId');
+        }
+        if ($this->_request->isPost()) {
+            $lessonId = $this->_request->getParam('lessonId');
+            $currentFileId = $this->_request->getParam('fileId');
+            $report = $this->_request->getParam('report_content');
+            if ($report != NULL) {
+                $repordModel->addReport(Zend_Auth::getInstance()->getStorage()->read()['id'], $currentFileId, $report);
+                $this->view->reportNotify = Message::$M047;
+            }
+        }
 
-        $fileLocation = "13942932700.html";
-        $file = file(APPLICATION_PATH . Default_Model_File::$UPLOAD_DIR . $fileLocation);
-        $testHtml = implode("", $file);
-        $this->view->testHtml = $testHtml;
+        $currentFile = $lessonFileModel->findFileById($currentFileId);
+        $lessonInfo = $lessonModel->findLessonById($lessonId);
+        $this->view->lessonInfo = $lessonInfo;
+        $files = $lessonFileModel->listFileOfLesson($lessonId);
+        $this->view->files = $files;
+        if ($currentFile == NULL) {
+            $this->view->currentFile = $files[0];
+        } else {
+            $this->view->currentFile = $currentFile;
+        }
+        
+        $this->view->fileModel = new Default_Model_File();
+        $this->view->controller = $this;
+        $this->view->lessonId = $lessonId;
+    }
+    
+    public function getTestHtml($testId) {
+        $fileModel = new Default_Model_File();
+        return $fileModel->getTestHtml($testId);
     }
 
     /**

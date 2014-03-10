@@ -298,5 +298,15 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
             $this->insert($insertData);
         }
     }
+    
+    public function findFileById($fileId) {
+        return $this->fetchRow("id='$fileId'");
+    }
+    
+    public function getTestHtml($testId) {
+        $fileInfo = $this->findFileById($testId);
+        $fileLines = file(APPLICATION_PATH . "\\..\\" . $fileInfo['location']);
+        return implode("\n", $fileLines);
+    }
 }
 ?>
