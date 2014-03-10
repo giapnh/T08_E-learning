@@ -154,41 +154,41 @@ class TeacherController extends IController {
 //        $this->view->form = $form;
         if ($this->_request->isPost()) {
             $param = $this->_getAllParams();
-            
+
             // Check title
             if ((!isset($param['title'])) || $param['title'] == '') {
                 $this->view->errorMessage = Message::$M020;
                 return;
             }
-            
+
             // Check description
             if ((!isset($param['description'])) || $param['description'] == '') {
                 $this->view->errorMessage = Message::$M046;
                 return;
             }
-            
+
             // Save file
             $fileModel = new Default_Model_File();
             if (!$fileModel->exercuteFiles($param["file_dec"])) {
                 $this->view->errorMessage = Message::$M023;
                 return;
             }
-            
+
             // Check tag
             if (!isset($param['tags'])) {
                 $this->view->errorMessage = Message::$M021;
                 return;
             }
-            
+
             // Save lesson
             $lessonModel = new Default_Model_TeacherLesson();
             $title = $param['title'];
             $description = $param['description'];
             $lessonId = $lessonModel->createLesson($this->currentTeacherId, $title, $description);
-            
+
             // Save files
             $fileModel->createFilesData($lessonId);
-            
+
             // Redirect
             $this->redirect("teacher/lesson");
         }
@@ -208,7 +208,7 @@ class TeacherController extends IController {
      */
     public function fileAction() {
         $this->initial();
-        
+
         $fileLocation = "13942932700.html";
         $file = file(APPLICATION_PATH . Default_Model_File::$UPLOAD_DIR . $fileLocation);
         $testHtml = implode("", $file);
@@ -238,7 +238,7 @@ class TeacherController extends IController {
     public function studentResultAction() {
         
     }
-    
+
     /**
      * 課金情報処理
      * 
@@ -247,4 +247,5 @@ class TeacherController extends IController {
     public function paymentAction() {
         $this->initial();
     }
+
 }
