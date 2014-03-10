@@ -19,6 +19,12 @@ body,table,td,th {
     font-size: 10pt;
 }
 
+td,th{
+    border-width: thin;
+    border-color:#B0ABA5;
+}
+
+
 h6 {
     font-size: 13px;
 }

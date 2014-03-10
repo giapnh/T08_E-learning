@@ -334,22 +334,12 @@ class StudentController extends IController {
         $lessonFileModel = new Default_Model_LessonFile();
         $filecommentModel = new Default_Model_FileComment();
         $repordModel = new Default_Model_CopyrightReport();
-        if ($this->_request->isGet()) {
-            $lessonId = $this->_request->getParam('lessonId');
-            $currentFileId = $this->_request->getParam('fileId');
-        }
-        if ($this->_request->isPost()) {
-            $lessonId = $this->_request->getParam('lessonId');
-            $currentFileId = $this->_request->getParam('fileId');
-            $report = $this->_request->getParam('report_content');
-            if ($report != NULL) {
-                $repordModel->addReport(Zend_Auth::getInstance()->getStorage()->read()['id'], $currentFileId, $report);
-                $this->view->reportNotify = Message::$M047;
-            }
-        }
+        $lessonId = $this->_request->getParam('lessonId');
+        $currentFileId = $this->_request->getParam('fileId');
 
         $currentFile = $lessonFileModel->findFileById($currentFileId);
         $lessonInfo = $lessonModel->findLessonById($lessonId);
+
         $this->view->lessonInfo = $lessonInfo;
         $files = $lessonFileModel->listFileOfLesson($lessonId);
         $this->view->files = $files;
@@ -357,6 +347,29 @@ class StudentController extends IController {
             $this->view->currentFile = $files[0];
         } else {
             $this->view->currentFile = $currentFile;
+        }
+        if ($currentFileId == NULL) {
+            $currentFileId = $files[0]['id'];
+        }
+        $this->view->comments = $filecommentModel->getAllCommentOfFile($currentFileId);
+        if ($this->_request->isPost()) {
+            $report = $this->_request->getParam('report_content');
+            if ($report != NULL) {
+                $repordModel->addReport(Zend_Auth::getInstance()->getStorage()->read()['id'], $currentFileId, $report);
+                $this->view->reportNotify = Message::$M047;
+            }
+            $comment = $this->_request->getParam('comment');
+            if ($comment != NULL) {
+
+                $filecommentModel->addComment($currentFileId, Zend_Auth::getInstance()->getStorage()->read()['id'], $comment);
+            }
+
+            $testResult = $this->_request->getParam('submit');
+            if ($testResult == 'test') {
+                var_dump($this->_request->getParams());
+                die();
+                // Minh oi code tiep phan lay gia tri bai test o day nhe
+            }
         }
     }
 

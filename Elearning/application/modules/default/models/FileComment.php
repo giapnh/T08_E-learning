@@ -23,4 +23,13 @@ class Default_Model_FileComment extends Zend_Db_Table_Abstract {
         return $this->getAdapter()->fetchAll($select);
     }
 
+    public function addComment($fileId, $studentId, $comment) {
+        $data = array(
+            'user_id' => $studentId,
+            'file_id' => $fileId,
+            'comment' => $comment
+        );
+        $this->insert($data);
+    }
+
 }
