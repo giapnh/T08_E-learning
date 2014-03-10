@@ -288,9 +288,7 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
         $questionModel = new Default_Model_Question();
         
         foreach ($this->fileSaved as $fileInfo) {
-            copy($fileFolder.$fileInfo['location'], $lessonFolder."/".$fileInfo['location']);
-            unlink($fileFolder.$fileInfo['location']);
-            
+            // Save file info
             $insertData = array(
                 self::$LESSON_ID => $lessonId,
                 self::$FILENAME => $fileInfo['filename'],
@@ -300,11 +298,17 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
                 self::$LOCATION => self::$UPLOAD_DIR."\\".$lessonId."\\".$fileInfo['location']
             );
             $fileId = $this->insert($insertData);
+            
+            // Save questions
             if ($fileInfo['type'] == self::$FILE_TYPE_TEST) {
                 foreach($fileInfo['questions'] as $question) {
                     $questionModel->createQuestion($fileId, $question);
                 }
             }
+            
+            // Copy file to lesson folder
+            copy($fileFolder.$fileInfo['location'], $lessonFolder."/".$fileInfo['location']);
+            unlink($fileFolder.$fileInfo['location']);
         }
     }
     
