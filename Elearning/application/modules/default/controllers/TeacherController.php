@@ -346,7 +346,7 @@ class TeacherController extends IController {
             $currentFileId = $this->_request->getParam('fileId');
             $report = $this->_request->getParam('report_content');
             if ($report != NULL) {
-                $repordModel->addReport(Zend_Auth::getInstance()->getStorage()->read()['id'], $currentFileId, $report);
+                $repordModel->addReport($this->currentTeacherId, $currentFileId, $report);
                 $this->view->reportNotify = Message::$M047;
             }
         }
@@ -403,6 +403,53 @@ class TeacherController extends IController {
      */
     public function paymentAction() {
         $this->initial();
+        $param = $this->getAllParams();
+        if(isset($param["month"]) && isset($param["year"]))
+        {
+        	$month = $param["month"];
+        	$year = $param["year"];
+        }else{
+        	$month = date("m", time());
+        	$year = date("Y", time());
+        }
+        if((int)$month < 10)
+        	$month = "0".(int) $month;
+        if((int)$month == 12){
+        	$nextMonth ="01";
+        	$nextYear = (int)$year +1;
+        	$preMonth = "11";
+        	$preYear = (int)$year;
+        }else if((int)$month == 1){
+        	$nextMonth ="02";
+        	$nextYear = (int)$year;
+        	$preMonth = "12";
+        	$preYear = (int)$year -1;
+        }
+        else{
+        	$nextMonth =(int)$month +1;
+        	$nextYear = (int)$year;
+        	$preMonth = (int)$month -1;
+        	$preYear = (int)$year;
+        }
+        $this->view->nextMonth = $nextMonth;
+        $this->view->nextYear = $nextYear;
+        $this->view->preMonth = $preMonth;
+        $this->view->preYear = $preYear;
+        $this->view->month = $month;
+        $this->view->year = $year;
+        $learnModel = new Default_Model_Learn();
+        $paymentInfos = $learnModel->getTeacherTotalPaymentInfo($this->currentTeacherId, $year, $month);
+        //Zend_Debug::dump($paymentInfos);
+        $this->view->paymentInfos = $paymentInfos;
+        $modelMaster = new Admin_Model_Master();
+        $master = $modelMaster->getMasterData();
+        $this->view->price = $master[Admin_Model_Master::$KEY_COMA_PRICE];
+        $this->view->rate = $master[Admin_Model_Master::$KEY_TEACHER_FEE_RATE];
+        $totalPay = 0;
+        foreach ($paymentInfos as $i){
+        	$totalPay += $i["total"] *  $this->view->price * $this->view->rate/100;
+        }
+        $this->view->totalPayment = $totalPay."(VND)";
     }
 
 }
