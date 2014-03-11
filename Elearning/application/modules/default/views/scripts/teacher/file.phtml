@@ -23,10 +23,11 @@
                                     $count = 0;
                                     foreach ($this->files as $file) {
                                         $count++;
-                                        $fileType = explode(".", $file['filename'])[1];
+                                        $fileType = explode(".", $file['filename']);
+                                        $fileType =$fileType[1];
                                         if ($fileType == 'pdf') {
                                             ?>
-                                            <a href="<?php echo $this->baseUrl(); ?>/teacher/file?lessonId=<?php echo $this->lessonInfo['id']; ?>&currentFile=<?php echo $file['id']; ?>">
+                                            <a href="<?php echo $this->baseUrl(); ?>/teacher/file?lesson_id=<?php echo $this->lessonInfo['id']; ?>&file_id=<?php echo $file['id']; ?>">
                                                 <div class="full-width" style="font-size: 16px; font-weight: bold; margin: 5px;">
                                                     <font style="color: #7E3500">
                                                     <?php echo $count . '.'; ?>
@@ -38,7 +39,7 @@
                                             <?php
                                         } else if ($fileType == 'mp3') {
                                             ?>
-                                            <a href="<?php echo $this->baseUrl(); ?>/teacher/file?lessonId=<?php echo $this->lessonInfo['id']; ?>&fileId=<?php echo $file['id']; ?>">
+                                            <a href="<?php echo $this->baseUrl(); ?>/teacher/file?lesson_id=<?php echo $this->lessonInfo['id']; ?>&file_id=<?php echo $file['id']; ?>">
                                                 <div class="full-width" style="font-size: 16px;  font-weight: bold; margin: 5px;">
                                                     <font style="color: #7E3500">
                                                     <?php echo $count . '.'; ?>
@@ -50,7 +51,7 @@
                                             <?php
                                         } else if ($fileType = 'mp4') {
                                             ?>
-                                            <a href="<?php echo $this->baseUrl(); ?>/teacher/file?lessonId=<?php echo $this->lessonInfo['id']; ?>&fileId=<?php echo $file['id']; ?>">
+                                            <a href="<?php echo $this->baseUrl(); ?>/teacher/file?lesson_id=<?php echo $this->lessonInfo['id']; ?>&file_id=<?php echo $file['id']; ?>">
                                                 <div class="full-width" style="font-size: 16px;  font-weight: bold; margin: 5px;">
                                                     <font style="color: #7E3500">
                                                     <?php echo $count . '.'; ?>
@@ -62,7 +63,7 @@
                                             <?php
                                         } else if ($fileType = 'png' || $fileType == 'jpg' || $fileType == 'jpeg') {
                                             ?>
-                                            <a href="<?php echo $this->baseUrl(); ?>/teacher/file?lessonId=<?php echo $this->lessonInfo['id']; ?>&fileId=<?php echo $file['id']; ?>">
+                                            <a href="<?php echo $this->baseUrl(); ?>/teacher/file?lesson_id=<?php echo $this->lessonInfo['id']; ?>&file_id=<?php echo $file['id']; ?>">
                                                 <div class="full-width" style="font-size: 16px;  font-weight: bold; margin: 5px;">
                                                     <font style="color: #7E3500">
                                                     <?php echo $count . '.'; ?>
@@ -74,7 +75,7 @@
                                             <?php
                                         } else if ($fileType == 'tsv') {
                                             ?>
-                                            <a href="<?php echo $this->baseUrl(); ?>/teacher/file?lessonId=<?php echo $this->lessonInfo['id']; ?>&fileId=<?php echo $file['filename']; ?>">
+                                            <a href="<?php echo $this->baseUrl(); ?>/teacher/file?lesson_id=<?php echo $this->lessonInfo['id']; ?>&file_id=<?php echo $file['filename']; ?>">
                                                 <div class="full-width" style="font-size: 16px;  font-weight: bold; margin: 5px;">
                                                     <font style="color: #7E3500">
                                                     <?php echo $count . '.'; ?>
@@ -97,7 +98,8 @@
                                 <div style="margin: 10px; width: 95%;min-height: 500px;max-height: 800px; border-color: #007F9F; border-style: solid; border-width: thin;">
                                     <!--Content here-->
                                     <?php
-                                    $currentFile = explode(".", $this->currentFile['filename'])[1];
+                                    $currentFile = explode(".", $this->currentFile['filename']);
+                                    $currentFile = $currentFile[1];
                                     if ($currentFile == 'pdf') { // PDFファイル
                                         ?>
                                         <embed src = "<?php echo $this->baseUrl(); ?>/<?php echo $this->currentFile['location']; ?>"
@@ -149,7 +151,7 @@
 
                                 </script>
                                 <div id="report_form" style="display: none; width: 60%; margin-left: 100px; border: none; border-radius: 4px;">
-                                    <form method="post" action="<?php echo $this->baseUrl(); ?>/student/file?lessonId=<?php echo $this->lessonInfo['id']; ?>&fileId=<?php echo $this->currentFile['id']; ?>">
+                                    <form method="post" action="<?php echo $this->baseUrl(); ?>/student/file?lesson_id=<?php echo $this->lessonInfo['id']; ?>&file_id=<?php echo $this->currentFile['id']; ?>">
                                         <textarea cols="60" name="report_content" rows="5" placeholder="理由" style="border-style: solid; border-width: medium; border-radius: 3px;"></textarea>
                                         <input type="submit" onclick="hideReport();" value="賛成" class="showlogfromm" style="width: 80px; height: 30px; margin-left: 180px;">
                                         <input id="btn_sen_report" onclick="hideReportForm();" type="button" value="キャンセル" class="register-cus" style="width: 80px; height: 30px;">

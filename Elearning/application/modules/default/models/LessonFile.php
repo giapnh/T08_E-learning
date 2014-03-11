@@ -12,13 +12,13 @@ class Default_Model_LessonFile extends Zend_Db_Table_Abstract {
     }
 
     public function findFileById($fileId) {
-        return $this->fetchRow("id='$fileId'");
+        return $this->fetchRow("id = ". $fileId);
     }
 
     public function listFileOfLesson($lessonId) {
         $select = $this->getAdapter()->select();
-        $select->from(array('lf' => 'lesson_file'), "*")
-                ->where("lesson_id=$lessonId");
+        $select->from('lesson_file', "*")
+                ->where("lesson_id= ?", $lessonId);
         return $this->getAdapter()->fetchAll($select);
     }
 

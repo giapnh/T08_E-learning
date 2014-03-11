@@ -262,7 +262,7 @@ class TeacherController extends IController {
         $comments = $commentModel->getAllCommentOfLesson($lessonId);
         $studentsNum = $learnModel->countStudenJoinLesson($lessonId);
         $lesson['students_num'] = $studentsNum;
-        
+        $this->view->lessonId = $lessonId;
         $this->view->lessonInfo = $lesson;
         $this->view->files = $files;
         $this->view->tags = $tags;
@@ -339,19 +339,19 @@ class TeacherController extends IController {
         $filecommentModel = new Default_Model_FileComment();
         $repordModel = new Default_Model_CopyrightReport();
         if ($this->_request->isGet()) {
-            $lessonId = $this->_request->getParam('lessonId');
-            $currentFileId = $this->_request->getParam('fileId');
+            $lessonId = $this->_request->getParam('lesson_id');
+            $currentFileId = $this->_request->getParam('file_id');
         }
         if ($this->_request->isPost()) {
-            $lessonId = $this->_request->getParam('lessonId');
-            $currentFileId = $this->_request->getParam('fileId');
+            $lessonId = $this->_request->getParam('lesson_Id');
+            $currentFileId = $this->_request->getParam('file_Id');
             $report = $this->_request->getParam('report_content');
             if ($report != NULL) {
                 $repordModel->addReport($this->currentTeacherId, $currentFileId, $report);
                 $this->view->reportNotify = Message::$M047;
             }
         }
-
+		
         $currentFile = $lessonFileModel->findFileById($currentFileId);
         $lessonInfo = $lessonModel->findLessonById($lessonId);
         $this->view->lessonInfo = $lessonInfo;

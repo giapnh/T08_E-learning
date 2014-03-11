@@ -201,7 +201,7 @@
                     }
             ?>
             <div class="file_container">
-                <a href="<?php echo $this->baseUrl()."/teacher/file?file_id=".$file['id']; ?>">
+                <a href="<?php echo $this->baseUrl()."/teacher/file?file_id=".$file['id']."&lesson_id=" . $this->lessonId; ?>">
                     <div class="file_type"><img src="<?php echo $this->baseUrl()."/public/images/".$icon ?>"></div>
                     <div class="file_name"><?php echo $file['filename']; ?></div>
                     <div class="file_description"><?php echo $file['description'] ?></div>
