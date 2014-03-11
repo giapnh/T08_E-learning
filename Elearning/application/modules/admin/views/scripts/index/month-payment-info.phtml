@@ -15,9 +15,9 @@
         </div>
         <div class="detail_layout_content" style="width: 954px">
             
-            <form>
-                <span><input type="text" style="padding: 5px;" placeholder="年"></span>
-                <span><input type="text" style="padding: 5px;" placeholder="月"></span>
+            <form action="<?php echo $this->baseUrl()?>/admin/index/month-payment-info" method="get">
+                <span><input type="number" style="padding: 5px;" placeholder="年" name= "year"></span>
+                <span><input type="number" style="padding: 5px;" placeholder="月" name = "month"></span>
                 <span><input type="submit" class="normal-button" value="見る" style="float: none"></span>
             </form>
             <div class="res_step_t_r" style="margin-bottom: 20px;width: 960px"></div>
@@ -28,19 +28,19 @@
                 </tr>
                 <tr>
                     <td>本請求データの時間</td>
-                    <td>: 2013年4月</td>
+                    <td>: <?php echo $this->param["year"];?>年<?php echo $this->param["month"]?>月</td>
                 </tr>
                 <tr>
                     <td>作成時間</td>
-                    <td>: 2013年5月8日13時24分28秒</td>
+                    <td>: <?php echo date("Y年m月d日H時i分s秒", time())?></td>
                 </tr>
                 <tr>
                     <td>作成者ID</td>
-                    <td>: kawachi</td>
+                    <td>: <?php echo $this->currentUser["username"]?></td>
                 </tr>
                 <tr>
                     <td>作成者名前</td>
-                    <td>: 河内　元</td>
+                    <td>: <?php echo $this->currentUser["username"]?></td>
                 </tr>
             </table>
             <div class="res_step_t_r" style="margin-bottom: 20px;width: 960px"></div>
@@ -54,53 +54,33 @@
                     <td>請求区分</td>
                     <td>クレジットカード番号</td>
                 </tr>
+                <?php if(!empty($this->paymentInfos) || !empty($this->teacherPaymentInfos)):?>
+                <?php foreach ($this->paymentInfos as $info):?>
                 <tr align="left">
-                    <td class="orange">suzuki_hajime</td>
-                    <td>鈴木　肇</td>
-                    <td>335000</td>
-                    <td>1A Le Duan St., Hoan Kiem Dist</td>
-                    <td>042-3825-7999</td>
+                    <td class="orange"><?php echo $info["username"]?></td>
+                    <td><?php echo $info["name"]?></td>
+                    <td><?php echo $info["total"] * $this->price?></td>
+                    <td><?php echo $info["address"]?></td>
+                    <td><?php echo $info["phone"]?></td>
                     <td>18</td>
-                    <td>09328024-7980-2312-3633-8632</td>
+                    <td><?php echo $info["bank_account"]?></td>
                 </tr>
+                <?php endforeach;?>
+                <?php foreach ($this->teacherPaymentInfos as $info):?>
                 <tr align="left">
-                    <td class="orange">suzuki_hajime</td>
-                    <td>鈴木　肇</td>
-                    <td>335000</td>
-                    <td>1A Le Duan St., Hoan Kiem Dist</td>
-                    <td>042-3825-7999</td>
-                    <td>18</td>
-                    <td>09328024-7980-2312-3633-8632</td>
+                    <td class="orange"><?php echo $info["username"]?></td>
+                    <td><?php echo $info["name"]?></td>
+                    <td><?php echo $info["total"] * $this->price * 0.6 ?></td>
+                    <td><?php echo $info["address"]?></td>
+                    <td><?php echo $info["phone"]?></td>
+                    <td>54</td>
+                    <td><?php echo $info["bank_account"]?></td>
                 </tr>
-                <tr align="left">
-                    <td class="orange">suzuki_hajime</td>
-                    <td>鈴木　肇</td>
-                    <td>335000</td>
-                    <td>1A Le Duan St., Hoan Kiem Dist</td>
-                    <td>042-3825-7999</td>
-                    <td>18</td>
-                    <td>09328024-7980-2312-3633-8632</td>
-                </tr>
-                <tr align="left">
-                    <td class="orange">suzuki_hajime</td>
-                    <td>鈴木　肇</td>
-                    <td>335000</td>
-                    <td>1A Le Duan St., Hoan Kiem Dist</td>
-                    <td>042-3825-7999</td>
-                    <td>18</td>
-                    <td>09328024-7980-2312-3633-8632</td>
-                </tr>
-                <tr align="left">
-                    <td class="orange">suzuki_hajime</td>
-                    <td>鈴木　肇</td>
-                    <td>335000</td>
-                    <td>1A Le Duan St., Hoan Kiem Dist</td>
-                    <td>042-3825-7999</td>
-                    <td>18</td>
-                    <td>09328024-7980-2312-3633-8632</td>
-                </tr>
+                <?php endforeach;?>
+                <?php else : echo "<tr><td colspan ='7'>でーたがありません</td></tr>"?>
+                <?php endif;?>
             </table>
-            <button class="normal-button" style="margin-top: 10px">TSVファイル作成</button>
+            <a href = "<?php echo $this->baseUrl()?>/admin/index/month-payment-info?year=<?php echo $this->param['year']?>&month=<?php echo $this->param['month']?>&download=true"<button class="normal-button" style="margin-top: 10px">TSVファイル作成</button></a>
         </div>
     </div>
 </div>
