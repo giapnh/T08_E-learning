@@ -145,9 +145,8 @@
                                     } else if ($currentFile == 'tsv') {
                                         ?>
                                         <div>
-                                            前回の結果：10/30
-                                            <a href="<?php echo $this->baseUrl()."/student/test-result?file_id=".$this->currentFile['id']; ?>">
-                                                <button class="normal-button">見る</button>
+                                            <a href="<?php echo $this->baseUrl()."/student/test-result?file_id=".$this->currentFile['id']."&lessonId=".$this->lessonInfo['id']; ?>">
+                                                <button class="normal-button">前回の結果を見る</button>
                                             </a>
                                         </div>
                                         <h3><?php echo $this->currentFile['title'] ?></h3>

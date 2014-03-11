@@ -369,16 +369,52 @@ class StudentController extends IController {
 
                 $filecommentModel->addComment($currentFileId, Zend_Auth::getInstance()->getStorage()->read()['id'], $comment);
             }
-        }
-        
-        
+        }   
     }
-
     
     public function testResultAction() {
+        $this->initial();
         
-        var_dump($this->getAllParams());
-        die();
+        $lessonId = $this->_request->getParam('lessonId');
+        $fileId = $this->_request->getParam('file_id');
+        $studentId = $this->currentUser['id'];
+        
+        $lessonModel = new Default_Model_Lesson();
+        $lessonFileModel = new Default_Model_LessonFile();
+        $questionModel = new Default_Model_Question();
+        $resultModel = new Default_Model_Result();
+        $learnModel = new Default_Model_Learn();
+        
+        $lessonInfo = $lessonModel->findLessonById($lessonId);
+        
+        $learn = $learnModel->findByLessonAndStudent($lessonId, $studentId);
+        
+        $this->view->lessonInfo = $lessonInfo;
+        $files = $lessonFileModel->listFileOfLesson($lessonId);
+        $this->view->files = $files;
+        
+        $questions = $questionModel->findQuestionByFile($fileId);
+        $score = 0;
+        $total = 0;
+        foreach ($questions as $i => $question) {
+            $questions[$i]['result'] = $resultModel->findResultByQuestionAndLearn($learn['id'], $question['id']);
+            if ($questions[$i]['result']) {
+                if ($questions[$i]['result']['selected'] == $questions[$i]['answer']) {
+                    $score += $questions[$i]['point'];
+                    $questions[$i]['is_true'] = true;
+                } else {
+                    $questions[$i]['is_true'] = false;
+                }
+            }
+            $total += $questions[$i]['point'];
+        }
+        $this->view->score = $score;
+        $this->view->total = $total;
+        $this->view->questions = $questions;
+//        var_dump($questions);
+//        var_dump($score);
+//        var_dump($total);
+//        die();
     }
     
     
@@ -405,7 +441,7 @@ class StudentController extends IController {
             $resultModel->updateResult($learn['id'], $question['id'], $selected);
         }
         
-        $this->redirect('student/test-result?file='.$fileId);
+        $this->redirect('student/test-result?file_id='.$fileId."&lessonId=".$lesson['id']);
     }
     
     public function getTestHtml($testId) {
