@@ -39,7 +39,8 @@ class Admin_AccountController extends IController {
     public function indexAction() {
         $adminModel = new Admin_Model_Admin();
         
-        $create_admin = $adminModel->getAdminById($this->currentUser['create_admin'])['username'];
+        $create_admin = $adminModel->getAdminById($this->currentUser['create_admin']);
+        $create_admin = $create_admin['username'];
         $this->currentUser['created'] = $create_admin;
         
         $this->view->adminInfo = $this->currentUser;
@@ -97,7 +98,7 @@ class Admin_AccountController extends IController {
                     // ホームページに移転する
                     $this->redirect("/admin/user");
                 } else {
-                    $this->view->errorMessage = Message::$M0031;
+                    $this->view->errorMessage = Message::$M027;
                 }
                 
             } else {
