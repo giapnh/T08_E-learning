@@ -33,6 +33,7 @@ class StudentController extends IController {
         $auth = Zend_Auth::getInstance();
         $infoUser = $auth->getStorage()->read();
         $this->view->user_info = $infoUser;
+        $this->user = $infoUser;
         $this->currentUser = $infoUser;
     }
 
@@ -209,7 +210,8 @@ class StudentController extends IController {
             $tagInfo = $tagModel->getAllTagOfLesson($lesson_id);
             $this->view->lessonInfo = $info;
             $this->view->tagsInfo = $tagInfo;
-            $this->view->numStudent = $learnModel->countStudenJoinLesson($lesson_id)[0];
+            $num = $learnModel->countStudenJoinLesson($lesson_id);
+            $this->view->numStudent = $num[0];
             $this->view->filesInfo = $lfileModel->listFileOfLesson($lesson_id);
         }
     }
@@ -230,17 +232,19 @@ class StudentController extends IController {
                 $tagInfo = $tagModel->getAllTagOfLesson($lesson_id);
                 $this->view->lessonInfo = $info;
                 $this->view->tagsInfo = $tagInfo;
-                $this->view->numStudent = $learnModel->countStudenJoinLesson($lesson_id)[0];
+                $num = $learnModel->countStudenJoinLesson($lesson_id);
+                $this->view->numStudent = $num[0];
                 $this->view->filesInfo = $lfileModel->listFileOfLesson($lesson_id);
             } else if ($do == 'submit') {
-                $isLearn = $learnModel->isStudentLearn(Zend_Auth::getInstance()->getStorage()->read()['id'], $lesson_id);
+            	$u = Zend_Auth::getInstance()->getStorage()->read();
+                $isLearn = $learnModel->isStudentLearn($u['id'], $lesson_id);
                 $this->view->isLearn = $isLearn;
                 if ($isLearn == 0) {
                     $this->view->notify = "前に、あなたはこの授業に登録した！";
                     $this->view->lessonId = $lesson_id;
                 } else {
                     //Add to db
-                    $learnModel->doRegisterLesson(Zend_Auth::getInstance()->getStorage()->read()['id'], $lesson_id);
+                    $learnModel->doRegisterLesson($u['id'], $lesson_id);
                     $this->view->notify = "おめでとう！授業登録が成功した！";
                     $this->view->lessonId = $lesson_id;
                 }
@@ -261,7 +265,8 @@ class StudentController extends IController {
         if ($this->_request->isPost()) {
             $lesson_id = $this->_request->getParam('lessonId');
             $comment = $this->_request->getParam('comment');
-            $commentModel->addComment($lesson_id, Zend_Auth::getInstance()->getStorage()->read()['id'], $comment);
+            $u =Zend_Auth::getInstance()->getStorage()->read();
+            $commentModel->addComment($lesson_id, $u['id'], $comment);
         }
 
         $lessonModel->incrementView($lesson_id);
@@ -272,7 +277,8 @@ class StudentController extends IController {
         $tagInfo = $tagModel->getAllTagOfLesson($lesson_id);
         $this->view->lessonInfo = $info;
         $this->view->tagsInfo = $tagInfo;
-        $this->view->numStudent = $learnModel->countStudenJoinLesson($lesson_id)[0];
+        $num = $learnModel->countStudenJoinLesson($lesson_id);
+        $this->view->numStudent = $num[0];
         $this->view->filesInfo = $lfileModel->listFileOfLesson($lesson_id);
         
     }
@@ -359,15 +365,16 @@ class StudentController extends IController {
         }
         $this->view->comments = $filecommentModel->getAllCommentOfFile($currentFileId);
         if ($this->_request->isPost()) {
+        	$u = Zend_Auth::getInstance()->getStorage()->read();
             $report = $this->_request->getParam('report_content');
             if ($report != NULL) {
-                $repordModel->addReport(Zend_Auth::getInstance()->getStorage()->read()['id'], $currentFileId, $report);
+                $repordModel->addReport($u['id'], $currentFileId, $report);
                 $this->view->reportNotify = Message::$M047;
             }
             $comment = $this->_request->getParam('comment');
             if ($comment != NULL) {
 
-                $filecommentModel->addComment($currentFileId, Zend_Auth::getInstance()->getStorage()->read()['id'], $comment);
+                $filecommentModel->addComment($currentFileId, $u['id'], $comment);
             }
         }   
     }
@@ -452,6 +459,13 @@ class StudentController extends IController {
     public function paymentAction() {
         $this->initial();
         //TODO
+        $learnModel = new Default_Model_Learn();
+        $paymentInfos = $learnModel->getStudentTotalPaymentInfo($this->user["id"]);
+        $this->view->paymentInfos = $paymentInfos;
+        $modelMaster = new Admin_Model_Master();
+        $master = $modelMaster->getMasterData();
+        $this->view->price = $master[Admin_Model_Master::$KEY_COMA_PRICE];
+        
     }
 
 }
