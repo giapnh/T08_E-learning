@@ -50,7 +50,7 @@
                                         $fileType = explode(".", $file['filename'])[1];
                                         if ($fileType == 'pdf') {
                                             ?>
-                                            <a href="<?php echo $this->baseUrl(); ?>/student/file?lessonId=<?php echo $this->lessonInfo['id']; ?>&currentFile=<?php echo $file['id']; ?>">
+                                            <a href="<?php echo $this->baseUrl(); ?>/student/file?lessonId=<?php echo $this->lessonInfo['id']; ?>&fileId=<?php echo $file['id']; ?>">
                                                 <div class="full-width" style="font-size: 16px; font-weight: bold; margin: 5px;">
                                                     <font style="color: white">
                                                     <?php echo $count . '.'; ?>
@@ -140,14 +140,26 @@
                                         ?>
                                         <video width="100%" autoplay="false" controls>
                                             <source src="<?php echo $this->baseUrl(); ?>/<?php echo $this->currentFile['location']; ?>" type="video/mp4">
-                                        </video>                
+                                        </video>
                                         <?php
                                     } else if ($currentFile == 'tsv') {
                                         ?>
-                                        <form action="" method="post">
-                                            <iframe style="width: 100%;  min-height: 300px; max-height: 500px;" src="<?php echo $this->baseUrl(); ?>/<?php echo $this->currentFile['location']; ?>"></iframe>
+                                        <div>
+                                            前回の結果：10/30
+                                            <a href="<?php echo $this->baseUrl()."/student/test-result?file_id=".$this->currentFile['id']; ?>">
+                                                <button class="normal-button">見る</button>
+                                            </a>
+                                        </div>
+                                        <h3><?php echo $this->currentFile['title'] ?></h3>
+                                        <h4><?php echo $this->currentFile['subtitle'] ?></h4>
+                                        <form action="<?php echo $this->baseUrl()."/student/update-result?file_id=".$this->currentFile['id']; ?>" method="post">
+                                            <div style="width: 100%;  min-height: 300px; max-height: 500px;">
+                                                <?php 
+                                                    echo $this->controller->getTestHtml($this->currentFile['id']);
+                                                ?>
+                                            </div>
                                             <div class="float-left">
-                                                <button id="submit_test" name="submit" type="submit" value="test" class="showlogfromm" style="height: 28px; margin-left: 10px;">答えチェック</button>
+                                                <input id="submit_test" name="submit" type="submit" value="答えチェック" class="showlogfromm" style="height: 28px; margin-left: 10px;">
                                             </div>
                                         </form>
                                         <?php
@@ -155,9 +167,9 @@
                                     ?>
                                 </div>
 
-                                <script type="text/javascript">
+                                <script type="text/javascrip
+                                    {t">
                                     function showReportForm()
-                                    {
                                         $("#report_form").show();
                                         $("#btn_report").hide();
                                     }

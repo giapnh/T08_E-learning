@@ -223,7 +223,7 @@
             </div>
         </div>
     </div>
-    <div id="comment_container">
+    <form method="post" id="comment_container">
         <?php
             foreach ($this->comments as $comment) {
         ?>
@@ -235,9 +235,9 @@
         <?php
             }
         ?>
-        <div class="comment_input">
-            <textarea></textarea>
+        <div class="comment_input" >
+            <textarea name="comment"></textarea>
         </div>
-        <button class="normal-button">コメント</button>
-    </div>
+        <input type="submit" value="コメント" class="normal-button">
+    </form>
 </div>

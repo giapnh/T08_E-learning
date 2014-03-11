@@ -271,7 +271,7 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
         $questionHtml .="\t<div class='answers'>\n";
         
         foreach ($question["answers"] as $index => $answer) {
-            $questionHtml .= "\t\t<input type='radio' name='Q".$question["index"]."' value='".($index + 1)."' >".$answer."<br>\n";
+            $questionHtml .= "\t\t<input type='radio' name='Q[".$question["index"]."]' value='".($index + 1)."' >".$answer."<br>\n";
         }
         
         $questionHtml .= "\t</div>\n</div>\n";

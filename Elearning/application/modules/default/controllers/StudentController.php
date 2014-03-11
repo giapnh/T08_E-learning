@@ -5,6 +5,8 @@ require_once 'IController.php';
 //require 'RegisterController.php';
 class StudentController extends IController {
 
+    protected $currentUser;
+
     /**
      * Check login or not yet
      */
@@ -31,6 +33,7 @@ class StudentController extends IController {
         $auth = Zend_Auth::getInstance();
         $infoUser = $auth->getStorage()->read();
         $this->view->user_info = $infoUser;
+        $this->currentUser = $infoUser;
     }
 
     public function indexAction() {
@@ -271,6 +274,7 @@ class StudentController extends IController {
         $this->view->tagsInfo = $tagInfo;
         $this->view->numStudent = $learnModel->countStudenJoinLesson($lesson_id)[0];
         $this->view->filesInfo = $lfileModel->listFileOfLesson($lesson_id);
+        
     }
 
     public function mylessonAction() {
@@ -339,10 +343,12 @@ class StudentController extends IController {
 
         $currentFile = $lessonFileModel->findFileById($currentFileId);
         $lessonInfo = $lessonModel->findLessonById($lessonId);
-
+        
         $this->view->lessonInfo = $lessonInfo;
         $files = $lessonFileModel->listFileOfLesson($lessonId);
         $this->view->files = $files;
+        $this->view->controller = $this;
+        
         if ($currentFile == NULL) {
             $this->view->currentFile = $files[0];
         } else {
@@ -363,16 +369,50 @@ class StudentController extends IController {
 
                 $filecommentModel->addComment($currentFileId, Zend_Auth::getInstance()->getStorage()->read()['id'], $comment);
             }
-
-            $testResult = $this->_request->getParam('submit');
-            if ($testResult == 'test') {
-                var_dump($this->_request->getParams());
-                die();
-                // Minh oi code tiep phan lay gia tri bai test o day nhe
-            }
         }
+        
+        
     }
 
+    
+    public function testResultAction() {
+        
+        var_dump($this->getAllParams());
+        die();
+    }
+    
+    
+    public function updateResultAction() {
+        $this->initial();
+        $lessonModel = new Default_Model_Lesson();
+        $fileModel = new Default_Model_File();
+        $learnModel = new Default_Model_Learn();
+        $questionModel = new Default_Model_Question();
+        $resultModel = new Default_Model_Result();
+        
+        $fileId = $this->_request->getParam('file_id');
+        $studentId = $this->currentUser['id'];
+        $file = $fileModel->findFileById($fileId);
+        $lesson = $lessonModel->findLessonById($file['lesson_id']);
+        $learn = $learnModel->findByLessonAndStudent($lesson['id'], $studentId);
+        
+        // Update result
+        $answers = $this->_request->getParam('Q');
+        foreach ($answers as $index => $answer) {
+            $question = 'Q'.$index;
+            $selected = 'S'.$answer;
+            $question = $questionModel->findQuestionByTitleAndFile($question, $fileId);
+            $resultModel->updateResult($learn['id'], $question['id'], $selected);
+        }
+        
+        $this->redirect('student/test-result?file='.$fileId);
+    }
+    
+    public function getTestHtml($testId) {
+        $fileModel = new Default_Model_File();
+        return $fileModel->getTestHtml($testId);
+    }
+    
     public function paymentAction() {
         $this->initial();
         //TODO

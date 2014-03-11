@@ -39,4 +39,26 @@ class Default_Model_Question extends Zend_Db_Table_Abstract {
         ));
     }
     
+    public function findQuestionById($questionId) {
+        $query = $this->select()
+                ->where("id='".$questionId."'");
+        $result = $this->getAdapter()->fetchAll($query);
+        if (isset($result[0])) {
+            return $result[0];
+        } else {
+            return null;
+        }
+    }
+    
+    public function findQuestionByTitleAndFile($questionTitle, $fileId) {
+        $query = $this->select()
+                ->where("title='".$questionTitle."' and file_id='".$fileId."'");
+        $result = $this->getAdapter()->fetchAll($query);
+        if (isset($result[0])) {
+            return $result[0];
+        } else {
+            return null;
+        }
+    }
+    
 }

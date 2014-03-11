@@ -47,4 +47,14 @@ class Default_Model_Learn extends Zend_Db_Table_Abstract {
         $this->insert($ins_data);
     }
 
+    public function findByLessonAndStudent($lessonId, $studentId) {
+        $query = $this->select()
+                ->where("lesson_id='".$lessonId."' and student_id='".$studentId."'");
+        $result = $this->getAdapter()->fetchAll($query);
+        if (count($result) != 0) {
+            return $result[0];
+        } else {
+            return null;
+        }
+    }
 }
