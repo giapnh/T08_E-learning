@@ -1,1 +1,223 @@
-index
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<center>
+    <div class="content" style="background: #F0F0F0;">
+        <div class="top_content clear banner">
+            <!--                <div class="logo" style="float: left;">
+                                <a href="#"> <img width="230" height="58" src="#" alt="Logo">
+                                </a>
+                            </div>-->
+            <div style="position: absolute; top: 120px; right: 70px; ">
+                <a href="<?php echo $this->baseUrl(); ?>/user/logout"><font style="color: #7E3500; font-weight: bold; text-decoration: underline;">ログアウト</font>
+                </a>
+            </div>
+            <div  class="topbar-username"><big>ようこそ!</bigF><?php echo $this->user_info['name']; ?></div>
+        </div>
+        <!--Menu Tab Bar-->
+        <div class="menus clear">
+            <div class="mn first_mn">
+                <a class="home" href="<?php echo $this->baseUrl(); ?>/admin/user">
+                    <font style="color: white;">ホーム</font>
+                </a>
+            </div>
+            <div title="" class="mn"><a href="<?php echo $this->baseUrl(); ?>/admin/user"><font style="color: white;">ユーザ管理</font></a>
+            </div>
+            <div title="" class="mn "><a href="<?php echo $this->baseUrl(); ?>/admin/lesson"><font style="color: white;">ファイル</a>
+            </div>
+            <div title="" class="mn "><a href="<?php echo $this->baseUrl(); ?>/admin/maintain"><font style="color: white;">保守</font></a>
+            </div>
+            <div title="" class="mn "><a href="<?php echo $this->baseUrl(); ?>/admin/payment"><font style="color: white;">支払い情報</font></a>
+            </div>
+            <div title="" class="mn "><a href="<?php echo $this->baseUrl(); ?>/admin/account"><font style="color: white;">個人情報</font></a>
+            </div>
+        </div>
+        <!--Function tab bar-->
+        <div class="row-show">
+            <a href="<?php echo $this->baseUrl(); ?>/admin/lesson/index?type=1&tagId=0"><button style="margin-top: 10px;"  name="btn_tag" class="showlogfromm float-left">タグ</button></a>
+            <a href="<?php echo $this->baseUrl(); ?>/admin/lesson/index?type=2&teacherId=0">
+                <button style="margin-left: 10px; margin-top: 10px;" name="btn_teacher" class="register-cus float-left">
+                    先生</button>
+            </a>
+            <div  style="margin-top: 10px;" class="float-right">
+                <form action="" style="height: 30px;" method="post">
+                    <input type="text" name="keyword" class="input_search" placeholder="検索内容"/>
+                    <input name="sa" type="submit" class="button-search" value="検索">
+                </form>
+            </div>
+        </div>
+        <!--Content tab bar-->
+        <div class="containt_center_cen clear" style="min-height: 600px;">
+            <table class="list_lession_content"  cellpadding="0" cellspacing="0" border="0">
+                <tbody>
+                    <tr>
+                        <td valign="top" class="containt_center_cen_left">
+                            <!--<div style="width: 100%"><input type="text" class="input_search" style="width: 90%; margin-left: 10px; border: none; height: 25px;"></div>-->
+                            <div style="width: 100%; height: 20px;" class="lession-title">タグリスト</div>
+                            <div style="width: 100%;"></div>
+                            <?php
+                            /* タグが表現の倍は */
+                            $type = $this->type;
+                            if ($type == 1) {
+                                ?>
+                                <a href="<?php echo $this->baseUrl(); ?>/admin/lesson/index?type=1&tagId=0">
+                                    <button class="<?php
+                                    if ($this->tagId == 0) {
+                                        echo "teacher-item"; // If selected
+                                    } else {
+                                        echo "tag-item";
+                                    }
+                                    ?>">全部
+                                    </button></a>
+                                <?php
+                            } else {
+                                ?>
+                                <a href="<?php echo $this->baseUrl(); ?>/admin/lesson/index?type=2&teacherId=0">
+                                    <button class="
+                                    <?php
+                                    if ($this->teacherId == 0) {
+                                        echo "tag-item"; // If selected
+                                    } else {
+                                        echo "teacher-item";
+                                    }
+                                    ?>">
+                                        全部
+                                    </button>
+                                </a>
+                                <?php
+                            }
+                            if ($type == 1) {
+                                if (isset($this->tags)) {
+                                    for ($i = 0; $i < count($this->tags); $i++) {
+                                        ?>
+                                        <a href="<?php echo $this->baseUrl(); ?>/admin/lesson/index?type=1&tagId=<?php echo $this->tags[$i]['id'] ?>">
+                                            <button class="
+                                            <?php
+                                            if ($this->tagId == $this->tags[$i]['id']) {
+                                                echo "teacher-item"; // If selected
+                                            } else {
+                                                echo "tag-item";
+                                            }
+                                            ?>">
+                                                        <?php
+                                                        echo $this->tags[$i]['tag_name'];
+                                                        ?>
+                                            </button>
+                                        </a>
+                                        <?php
+                                    }
+                                } else {
+                                    echo "タグがない";
+                                }
+                            } else if ($type == 2) {
+                                /* 先生表現の倍は */
+                                if (isset($this->teachers)) {
+                                    for ($i = 0; $i < count($this->teachers); $i++) {
+                                        ?>
+                                        <a href="<?php echo $this->baseUrl(); ?>/admin/lesson/index?type=2&teacherId=<?php echo $this->teachers[$i]['id']; ?>"> 
+                                            <button class="
+                                            <?php
+                                            if ($this->teacherId == $this->teachers[$i]['id']) {
+                                                echo "tag-item"; // If selected
+                                            } else {
+                                                echo "teacher-item";
+                                            }
+                                            ?>
+                                                    ">
+                                                        <?php
+                                                        echo $this->teachers[$i]['name'];
+                                                        ?>
+                                            </button>
+                                        </a>
+                                        <?php
+                                    }
+                                } else {
+                                    echo "先生がいない";
+                                }
+                            }
+                            ?>
+                        </td>
+                        <td valign="top" class="containt_center_cen_right">
+                            <?php
+                            $counter = 0;
+                            foreach ($this->data as $item) {
+                                if ($counter % 2 == 0) {
+                                    ?>
+                                    <div class="row-show">
+                                        <div class="lession-content-left">
+                                            <table cellpadding="1" cellspacing="4" border="0" style="width: 100%;margin: 0px auto;">
+                                                <tbody>
+                                                    <tr>
+                                                        <td style="width: 100%;" colspan="1" class="lession-title"><?php echo $item['title']; ?></td>
+                                                    </tr>
+                                                    <tr><td><hr></td></tr>
+                                                    <tr>
+                                                        <td class="lession-teacher"><b>先生: </b><?php echo $item['name']; ?></td>
+                                                        <td class="lession-time"><?php echo $item['create_time']; ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="lession-description lesson-description-correct" style="width: 100%;" colspan="2"><?php echo $item['description']; ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <img src="<?php echo $this->baseUrl(); ?>/public/images/num-like.png" width="15" height="15"> <font class="num-like-comment"><?php echo $item['like']; ?></font>
+                                                            <img src="<?php echo $this->baseUrl(); ?>/public/images/num-view.png" width="15" height="15"> <font class="num-like-comment"><?php echo $item['view']; ?></font>
+                                                            <a href="<?php echo $this->baseUrl(); ?>/admin/lesson/lesson?do=view&lessonId=<?php echo $item['id']; ?>"  class="link-view-detail float-right">詳細</a>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <?php
+                                    } else if ($counter % 2 == 1) {
+                                        ?>
+                                        <div class="lession-content-right">
+                                            <table cellpadding="1" cellspacing="4" border="0" style="width: 100%;margin: 0px auto;">
+                                                <tbody>
+                                                    <tr>
+                                                        <td style="width: 100%;" colspan="2" class="lession-title"><?php echo $item['title']; ?></td>
+                                                    </tr>
+                                                    <tr><td><hr></td></tr>
+                                                    <tr style="width: 100%;">
+                                                        <td class="lession-teacher"><b>先生: </b><?php echo $item['name'] ?></td>
+                                                        <td class="lession-time"><?php echo $item['create_time']; ?></td>
+                                                    </tr>
+                                                    <tr class="lession-description lesson-description-correct" style="width: 100%;">
+                                                        <td colspan="2"><?php echo $item['description']; ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <img src="<?php echo $this->baseUrl(); ?>/public/images/num-like.png" width="15" height="15"> <font class="num-like-comment"><?php echo $item['like']; ?></font>
+                                                            <img src="<?php echo $this->baseUrl(); ?>/public/images/num-view.png" width="15" height="15"> <font class="num-like-comment"><?php echo $item['view']; ?></font>
+                                                            <a href="<?php echo $this->baseUrl(); ?>/admin/lesson/lesson?do=view&lessonId=<?php echo $item['id']; ?>"  class="link-view-detail float-right">詳細</a>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <?php
+                                }
+                                $counter ++;
+                                ?>
+
+                                <?php
+                            }
+                            if ($counter % 2 == 0) {
+                                echo "</div>";
+                            }
+                            ?>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="paging">
+                <div class="paging-center">
+                    <?php
+                    if ($this->numpage > 1)
+                        echo $this->paginationControl($this->data, 'Sliding', 'pageinator.phtml');
+                    ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</center>

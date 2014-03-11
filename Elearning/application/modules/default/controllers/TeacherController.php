@@ -280,6 +280,7 @@ class TeacherController extends IController {
         $fileModel = new Default_Model_File();
         if (!$fileModel->exercuteFiles($descriptions)) {
             // Send flash error message
+            $this->redirect('teacher/lesson?lesson_id='.$lessonId);
             return;
         }
         
