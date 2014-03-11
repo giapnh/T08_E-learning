@@ -81,8 +81,20 @@
     }
     .file_description {
         line-height: 50px;
-        width: 500px;
+        overflow: hidden;
+        width: 520px;
         height: 50px;
+        float: left;
+    }
+    .btn_delete {
+        line-height: 50px;
+        width: 50px;
+        height: 50px;
+        color: orange;
+        cursor: pointer;
+    }
+    .btn_delete:hover {
+        color: white;
     }
     #comment_container {
         width: 600px;
@@ -111,6 +123,15 @@
         margin-left: 30px;
     }
 </style>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $(".btn-add-file").click(function(){
+            $(this).hide();
+            $('form').show();
+        });
+    });
+</script>
+
 <div class="content" style="background: #F0F0F0;">
     <center>
         <?php 
@@ -183,10 +204,23 @@
                     <div class="file_name"><?php echo $file['filename']; ?></div>
                     <div class="file_description"><?php echo $file['description'] ?></div>
                 </a>
+                <a href="<?php echo $this->baseUrl()."/teacher/delete-file?file_id=".$file['id']; ?>" class="btn_delete">X</a>
             </div>
             <?php
                 }
             ?>
+            <div class="file_container">
+                <center>
+                    <form action="<?php echo $this->baseUrl()."/teacher/add-file"; ?>" method="post"  enctype="multipart/form-data" style="display: none">
+                        <input type="hidden" name="lesson_id" value="<?php echo $this->lessonInfo['id']; ?>">
+                        <input name="file[0]" type="file"></br>
+                        <div style="font-size: 14px;">ファイルの説明：</div>
+                        <textarea style="width: 350px;height: 80px" name="description[0]"></textarea></br>
+                        <input type="submit" value="アップロード" class="normal-button">
+                    </form>
+                    <div class="normal-button btn-add-file" style="margin: 5px;padding: 5px;">ファイル追加</div>
+                </center>
+            </div>
         </div>
     </div>
     <div id="comment_container">

@@ -38,11 +38,13 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
         if ($this->adapter == null) {
              $this->adapter = new Zend_File_Transfer_Adapter_Http();
         }
+        
         $k = 0;
         foreach ($this->adapter->getFileInfo() as $file => $info) {
             if ($this->adapter->isUploaded($file)) {
                 $description = $fileDescriptions[$k];
                 if (!$this->exercuteFile($file, $info, $description, $k)) {
+//                    die("Here");
                     return false;
                 }
                 $k++;
@@ -50,6 +52,7 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
         }
         
         if ($k == 0) {
+//            die("No file");
             return false;
         }
         
@@ -328,5 +331,6 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
                 ->where('lesson_id=?', $lessonId);
         return $this->getAdapter()->fetchAll($query);
     }
+    
 }
 ?>

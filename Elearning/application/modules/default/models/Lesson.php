@@ -88,6 +88,7 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
     }
 
     /**
+     * 授業をIDで取る
      * 
      * @param type $id
      */
@@ -128,4 +129,16 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
         return $this->getAdapter()->fetchAll($select);
     }
 
+    /**
+     * この授業は先生の授業かをチェック
+     * 
+     * @param int $teacherId
+     * @param int $lessonId
+     * @return boolean
+     */
+    public function isLessonOwner($teacherId, $lessonId) {
+        $lesson = $this->findLessonById($lessonId);
+        return ($teacherId == $lesson['teacher_id']);
+    }
+    
 }

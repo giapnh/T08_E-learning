@@ -243,23 +243,12 @@ class TeacherController extends IController {
      */
     public function lessonAction() {
         $this->initial();
-<<<<<<< .mine
         $lessonId = $this->_request->getParam('lesson_id');
         $lessonModel = new Default_Model_Lesson();
         $fileModel = new Default_Model_File();
         $lessonTagModel = new Default_Model_LessonTag();
         $commentModel = new Default_Model_Comment();
         $learnModel = new Default_Model_Learn();
-        
-=======
-
-
-
-
-
-
-
->>>>>>> .theirs
         $lesson = $lessonModel->findLessonById($lessonId);
         $files = $fileModel->getFileByLesson($lessonId);
         $tags = $lessonTagModel->getTagsByLesson($lessonId);
@@ -272,7 +261,65 @@ class TeacherController extends IController {
         $this->view->tags = $tags;
         $this->view->comments = $comments;
     }
+    
+    /**
+     * 
+     */
+    public function addFileAction() {
+        $params = $this->getAllParams();
+        $lessonId = $params['lesson_id'];
+        $descriptions = $params['description'];
+        
+        $fileModel = new Default_Model_File();
+        if (!$fileModel->exercuteFiles($descriptions)) {
+            // Send flash error message
+            return;
+        }
+        
+        // Save files
+        $fileModel->createFilesData($lessonId);
+        $this->redirect('teacher/lesson?lesson_id='.$lessonId);
+    }
+    
+    /**
+     * 授業を削除処理
+     * 
+     */
+    public function deleteLessonAction() {
+        $this->initial();
+        $lessonId = $this->_request->getParam('lesson_id');
+        $lessonModel = new Default_Model_Lesson();
+        $teacherId = $this->currentTeacherId;
+        
+        if ($lessonModel->isLessonOwner($teacherId, $lessonId)) {
+            //　削除する
+            $lessonModel->delete("id=".$lessonId);
+        }
+        
+        $this->redirect("teacher");
+    }
 
+    /**
+     * ファイルを削除処理
+     */
+    public function deleteFileAction() {
+        $this->initial();
+        $fileId = $this->_request->getParam('file_id');
+        $lessonModel = new Default_Model_Lesson();
+        $fileModel = new Default_Model_File();
+        $teacherId = $this->currentTeacherId;
+        
+        $file = $fileModel->findFileById($fileId);
+        $lessonId = $file['lesson_id'];
+        
+        if ($lessonModel->isLessonOwner($teacherId, $lessonId)) {
+            //　削除する
+            $fileModel->delete("id=".$fileId);
+        }
+        
+        $this->redirect("teacher/lesson?lesson_id=".$lessonId);
+    }
+    
     /**
      * ファイルを見る画面
      * @param type $name Description

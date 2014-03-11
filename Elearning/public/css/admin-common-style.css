@@ -13,6 +13,8 @@ and open the template in the editor.
     width: 120px;
     padding: 5px;
     cursor: pointer;
+    border: none;
+    border-radius: 3px;
 }
 .register-cus {
     width: 120px;
