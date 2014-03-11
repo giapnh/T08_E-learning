@@ -154,7 +154,8 @@
             <div class="created_date">
                 <?php
                     $time = $this->lessonInfo['create_time'];
-                    $correct = explode(" ", $time)[0];
+                    $correct = explode(" ", $time);
+                    $correct = $correct[0];
                     $arr = explode("-", $correct);
                     $year = $arr[0];
                     $mon = $arr[1];
@@ -185,7 +186,8 @@
             <?php 
                 foreach ($this->files as $file) {
                     $fileLocation = $file['location'];
-                    $ext = explode('.', $fileLocation)[1];
+                    $ext = explode('.', $fileLocation);
+                    $ext = $ext[1];
                     if ($ext == 'pdf') {
                         $icon = "pdf.png";
                     } else if ($ext == 'jpg' ||$ext == 'jpge' ) {
