@@ -20,7 +20,8 @@ class Default_Model_Comment extends Zend_Db_Table_Abstract {
         $select->from(array('cm' => 'comment'), array('num_comment' => 'COUNT(user_id)'))
                 ->where("lesson_id='$lessonId'")
                 ->group('cm.user_id');
-        return $this->getAdapter()->fetchRow($select)['num_comment'];
+        $re = $this->getAdapter()->fetchRow($select);
+        return $re['num_comment'];
     }
 
     public function getAllCommentOfLesson($lesson_id) {

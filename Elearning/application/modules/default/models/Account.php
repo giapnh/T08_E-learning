@@ -84,7 +84,8 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
     }
 
     public function getFailCount($username) {
-        return $this->fetchRow("username='$username'")['fail_login_count'];
+        $re = $this->fetchRow("username='{$username}'");
+        return $re['fail_login_count'];
     }
 
     public function resetFailCount($username) {

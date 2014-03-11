@@ -46,7 +46,26 @@ class Default_Model_Learn extends Zend_Db_Table_Abstract {
         );
         $this->insert($ins_data);
     }
-
+    //thiennx get payment info student
+    public function getStudentTotalPaymentInfo($studen_id){
+    	$query = $this->select()
+    	->from($this->_name, "COUNT(id) as total, DATE_FORMAT(`register_time`, '%Y') as year, DATE_FORMAT(`register_time`, '%m') as month, DATE_FORMAT(`register_time`, '%Y年%m月') as time")
+    	->where("student_id = ?", $studen_id)
+    	->group("time")
+    	->order("time");
+    	return $this->fetchAll($query)->toArray();
+    }
+	// get payment info teacher
+    public function getTeacherTotalPaymentInfo($teacher_id, $year, $month){
+    	$query = $this->getAdapter()->select()
+    	->from($this->_name, "COUNT(learn.id) as total, DATE_FORMAT(`register_time`, '%Y') as year, DATE_FORMAT(`register_time`, '%m') as month, DATE_FORMAT(`register_time`, '%Y年%m月') as time")
+    	->join("lesson", "lesson.id = learn.lesson_id")
+    	->where("teacher_id = ?", $teacher_id)
+    	->where("DATE_FORMAT(`register_time`, '%Y') = ?", $year)
+    	->where("DATE_FORMAT(`register_time`, '%m') = ?", $month)
+    	->group("lesson_id");
+    	return $this->getAdapter()->fetchAll($query);
+    }
     public function findByLessonAndStudent($lessonId, $studentId) {
         $query = $this->select()
                 ->where("lesson_id='".$lessonId."' and student_id='".$studentId."'");

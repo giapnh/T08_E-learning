@@ -241,15 +241,18 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
 //            die("Ks error");
             return null;
         }
-        $question["trueAnswer"] = preg_split("/[()]/", $nextLine[2])[1] + 0;
+        $p = preg_split("/[()]/", $nextLine[2]);
+        $question["trueAnswer"] = $p[1] + 0;
         $question["point"] = $nextLine[3];
         
         return $question;
     }
     
     protected function nextLine() {
-        $nextLine = array_values($this->lines)[0];
-        $nextLineIndex = array_keys($this->lines)[0];
+        $nextLine = array_values($this->lines);
+        $nextLine = $nextLine[0];
+        $nextLineIndex = array_keys($this->lines);
+        $nextLineIndex = $nextLineIndex[0];
         unset($this->lines[$nextLineIndex]);
         return $nextLine;
     }

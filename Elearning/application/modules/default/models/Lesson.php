@@ -101,7 +101,8 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
     }
 
     public function incrementView($lessonId) {
-        $view = $this->fetchRow("id='$lessonId'")['view'];
+        $view = $this->fetchRow("id='$lessonId'");
+        $view = $view['view'];
         $update = array(
             'view' => $view + 1
         );
