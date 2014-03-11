@@ -224,24 +224,20 @@
         </div>
     </div>
     <div id="comment_container">
+        <?php
+            foreach ($this->comments as $comment) {
+        ?>
+        <div class="comment_slot">
+            <div class="comment_owner"><?php echo $comment['name']; ?></div>
+            <div class="comment_content"><?php echo $comment['comment']; ?></div>
+            <div class="created_time"><?php echo $comment['time']; ?></div>
+        </div>
+        <?php
+            }
+        ?>
         <div class="comment_input">
             <textarea></textarea>
         </div>
-        <button>コメント</button>
-        <div class="comment_slot">
-            <div class="comment_owner">学生１</div>
-            <div class="comment_content">この授業はいいですね</div>
-            <div class="created_time">2013年11月1日12時30分</div>
-        </div>
-        <div class="comment_slot">
-            <div class="comment_owner">学生２</div>
-            <div class="comment_content">この授業はいいですね</div>
-            <div class="created_time">2013年11月1日12時30分</div>
-        </div>
-        <div class="comment_slot">
-            <div class="comment_owner">学生３</div>
-            <div class="comment_content">この授業はいいですね</div>
-            <div class="created_time">2013年11月1日12時30分</div>
-        </div>
+        <button class="normal-button">コメント</button>
     </div>
 </div>

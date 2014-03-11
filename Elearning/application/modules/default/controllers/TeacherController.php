@@ -249,12 +249,17 @@ class TeacherController extends IController {
         $lessonTagModel = new Default_Model_LessonTag();
         $commentModel = new Default_Model_Comment();
         $learnModel = new Default_Model_Learn();
+        
         $lesson = $lessonModel->findLessonById($lessonId);
         $files = $fileModel->getFileByLesson($lessonId);
         $tags = $lessonTagModel->getTagsByLesson($lessonId);
         $comments = $commentModel->getAllCommentOfLesson($lessonId);
         $studentsNum = $learnModel->countStudenJoinLesson($lessonId);
         $lesson['students_num'] = $studentsNum;
+        $comment = $this->getParam('comment');
+        
+//        if ($)
+        $commentModel->addComment($lesson_id, $this->currentTeacherId, $comment);
         
         $this->view->lessonInfo = $lesson;
         $this->view->files = $files;
