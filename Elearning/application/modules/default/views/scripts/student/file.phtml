@@ -47,7 +47,8 @@
                                     $count = 0;
                                     foreach ($this->files as $file) {
                                         $count++;
-                                        $fileType = explode(".", $file['filename'])[1];
+                                        $fileType = explode(".", $file['filename']);
+                                        $fileType = $fileType[1];
                                         if ($fileType == 'pdf') {
                                             ?>
                                             <a href="<?php echo $this->baseUrl(); ?>/student/file?lessonId=<?php echo $this->lessonInfo['id']; ?>&fileId=<?php echo $file['id']; ?>">
@@ -123,7 +124,8 @@
 
                                     <!--Content here-->
                                     <?php
-                                    $currentFile = explode(".", $this->currentFile['filename'])[1];
+                                    $currentFile = explode(".", $this->currentFile['filename']);
+                                    $currentFile = $currentFile[1];
                                     if ($currentFile == 'pdf') {
                                         ?>
                                         <embed src = "<?php echo $this->baseUrl(); ?>/<?php echo $this->currentFile['location']; ?>"
