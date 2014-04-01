@@ -1,23 +1,55 @@
 <?php echo $this->doctype() ?>
-<html>
-    <head>   
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <?php echo $this->headTitle() ?>   
-        <?php echo $this->headMeta() ?>        
-        <?php echo $this->headLink() ?>   
-        <?php echo $this->headScript() ?>      
-    </head>
-    <body>  
-        <div>
-            <?php
-            echo $this->layout()->content;
-            ?> 
-        </div>
-    <center>
-        <div class="footer" style="text-align: center;">
-            <font style="color: whitesmoke; font-size: 30px; font-weight: bolder; text-align: left;">Elearning システム</font>
-        </div>
-    </center>
+<html oncontextmenu="return false">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<?php echo $this->headTitle() ?>
+<?php echo $this->headMeta() ?>
+<?php echo $this->headLink() ?>
+<?php echo $this->headScript() ?>
+<script language="JavaScript">
+
+//////////F12 disable code////////////////////////
+    document.onkeypress = function (event) {
+        event = (event || window.event);
+        if (event.keyCode == 123) {
+           //alert('No F-12');
+            return false;
+        }
+    }
+    document.onmousedown = function (event) {
+        event = (event || window.event);
+        if (event.keyCode == 123) {
+            //alert('No F-keys');
+            return false;
+        }
+    }
+document.onkeydown = function (event) {
+        event = (event || window.event);
+        if (event.keyCode == 123) {
+            //alert('No F-keys');
+            return false;
+        }
+    }
+/////////////////////end///////////////////////
+$(document).bind('keydown keypress', 'ctrl+s', function(){
+  return false;
+});
+</script>
+</head>
+<body oncontextmenu="return false" ondragstart="return false"
+	onselectstart="return false">
+	<div>
+		<?php
+		echo $this->layout()->content;
+		?>
+	</div>
+	<center>
+		<div class="footer" style="text-align: center;">
+			<font
+				style="color: whitesmoke; font-size: 30px; font-weight: bolder; text-align: left;">Elearning
+				システム</font>
+		</div>
+	</center>
 </body>
 </html>
 
