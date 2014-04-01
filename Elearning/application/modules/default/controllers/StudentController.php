@@ -383,7 +383,6 @@ class StudentController extends IController {
                 $currentFileId = $files[0]['id'];
             }
         }
-        $this->view->comments = $filecommentModel->getAllCommentOfFile($currentFileId);
         if ($this->_request->isPost()) {
             $u = Zend_Auth::getInstance()->getStorage()->read();
             $report = $this->_request->getParam('report_content');
@@ -397,6 +396,7 @@ class StudentController extends IController {
                 $filecommentModel->addComment($currentFileId, $u['id'], $comment);
             }
         }
+        $this->view->comments = $filecommentModel->getAllCommentOfFile($currentFileId);
     }
 
     public function testResultAction() {
