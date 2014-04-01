@@ -59,15 +59,19 @@ class UserController extends IController {
                 $this->view->errorMessage = Message::$M002;
                 return;
             } else {
-                if ($authAdapter->getFailCount($uname) >= 5) {
-                    // see if a cache already exists:
-                    // If user being lock
+                echo $authAdapter->getFailCount($uname);
+                if ($authAdapter->getFailCount($uname) == 5 && !$cache->load($uname)) {
+                    $authAdapter->incLoginFailure($uname);
+                    $cache->save("1", $uname);
+                    $this->view->errorMessage = str_replace('%s', "" . Code::$LOGIN_FAIL_LOCK_TIME, Message::$M0041);
+                    return;
+                } else if ($authAdapter->getFailCount($uname) > 5) {
+                    $authAdapter->incLoginFailure($uname);
                     if ($result = $cache->load($uname)) {
                         $this->view->errorMessage = str_replace('%s', "" . Code::$LOGIN_FAIL_LOCK_TIME, Message::$M0041);
                         return;
                     } else {
                         $authAdapter->resetFailCount($uname);
-                        echo "This one is from cache!\n\n";
                     }
                 }
             }

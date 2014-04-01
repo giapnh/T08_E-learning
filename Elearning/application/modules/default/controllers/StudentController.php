@@ -18,9 +18,9 @@ class StudentController extends IController {
         if (!isset($_SESSION['CREATED'])) {
             $_SESSION['CREATED'] = time();
         } else if (time() - $_SESSION['CREATED'] > Code::$SESSION_TIME) {
-            // session started more than 30 minutes ago
-            session_regenerate_id(true);    // change session ID for the current session an invalidate old session ID
-            $_SESSION['CREATED'] = time();  // update creation time
+            // １時間後自動にログアウトしています。
+            session_regenerate_id(true);
+            $_SESSION['CREATED'] = time();
             $auth->clearIdentity();
             $this->_redirect('user/login');
             return;
@@ -361,15 +361,15 @@ class StudentController extends IController {
         $lessonId = $this->_request->getParam('lessonId');
         $currentFileId = $this->_request->getParam('fileId');
         $files = $lessonFileModel->listFileOfLesson($lessonId);
-       	if(!$currentFileId){
-	        $currentFile = $files[0];
-	        $currentFileId = $currentFile["id"];
-       	}else 
-       		$currentFile = $lessonFileModel->findFileById($currentFileId);
+        if (!$currentFileId) {
+            $currentFile = $files[0];
+            $currentFileId = $currentFile["id"];
+        } else
+            $currentFile = $lessonFileModel->findFileById($currentFileId);
         $lessonInfo = $lessonModel->findLessonById($lessonId);
 
         $this->view->lessonInfo = $lessonInfo;
-        
+
         $this->view->files = $files;
         $this->view->controller = $this;
 

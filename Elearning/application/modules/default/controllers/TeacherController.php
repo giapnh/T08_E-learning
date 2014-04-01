@@ -10,6 +10,20 @@ class TeacherController extends IController {
 
     public function preDispatch() {
         $auth = Zend_Auth::getInstance();
+
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+        if (!isset($_SESSION['CREATED'])) {
+            $_SESSION['CREATED'] = time();
+        } else if (time() - $_SESSION['CREATED'] > Code::$SESSION_TIME) {
+            // １時間後自動にログアウトしています。
+            session_regenerate_id(true);
+            $_SESSION['CREATED'] = time();
+            $auth->clearIdentity();
+            $this->_redirect('user/login');
+            return;
+        }
         if (!$auth->hasIdentity()) {
             if ($this->_request->getActionName() != 'login') {
                 $this->_redirect('user/login');
@@ -233,7 +247,7 @@ class TeacherController extends IController {
             $fileModel->createFilesData($lessonId);
 
             // Redirect
-            $this->redirect("teacher/lesson?lesson_id=".$lessonId);
+            $this->redirect("teacher/lesson?lesson_id=" . $lessonId);
         }
     }
 
@@ -249,13 +263,12 @@ class TeacherController extends IController {
         $lessonTagModel = new Default_Model_LessonTag();
         $commentModel = new Default_Model_Comment();
         $learnModel = new Default_Model_Learn();
-        
+
         $comment = $this->getParam('comment');
-        if (isset($comment) && $comment!='') {
+        if (isset($comment) && $comment != '') {
             $commentModel->addComment($lessonId, $this->currentTeacherId, $comment);
-            
         }
-        
+
         $lesson = $lessonModel->findLessonById($lessonId);
         $files = $fileModel->getFileByLesson($lessonId);
         $tags = $lessonTagModel->getTagsByLesson($lessonId);
@@ -268,7 +281,7 @@ class TeacherController extends IController {
         $this->view->tags = $tags;
         $this->view->comments = $comments;
     }
-    
+
     /**
      * 
      */
@@ -276,19 +289,19 @@ class TeacherController extends IController {
         $params = $this->getAllParams();
         $lessonId = $params['lesson_id'];
         $descriptions = $params['description'];
-        
+
         $fileModel = new Default_Model_File();
         if (!$fileModel->exercuteFiles($descriptions)) {
             // Send flash error message
-            $this->redirect('teacher/lesson?lesson_id='.$lessonId);
+            $this->redirect('teacher/lesson?lesson_id=' . $lessonId);
             return;
         }
-        
+
         // Save files
         $fileModel->createFilesData($lessonId);
-        $this->redirect('teacher/lesson?lesson_id='.$lessonId);
+        $this->redirect('teacher/lesson?lesson_id=' . $lessonId);
     }
-    
+
     /**
      * 授業を削除処理
      * 
@@ -298,12 +311,12 @@ class TeacherController extends IController {
         $lessonId = $this->_request->getParam('lesson_id');
         $lessonModel = new Default_Model_Lesson();
         $teacherId = $this->currentTeacherId;
-        
+
         if ($lessonModel->isLessonOwner($teacherId, $lessonId)) {
             //　削除する
-            $lessonModel->delete("id=".$lessonId);
+            $lessonModel->delete("id=" . $lessonId);
         }
-        
+
         $this->redirect("teacher");
     }
 
@@ -316,18 +329,18 @@ class TeacherController extends IController {
         $lessonModel = new Default_Model_Lesson();
         $fileModel = new Default_Model_File();
         $teacherId = $this->currentTeacherId;
-        
+
         $file = $fileModel->findFileById($fileId);
         $lessonId = $file['lesson_id'];
-        
+
         if ($lessonModel->isLessonOwner($teacherId, $lessonId)) {
             //　削除する
-            $fileModel->delete("id=".$fileId);
+            $fileModel->delete("id=" . $fileId);
         }
-        
-        $this->redirect("teacher/lesson?lesson_id=".$lessonId);
+
+        $this->redirect("teacher/lesson?lesson_id=" . $lessonId);
     }
-    
+
     /**
      * ファイルを見る画面
      * @param type $name Description
@@ -351,7 +364,7 @@ class TeacherController extends IController {
                 $this->view->reportNotify = Message::$M047;
             }
         }
-		
+
         $currentFile = $lessonFileModel->findFileById($currentFileId);
         $lessonInfo = $lessonModel->findLessonById($lessonId);
         $this->view->lessonInfo = $lessonInfo;
@@ -405,32 +418,30 @@ class TeacherController extends IController {
     public function paymentAction() {
         $this->initial();
         $param = $this->getAllParams();
-        if(isset($param["month"]) && isset($param["year"]))
-        {
-        	$month = $param["month"];
-        	$year = $param["year"];
-        }else{
-        	$month = date("m", time());
-        	$year = date("Y", time());
+        if (isset($param["month"]) && isset($param["year"])) {
+            $month = $param["month"];
+            $year = $param["year"];
+        } else {
+            $month = date("m", time());
+            $year = date("Y", time());
         }
-        if((int)$month < 10)
-        	$month = "0".(int) $month;
-        if((int)$month == 12){
-        	$nextMonth ="01";
-        	$nextYear = (int)$year +1;
-        	$preMonth = "11";
-        	$preYear = (int)$year;
-        }else if((int)$month == 1){
-        	$nextMonth ="02";
-        	$nextYear = (int)$year;
-        	$preMonth = "12";
-        	$preYear = (int)$year -1;
-        }
-        else{
-        	$nextMonth =(int)$month +1;
-        	$nextYear = (int)$year;
-        	$preMonth = (int)$month -1;
-        	$preYear = (int)$year;
+        if ((int) $month < 10)
+            $month = "0" . (int) $month;
+        if ((int) $month == 12) {
+            $nextMonth = "01";
+            $nextYear = (int) $year + 1;
+            $preMonth = "11";
+            $preYear = (int) $year;
+        } else if ((int) $month == 1) {
+            $nextMonth = "02";
+            $nextYear = (int) $year;
+            $preMonth = "12";
+            $preYear = (int) $year - 1;
+        } else {
+            $nextMonth = (int) $month + 1;
+            $nextYear = (int) $year;
+            $preMonth = (int) $month - 1;
+            $preYear = (int) $year;
         }
         $this->view->nextMonth = $nextMonth;
         $this->view->nextYear = $nextYear;
@@ -447,10 +458,10 @@ class TeacherController extends IController {
         $this->view->price = $master[Admin_Model_Master::$KEY_COMA_PRICE];
         $this->view->rate = $master[Admin_Model_Master::$KEY_TEACHER_FEE_RATE];
         $totalPay = 0;
-        foreach ($paymentInfos as $i){
-        	$totalPay += $i["total"] *  $this->view->price * $this->view->rate/100;
+        foreach ($paymentInfos as $i) {
+            $totalPay += $i["total"] * $this->view->price * $this->view->rate / 100;
         }
-        $this->view->totalPayment = $totalPay."(VND)";
+        $this->view->totalPayment = $totalPay . "(VND)";
     }
 
 }
