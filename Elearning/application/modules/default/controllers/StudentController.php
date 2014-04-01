@@ -12,6 +12,21 @@ class StudentController extends IController {
      */
     public function preDispatch() {
         $auth = Zend_Auth::getInstance();
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+        if (!isset($_SESSION['CREATED'])) {
+            $_SESSION['CREATED'] = time();
+        } else if (time() - $_SESSION['CREATED'] > Code::$SESSION_TIME) {
+            // session started more than 30 minutes ago
+            session_regenerate_id(true);    // change session ID for the current session an invalidate old session ID
+            $_SESSION['CREATED'] = time();  // update creation time
+            $auth->clearIdentity();
+            $this->_redirect('user/login');
+            return;
+        }
+
+
         if (!$auth->hasIdentity()) {
             if ($this->_request->getActionName() != 'login') {
                 $this->_redirect('user/login');
@@ -236,7 +251,7 @@ class StudentController extends IController {
                 $this->view->numStudent = $num[0];
                 $this->view->filesInfo = $lfileModel->listFileOfLesson($lesson_id);
             } else if ($do == 'submit') {
-            	$u = Zend_Auth::getInstance()->getStorage()->read();
+                $u = Zend_Auth::getInstance()->getStorage()->read();
                 $isLearn = $learnModel->isStudentLearn($u['id'], $lesson_id);
                 $this->view->isLearn = $isLearn;
                 if ($isLearn == 0) {
@@ -265,7 +280,7 @@ class StudentController extends IController {
         if ($this->_request->isPost()) {
             $lesson_id = $this->_request->getParam('lessonId');
             $comment = $this->_request->getParam('comment');
-            $u =Zend_Auth::getInstance()->getStorage()->read();
+            $u = Zend_Auth::getInstance()->getStorage()->read();
             $commentModel->addComment($lesson_id, $u['id'], $comment);
         }
 
@@ -280,7 +295,6 @@ class StudentController extends IController {
         $num = $learnModel->countStudenJoinLesson($lesson_id);
         $this->view->numStudent = $num[0];
         $this->view->filesInfo = $lfileModel->listFileOfLesson($lesson_id);
-        
     }
 
     public function mylessonAction() {
@@ -349,23 +363,25 @@ class StudentController extends IController {
 
         $currentFile = $lessonFileModel->findFileById($currentFileId);
         $lessonInfo = $lessonModel->findLessonById($lessonId);
-        
+
         $this->view->lessonInfo = $lessonInfo;
         $files = $lessonFileModel->listFileOfLesson($lessonId);
         $this->view->files = $files;
         $this->view->controller = $this;
-        
+
         if ($currentFile == NULL) {
             $this->view->currentFile = $files[0];
         } else {
             $this->view->currentFile = $currentFile;
         }
         if ($currentFileId == NULL) {
-            $currentFileId = $files[0]['id'];
+            if ($files != NULL) {
+                $currentFileId = $files[0]['id'];
+            }
         }
         $this->view->comments = $filecommentModel->getAllCommentOfFile($currentFileId);
         if ($this->_request->isPost()) {
-        	$u = Zend_Auth::getInstance()->getStorage()->read();
+            $u = Zend_Auth::getInstance()->getStorage()->read();
             $report = $this->_request->getParam('report_content');
             if ($report != NULL) {
                 $repordModel->addReport($u['id'], $currentFileId, $report);
@@ -376,30 +392,30 @@ class StudentController extends IController {
 
                 $filecommentModel->addComment($currentFileId, $u['id'], $comment);
             }
-        }   
+        }
     }
-    
+
     public function testResultAction() {
         $this->initial();
-        
+
         $lessonId = $this->_request->getParam('lessonId');
         $fileId = $this->_request->getParam('file_id');
         $studentId = $this->currentUser['id'];
-        
+
         $lessonModel = new Default_Model_Lesson();
         $lessonFileModel = new Default_Model_LessonFile();
         $questionModel = new Default_Model_Question();
         $resultModel = new Default_Model_Result();
         $learnModel = new Default_Model_Learn();
-        
+
         $lessonInfo = $lessonModel->findLessonById($lessonId);
-        
+
         $learn = $learnModel->findByLessonAndStudent($lessonId, $studentId);
-        
+
         $this->view->lessonInfo = $lessonInfo;
         $files = $lessonFileModel->listFileOfLesson($lessonId);
         $this->view->files = $files;
-        
+
         $questions = $questionModel->findQuestionByFile($fileId);
         $score = 0;
         $total = 0;
@@ -423,8 +439,7 @@ class StudentController extends IController {
 //        var_dump($total);
 //        die();
     }
-    
-    
+
     public function updateResultAction() {
         $this->initial();
         $lessonModel = new Default_Model_Lesson();
@@ -432,30 +447,30 @@ class StudentController extends IController {
         $learnModel = new Default_Model_Learn();
         $questionModel = new Default_Model_Question();
         $resultModel = new Default_Model_Result();
-        
+
         $fileId = $this->_request->getParam('file_id');
         $studentId = $this->currentUser['id'];
         $file = $fileModel->findFileById($fileId);
         $lesson = $lessonModel->findLessonById($file['lesson_id']);
         $learn = $learnModel->findByLessonAndStudent($lesson['id'], $studentId);
-        
+
         // Update result
         $answers = $this->_request->getParam('Q');
         foreach ($answers as $index => $answer) {
-            $question = 'Q'.$index;
-            $selected = 'S'.$answer;
+            $question = 'Q' . $index;
+            $selected = 'S' . $answer;
             $question = $questionModel->findQuestionByTitleAndFile($question, $fileId);
             $resultModel->updateResult($learn['id'], $question['id'], $selected);
         }
-        
-        $this->redirect('student/test-result?file_id='.$fileId."&lessonId=".$lesson['id']);
+
+        $this->redirect('student/test-result?file_id=' . $fileId . "&lessonId=" . $lesson['id']);
     }
-    
+
     public function getTestHtml($testId) {
         $fileModel = new Default_Model_File();
         return $fileModel->getTestHtml($testId);
     }
-    
+
     public function paymentAction() {
         $this->initial();
         //TODO
@@ -465,7 +480,6 @@ class StudentController extends IController {
         $modelMaster = new Admin_Model_Master();
         $master = $modelMaster->getMasterData();
         $this->view->price = $master[Admin_Model_Master::$KEY_COMA_PRICE];
-        
     }
 
 }
