@@ -64,7 +64,8 @@
                                     <td style="height: 30px; font-weight: bold; font-size: 14px;">
                                         <?php
                                         $time = $this->lessonInfo['create_time'];
-                                        $correct = explode(" ", $time)[0];
+                                        $correct = explode(" ", $time);
+                                        $correct = $correct[0];
                                         $arr = explode("-", $correct);
                                         $year = $arr[0];
                                         $mon = $arr[1];

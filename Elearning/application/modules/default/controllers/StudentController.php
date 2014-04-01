@@ -360,12 +360,16 @@ class StudentController extends IController {
         $repordModel = new Default_Model_CopyrightReport();
         $lessonId = $this->_request->getParam('lessonId');
         $currentFileId = $this->_request->getParam('fileId');
-
-        $currentFile = $lessonFileModel->findFileById($currentFileId);
+        $files = $lessonFileModel->listFileOfLesson($lessonId);
+       	if(!$currentFileId){
+	        $currentFile = $files[0];
+	        $currentFileId = $currentFile["id"];
+       	}else 
+       		$currentFile = $lessonFileModel->findFileById($currentFileId);
         $lessonInfo = $lessonModel->findLessonById($lessonId);
 
         $this->view->lessonInfo = $lessonInfo;
-        $files = $lessonFileModel->listFileOfLesson($lessonId);
+        
         $this->view->files = $files;
         $this->view->controller = $this;
 
