@@ -343,15 +343,22 @@ class TeacherController extends IController {
             $currentFileId = $this->_request->getParam('file_id');
         }
         if ($this->_request->isPost()) {
-            $lessonId = $this->_request->getParam('lesson_Id');
-            $currentFileId = $this->_request->getParam('file_Id');
+        	$u = Zend_Auth::getInstance()->getStorage()->read();
+            $lessonId = $this->_request->getParam('lesson_id');
+            $currentFileId = $this->_request->getParam('file_id');
             $report = $this->_request->getParam('report_content');
             if ($report != NULL) {
                 $repordModel->addReport($this->currentTeacherId, $currentFileId, $report);
                 $this->view->reportNotify = Message::$M047;
             }
+            $comment = $this->_request->getParam('comment');
+            if ($comment != NULL) {
+            
+            	$filecommentModel->addComment($currentFileId, $u['id'], $comment);
+            }
+            
         }
-		
+        $this->view->comments = $filecommentModel->getAllCommentOfFile($currentFileId);
         $currentFile = $lessonFileModel->findFileById($currentFileId);
         $lessonInfo = $lessonModel->findLessonById($lessonId);
         $this->view->lessonInfo = $lessonInfo;
