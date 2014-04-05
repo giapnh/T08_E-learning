@@ -130,12 +130,18 @@
                     <tbody>
                         <tr>
                             <td style="background: whitesmoke; height: 30px; padding-top: 5px;">
-                                <form method="post" action="">
+                                
+                                	<?php if(!$this->liked): ?>
+                                	<form method="post" action="<?php echo $this->baseUrl()?>/student/like?lesson_id=<?php echo $this->lessonId?>">
                                     <button type="submit" value="ライク" class="showlogfromm float-left" style="height: 25px; margin-bottom: 10px;">ライク</button>
+                                    <?php else : ?>
+                                    <form method="post" action="<?php echo $this->baseUrl()?>/student/dislike?lesson_id=<?php echo $this->lessonId?>">
+                                    <button type="submit" value="ディスライク" class="showlogfromm float-left" style="height: 25px; margin-bottom: 10px;">ディスライク</button>
+                                    <?php endif;?>
                                     <img src="<?php echo $this->baseUrl(); ?>/public/images/num-like.png" width="15" height="15" > <font class="num-like-comment" style="margin-right: 16px;"><?php echo $this->lessonInfo['like']; ?></font>
                                     <img src="<?php echo $this->baseUrl(); ?>/public/images/num-view.png" width="15" height="15"> <font class="num-like-comment" style="margin-right: 16px;"><?php echo $this->lessonInfo['view']; ?></font>
                                     <img src="<?php echo $this->baseUrl(); ?>/public/images/num-comment.png" width="15" height="15"> <font class="num-like-comment" style="margin-right: 16px;"><?php echo $this->numComment; ?></font>
-                                </form>
+                                	</form>
                             </td>
                         </tr> 
 
