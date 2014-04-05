@@ -1,0 +1,199 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<center>
+    <div class="content" style="background: #F0F0F0;">
+        <div class="top_content clear banner">
+            <!--                <div class="logo" style="float: left;">
+                                <a href="#"> <img width="230" height="58" src="#" alt="Logo">
+                                </a>
+                            </div>-->
+            <div style="position: absolute; top: 120px; right: 70px; ">
+                <a href="<?php echo $this->baseUrl(); ?>/user/logout"><font style="color: #7E3500; font-weight: bold; text-decoration: underline;">ログアウト</font>
+                </a>
+            </div>
+            <div  class="topbar-username"><big>ようこそ!</bigF><?php echo $this->user_info['name']; ?></div>
+        </div>
+        <!--Menu Tab Bar-->
+        <div class="menus clear">
+            <div class="mn first_mn">
+                <a class="home" href="<?php echo $this->baseUrl() ?>/student/index">
+                    <font style="color: white;">ホーム</font>
+                </a>
+            </div>
+            <div title="" class="mn"><a href="<?php echo $this->baseUrl(); ?>/student/myLesson"><font style="color: white;">マイ授業</font></a>
+            </div>
+            <div title="" class="mn "><a href="<?php echo $this->baseUrl(); ?>/student/payment"><font style="color: white;">支払い</a>
+            </div>
+            <div title="" class="mn "><a href="<?php echo $this->baseUrl(); ?>/student/profile"><font style="color: white;">プロファイル</font></a>
+            </div>
+        </div>
+        <div class="row-show float-left" style="margin-bottom: 40px;">
+            <div  style="margin: 0px auto;">
+                <div style="width: 80%; color: black;" class="lesson_register_content">
+                    <div class="float-left lesson-big-title" >
+                        <font style="padding-left: 30px;"><?php
+                        echo $this->lessonInfo['title'];
+                        ?></font>
+                        <font style="padding-left: 10px; color: #F0F0F0;"><?php
+                        echo '(' . $this->lessonInfo['name'] . '先生)';
+                        ?></font>
+
+                    </div>
+                    <div class="row-show">
+                        <table cellpadding="0" cellspacing="0" border="1"  style="float: left;border: none; text-align: center;">
+                            <tbody>
+                                <tr>
+                                    <td class="td-left">タグ</td>
+                                    <td class="td-right" style="text-align: left; height: 30px;">
+                                        <?php
+                                        foreach ($this->tagsInfo as $tag) {
+                                            ?>
+                                            <div style="border: none; float: left; margin: 1px; border-radius: 4px; padding: 5px; background: #51A007; color: white;"> <?php echo $tag['tag_name']; ?>
+                                            </div>
+                                            <?php
+                                        }
+                                        ?>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="td-left">説明</td>
+                                    <td style="text-align: left; padding: 10px; font-size: 14px; line-height: 18px;"><?php echo $this->lessonInfo['description']; ?></td>
+                                </tr>
+                                <tr>
+                                    <td class="td-left">作成した日</td>
+                                    <td style="height: 30px; font-weight: bold; font-size: 14px;">
+                                        <?php
+                                        $time = $this->lessonInfo['create_time'];
+                                        $correct = explode(" ", $time);
+                                        $correct = $correct[0];
+                                        $arr = explode("-", $correct);
+                                        $year = $arr[0];
+                                        $mon = $arr[1];
+                                        $day = $arr[2];
+                                        echo $year . "年" . $mon . "月" . $day . "日";
+                                        ?>
+
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td class="td-left">学生数</td>
+                                    <td style="height: 30px; font-weight: bold; font-size: 14px;">
+                                        <?php
+                                        echo $this->numStudent;
+                                        ?></td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2" style="text-align: left; height: 30px; padding-left: 10px; font-weight: bold; font-size: 14px;">アップロードしたファイル</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <table cellpadding="3" cellspacing="3" style="width: 90%; float: right;">
+                                            <tbody>
+                                                <?php
+                                                $count = 0;
+                                                foreach ($this->filesInfo as $file) {
+                                                    $count ++;
+                                                    ?>
+                                                    <tr>
+                                                        <td style="width: 5%;"><?php echo $count; ?></td>
+                                                        <td style="width: 30%;">
+                                                            <a href="#" style="text-decoration: underline; font-style: italic; color: #069;">
+                                                                <?php echo $file['filename']; ?>
+                                                            </a>
+                                                        </td>
+                                                        <td style="width: 60%;"><?php echo $file['description']; ?></td>
+                                                    </tr>
+                                                <?php } ?>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" style="padding: 10px;">
+                                        <div style="margin: 0px auto; width: 100%;">
+                                            <a href="<?php echo $this->baseUrl(); ?>/student/file?lessonId=<?php echo $this->lessonInfo['id']; ?>">
+                                                <button class="showlogfromm">学ぶ</button>
+                                            </a>
+                                            <button class="register-cus" onclick="javascript:history.go(-1);">前に</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!--Lesson other information--> 
+            <div style="width: 80%; margin-left: 100px; float: left;">
+                <table cellpadding="0" cellspacing="0" border="1"  style="width: 100%; border: none; text-align: center;">
+                    <tbody>
+                        <tr>
+                            <td style="background: whitesmoke; height: 30px; padding-top: 5px;">
+                                
+                                	<?php if(!$this->liked): ?>
+                                	<form method="post" action="<?php echo $this->baseUrl()?>/student/like?lesson_id=<?php echo $this->lessonId?>">
+                                    <button type="submit" value="ライク" class="showlogfromm float-left" style="height: 25px; margin-bottom: 10px;">ライク</button>
+                                    <?php else : ?>
+                                    <form method="post" action="<?php echo $this->baseUrl()?>/student/dislike?lesson_id=<?php echo $this->lessonId?>">
+                                    <button type="submit" value="ディスライク" class="showlogfromm float-left" style="height: 25px; margin-bottom: 10px;">ディスライク</button>
+                                    <?php endif;?>
+                                    <img src="<?php echo $this->baseUrl(); ?>/public/images/num-like.png" width="15" height="15" > <font class="num-like-comment" style="margin-right: 16px;"><?php echo $this->lessonInfo['like']; ?></font>
+                                    <img src="<?php echo $this->baseUrl(); ?>/public/images/num-view.png" width="15" height="15"> <font class="num-like-comment" style="margin-right: 16px;"><?php echo $this->lessonInfo['view']; ?></font>
+                                    <img src="<?php echo $this->baseUrl(); ?>/public/images/num-comment.png" width="15" height="15"> <font class="num-like-comment" style="margin-right: 16px;"><?php echo $this->numComment; ?></font>
+                                	</form>
+                            </td>
+                        </tr> 
+
+                        <tr>
+                            <td style="text-align: center; margin: 0px auto;">
+                                <?php
+                                if (isset($this->comments)) {
+                                    foreach ($this->comments as $comment) {
+                                        ?>
+                                        <div style="width: 70%;text-align: left;background: #DFF2F8; margin-left: 100px; margin-top: 5px; margin-bottom: 5px;box-shadow: 2px 2px 2px; border-style: solid; border-width: thin; border-radius: 1px;">
+                                            <div class="full-width" style="padding-left: 20px;padding-top: 10px; font-weight: bolder; font-size: 16px; color: #7E3500">
+                                                <?php
+                                                if ($comment['role'] == 1) {
+                                                    echo "学生:";
+                                                } else {
+                                                    echo "先生:";
+                                                }
+                                                echo $comment['name'];
+                                                ?>
+                                            </div>
+                                            <div class="full-width" style="padding-left: 50px; font-size: 12px; color: #A66322; font-style: italic;">
+                                                <?php
+                                                $raw = $comment['time'];
+                                                $arr = explode(" ", $raw);
+                                                $ymd = explode("-", $arr[0]);
+                                                $hsm = explode(":", $arr[1]);
+                                                echo $ymd[0] . "年" . $ymd[1] . "月" . $ymd[2] . "日" . "-" . $hsm[0] . "時" . $hsm[1] . "分";
+                                                ?>
+                                            </div>
+                                            <div class="full-width" style="padding-left: 50px; font-size: 14px;"><?php
+                                                echo $comment['comment'];
+                                                ?>
+                                            </div>
+
+                                        </div>
+                                        <?php
+                                    }
+                                }
+                                ?>
+                                <div style="width: 70%;text-align: left;background: #DFF2F8; margin-left: 100px; margin-top: 5px; margin-bottom: 5px;box-shadow: 2px 2px 2px; border-style: solid; border-width: thin; border-radius: 1px;">
+                                    <form action="" method="post">
+                                        <div  style="width: 70%;padding-left: 20px;padding-top: 10px; font-weight: bolder; font-size: 16px; color: #7E3500">
+                                            <textarea cols="60" name="comment" placeholder="コメント内容" rows="5"　style="border-radius: 2px;text-align: left; border-style: solid; border-color: #A66322;"></textarea>
+                                            <button type="submit" value="コメント" class="showlogfromm" style="height: 30px; margin-bottom: 10px;">コメント</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</center>
