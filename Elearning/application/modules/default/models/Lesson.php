@@ -61,7 +61,8 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
         $select->from('lesson')
                 ->joinInner('user', 'lesson.teacher_id=user.id', array('name'))
                 ->joinInner('learn', 'learn.lesson_id=lesson.id', array('status'))
-                ->where("learn.student_id=$student");
+                ->where("learn.student_id=$student")
+        		->where("learn.register_time + INTERVAL 7 DAY >= NOW()");
         return $this->getAdapter()->fetchAll($select);
     }
 
