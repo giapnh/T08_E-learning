@@ -89,7 +89,7 @@ class UserController extends IController {
                     if ($authAdapter->checkIpValid($uname, $curr_ip)) {
                         $flag = true;
                     } else {
-                        echo "Invalid ip address";
+                        $this->redirect('user/login_verify_confirm');
                         $flag = false;
                         return;
                     }
