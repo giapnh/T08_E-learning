@@ -26,7 +26,6 @@ class Message {
     public static $M020 = "授業のタイトルを入力してください";
     public static $M021 = "タグを入力してください";
     public static $M022 = "ファイル名が無効";
-    public static $M023 = "ファイルが無効、ファイルのフォーマットをチェックしてください";
     public static $M024 = "ファイルが存在していない";
     public static $M025 = "申し訳ありません、ファイルがなくなりました";
     public static $M026 = "登録完成しました";
@@ -56,4 +55,8 @@ class Message {
     public static $M049 = "IPを入力してください";
     public static $M050 = "このIPが存在している";
     public static $M051 = "IPを追加するのが完成しました";
+    
+    public static $M2061 = "著作権規則と同意してください";
+    public static $M2062 = "ファイルが無効、ファイルのフォーマットをチェックしてください";
+    public static $M2063 = "ファイルのアップロードが完成した";
 }

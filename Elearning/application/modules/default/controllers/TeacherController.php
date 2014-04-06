@@ -252,55 +252,68 @@ class TeacherController extends IController {
     }
 
     /**
-     * 授業を見る画面
-     * @param type $name Description
-     */
-    public function lessonAction() {
-        $this->initial();
-        $lessonId = $this->_request->getParam('lesson_id');
-        $lessonModel = new Default_Model_Lesson();
-        $fileModel = new Default_Model_File();
-        $lessonTagModel = new Default_Model_LessonTag();
-        $commentModel = new Default_Model_Comment();
-        $learnModel = new Default_Model_Learn();
+    * 授業を見る画面
+    * @param type $name Description
+    */
+   public function lessonAction() {
+           $this->initial();
+           $lessonId = $this->_request->getParam('lesson_id');
+           $lessonModel = new Default_Model_Lesson();
+           $fileModel = new Default_Model_File();
+           $lessonTagModel = new Default_Model_LessonTag();
+           $commentModel = new Default_Model_Comment();
+           $learnModel = new Default_Model_Learn();
 
-        $comment = $this->getParam('comment');
-        if (isset($comment) && $comment != '') {
-            $commentModel->addComment($lessonId, $this->currentTeacherId, $comment);
-        }
+           $comment = $this->getParam('comment');
+           if (isset($comment) && $comment != '') {
+                   $commentModel->addComment($lessonId, $this->currentTeacherId, $comment);
+           }
 
-        $lesson = $lessonModel->findLessonById($lessonId);
-        $files = $fileModel->getFileByLesson($lessonId);
-        $tags = $lessonTagModel->getTagsByLesson($lessonId);
-        $comments = $commentModel->getAllCommentOfLesson($lessonId);
-        $studentsNum = $learnModel->countStudenJoinLesson($lessonId);
-        $lesson['students_num'] = $studentsNum;
-        $this->view->lessonId = $lessonId;
-        $this->view->lessonInfo = $lesson;
-        $this->view->files = $files;
-        $this->view->tags = $tags;
-        $this->view->comments = $comments;
-    }
+           $lesson = $lessonModel->findLessonById($lessonId);
+           $files = $fileModel->getFileByLesson($lessonId);
+           $tags = $lessonTagModel->getTagsByLesson($lessonId);
+           $comments = $commentModel->getAllCommentOfLesson($lessonId);
+           $studentsNum = $learnModel->countStudenJoinLesson($lessonId);
+           $lesson['students_num'] = $studentsNum;
+           $this->view->lessonId = $lessonId;
+           $this->view->lessonInfo = $lesson;
+           $this->view->files = $files;
+           $this->view->tags = $tags;
+           $this->view->comments = $comments;
+           $this->view->errorMessages = $this->_helper->FlashMessenger->getMessages('addFileFailed');
+           $this->view->messages = $this->_helper->FlashMessenger->getMessages('addFileSuccess');
+   }
 
-    /**
-     *
-     */
-    public function addFileAction() {
-        $params = $this->getAllParams();
-        $lessonId = $params['lesson_id'];
-        $descriptions = $params['description'];
+   /**
+    * ファイル追加処理
+    * 
+    */
+   public function addFileAction() {
+           $params = $this->getAllParams();
+           $lessonId = $params['lesson_id'];
+           $descriptions = $params['description'];
+           $copyright_check = isset($params['copyright_check']);
 
-        $fileModel = new Default_Model_File();
-        if (!$fileModel->exercuteFiles($descriptions)) {
-            // Send flash error message
-            $this->redirect('teacher/lesson?lesson_id=' . $lessonId);
-            return;
-        }
+           $fileModel = new Default_Model_File();
 
-        // Save files
-        $fileModel->createFilesData($lessonId);
-        $this->redirect('teacher/lesson?lesson_id=' . $lessonId);
-    }
+           if (!$copyright_check) {
+               $this->_helper->FlashMessenger->addMessage(Message::$M2061, 'addFileFailed');
+               $this->redirect('teacher/lesson?lesson_id=' . $lessonId);
+               return;
+           }
+
+           if (!$fileModel->exercuteFiles($descriptions)) {
+               // Send flash error message
+               $this->_helper->FlashMessenger->addMessage(Message::$M2062, 'addFileFailed');
+               $this->redirect('teacher/lesson?lesson_id=' . $lessonId);
+               return;
+           }
+
+           // Save files
+           $fileModel->createFilesData($lessonId);
+           $this->_helper->FlashMessenger->addMessage(Message::$M2063, 'addFileSuccess');
+           $this->redirect('teacher/lesson?lesson_id=' . $lessonId);
+   }
 
     /**
      * 授業を削除処理
@@ -510,5 +523,5 @@ class TeacherController extends IController {
         }
         $this->view->totalPayment = $totalPay . "(VND)";
     }
-
+    
 }
