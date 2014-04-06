@@ -12,9 +12,9 @@ class StudentController extends IController {
      */
     public function preDispatch() {
         $auth = Zend_Auth::getInstance();
-//         if (session_status() == PHP_SESSION_NONE) {
-//             session_start();
-//         }
+        if (!$_SESSION) {
+            session_start();
+        }
         if (!isset($_SESSION['CREATED'])) {
             $_SESSION['CREATED'] = time();
         } else if (time() - $_SESSION['CREATED'] > Code::$SESSION_TIME) {
@@ -284,7 +284,7 @@ class StudentController extends IController {
             $commentModel->addComment($lesson_id, $u['id'], $comment);
         }
 
-       //$lessonModel->incrementView($lesson_id);
+        //$lessonModel->incrementView($lesson_id);
         $info = $lessonModel->findLessonById($lesson_id);
         $this->view->numComment = $commentModel->countCommentOnLesson($lesson_id);
         $this->view->comments = $commentModel->getAllCommentOfLesson($lesson_id);
@@ -299,32 +299,35 @@ class StudentController extends IController {
         $likeModel = new Default_Model_Like();
         $this->view->liked = $likeModel->liked($u["id"], $lesson_id);
     }
-	public function likeAction(){
-		$this->initial();
-		$u = Zend_Auth::getInstance()->getStorage()->read();
-		if($this->_request->isPost()){
-			$lesson_id = $this->_request->getParam('lesson_id');
-			$lessonModel = new Default_Model_Lesson();
-			$lessonModel->getAdapter()->query("UPDATE  `elearning`.`lesson` SET  `like` =  `like` +1  WHERE  `lesson`.`id` = ". $lesson_id);
-			$likeModel = new Default_Model_Like();
-			$likeModel->insert(array("user_id" => $u["id"], "lesson_id" => $lesson_id));
-			$this->_redirect($_SERVER['HTTP_REFERER']);
-		}
-		exit();
-	}
-	public function dislikeAction(){
-		$this->initial();
-		$u = Zend_Auth::getInstance()->getStorage()->read();
-		if($this->_request->isPost()){
-			$lesson_id = $this->_request->getParam('lesson_id');
-			$lessonModel = new Default_Model_Lesson();
-			$lessonModel->getAdapter()->query("UPDATE  `elearning`.`lesson` SET  `like` =  `like` -1  WHERE  `lesson`.`id` = ". $lesson_id);
-			$likeModel = new Default_Model_Like();
-			$likeModel->delete(array("user_id" => $u["id"], "lesson_id" => $lesson_id));
-			$this->_redirect($_SERVER['HTTP_REFERER']);
-		}
-		exit();
-	}
+
+    public function likeAction() {
+        $this->initial();
+        $u = Zend_Auth::getInstance()->getStorage()->read();
+        if ($this->_request->isPost()) {
+            $lesson_id = $this->_request->getParam('lesson_id');
+            $lessonModel = new Default_Model_Lesson();
+            $lessonModel->getAdapter()->query("UPDATE  `elearning`.`lesson` SET  `like` =  `like` +1  WHERE  `lesson`.`id` = " . $lesson_id);
+            $likeModel = new Default_Model_Like();
+            $likeModel->insert(array("user_id" => $u["id"], "lesson_id" => $lesson_id));
+            $this->_redirect($_SERVER['HTTP_REFERER']);
+        }
+        exit();
+    }
+
+    public function dislikeAction() {
+        $this->initial();
+        $u = Zend_Auth::getInstance()->getStorage()->read();
+        if ($this->_request->isPost()) {
+            $lesson_id = $this->_request->getParam('lesson_id');
+            $lessonModel = new Default_Model_Lesson();
+            $lessonModel->getAdapter()->query("UPDATE  `elearning`.`lesson` SET  `like` =  `like` -1  WHERE  `lesson`.`id` = " . $lesson_id);
+            $likeModel = new Default_Model_Like();
+            $likeModel->delete(array("user_id" => $u["id"], "lesson_id" => $lesson_id));
+            $this->_redirect($_SERVER['HTTP_REFERER']);
+        }
+        exit();
+    }
+
     public function mylessonAction() {
         $this->initial();
         $auth = Zend_Auth::getInstance();
@@ -379,7 +382,7 @@ class StudentController extends IController {
             $this->view->data = $paginator;
         }
     }
-	
+
     public function fileAction() {
         $this->initial();
         $lessonModel = new Default_Model_Lesson();

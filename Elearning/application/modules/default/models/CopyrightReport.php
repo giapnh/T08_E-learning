@@ -19,9 +19,16 @@ class Default_Model_CopyrightReport extends Zend_Db_Table_Abstract {
         $ins = array(
             'user_id' => $userId,
             'file_id' => $fileId,
-            'reason' => $report
+            'reason' => $report,
+        	'status' => 1
         );
         $this->insert($ins);
     }
-
+	public function getReport($fileId){
+		$select = $this->getAdapter()->select()
+			->from($this->_name)
+			->join("user", "copyright_report.user_id = user.id", array("username"))
+			->where("copyright_report.status = 1");
+		return $this->getAdapter()->fetchAll($select);
+	}
 }

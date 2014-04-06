@@ -83,13 +83,17 @@ class Default_Model_Learn extends Zend_Db_Table_Abstract {
     		->join("lesson", "lesson.id = learn.lesson_id", array("title"))
     		->join("user", "learn.student_id = user.id", array("username", "name", "email", "phone"))
     		->where("lesson_id = $lessonId")
-    		->where("learn.status =1")
     		->order("register_time DESC");
     	return $this->getAdapter()->fetchAll($query);
     }
     //lock students
-    public function locStudent($ids){
-    	$q = $this->db->quoteInto("update learn set status = 0 where id IN (?)" , $ids);
+    public function lockStudent($ids){
+    	$q = $this->db->quoteInto("update learn set status = 0 where id =?" , $ids);
+    	$this->db->query($q);
+    }
+    //unlock students
+    public function unlockStudent($ids){
+    	$q = $this->db->quoteInto("update learn set status = 1 where id =?" , $ids);
     	$this->db->query($q);
     }
 }
