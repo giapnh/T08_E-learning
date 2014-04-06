@@ -1,1 +1,31 @@
-Students view
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<center>
+    <div class="content" style="background: #F0F0F0;">
+        <?php 
+            echo $this->partial("teacher/teacher-top.phtml", array('username'=>$this->user_info['name']));
+        ?>
+        <?php if(!empty($this->students)) :?>
+		<form action="<?php echo $this->baseUrl()?>/teacher/lock-student?lesson_id=<?php echo $this->lessonId ?>" method="post">
+			<h3>授業タイトル: <?php echo $this->students[0]["title"]?></h3>
+			<table width="960" border="1" bordercolor="#d5d5d5" style="border-collapse:collapse" cellpadding="4" cellspacing="4">
+			<tr>
+				<td>ユーザ名</td>
+				<td>名前</td>
+				<td>勉強時間</td>
+				<td></td>
+			</tr>
+			<?php foreach ($this->students as $student):?>
+				<tr>
+					<td><?php echo $student["username"]?></td>
+					<td><?php echo $student["name"]?></td>
+					<td><?php echo $student["register_time"]?></td>
+					<td><input type="checkbox" name = "lockStudent[]" value="<?php echo $student["id"]?>"/></td>
+				</tr>
+			<?php endforeach;?>
+			</table>
+			<br>
+			<input type="submit" value="ロック">
+		</form>
+		<?php endif;?>
+      </div>
+</center>

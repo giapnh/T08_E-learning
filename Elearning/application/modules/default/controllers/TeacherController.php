@@ -17,7 +17,7 @@ class TeacherController extends IController {
         if (!isset($_SESSION['CREATED'])) {
             $_SESSION['CREATED'] = time();
         } else if (time() - $_SESSION['CREATED'] > Code::$SESSION_TIME) {
-            // １時間後自動にログアウトしています。
+// １時間後自動にログアウトしています。
             session_regenerate_id(true);
             $_SESSION['CREATED'] = time();
             $auth->clearIdentity();
@@ -29,7 +29,7 @@ class TeacherController extends IController {
                 $this->_redirect('user/login');
             }
         } else {
-            //学生チェックする
+//学生チェックする
             $auth = Zend_Auth::getInstance();
             $infoUser = $auth->getStorage()->read();
             if ($infoUser['role'] != 2) {
@@ -101,7 +101,7 @@ class TeacherController extends IController {
         $user = new Default_Model_Account();
         if ($this->_request->isPost()) {
             $data = $this->_request->getParams();
-            //Check empty
+//Check empty
             if (trim($data['username']) == '') {
                 return;
             }
@@ -212,41 +212,41 @@ class TeacherController extends IController {
         if ($this->_request->isPost()) {
             $param = $this->_getAllParams();
             var_dump($param);
-            // Check title
+// Check title
             if ((!isset($param['title'])) || $param['title'] == '') {
                 $this->view->errorMessage = Message::$M020;
                 return;
             }
 
-            // Check description
+// Check description
             if ((!isset($param['description'])) || $param['description'] == '') {
                 $this->view->errorMessage = Message::$M046;
                 return;
             }
 
-            // Save file
+// Save file
             $fileModel = new Default_Model_File();
             if (!$fileModel->exercuteFiles($param["file_dec"])) {
                 $this->view->errorMessage = Message::$M023;
                 return;
             }
 
-            // Check tag
+// Check tag
             if (!isset($param['tags'])) {
                 $this->view->errorMessage = Message::$M021;
                 return;
             }
 
-            // Save lesson
+// Save lesson
             $lessonModel = new Default_Model_TeacherLesson();
             $title = $param['title'];
             $description = $param['description'];
             $lessonId = $lessonModel->createLesson($this->currentTeacherId, $title, $description, $param['tags']);
 
-            // Save files
+// Save files
             $fileModel->createFilesData($lessonId);
 
-            // Redirect
+// Redirect
             $this->redirect("teacher/lesson?lesson_id=" . $lessonId);
         }
     }
@@ -292,12 +292,12 @@ class TeacherController extends IController {
 
         $fileModel = new Default_Model_File();
         if (!$fileModel->exercuteFiles($descriptions)) {
-            // Send flash error message
+// Send flash error message
             $this->redirect('teacher/lesson?lesson_id=' . $lessonId);
             return;
         }
 
-        // Save files
+// Save files
         $fileModel->createFilesData($lessonId);
         $this->redirect('teacher/lesson?lesson_id=' . $lessonId);
     }
@@ -313,7 +313,7 @@ class TeacherController extends IController {
         $teacherId = $this->currentTeacherId;
 
         if ($lessonModel->isLessonOwner($teacherId, $lessonId)) {
-            //　削除する
+//　削除する
             $lessonModel->delete("id=" . $lessonId);
         }
 
@@ -334,7 +334,7 @@ class TeacherController extends IController {
         $lessonId = $file['lesson_id'];
 
         if ($lessonModel->isLessonOwner($teacherId, $lessonId)) {
-            //　削除する
+//　削除する
             $fileModel->delete("id=" . $fileId);
         }
 
@@ -458,7 +458,7 @@ class TeacherController extends IController {
         $this->view->year = $year;
         $learnModel = new Default_Model_Learn();
         $paymentInfos = $learnModel->getTeacherTotalPaymentInfo($this->currentTeacherId, $year, $month);
-        //Zend_Debug::dump($paymentInfos);
+//Zend_Debug::dump($paymentInfos);
         $this->view->paymentInfos = $paymentInfos;
         $modelMaster = new Admin_Model_Master();
         $master = $modelMaster->getMasterData();
