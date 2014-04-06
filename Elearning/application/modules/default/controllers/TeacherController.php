@@ -11,7 +11,7 @@ class TeacherController extends IController {
     public function preDispatch() {
         $auth = Zend_Auth::getInstance();
 
-        if (session_status() == PHP_SESSION_NONE) {
+        if (!$_SESSION) {
             session_start();
         }
         if (!isset($_SESSION['CREATED'])) {
@@ -356,7 +356,7 @@ class TeacherController extends IController {
             $currentFileId = $this->_request->getParam('file_id');
         }
         if ($this->_request->isPost()) {
-        	$u = Zend_Auth::getInstance()->getStorage()->read();
+            $u = Zend_Auth::getInstance()->getStorage()->read();
             $lessonId = $this->_request->getParam('lesson_id');
             $currentFileId = $this->_request->getParam('file_id');
             $report = $this->_request->getParam('report_content');
@@ -366,12 +366,11 @@ class TeacherController extends IController {
             }
             $comment = $this->_request->getParam('comment');
             if ($comment != NULL) {
-            
-            	$filecommentModel->addComment($currentFileId, $u['id'], $comment);
+
+                $filecommentModel->addComment($currentFileId, $u['id'], $comment);
             }
-            
         }
-		
+
         $this->view->comments = $filecommentModel->getAllCommentOfFile($currentFileId);
         $currentFile = $lessonFileModel->findFileById($currentFileId);
         $lessonInfo = $lessonModel->findLessonById($lessonId);

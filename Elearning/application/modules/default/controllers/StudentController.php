@@ -12,7 +12,7 @@ class StudentController extends IController {
      */
     public function preDispatch() {
         $auth = Zend_Auth::getInstance();
-        if (session_status() == PHP_SESSION_NONE) {
+        if (!$_SESSION) {
             session_start();
         }
         if (!isset($_SESSION['CREATED'])) {
