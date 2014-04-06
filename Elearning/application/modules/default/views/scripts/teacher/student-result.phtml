@@ -1,1 +1,31 @@
-Student result view
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<center>
+    <div class="content" style="background: #F0F0F0;">
+        <?php 
+            echo $this->partial("teacher/teacher-top.phtml", array('username'=>$this->user_info['name']));
+        ?>
+        <?php if(!empty($this->results)) :?>
+        <div>
+        	<?php $pre = -1;
+        		foreach ($this->results as $result):
+        			if($result["file_id"] != $pre ):
+        				if($pre != -1)
+        					echo "</table>";
+        				echo "<span>".$result["title"]."</span>";
+        				echo '<table width="560" border="1" bordercolor="#d5d5d5" style="border-collapse:collapse" cellpadding="4" cellspacing="4">';
+        				echo "<tr><td>NO</td> <td>選択した</td> <td>正しい結果</td></tr>";
+        				$pre = $result["file_id"];
+        			endif;
+        			
+        	?>
+        		<tr>
+        			<td><?php echo $result["q"] ?></td>
+        			<td><?php echo $result["selected"]; ?></td>
+        			<td><?php echo $result["answer"]?>
+        		</tr>
+        	<?php endforeach;?>
+        	</table>
+        </div>
+        <?php endif;?>
+	</div>
+</center>
