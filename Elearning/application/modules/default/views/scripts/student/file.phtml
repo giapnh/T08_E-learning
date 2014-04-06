@@ -48,7 +48,8 @@
                                     if ($this->files != null)
                                         foreach ($this->files as $file) {
                                             $count++;
-                                            $fileType = explode(".", $file['filename'])[1];
+                                            $fileType = explode(".", $file['filename']);
+                                            $fileType = $fileType[1];
                                             if ($fileType == 'pdf') {
                                                 ?>
                                                 <a href="<?php echo $this->baseUrl(); ?>/student/file?lessonId=<?php echo $this->lessonInfo['id']; ?>&fileId=<?php echo $file['id']; ?>">
@@ -110,71 +111,7 @@
                                                 </a> 
                                                 <?php
                                             }
-                                    foreach ($this->files as $file) {
-                                        $count++;
-                                        $fileType = explode(".", $file['filename']);
-                                        $fileType = $fileType[1];
-                                        if ($fileType == 'pdf') {
-                                            ?>
-                                            <a href="<?php echo $this->baseUrl(); ?>/student/file?lessonId=<?php echo $this->lessonInfo['id']; ?>&fileId=<?php echo $file['id']; ?>">
-                                                <div class="full-width" style="font-size: 16px; font-weight: bold; margin: 5px;">
-                                                    <font style="color: white">
-                                                    <?php echo $count . '.'; ?>
-                                                    </font>
-                                                    <?php echo $file['filename']; ?>
-                                                    <img src="<?php echo $this->baseUrl(); ?>/public/images/pdf.png" width="20" height="20">
-                                                </div>
-                                            </a>           
-                                            <?php
-                                        } else if ($fileType == 'mp3') {
-                                            ?>
-                                            <a href="<?php echo $this->baseUrl(); ?>/student/file?lessonId=<?php echo $this->lessonInfo['id']; ?>&fileId=<?php echo $file['id']; ?>">
-                                                <div class="full-width" style="font-size: 16px;  font-weight: bold; margin: 5px;">
-                                                    <font style="color: white">
-                                                    <?php echo $count . '.'; ?>
-                                                    </font>
-                                                    <?php echo $file['filename']; ?>
-                                                    <img src="<?php echo $this->baseUrl(); ?>/public/images/audio.png" width="20" height="20">
-                                                </div>
-                                            </a>              
-                                            <?php
-                                        } else if ($fileType == 'mp4') {
-                                            ?>
-                                            <a href="<?php echo $this->baseUrl(); ?>/student/file?lessonId=<?php echo $this->lessonInfo['id']; ?>&fileId=<?php echo $file['id']; ?>">
-                                                <div class="full-width" style="font-size: 16px;  font-weight: bold; margin: 5px;">
-                                                    <font style="color: white">
-                                                    <?php echo $count . '.'; ?>
-                                                    </font>
-                                                    <?php echo $file['filename']; ?>
-                                                    <img src="<?php echo $this->baseUrl(); ?>/public/images/mp4.png" width="20" height="20">
-                                                </div>
-                                            </a>       
-                                            <?php
-                                        } else if ($fileType == 'png' || $fileType == 'jpg' || $fileType == 'jpeg') {
-                                            ?>
-                                            <a href="<?php echo $this->baseUrl(); ?>/student/file?lessonId=<?php echo $this->lessonInfo['id']; ?>&fileId=<?php echo $file['id']; ?>">
-                                                <div class="full-width" style="font-size: 16px;  font-weight: bold; margin: 5px;">
-                                                    <font style="color: white">
-                                                    <?php echo $count . '.'; ?>
-                                                    </font>
-                                                    <?php echo $file['filename']; ?>
-                                                    <img src="<?php echo $this->baseUrl(); ?>/public/images/image.png" width="20" height="20">
-                                                </div>
-                                            </a> 
-                                            <?php
-                                        } else if ($fileType == 'tsv') {
-                                            ?>
-                                            <a href="<?php echo $this->baseUrl(); ?>/student/file?lessonId=<?php echo $this->lessonInfo['id']; ?>&fileId=<?php echo $file['id']; ?>">
-                                                <div class="full-width" style="font-size: 16px;  font-weight: bold; margin: 5px;">
-                                                    <font style="color: white">
-                                                    <?php echo $count . '.'; ?>
-                                                    </font>
-                                                    <?php echo $file['filename']; ?>
-                                                    <img src="<?php echo $this->baseUrl(); ?>/public/images/test.png" width="32" height="32">
-                                                </div>
-                                            </a> 
-                                            <?php
-                                        }
+                                            }
                                     ?>
                                 </div>
                             </td>
@@ -191,7 +128,8 @@
                                     if ($this->files == null) {
                                         echo "ファイルがない";
                                     } else {
-                                        $currentFile = explode(".", $this->currentFile['filename'])[1];
+										$currentFile = explode(".", $this->currentFile['filename']);
+                                        $currentFile =$currentFile[1];
                                         if ($currentFile == 'pdf') {
                                             ?>
                                             <embed src = "<?php echo $this->baseUrl(); ?>/<?php echo $this->currentFile['location']; ?>"
@@ -335,7 +273,8 @@
                                                 echo $ymd[0] . "年" . $ymd[1] . "月" . $ymd[2] . "日" . "-" . $hsm[0] . "時" . $hsm[1] . "分";
                                                 ?>
                                             </div>
-                                            <div class="full-width" style="padding-left: 50px; font-size: 14px;"><?php
+                                            <div class="full-width" style="padding-left: 50px; font-size: 14px;">
+                                            <?php
                                                 echo $comment['comment'];
                                                 ?>
                                             </div>
