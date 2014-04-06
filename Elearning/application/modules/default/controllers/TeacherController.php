@@ -227,7 +227,7 @@ class TeacherController extends IController {
 			// Save file
 			$fileModel = new Default_Model_File();
 			if (!$fileModel->exercuteFiles($param["file_dec"])) {
-				$this->view->errorMessage = Message::$M023;
+				$this->view->errorMessage = Message::$M2062;
 				return;
 			}
 
@@ -280,25 +280,38 @@ class TeacherController extends IController {
 		$this->view->files = $files;
 		$this->view->tags = $tags;
 		$this->view->comments = $comments;
+                $this->view->errorMessages = $this->_helper->FlashMessenger->getMessages('addFileFailed');
+                $this->view->messages = $this->_helper->FlashMessenger->getMessages('addFileSuccess');
 	}
 
 	/**
-	 *
+	 * ファイル追加処理
+         * 
 	 */
 	public function addFileAction() {
 		$params = $this->getAllParams();
 		$lessonId = $params['lesson_id'];
 		$descriptions = $params['description'];
+                $copyright_check = isset($params['copyright_check']);
 
 		$fileModel = new Default_Model_File();
+                
+                if (!$copyright_check) {
+                    $this->_helper->FlashMessenger->addMessage(Message::$M2061, 'addFileFailed');
+                    $this->redirect('teacher/lesson?lesson_id=' . $lessonId);
+                    return;
+                }
+                
 		if (!$fileModel->exercuteFiles($descriptions)) {
-			// Send flash error message
-			$this->redirect('teacher/lesson?lesson_id=' . $lessonId);
-			return;
+                    // Send flash error message
+                    $this->_helper->FlashMessenger->addMessage(Message::$M2062, 'addFileFailed');
+                    $this->redirect('teacher/lesson?lesson_id=' . $lessonId);
+                    return;
 		}
 
 		// Save files
 		$fileModel->createFilesData($lessonId);
+                $this->_helper->FlashMessenger->addMessage(Message::$M2063, 'addFileSuccess');
 		$this->redirect('teacher/lesson?lesson_id=' . $lessonId);
 	}
 
