@@ -47,10 +47,13 @@
                 $("#btn_more_file").removeClass('not_visible');
                 $("#btn_more_file").addClass('visible');
             }
+            
+            $("#btn_remove_file").removeClass('visible');
+            $("#btn_remove_file").addClass('not_visible');
         });
         $("#btn_more_file").click(function(){
             fileCount += 1;
-            var itemHtml = "<div class='file_item'>" +
+            var itemHtml = "<div class='file_item item_"+fileCount+"'>" +
                                 "<div>ファイル"+fileCount+"</div>" +
                                 "<table>"+
                                     "<tr>"+
@@ -73,12 +76,36 @@
                                 "</table>"+
                             "</div>";
             $("#list_file").append(itemHtml);
+            $(".item_"+fileCount).hide();
+            $(".item_"+fileCount).show('slow');
             $("#btn_more_file").removeClass('visible');
             $("#btn_more_file").addClass('not_visible');
+            $("#btn_remove_file").removeClass('visible');
+            $("#btn_remove_file").addClass('not_visible');
             $("#file_"+fileCount).change(function(){
                 if ($("#btn_more_file").hasClass('not_visible')) {
                     $("#btn_more_file").removeClass('not_visible');
                     $("#btn_more_file").addClass('visible');
+                }
+                if ($("#btn_remove_file").hasClass('not_visible')) {
+                    $("#btn_remove_file").removeClass('not_visible');
+                    $("#btn_remove_file").addClass('visible');
+                }
+            });
+            
+            
+            
+            return false;
+        });
+        $("#btn_remove_file").click(function(){
+            $(".item_"+fileCount).hide(function(){
+                if (fileCount >= 1) {
+                    $(".item_"+fileCount).remove();
+                    fileCount --;
+                    if (fileCount == 0) {
+                        $("#btn_remove_file").addClass('not_visible');
+                        $("#btn_remove_file").removeClass('visible');
+                    }
                 }
             });
             
@@ -162,12 +189,14 @@
                                         </table>
                                     </div>
                                 </div>
-                                <button id="btn_more_file" class="not_visible normal-button">もう一つ</button>
+                                <button id="btn_more_file" class="not_visible normal-button" style="float:left;margin: 5px;">もう一つ</button>
+                                <button id="btn_remove_file" class="not_visible normal-button" style="float:left;margin: 5px;">削除</button>
                             </td>
                         </tr>
                         <tr>
                             <td colspan="2">
-                                <input type="submit" name="submit" value="作成" id="les_submit" class="showlogfromm normal-button">
+                                <input type="checkbox" name="copyright_check" value="">著作権規則と同意する<br>
+                                <input type="submit" name="submit" value="作成" style="margin-top: 5px;" id="les_submit" class="showlogfromm normal-button">
                             </td>
                         </tr>
                     </tbody>

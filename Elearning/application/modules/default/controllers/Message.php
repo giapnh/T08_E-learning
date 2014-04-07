@@ -23,8 +23,7 @@ class Message {
     public static $M017 = "新しいパスワードが無効";
     public static $M018 = "新しいパスワード確認が無効";
     public static $M019 = "パスワードが正しくない";
-    public static $M020 = "授業のタイトルを入力してください";
-    public static $M021 = "タグを入力してください";
+    
     public static $M022 = "ファイル名が無効";
     public static $M024 = "ファイルが存在していない";
     public static $M025 = "申し訳ありません、ファイルがなくなりました";
@@ -49,7 +48,6 @@ class Message {
     public static $M043 = "エラー：ユーザを削除できません";
     public static $M044 = "マースターデータを更新しました";
     public static $M045 = "マースターデータを更新するのが失敗しました";
-    public static $M046 = "授業の説明を入力してください";
     public static $M047 = "違犯レポートが送りました！ありがとうございます。";
     public static $M048 = "ユーザが存在していない";
     public static $M049 = "IPを入力してください";
@@ -57,6 +55,9 @@ class Message {
     public static $M051 = "IPを追加するのが完成しました";
     
     public static $M2061 = "著作権規則と同意してください";
-    public static $M2062 = "ファイルが無効、ファイルのフォーマットをチェックしてください";
+    public static $M2062 = "ファイルが無効、ファイルをチェックしてください";
     public static $M2063 = "ファイルのアップロードが完成した";
+    public static $M2064 = "授業のタイトルを入力してください";
+    public static $M2065 = "授業の説明を入力してください";
+    public static $M2066 = "タグを入力してください";
 }

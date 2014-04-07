@@ -211,29 +211,35 @@ class TeacherController extends IController {
         //        $this->view->form = $form;
         if ($this->_request->isPost()) {
             $param = $this->_getAllParams();
-            var_dump($param);
+            //var_dump($param);
             // Check title
             if ((!isset($param['title'])) || $param['title'] == '') {
-                $this->view->errorMessage = Message::$M020;
+                $this->view->errorMessage = Message::$M2064;
                 return;
             }
 
             // Check description
             if ((!isset($param['description'])) || $param['description'] == '') {
-                $this->view->errorMessage = Message::$M046;
+                $this->view->errorMessage = Message::$M2065;
                 return;
             }
 
+            // Check copyright
+            if (!isset($param['copyright_check'])) {
+                $this->view->errorMessage = Message::$M2061;
+                return;
+            }
+            
             // Save file
             $fileModel = new Default_Model_File();
             if (!$fileModel->exercuteFiles($param["file_dec"])) {
-                $this->view->errorMessage = Message::$M023;
+                $this->view->errorMessage = Message::$M2062;
                 return;
             }
 
             // Check tag
             if (!isset($param['tags'])) {
-                $this->view->errorMessage = Message::$M021;
+                $this->view->errorMessage = Message::$M2066;
                 return;
             }
 
