@@ -442,33 +442,57 @@ class TeacherController extends IController {
         $this->_redirect("teacher/students?lesson_id=$lessonId");
     }
 
-    /**
-     * 授業の学生をロック
-     * @param type $name Description
-     */
-    public function unlockStudentAction() {
-        $this->initial();
-        $modelLearn = new Default_Model_Learn();
-        $lessonId = $this->_request->getParam('lesson_id');
-        $id = $this->_request->getParam("id");
-        $modelLearn->unlockStudent($id);
-        $this->_redirect("teacher/students?lesson_id=$lessonId");
-    }
-
-    /**
-     * 学生のテスト結果を見る画面
-     * @param type $name Description
-     */
-    public function studentResultAction() {
-        $this->initial();
-        $modelLearn = new Default_Model_Learn();
-        //$lessonId = $this->_request->getParam('lesson_id');
-        $learn_id = $this->_request->getParam("learn_id");
-        $modelTestResult = new Default_Model_Result();
-        $result = $modelTestResult->getTestResultByLearn($learn_id);
-        Zend_Debug::dump($result);
-        $this->view->results = $result;
-    }
+	/**
+	 * 授業の学生を見る画面
+	 * @param type $name Description
+	 */
+	public function studentsAction() {
+		$this->initial();
+		$lessonId = $this->_request->getParam('lesson_id');
+		$modelLearn = new Default_Model_Learn();
+		$students = $modelLearn->getStudentsByLessonId($lessonId);
+		//Zend_Debug::dump($students);
+		$this->view->students =$students;
+		$this->view->lessonId = $lessonId;
+	}
+	/**
+	 * 授業の学生をロック
+	 * @param type $name Description
+	 */
+	public function lockStudentAction(){
+		$this->initial();
+		$modelLearn = new Default_Model_Learn();
+		$lessonId = $this->_request->getParam('lesson_id');
+		$id = $this->_request->getParam("id");
+		$modelLearn->lockStudent($id);
+		$this->_redirect("teacher/students?lesson_id=$lessonId");
+	}
+	/**
+	 * 授業の学生をロック
+	 * @param type $name Description
+	 */
+	public function unlockStudentAction(){
+		$this->initial();
+		$modelLearn = new Default_Model_Learn();
+		$lessonId = $this->_request->getParam('lesson_id');
+		$id = $this->_request->getParam("id");
+		$modelLearn->unlockStudent($id);
+		$this->_redirect("teacher/students?lesson_id=$lessonId");
+	}
+	/**
+	 * 学生のテスト結果を見る画面
+	 * @param type $name Description
+	 */
+	public function studentResultAction() {
+		$this->initial();
+		$modelLearn = new Default_Model_Learn();
+		//$lessonId = $this->_request->getParam('lesson_id');
+		$learn_id = $this->_request->getParam("learn_id");
+		$modelTestResult = new Default_Model_Result();
+		$result = $modelTestResult->getTestResultByLearn($learn_id);
+		//::dump($result);
+		$this->view->results = $result;
+	}
 
     /**
      * 課金情報処理
