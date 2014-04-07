@@ -210,13 +210,16 @@ class StudentController extends IController {
 
     public function lessondetailAction() {
         $this->initial();
+        $lesson_id = $this->_request->getParam('lessonId');
+        $userId = $this->currentUser["id"];
         $lessonModel = new Default_Model_Lesson();
         $tagModel = new Default_Model_Tag();
         $learnModel = new Default_Model_Learn();
         $commentModel = new Default_Model_Comment();
         $lfileModel = new Default_Model_LessonFile();
+        if($learnModel->isStudentLearn($userId, $lesson_id))
+        	$this->_redirect("student/myLessonDetail?lessonId=".$lesson_id);
         if ($this->_request->isGet()) {
-            $lesson_id = $this->_request->getParam('lessonId');
             $lessonModel->incrementView($lesson_id);
             $info = $lessonModel->findLessonById($lesson_id);
             $this->view->numComment = $commentModel->countCommentOnLesson($lesson_id);
