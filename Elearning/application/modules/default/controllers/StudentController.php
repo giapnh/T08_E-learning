@@ -217,7 +217,7 @@ class StudentController extends IController {
         $learnModel = new Default_Model_Learn();
         $commentModel = new Default_Model_Comment();
         $lfileModel = new Default_Model_LessonFile();
-        if($learnModel->isStudentLearn($userId, $lesson_id))
+        if(!$learnModel->isStudentLearn($userId, $lesson_id))
         	$this->_redirect("student/myLessonDetail?lessonId=".$lesson_id);
         if ($this->_request->isGet()) {
             $lessonModel->incrementView($lesson_id);
