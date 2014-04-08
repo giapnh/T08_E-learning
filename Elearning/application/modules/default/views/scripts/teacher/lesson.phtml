@@ -127,10 +127,12 @@
 </style>
 <script type="text/javascript">
     $(document).ready(function(){
+        
         $(".btn-add-file").click(function(){
             $(this).hide();
             $('form').show();
         });
+        
         $(".btn-delete").click(function(){
             if (confirm("ファイルを本当に削除したいですか？")) {
                 return true;
@@ -138,6 +140,29 @@
                 return false;
             }
         });
+        
+        $(".btn-comment").click(function(){
+            var comment = $(".comment-input").val();
+            if (comment !== '') {
+                $.ajax({
+                    type: "POST",
+                    url: "<?php echo $this->baseUrl(); ?>/api/lesson-comment",
+                    data: { comment: comment, lesson_id: <?php echo $this->lessonId; ?> }
+                })
+                .done(function( data ) {
+                    console.log( data );
+                    $(".comment-input").before(
+                        "<div class='comment_slot'>"+
+                            "<div class='comment_owner'>"+data.name+"</div>"+
+                            "<div class='comment_content'>"+data.comment+"</div>"+
+                            "<div class='created_time'>"+data.time+"</div>"+
+                        "</div>");
+                    $(".comment-input").val("");
+                });
+            }
+            return false;
+        });
+        
     });
 </script>
 
@@ -256,8 +281,8 @@
             }
         ?>
         <div class="comment_input" >
-            <textarea name="comment"></textarea>
+            <textarea name="comment" class="comment-input"></textarea>
         </div>
-        <input type="submit" value="コメント" class="normal-button">
+        <input type="submit" value="コメント" class="normal-button btn-comment">
     </form>
 </div>

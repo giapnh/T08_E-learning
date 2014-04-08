@@ -290,6 +290,16 @@ class TeacherController extends IController {
            $this->view->messages = $this->_helper->FlashMessenger->getMessages('addFileSuccess');
    }
 
+   public function lessonCommentAction() {
+       echo json_encode(array(
+           "comment" => "Hello",
+           "user" => "Minh Tran",
+           "time" => "2014-4-7 1:20:00"
+       ));
+       
+       return;
+   }
+   
    /**
     * ファイル追加処理
     * 
