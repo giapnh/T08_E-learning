@@ -16,6 +16,12 @@ class Admin_Model_Account extends Zend_Db_Table_Abstract {
         $this->db = Zend_Registry::get('connectDB');
     }
 
+    /**
+     * ユーザが存在しているかどうかをチェック
+     * 
+     * @param string $username ユーザ名
+     * @return boolean
+     */
     public function isExits($username) {
         $query = $this->select()
                 ->from($this->_name, array('username'))
@@ -39,7 +45,7 @@ class Admin_Model_Account extends Zend_Db_Table_Abstract {
         $query = $this->select()
                 ->from($this->_name, array('username', 'password'))
                 ->where('username=?', $username)
-                ->where('password=?', md5($username . '+' . $password . '+' . Code::$PASSWORD_CONST));
+                ->where('password=?', sha1(md5($username . '+' . $password . '+' . Code::$PASSWORD_CONST)));
         $result = $this->getAdapter()->fetchAll($query);
         if ($result) {
             return true;
@@ -110,6 +116,20 @@ class Admin_Model_Account extends Zend_Db_Table_Abstract {
             return NULL;
         }
     }
+    
+    /**
+     * パースワードを更新する
+     * 
+     * @param type $username
+     * @param type $password
+     */
+    public function changePassword($username, $password) {
+        $update_data = array(
+            'password' => sha1(md5($username . '+' . $password . '+' . Code::$PASSWORD_CONST)));
+        $where = "username='$username'";
+        $this->update($update_data, $where);
+    }
+    
 }
 
 

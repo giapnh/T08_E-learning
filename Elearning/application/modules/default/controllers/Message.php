@@ -60,4 +60,18 @@ class Message {
     public static $M2064 = "授業のタイトルを入力してください";
     public static $M2065 = "授業の説明を入力してください";
     public static $M2066 = "タグを入力してください";
+    
+    
+    // 管理者
+    public static $M4011 = "ユーザ名を入力してください";
+    public static $M4012 = "パースワードを入力してください";
+    public static $M4013 = "ユーザ名が正しくない";
+    public static $M4014 = "パースワードが正しくない";
+    public static $M4015 = "このIPアドレスはログインできない";
+    
+    public static $M4051 = "パースワードが無効";
+    public static $M4052 = "パースワード確認が無効";
+    public static $M4053 = "現在のパースワードが正しくない";
+    public static $M4054 = "現在パースワードを入力してください";
+    
 }

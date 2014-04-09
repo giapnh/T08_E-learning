@@ -6,7 +6,13 @@ require_once '/../../default/controllers/Code.php';
 
 class Admin_AccountController extends IController {
     
+    
     public static $ADMIN_ROLE = 3;
+    
+    /**
+     *
+     * @var array 現在のログインしているユーザ情報
+     */
     private $currentUser;
     
     public function init(){
@@ -71,10 +77,10 @@ class Admin_AccountController extends IController {
             
             // インプットがなしチェック
             if (trim($username) == '') {
-                $this->view->errorMessage = Message::$M001;
+                $this->view->errorMessage = Message::$M4011;
                 return;
             } else if (trim($password) == '') {
-                $this->view->errorMessage = Message::$M002;
+                $this->view->errorMessage = Message::$M4012;
                 return;
             }
             
@@ -89,6 +95,11 @@ class Admin_AccountController extends IController {
                     $ipStr = "127.0.0.1";
                 }
                 
+                // ユーザが存在しているかをチェック
+                if (!$accountModel->isExits($username)) {
+                    $this->view->errorMessage = Message::$M4013;
+                }
+                
                 if ($accountModel->isAllowedIp($username, $ipStr)) {
                     // ログインセッションを保存
                     $userInfo = $accountModel->getAdminInfo($username);
@@ -98,11 +109,13 @@ class Admin_AccountController extends IController {
                     // ホームページに移転する
                     $this->redirect("/admin/user");
                 } else {
-                    $this->view->errorMessage = Message::$M027;
+                    // IPがログインできない
+                    $this->view->errorMessage = Message::$M4015;
                 }
                 
             } else {
-                $this->view->errorMessage = Message::$M0031;
+                // パースワードが正しくない
+                $this->view->errorMessage = Message::$M4014;
                 return;
             }
         }
@@ -148,19 +161,41 @@ class Admin_AccountController extends IController {
     public function deleteIpAction() {
         $this->redirect("admin/account");
     }
-    
-    /**
-     * 「Verify」コード更新画面
-     */
-    public function changeVerifyCodeAction() {
-        
-    }
 
     /**
      * パースワード更新画面
      */
     public function changePasswordAction() {
-        
+        $submit = $this->getParam('submit');
+        if (isset($submit)) {
+            $current_password = $this->getParam('current-password');
+            $new_password = $this->getParam('new-password');
+            $new_password_confirm = $this->getParam('new-password-confirm');
+            
+            // インプットチェック
+            if ($current_password == '') {
+                $this->view->errorMessage = Message::$M4054;
+                return;
+            }
+            if (!preg_match(Code::$REGEX_PASSWORD, $new_password)) {
+                $this->view->errorMessage = Message::$M4051;
+                return;
+            }
+            if ($new_password != $new_password_confirm) {
+                $this->view->errorMessage = Message::$M4052;
+                return;
+            }
+            
+            $accountModel = new Admin_Model_Account();
+            if ($accountModel->isValid($this->currentUser['username'], $current_password)) {
+                // 新しいパースワードに更新する
+                $accountModel->changePassword($this->currentUser['username'], $new_password);
+            } else {
+                // 現在のパースワードが正しくない
+                $this->view->errorMessage = Message::$M4053;
+            }
+            
+        }
     }
 
     /**
