@@ -5,6 +5,15 @@
 <?php $this->headLink()->appendStylesheet($this->baseUrl() . "/public/css/common-style.css"); ?>
 
 <?php echo $this->render('admin-layout.phtml') ?>
+<?php $this->headScript()->appendFile($this->baseUrl('/public/js/jquery.min.js')); ?>
+<script>
+    $(document).ready(function(){
+        $(".status-select").change(function(){
+            window.top.location = "<?php echo $this->baseUrl()."/admin/user?status=" ?>"+$(".status-select").val();
+        });
+        $(".status-select").val(<?php echo $this->status; ?>);
+    });
+</script>
 
 <div style="width: 1000px; margin: 20px auto">
     <div class="detail_layout">
@@ -35,7 +44,7 @@
                             } else {
                                 echo '&order='.Admin_Model_User::$DESC;
                             }
-                        ?>">ユーザ名</a>
+                        ?>&status=<?php echo $this->status; ?>">ユーザ名</a>
                     </td>
                     <td width="83"><a href="?order_by=<?php 
                             echo Admin_Model_User::$NAME;
@@ -48,7 +57,7 @@
                             } else {
                                 echo '&order='.Admin_Model_User::$DESC;
                             }
-                        ?>">名前</a></td>
+                        ?>&status=<?php echo $this->status; ?>">名前</a></td>
                     <td width="73"><a href="?order_by=<?php 
                             echo Admin_Model_User::$ROLE;
                             if ($this->orderBy == Admin_Model_User::$ROLE) {
@@ -60,7 +69,7 @@
                             } else {
                                 echo '&order='.Admin_Model_User::$DESC;
                             }
-                        ?>">役割</a></td>
+                        ?>&status=<?php echo $this->status; ?>">役割</a></td>
                     <td width="100"><a href="?order_by=<?php 
                             echo Admin_Model_User::$STATUS;
                             if ($this->orderBy == Admin_Model_User::$STATUS) {
@@ -72,7 +81,15 @@
                             } else {
                                 echo '&order='.Admin_Model_User::$DESC;
                             }
-                        ?>">ステータス</a></td>
+                        ?>&status=<?php echo $this->status; ?>">ステータス</a>
+                        <select class="status-select">
+                            <option value="0">全部</option>
+                            <option value="1">許可された</option>
+                            <option value="2">許可をまっている</option>
+                            <option value="4">削除された</option>
+                            <option value="4">ロックされた</option>
+                        </select>
+                    </td>
                 </tr>
                 <?php 
                     $count = 0;

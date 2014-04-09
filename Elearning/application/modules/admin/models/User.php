@@ -49,7 +49,10 @@ class Admin_Model_User extends Zend_Db_Table_Abstract {
     /**
      * ユーザリストを取る
      * 
-     * @param type $page
+     * @param int $page ページ
+     * @param int $limit レコード数
+     * @param string $orderBy アレンジフィールド
+     * @param string $order ASC または DESC
      * @return array $pager
      */
     public function getUsers($page, $limit, $orderBy, $order) {
@@ -85,6 +88,51 @@ class Admin_Model_User extends Zend_Db_Table_Abstract {
             'users' => $result
         );
     }
+    
+    /**
+     * ユーザリストを取る
+     * 
+     * @param int $page ページ
+     * @param int $limit レコード数
+     * @param string $orderBy アレンジフィールド
+     * @param string $order ASC または DESC
+     * @param int $status 状況
+     * @return array $pager
+     */
+    public function getUsersByStatus($page, $limit, $orderBy, $order, $status){
+        
+        $query = $this->select()
+                ->from($this->_name, "*")
+                ->where(self::$STATUS."=".$status)
+                ->order(array($orderBy." ".$order))
+                ->limitPage($page, $limit);
+        $result = $this->getAdapter()->fetchAll($query);
+        if ($page > 1) {
+            $pre = $page - 1;
+        } else {
+            $pre = NULL;
+        }
+        
+        $query = $this->select()
+                ->from($this->_name, "*");
+        $result2 = $this->getAdapter()->fetchAll($query);
+        $total = count($result2);
+        $totalPages = ceil($total/$limit);
+        if ($page < $totalPages) {
+            $next = $page + 1;
+        } else {
+            $next = NULL;
+        }
+        
+        return array(
+            'page' => $page,
+            'totalPages' => $totalPages,
+            'limit' => count($result),
+            'next' => $next,
+            'pre' => $pre,
+            'users' => $result
+        );
+    }    
     
     /**
      * ユーザを許可する

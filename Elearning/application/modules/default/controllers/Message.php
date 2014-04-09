@@ -73,5 +73,6 @@ class Message {
     public static $M4052 = "パースワード確認が無効";
     public static $M4053 = "現在のパースワードが正しくない";
     public static $M4054 = "現在パースワードを入力してください";
+    public static $M4055 = "パースワードが更新された";
     
 }

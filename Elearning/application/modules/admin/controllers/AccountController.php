@@ -190,6 +190,8 @@ class Admin_AccountController extends IController {
             if ($accountModel->isValid($this->currentUser['username'], $current_password)) {
                 // 新しいパースワードに更新する
                 $accountModel->changePassword($this->currentUser['username'], $new_password);
+                $this->_helper->FlashMessenger->addMessage(Message::$M4055, 'updateInfoSuccess');
+                $this->redirect("admin/account");
             } else {
                 // 現在のパースワードが正しくない
                 $this->view->errorMessage = Message::$M4053;

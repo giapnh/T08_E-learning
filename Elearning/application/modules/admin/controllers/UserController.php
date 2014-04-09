@@ -42,6 +42,7 @@ class Admin_UserController extends IController {
         $page = $this->_request->getParam('page');
         $orderBy = $this->_request->getParam('order_by');
         $order = $this->_request->getParam('order');
+        $status = $this->getParam('status');
         
         if (!isset($page)) {
             $page = 1;
@@ -57,17 +58,33 @@ class Admin_UserController extends IController {
         
         // ユーザリストと取る
         $userModel = new Admin_Model_User();
-        $usersPager = $userModel->getUsers($page, $limit, $orderBy, $order);
-        $this->view->users = $usersPager['users'];
-        $this->view->orderBy = $orderBy;
-        $this->view->order = $order;
-        $this->view->pager = array(
-            'page' => $usersPager['page'],
-            'totalPages' => $usersPager['totalPages'],
-            'limit' => $usersPager['limit'],
-            'next' => $usersPager['next'],
-            'pre' => $usersPager['pre']
-        );
+        if (isset($status) && $status != 0) {
+            $usersPager = $userModel->getUsersByStatus($page, $limit, $orderBy, $order, $status);
+            $this->view->users = $usersPager['users'];
+            $this->view->orderBy = $orderBy;
+            $this->view->order = $order;
+            $this->view->status = $status;
+            $this->view->pager = array(
+                'page' => $usersPager['page'],
+                'totalPages' => $usersPager['totalPages'],
+                'limit' => $usersPager['limit'],
+                'next' => $usersPager['next'],
+                'pre' => $usersPager['pre']
+            );
+        } else {
+            $usersPager = $userModel->getUsers($page, $limit, $orderBy, $order);
+            $this->view->users = $usersPager['users'];
+            $this->view->orderBy = $orderBy;
+            $this->view->order = $order;
+            $this->view->status = 0;
+            $this->view->pager = array(
+                'page' => $usersPager['page'],
+                'totalPages' => $usersPager['totalPages'],
+                'limit' => $usersPager['limit'],
+                'next' => $usersPager['next'],
+                'pre' => $usersPager['pre']
+            );
+        }
         
         // 管理者リストを取る
         $adminModel = new Admin_Model_Account();
