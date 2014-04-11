@@ -130,6 +130,7 @@ class Admin_Model_Account extends Zend_Db_Table_Abstract {
         $this->update($update_data, $where);
     }
     
+    
 }
 
 

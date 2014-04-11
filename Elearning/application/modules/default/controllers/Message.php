@@ -46,8 +46,6 @@ class Message {
     public static $M041 = "エラー：ユーザのパースワードをリセットするのが失敗しました";
     public static $M042 = "エラー：ユーザのVerifyコードをリセットするのが失敗しました";
     public static $M043 = "エラー：ユーザを削除できません";
-    public static $M044 = "マースターデータを更新しました";
-    public static $M045 = "マースターデータを更新するのが失敗しました";
     public static $M047 = "違犯レポートが送りました！ありがとうございます。";
     public static $M048 = "ユーザが存在していない";
     public static $M049 = "IPを入力してください";
@@ -75,4 +73,14 @@ class Message {
     public static $M4054 = "現在パースワードを入力してください";
     public static $M4055 = "パースワードが更新された";
     
+    public static $M4121 = "授業の値段が無効";
+    public static $M4122 = "先生の利益率が無効";
+    public static $M4123 = "授業のファイルを格納フォールダが無効";
+    public static $M4124 = "コマの勉強期間が無効";
+    public static $M4125 = "間違いログインできる回数が無効";
+    public static $M4126 = "違犯できる回数が無効";
+    public static $M4127 = "自動バックアップ期間が無効";
+    public static $M4128 = "マスタデータが更新された";
+    public static $M4129 = "データベースが<filename>にバックアップされた";
 }
+

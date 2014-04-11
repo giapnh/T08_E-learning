@@ -259,7 +259,7 @@ class Admin_UserController extends IController {
                 return;
             }
             
-            $adminModel->createAdmin($this->currentUser['id'], $username, md5($username . '+' . $password . '+' . Code::$PASSWORD_CONST));
+            $adminModel->createAdmin($this->currentUser['id'], $username, sha1(md5($username . '+' . $password . '+' . Code::$PASSWORD_CONST)));
             $this->redirect("admin/user");
         }
     }
