@@ -1,98 +1,193 @@
 
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<center>
-    <div class="content" style="background: #F0F0F0;">
-        
-        <!--Content tab bar-->
-        <div class="containt_center_cen clear" style="min-height: 600px;">
-            <table class="list_lession_content"  cellpadding="0" cellspacing="0" border="0">
-                <tbody>
-                    <tr>
-                        <td valign="top" class="containt_center_cen_left">
-                            
-                        </td>
-                        <td valign="top" class="containt_center_cen_right">
-                            <?php
-                            $counter = 0;
-                            foreach ($this->data as $item) {
-                                if ($counter % 2 == 0) {
-                                    ?>
-                                    <div class="row-show">
-                                        <div class="lession-content-left">
-                                            <table cellpadding="1" cellspacing="4" border="0" style="width: 100%;margin: 0px auto;">
-                                                <tbody>
-                                                    <tr>
-                                                        <td style="width: 100%;" colspan="1" class="lession-title"><?php echo $item['title']; ?></td>
-                                                    </tr>
-                                                    <tr><td><hr></td></tr>
-                                                    <tr>
-                                                        <td class="lession-teacher"><b>先生: </b><?php echo $item['name']; ?></td>
-                                                        <td class="lession-time"><?php echo $item['create_time']; ?></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="lession-description lesson-description-correct" style="width: 100%;" colspan="2"><?php echo $item['description']; ?></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <img src="<?php echo $this->baseUrl(); ?>/public/images/num-like.png" width="15" height="15"> <font class="num-like-comment"><?php echo $item['like']; ?></font>
-                                                            <img src="<?php echo $this->baseUrl(); ?>/public/images/num-view.png" width="15" height="15"> <font class="num-like-comment"><?php echo $item['view']; ?></font>
-                                                            <a href="<?php echo $this->baseUrl(); ?>/admin/lesson/lesson?do=view&lessonId=<?php echo $item['id']; ?>"  class="link-view-detail float-right">詳細</a>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <?php
-                                    } else if ($counter % 2 == 1) {
-                                        ?>
-                                        <div class="lession-content-right">
-                                            <table cellpadding="1" cellspacing="4" border="0" style="width: 100%;margin: 0px auto;">
-                                                <tbody>
-                                                    <tr>
-                                                        <td style="width: 100%;" colspan="2" class="lession-title"><?php echo $item['title']; ?></td>
-                                                    </tr>
-                                                    <tr><td><hr></td></tr>
-                                                    <tr style="width: 100%;">
-                                                        <td class="lession-teacher"><b>先生: </b><?php echo $item['name'] ?></td>
-                                                        <td class="lession-time"><?php echo $item['create_time']; ?></td>
-                                                    </tr>
-                                                    <tr class="lession-description lesson-description-correct" style="width: 100%;">
-                                                        <td colspan="2"><?php echo $item['description']; ?></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <img src="<?php echo $this->baseUrl(); ?>/public/images/num-like.png" width="15" height="15"> <font class="num-like-comment"><?php echo $item['like']; ?></font>
-                                                            <img src="<?php echo $this->baseUrl(); ?>/public/images/num-view.png" width="15" height="15"> <font class="num-like-comment"><?php echo $item['view']; ?></font>
-                                                            <a href="<?php echo $this->baseUrl(); ?>/admin/lesson/lesson?do=view&lessonId=<?php echo $item['id']; ?>"  class="link-view-detail float-right">詳細</a>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    <?php
-                                }
-                                $counter ++;
-                                ?>
+<?php $this->headLink()->appendStylesheet($this->baseUrl() . "/public/css/admin-common-style.css"); ?>
+<?php $this->headLink()->appendStylesheet($this->baseUrl() . "/public/css/ta123_style.css"); ?>
+<?php $this->headLink()->appendStylesheet($this->baseUrl() . "/public/css/ta123_style2.css"); ?>
+<?php $this->headLink()->appendStylesheet($this->baseUrl() . "/public/css/common-style.css"); ?>
 
-                                <?php
-                            }
-                            if ($counter % 2 == 0) {
-                                echo "</div>";
-                            }
-                            ?>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="paging">
-                <div class="paging-center">
-                    <?php
-                    if ($this->numpage > 1)
-                        echo $this->paginationControl($this->data, 'Sliding', 'pageinator.phtml');
-                    ?>
-                </div>
+<style type="text/css">
+    .content {
+        width: 1000px;
+        min-height: 528px;
+        margin: 0px auto;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        box-shadow: 0px 0px 5px 1px gray;
+    }
+    .left-content {
+        width: 186px;
+        height: 463px;
+        float: left;
+        margin-left: 10px;
+        margin-top: 51px;
+        border: 1px solid gray;
+        border-radius: 3px;
+    }
+    .right-content {
+        padding: 10px;
+        width: 780px;
+        float: left;
+    }
+    .bottom-border {
+        line-height: 1px;
+    }
+    .lesson-item {
+        padding: 10px;
+        border: 1px solid gray;
+        margin-top: 5px;
+        border-radius: 3px;
+    }
+    .lesson-left {
+        width: 200px;
+        height: 100px;
+        float: left;
+        position: relative;
+    }
+    .lesson-right {
+        width: 541px;
+        height: 100px;
+        float: left;
+        border: 1px solid green;
+        padding: 5px;
+        margin-left: 5px;
+    }
+    .lesson-bottom {
+        line-height: 1px;
+    }
+    .lesson-title {
+        padding: 5px;
+        color: white;
+        background-color: yellowgreen;
+        border-radius: 3px;
+        height: 20px;
+        line-height: 22px;
+    }
+    .lesson-teacher {
+        font-size: 16px;
+        font-weight: bold;
+        margin-top: 5px;
+    }
+    .lesson-created {
+        color: gray;
+    }
+    .lesson-like {
+        position: absolute;
+        bottom: -10px;
+    }
+    .lesson-like span {
+        padding-right: 10px;
+    }
+    .lesson-item:hover {
+        box-shadow: 0px 0px 3px 1px yellowgreen;
+    }
+    .left-title {
+        width: 87px;
+        float: left;
+        padding: 3px;
+        font-size: 18px;
+        font-weight: bold;
+        text-align: center;
+    }
+    .title-inactive {
+        background-color: yellowgreen;
+        color: white;
+    }
+    .filter-item {
+        padding: 10px 5px;
+        border-top: 1px solid gray;
+    }
+    .filter-item:hover {
+        cursor: pointer;
+        color: orange;
+    }
+    .filter-item-active {
+        box-shadow: 0px 0px 3px 1px yellowgreen;
+    }
+    .paging {
+        width: 100px;
+        margin: 0px auto;
+    }
+    .paging-item {
+        height: 20px;
+        margin: 5px;
+        float: left;
+        text-decoration: underline;
+    }
+    .top-content {
+        margin: 10px 10px 0px 0px;
+        float: right;
+    }
+    .top-content input {
+        padding: 3px;
+    }
+</style>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<?php echo $this->render('admin-layout.phtml') ?>
+<div class="content">
+    <div class="top-content">
+        <input class="search-text" type="text" placeholder="検索テキスト">
+        <button class="normal-button search-btn">検索</button>
+    </div>
+    <div class="left-content">
+        <div class="left-title">タグ</div>
+        <div class="left-title title-inactive">先生</div>
+        <div class="bottom-border">&nbsp;</div>
+        <div class="filter-list-tag">
+            <div class="filter-item">
+                タグ１
+            </div>
+            <div class="filter-item filter-item-active">
+                タグ２
+            </div>
+            <div class="filter-item">
+                タグ３
+            </div>
+            <div class="filter-item">
+                タグ４
+            </div>
+            <div class="filter-item">
+                タグ５
             </div>
         </div>
     </div>
-</center>
+    <div class="right-content">
+        <?php
+        foreach ($this->data as $item) {
+        ?>
+        <div class="lesson-item">
+            <a href="<?php echo $this->baseUrl(); ?>/admin/lesson/lesson?do=view&lessonId=<?php echo $item['id']; ?>">
+                <div class="lesson-left">
+                    <div class="lesson-title"><?php echo $item['title']; ?></div>
+
+                    <div class="lesson-teacher">先生: <?php echo $item['name']; ?></div>
+                    <div class="lesson-created"><?php echo $item['create_time']; ?></div>
+
+                    <div class="lesson-like">
+                        <img src="<?php echo $this->baseUrl(); ?>/public/images/num-like.png" width="15" height="15">
+                        <span class="num-like-comment"><?php echo $item['like']; ?></span>
+                        <img src="<?php echo $this->baseUrl(); ?>/public/images/num-view.png" width="15" height="15">
+                        <span class="num-like-comment"><?php echo $item['view']; ?></span>
+                    </div>
+                </div>
+                <div class="lesson-right">
+                    <div>
+                        <?php echo $item['description']; ?>
+                    </div>
+                </div>
+                <div class="lesson-bottom">&nbsp;</div>
+            </a>
+        </div>
+        <?php
+        }
+        ?>
+        <div class="paging">
+            <div class="page-item">
+                <?php
+                if ($this->numpage > 1)
+                    echo $this->paginationControl($this->data, 'Sliding', 'pageinator.phtml');
+                ?>
+            </div>
+        </div>
+    </div>
+    <div class="bottom-border">&nbsp;</div>
+</div>

@@ -9,9 +9,9 @@ class Admin_LessonController extends IController {
     public function indexAction() {
         
         $baseurl = $this->_request->getbaseurl();
-        $this->view->headLink()->appendStylesheet($baseurl . "/public/css/style.css");
-        $this->view->headLink()->appendStylesheet($baseurl . "/public/css/style_2.css");
-        $this->view->headScript()->appendFile($baseurl . "/public/js/jquery.min.js");
+//        $this->view->headLink()->appendStylesheet($baseurl . "/public/css/style.css");
+//        $this->view->headLink()->appendStylesheet($baseurl . "/public/css/style_2.css");
+//        $this->view->headScript()->appendFile($baseurl . "/public/js/jquery.min.js");
         
         $lessons = new Default_Model_Lesson();
         $get_type = $this->_request->getParam('type');
@@ -24,7 +24,7 @@ class Admin_LessonController extends IController {
             $this->view->tags = $tags->listAll();
             $this->view->type = 1;
             $paginator = Zend_Paginator::factory($lessons->listWithTag($tagId));
-            $paginator->setItemCountPerPage(6);
+            $paginator->setItemCountPerPage(3);
             $paginator->setPageRange(3);
             $this->view->numpage = $paginator->count();
             $currentPage = $this->_request->getParam('page', 1);
@@ -35,7 +35,7 @@ class Admin_LessonController extends IController {
             $this->view->teachers = $users->listTeacher();
             $this->view->type = 2;
             $paginator = Zend_Paginator::factory($lessons->listWithTeacher($teacherId));
-            $paginator->setItemCountPerPage(6);
+            $paginator->setItemCountPerPage(3);
             $paginator->setPageRange(3);
             $this->view->numpage = $paginator->count();
             $currentPage = $this->_request->getParam('page', 1);
@@ -46,7 +46,7 @@ class Admin_LessonController extends IController {
         if ($this->_request->isPost()) {
             $keyword = $this->_request->getParam('keyword');
             $paginator = Zend_Paginator::factory($lessons->findByKeyword($keyword));
-            $paginator->setItemCountPerPage(6);
+            $paginator->setItemCountPerPage(3);
             $paginator->setPageRange(3);
             $this->view->numpage = $paginator->count();
             $currentPage = $this->_request->getParam('page', 1);
