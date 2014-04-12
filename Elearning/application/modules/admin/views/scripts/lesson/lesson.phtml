@@ -1,1 +1,272 @@
-Lesson
+<?php $this->headLink()->appendStylesheet($this->baseUrl() . "/public/css/admin-common-style.css"); ?>
+<?php $this->headLink()->appendStylesheet($this->baseUrl() . "/public/css/ta123_style.css"); ?>
+<?php $this->headLink()->appendStylesheet($this->baseUrl() . "/public/css/ta123_style2.css"); ?>
+<?php $this->headLink()->appendStylesheet($this->baseUrl() . "/public/css/common-style.css"); ?>
+
+<style type="text/css">
+    #lesson_container {
+        width: 800px;
+        margin: 20px auto;
+        margin-top:  0px;
+        padding: 10px;
+        border: 1px solid yellowgreen;
+        border-radius: 5px;
+    }
+    #lesson_container .title {
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+    #lesson_container .tag_label {
+        font-weight: bold;
+    }
+    #lesson_container .tags span {
+        padding: 5px;
+        margin-right: 10px;
+        border-radius: 5px;
+        background-color: green;
+        color: white;
+    }
+    #lesson_container .created_date {
+        margin-top: 20px;
+        font-size: 14px;
+        color: gray;
+    }
+    #lesson_container .description {
+        width: 500px;
+        float: right;
+        border: 1px solid yellowgreen;
+        padding: 5px;
+        height: 180px;
+        margin-bottom: 10px;
+        margin-left: 10px;
+    }
+    .message {
+        width: 100%;
+    }
+    .file_container {
+        border-top: 1px solid gray;
+        cursor: pointer;
+    }
+    .file_container:hover {
+        background-color: gainsboro;
+    }
+    .file_type {
+        width: 50px;
+        height: 50px;
+        float: left;
+    }
+    .file_name_label {
+        width: 250px;
+        float: left;
+        font-size: 14px;
+        font-weight: bold;
+        color: gray;
+        margin-left: 8px;
+        margin-bottom: 5px;
+    }
+    .file_description_label {
+        font-size: 14px;
+        font-weight: bold;
+        color: gray;
+        margin-bottom: 5px;
+    }
+    .file_type img {
+        width: 40px;
+        height: 40px;
+        margin: 5px;
+    }
+    .file_name {
+        overflow: auto;
+        line-height: 50px;
+        width: 200px;
+        height: 50px;
+        float: left;
+    }
+    .file_description {
+        line-height: 50px;
+        overflow: hidden;
+        width: 520px;
+        height: 50px;
+        float: left;
+    }
+    .btn-delete {
+        line-height: 50px;
+        width: 50px;
+        height: 50px;
+        color: orange;
+        cursor: pointer;
+    }
+    .btn-delete:hover {
+        color: white;
+    }
+    #comment_container {
+        width: 600px;
+        margin: 0px auto;
+        padding: 10px;
+    }
+    .comment_slot {
+        margin: 10px 0px;
+    }
+    .comment_owner {
+        font-weight: bold;
+        font-size: 16px;
+        color: #2793e6;
+    }
+    .comment_input textarea {
+        width: 100%;
+        height: 80px;
+    }
+    .created_time {
+        color: gray;
+        font-size: 14px;
+        font-style: italic;
+        margin-left: 30px;
+    }
+    .comment_content {
+        margin-left: 30px;
+    }
+</style>
+<script type="text/javascript">
+    $(document).ready(function(){
+        
+        $(".btn-add-file").click(function(){
+            $(this).hide();
+            $('form').show();
+        });
+        
+        $(".btn-delete").click(function(){
+            if (confirm("ファイルを本当に削除したいですか？")) {
+                return true;
+            } else {
+                return false;
+            }
+        });
+        
+        $(".btn-comment").click(function(){
+            var comment = $(".comment-input").val();
+            if (comment !== '') {
+                $.ajax({
+                    type: "POST",
+                    url: "<?php echo $this->baseUrl(); ?>/api/lesson-comment",
+                    data: { comment: comment, lesson_id: <?php echo $this->lessonId; ?> }
+                })
+                .done(function( data ) {
+                    console.log( data );
+                    $(".comment-input").before(
+                        "<div class='comment_slot'>"+
+                            "<div class='comment_owner'>"+data.name+"</div>"+
+                            "<div class='comment_content'>"+data.comment+"</div>"+
+                            "<div class='created_time'>"+data.time+"</div>"+
+                        "</div>");
+                    $(".comment-input").val("");
+                });
+            }
+            return false;
+        });
+        
+    });
+</script>
+<?php echo $this->render('admin-layout.phtml') ?>
+<div class="content" style="background: #F0F0F0;">
+    <div id="lesson_container">
+        <div class="message">
+            <?php foreach ($this->messages as $message) { ?>
+            <div style="color: green; padding-bottom: 10px;"><?php echo $message; ?></div>
+            <?php } ?>
+            <?php foreach ($this->errorMessages as $errorMessage) { ?>
+            <div style="color: red; padding-bottom: 10px;"><?php echo $errorMessage; ?></div>
+            <?php } ?>
+        </div>
+        <div class="description">
+            <?php echo $this->lessonInfo['description']; ?>
+        </div>
+        <div style="height: 200px;">
+            <div class="tag_label">タグ:　</div>
+            <div class="tags">
+                <?php foreach ($this->tags as $tag) {
+                    echo "<div style='margin: 15px;'><span>".$tag['tag_name']."</span></div>";
+                }
+                ?>
+            </div>
+            <div class="created_date">
+                <?php
+                    $time = $this->lessonInfo['create_time'];
+                    $correct = explode(" ", $time);
+                    $correct = $correct[0];
+                    $arr = explode("-", $correct);
+                    $year = $arr[0];
+                    $mon = $arr[1];
+                    $day = $arr[2];
+                    echo $year . "年" . $mon . "月" . $day . "日";
+                ?>
+            </div>
+            <div class="like" style="width: 100%; margin: 10px 0px;">
+                <span>
+                    <img src="<?php echo $this->baseUrl(); ?>/public/images/num-like.png" width="15" height="15">
+                    <span><?php echo $this->lessonInfo['like'] ?></span>
+                </span>
+                <span>
+                    <img src="<?php echo $this->baseUrl(); ?>/public/images/num-view.png" width="15" height="15">
+                    <span><?php echo $this->lessonInfo['view'] ?></span>
+                </span>
+                <span>
+                    <img src="<?php echo $this->baseUrl(); ?>/public/images/student.png" width="15" height="15">
+                    <span><?php echo $this->lessonInfo['students_num'] ?></span>
+                </span>
+            </div>
+        </div>
+        <div>
+            <div>
+                <div class="file_name_label">ファイル名</div>
+                <div class="file_description_label">説明</div>
+            </div>
+            <?php 
+                foreach ($this->files as $file) {
+                    $fileLocation = $file['location'];
+                    $ext = explode('.', $fileLocation);
+                    $ext = $ext[1];
+                    if ($ext == 'pdf') {
+                        $icon = "pdf.png";
+                    } else if ($ext == 'jpg' ||$ext == 'jpge' ) {
+                        $icon = "img_file.png";
+                    } else if ($ext == 'mp3') {
+                        $icon = "mp3.png";
+                    } else if ($ext == 'mp4') {
+                        $icon = "video.png";
+                    } else if ($ext == 'html') {
+                        $icon = "test.png";
+                    }
+            ?>
+            <div class="file_container">
+                <a href="<?php echo $this->baseUrl()."/admin/lesson/file?file_id=".$file['id']."&lesson_id=" . $this->lessonId; ?>">
+                    <div class="file_type"><img src="<?php echo $this->baseUrl()."/public/images/".$icon ?>"></div>
+                    <div class="file_name"><?php echo $file['filename']; ?></div>
+                    <div class="file_description"><?php echo $file['description'] ?></div>
+                </a>
+                <div class="btn-delete"></div>
+            </div>
+            <?php
+                }
+            ?>
+        </div>
+    </div>
+    <form method="post" id="comment_container">
+        <?php
+            foreach ($this->comments as $comment) {
+        ?>
+        <div class="comment_slot">
+            <div class="comment_owner"><?php echo $comment['name']; ?></div>
+            <div class="comment_content"><?php echo $comment['comment']; ?></div>
+            <div class="created_time"><?php echo $comment['time']; ?></div>
+        </div>
+        <?php
+            }
+        ?>
+        <!--
+        <div class="comment_input" >
+            <textarea name="comment" class="comment-input"></textarea>
+        </div>
+        <input type="submit" value="コメント" class="normal-button btn-comment">
+        -->
+    </form>
+</div>

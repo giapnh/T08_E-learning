@@ -1,1 +1,87 @@
-file
+<?php $this->headLink()->appendStylesheet($this->baseUrl() . "/public/css/admin-common-style.css"); ?>
+<?php $this->headLink()->appendStylesheet($this->baseUrl() . "/public/css/ta123_style.css"); ?>
+<?php $this->headLink()->appendStylesheet($this->baseUrl() . "/public/css/ta123_style2.css"); ?>
+<?php $this->headLink()->appendStylesheet($this->baseUrl() . "/public/css/common-style.css"); ?>
+
+<style type="text/css">
+    .content {
+        width: 1000px;
+        background-color: wheat;
+        margin: 0px auto;
+    }
+    .top-content {
+        padding: 5px;
+        color: white;
+        text-align: center;
+        font-size: 16px;
+        background-color: yellowgreen;
+    }
+    .left-content {
+        width: 190px;
+        height: 600px;
+        float: left;
+        padding: 5px;
+        overflow: auto;
+    }
+    .right-content {
+        width: 798px;
+        float: left;
+    }
+    .file-content {
+        border: 1px solid gray;
+        height: 700px;
+    }
+    .comment {
+        width: 400px;
+        border: 1px solid gray;
+        box-shadow: 0px 0px 5px 1px gray;
+        margin-left: 186px;
+        padding: 10px;
+    }
+    .comment-input {
+        width: 100%;
+    }
+    .comment-submit {
+        margin-top: 10px;
+    }
+</style>
+
+<?php echo $this->render('admin-layout.phtml') ?>
+<div class="content">
+    <div class="top-content">
+        <?php echo $this->lessonInfo['title']; ?>
+    </div>
+    <div class="left-content">
+        <?php
+        $count = 0;
+        foreach ($this->files as $file) {
+            $count++;
+            $fileType = explode(".", $file['filename']);
+            $fileType =$fileType[1];
+        ?>
+            <a href="<?php echo $this->baseUrl(); ?>/teacher/file?lesson_id=<?php echo $this->lessonInfo['id']; ?>&file_id=<?php echo $file['id']; ?>">
+                <div>
+                    <font style="color: #7E3500">
+                    <?php echo $count . '.'; ?>
+                    </font>
+                    <?php echo $file['filename']; ?>
+                    <img src="<?php echo $this->baseUrl(); ?>/public/images/pdf.png" width="16" height="16">
+                </div>
+            </a>
+        <?php
+        }
+        ?>
+    </div>
+    
+    <div class="right-content">
+        <div class="file-content">
+            file content
+        </div>
+
+        <div class="comment">
+            <textarea class="comment-input"></textarea>
+            <button class="normal-button comment-submit">コメント</button>
+        </div>
+    </div>
+    <div style="line-height:1px;">&nbsp;</div>
+</div>

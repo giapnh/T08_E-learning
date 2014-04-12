@@ -119,12 +119,19 @@
     .top-content input {
         padding: 3px;
     }
+    .report-num {
+        padding-right: 430px;
+        color: red;
+        font-weight: bold;
+        text-decoration: underline;
+    }
 </style>
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <?php echo $this->render('admin-layout.phtml') ?>
 <div class="content">
     <div class="top-content">
+        <span class="report-num">５レポート</span>
         <input class="search-text" type="text" placeholder="検索テキスト">
         <button class="normal-button search-btn">検索</button>
     </div>
@@ -155,7 +162,7 @@
         foreach ($this->data as $item) {
         ?>
         <div class="lesson-item">
-            <a href="<?php echo $this->baseUrl(); ?>/admin/lesson/lesson?do=view&lessonId=<?php echo $item['id']; ?>">
+            <a href="<?php echo $this->baseUrl(); ?>/admin/lesson/lesson?do=view&lesson_id=<?php echo $item['id']; ?>">
                 <div class="lesson-left">
                     <div class="lesson-title"><?php echo $item['title']; ?></div>
 
@@ -167,6 +174,7 @@
                         <span class="num-like-comment"><?php echo $item['like']; ?></span>
                         <img src="<?php echo $this->baseUrl(); ?>/public/images/num-view.png" width="15" height="15">
                         <span class="num-like-comment"><?php echo $item['view']; ?></span>
+                        <img src="<?php echo $this->baseUrl(); ?>/public/images/copyright_report.png" width="30" height="30">
                     </div>
                 </div>
                 <div class="lesson-right">
