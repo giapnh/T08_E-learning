@@ -146,12 +146,28 @@ class TeacherController extends IController {
             if (trim($data['password']) == '') {
                 $this->view->errorMessage = Message::$M007;
                 return;
+            } else {
+                if (!preg_match(Code::$REGEX_PASSWORD, $data['password'])) {
+                    $this->view->errorMessage = Message::$M007;
+                    return;
+                }
             }
 
             if (trim($data['new_password'] == '')) {
                 $this->view->errorMessage = Message::$M007;
                 return;
+            } else {
+                if (!preg_match(Code::$REGEX_PASSWORD, $data['new_password'])) {
+                    $this->view->errorMessage = Message::$M007;
+                    return;
+                }
             }
+
+            if (trim($data['new_password_confirm']) == '') {
+                $this->view->errorMessage = Message::$M007;
+                return;
+            }
+
             if (!$user->isValid($data['username'], $data['password'], '1')) {
                 $this->view->errorMessage = Message::$M0031;
                 return;
@@ -229,7 +245,7 @@ class TeacherController extends IController {
                 $this->view->errorMessage = Message::$M2061;
                 return;
             }
-            
+
             // Save file
             $fileModel = new Default_Model_File();
             if (!$fileModel->exercuteFiles($param["file_dec"])) {
@@ -258,78 +274,78 @@ class TeacherController extends IController {
     }
 
     /**
-    * 授業を見る画面
-    * @param type $name Description
-    */
-   public function lessonAction() {
-           $this->initial();
-           $lessonId = $this->_request->getParam('lesson_id');
-           $lessonModel = new Default_Model_Lesson();
-           $fileModel = new Default_Model_File();
-           $lessonTagModel = new Default_Model_LessonTag();
-           $commentModel = new Default_Model_Comment();
-           $learnModel = new Default_Model_Learn();
+     * 授業を見る画面
+     * @param type $name Description
+     */
+    public function lessonAction() {
+        $this->initial();
+        $lessonId = $this->_request->getParam('lesson_id');
+        $lessonModel = new Default_Model_Lesson();
+        $fileModel = new Default_Model_File();
+        $lessonTagModel = new Default_Model_LessonTag();
+        $commentModel = new Default_Model_Comment();
+        $learnModel = new Default_Model_Learn();
 
-           $comment = $this->getParam('comment');
-           if (isset($comment) && $comment != '') {
-                   $commentModel->addComment($lessonId, $this->currentTeacherId, $comment);
-           }
+        $comment = $this->getParam('comment');
+        if (isset($comment) && $comment != '') {
+            $commentModel->addComment($lessonId, $this->currentTeacherId, $comment);
+        }
 
-           $lesson = $lessonModel->findLessonById($lessonId);
-           $files = $fileModel->getFileByLesson($lessonId);
-           $tags = $lessonTagModel->getTagsByLesson($lessonId);
-           $comments = $commentModel->getAllCommentOfLesson($lessonId);
-           $studentsNum = $learnModel->countStudenJoinLesson($lessonId);
-           $lesson['students_num'] = $studentsNum;
-           $this->view->lessonId = $lessonId;
-           $this->view->lessonInfo = $lesson;
-           $this->view->files = $files;
-           $this->view->tags = $tags;
-           $this->view->comments = $comments;
-           $this->view->errorMessages = $this->_helper->FlashMessenger->getMessages('addFileFailed');
-           $this->view->messages = $this->_helper->FlashMessenger->getMessages('addFileSuccess');
-   }
+        $lesson = $lessonModel->findLessonById($lessonId);
+        $files = $fileModel->getFileByLesson($lessonId);
+        $tags = $lessonTagModel->getTagsByLesson($lessonId);
+        $comments = $commentModel->getAllCommentOfLesson($lessonId);
+        $studentsNum = $learnModel->countStudenJoinLesson($lessonId);
+        $lesson['students_num'] = $studentsNum;
+        $this->view->lessonId = $lessonId;
+        $this->view->lessonInfo = $lesson;
+        $this->view->files = $files;
+        $this->view->tags = $tags;
+        $this->view->comments = $comments;
+        $this->view->errorMessages = $this->_helper->FlashMessenger->getMessages('addFileFailed');
+        $this->view->messages = $this->_helper->FlashMessenger->getMessages('addFileSuccess');
+    }
 
-   public function lessonCommentAction() {
-       echo json_encode(array(
-           "comment" => "Hello",
-           "user" => "Minh Tran",
-           "time" => "2014-4-7 1:20:00"
-       ));
-       
-       return;
-   }
-   
-   /**
-    * ファイル追加処理
-    * 
-    */
-   public function addFileAction() {
-           $params = $this->getAllParams();
-           $lessonId = $params['lesson_id'];
-           $descriptions = $params['description'];
-           $copyright_check = isset($params['copyright_check']);
+    public function lessonCommentAction() {
+        echo json_encode(array(
+            "comment" => "Hello",
+            "user" => "Minh Tran",
+            "time" => "2014-4-7 1:20:00"
+        ));
 
-           $fileModel = new Default_Model_File();
+        return;
+    }
 
-           if (!$copyright_check) {
-               $this->_helper->FlashMessenger->addMessage(Message::$M2061, 'addFileFailed');
-               $this->redirect('teacher/lesson?lesson_id=' . $lessonId);
-               return;
-           }
+    /**
+     * ファイル追加処理
+     * 
+     */
+    public function addFileAction() {
+        $params = $this->getAllParams();
+        $lessonId = $params['lesson_id'];
+        $descriptions = $params['description'];
+        $copyright_check = isset($params['copyright_check']);
 
-           if (!$fileModel->exercuteFiles($descriptions)) {
-               // Send flash error message
-               $this->_helper->FlashMessenger->addMessage(Message::$M2062, 'addFileFailed');
-               $this->redirect('teacher/lesson?lesson_id=' . $lessonId);
-               return;
-           }
+        $fileModel = new Default_Model_File();
 
-           // Save files
-           $fileModel->createFilesData($lessonId);
-           $this->_helper->FlashMessenger->addMessage(Message::$M2063, 'addFileSuccess');
-           $this->redirect('teacher/lesson?lesson_id=' . $lessonId);
-   }
+        if (!$copyright_check) {
+            $this->_helper->FlashMessenger->addMessage(Message::$M2061, 'addFileFailed');
+            $this->redirect('teacher/lesson?lesson_id=' . $lessonId);
+            return;
+        }
+
+        if (!$fileModel->exercuteFiles($descriptions)) {
+            // Send flash error message
+            $this->_helper->FlashMessenger->addMessage(Message::$M2062, 'addFileFailed');
+            $this->redirect('teacher/lesson?lesson_id=' . $lessonId);
+            return;
+        }
+
+        // Save files
+        $fileModel->createFilesData($lessonId);
+        $this->_helper->FlashMessenger->addMessage(Message::$M2063, 'addFileSuccess');
+        $this->redirect('teacher/lesson?lesson_id=' . $lessonId);
+    }
 
     /**
      * 授業を削除処理
@@ -462,27 +478,28 @@ class TeacherController extends IController {
      * 授業の学生をロック
      * @param type $name Description
      */
-    public function unlockStudentAction(){
-            $this->initial();
-            $modelLearn = new Default_Model_Learn();
-            $lessonId = $this->_request->getParam('lesson_id');
-            $id = $this->_request->getParam("id");
-            $modelLearn->unlockStudent($id);
-            $this->_redirect("teacher/students?lesson_id=$lessonId");
+    public function unlockStudentAction() {
+        $this->initial();
+        $modelLearn = new Default_Model_Learn();
+        $lessonId = $this->_request->getParam('lesson_id');
+        $id = $this->_request->getParam("id");
+        $modelLearn->unlockStudent($id);
+        $this->_redirect("teacher/students?lesson_id=$lessonId");
     }
+
     /**
      * 学生のテスト結果を見る画面
      * @param type $name Description
      */
     public function studentResultAction() {
-            $this->initial();
-            $modelLearn = new Default_Model_Learn();
-            //$lessonId = $this->_request->getParam('lesson_id');
-            $learn_id = $this->_request->getParam("learn_id");
-            $modelTestResult = new Default_Model_Result();
-            $result = $modelTestResult->getTestResultByLearn($learn_id);
-            //::dump($result);
-            $this->view->results = $result;
+        $this->initial();
+        $modelLearn = new Default_Model_Learn();
+        //$lessonId = $this->_request->getParam('lesson_id');
+        $learn_id = $this->_request->getParam("learn_id");
+        $modelTestResult = new Default_Model_Result();
+        $result = $modelTestResult->getTestResultByLearn($learn_id);
+        //::dump($result);
+        $this->view->results = $result;
     }
 
     /**
@@ -538,5 +555,5 @@ class TeacherController extends IController {
         }
         $this->view->totalPayment = $totalPay . "(VND)";
     }
-    
+
 }

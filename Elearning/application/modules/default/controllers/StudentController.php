@@ -155,12 +155,28 @@ class StudentController extends IController {
             if (trim($data['password']) == '') {
                 $this->view->errorMessage = Message::$M007;
                 return;
+            } else {
+                if (!preg_match(Code::$REGEX_PASSWORD, $data['password'])) {
+                    $this->view->errorMessage = Message::$M007;
+                    return;
+                }
             }
 
             if (trim($data['new_password'] == '')) {
                 $this->view->errorMessage = Message::$M007;
                 return;
+            } else {
+                if (!preg_match(Code::$REGEX_PASSWORD, $data['new_password'])) {
+                    $this->view->errorMessage = Message::$M007;
+                    return;
+                }
             }
+
+            if (trim($data['new_password_confirm']) == '') {
+                $this->view->errorMessage = Message::$M007;
+                return;
+            }
+
             if (!$user->isValid($data['username'], $data['password'], '1')) {
                 $this->view->errorMessage = Message::$M0031;
                 return;
@@ -217,8 +233,8 @@ class StudentController extends IController {
         $learnModel = new Default_Model_Learn();
         $commentModel = new Default_Model_Comment();
         $lfileModel = new Default_Model_LessonFile();
-        if(!$learnModel->isStudentLearn($userId, $lesson_id))
-        	$this->_redirect("student/myLessonDetail?lessonId=".$lesson_id);
+        if (!$learnModel->isStudentLearn($userId, $lesson_id))
+            $this->_redirect("student/myLessonDetail?lessonId=" . $lesson_id);
         if ($this->_request->isGet()) {
             $lessonModel->incrementView($lesson_id);
             $info = $lessonModel->findLessonById($lesson_id);
@@ -519,8 +535,9 @@ class StudentController extends IController {
         $master = $modelMaster->getMasterData();
         $this->view->price = $master[Admin_Model_Master::$KEY_COMA_PRICE];
     }
-    public function streamAction(){
-    	echo '<style type="text/css" media="print">
+
+    public function streamAction() {
+        echo '<style type="text/css" media="print">
         @page 
         {
             size: auto;   /* auto is the current printer page size */
@@ -535,27 +552,27 @@ class StudentController extends IController {
             margin: 0px;  /* the margin on the content before printing */
        }
     </style>';
-    	$fileId = $this->_request->getParam("id");
-    	$lessonFileModel = new Default_Model_LessonFile();
-    	$file = $lessonFileModel->findFileById($fileId);
-    	$path = APPLICATION_PATH ."\..\\".$file["location"];
-    	$currentFileExt = explode(".", $file['filename']);
-    	$currentFileExt =$currentFileExt[1];
-    	$arrayType = array(
-    			"pdf" => "application/pdf",
-    			"mp3" => "audio/mpeg",
-    			"mp4" => "video/mp4"
-    	);
-    	//echo $path;
-    	if (is_readable($path)) {
-    		//echo $path;
-    		header('Content-type: '.$arrayType[$currentFileExt]);
-    		header("Content-Length: " . filesize($path));
-    		echo "thien";
-    		readfile($path);
-    		echo "thien";
-    	}
-    	exit();
+        $fileId = $this->_request->getParam("id");
+        $lessonFileModel = new Default_Model_LessonFile();
+        $file = $lessonFileModel->findFileById($fileId);
+        $path = APPLICATION_PATH . "\..\\" . $file["location"];
+        $currentFileExt = explode(".", $file['filename']);
+        $currentFileExt = $currentFileExt[1];
+        $arrayType = array(
+            "pdf" => "application/pdf",
+            "mp3" => "audio/mpeg",
+            "mp4" => "video/mp4"
+        );
+        //echo $path;
+        if (is_readable($path)) {
+            //echo $path;
+            header('Content-type: ' . $arrayType[$currentFileExt]);
+            header("Content-Length: " . filesize($path));
+            echo "thien";
+            readfile($path);
+            echo "thien";
+        }
+        exit();
     }
 
 }

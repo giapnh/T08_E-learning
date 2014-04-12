@@ -41,7 +41,7 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
         $query = $this->select()
                 ->from($this->_name, array('username', 'password', 'role'))
                 ->where('username=?', $username)
-                ->where('password=?', sha1($username . '+' . $password . '+' . Code::$PASSWORD_CONST))
+                ->where('password=?', sha1(md5($username . '+' . $password . '+' . Code::$PASSWORD_CONST)))
                 ->where('role=?', $role)
                 ->where('status=?', 1); //If this account is accepted by admin
         $result = $this->getAdapter()->fetchAll($query);
@@ -147,8 +147,8 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
     public function insertNew($data) {
         $ins_data = array(
             'username' => $data['username'],
-            'first_password' => sha1($data['username'] . '+' . $data['password'] . '+' . Code::$PASSWORD_CONST),
-            'password' => sha1($data['username'] . '+' . $data['password'] . '+' . Code::$PASSWORD_CONST),
+            'first_password' => sha1(md5($data['username'] . '+' . $data['password'] . '+' . Code::$PASSWORD_CONST)),
+            'password' => sha1(md5($data['username'] . '+' . $data['password'] . '+' . Code::$PASSWORD_CONST)),
             'name' => $data['fullname'],
             'birthday' => $data['day'] . '-' . $data['month'] . '-' . $data['year'],
             'address' => $data['address'],
@@ -190,7 +190,7 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
      */
     public function updatePassword($data) {
         $update_data = array(
-            'password' => sha1($data['username'] . '+' . $data['new_password'] . '+' . Code::$PASSWORD_CONST));
+            'password' => sha1(md5($data['username'] . '+' . $data['new_password'] . '+' . Code::$PASSWORD_CONST)));
         $username = $data['username'];
         $where = "username='$username'";
         $this->update($update_data, $where);
