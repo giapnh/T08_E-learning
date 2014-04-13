@@ -89,7 +89,10 @@ class UserController extends IController {
                     if ($authAdapter->checkIpValid($uname, $curr_ip)) {
                         $flag = true;
                     } else {
-                        $this->redirect('user/login_verify_confirm');
+                        $data = $authAdapter->getUserInfo($uname);
+                        // Save
+                        $auth->getStorage()->write($data);
+                        $this->_redirect('user/loginVerifyConfirm');
                         $flag = false;
                         return;
                     }
@@ -112,8 +115,32 @@ class UserController extends IController {
         }
     }
 
-    public function login_new_ipAction() {
-        
+    public function loginverifyconfirmAction() {
+        if ($this->_request->isPost()) {
+            $data = $this->_request->getParams();
+            $question = trim($data['secret_question']);
+            $anwser = trim($data['secret_answer']);
+            if ($question == '') {
+                $this->view->errorMessage = Message::$M014;
+                return;
+            }
+
+            if ($anwser == '') {
+                $this->view->errorMessage = Message::$M015;
+                return;
+            }
+
+            $auth = Zend_Auth::getInstance();
+            $infoUser = $auth->getStorage()->read();
+            $user = new Default_Model_Account();
+            if ($user->isValidSecretQA($infoUser['username'], $question, $anwser) == 1) {
+                $this->_redirect('teacher/index');
+            } else {
+                var_dump($question);
+                $this->view->errorMessage = $infoUser['username'] . "/question = $question/anwser = $anwser" . "秘密質問と秘密答えが会っていない！";
+                return;
+            }
+        }
     }
 
     /**
