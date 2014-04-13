@@ -1,4 +1,14 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript">
+      $(function() {
+          $("iframe").load(function(){
+			$("iframe").contents().find("html").attr("oncontextmenu","return false")
+				.attr("onclick", "return false")
+				.attr("onselect", "return false")
+				.attr("onmouseover", "return false")
+          });
+          });
+</script>
 <style type="text/css" media="print">
         @page 
         {
@@ -147,7 +157,8 @@
                                         $currentFile =$currentFile[1];
                                         if ($currentFile == 'pdf' || $currentFile == "mp3" || $currentFile == "mp4") {
                                             ?>
-                                           <iframe src="<?php echo $this->baseUrl()?>/student/stream/id/<?php echo $this->currentFile["id"]?>" width="100%" height="500"></iframe>
+                                           <iframe src="<?php echo $this->baseUrl()?>/student/stream/id/<?php echo $this->currentFile["id"]?>#toolbar=0&navpanes=0&scrollbar=0" width="100%" height="500"></iframe>
+                                           
                                         <?php
                                     } else if ($currentFile == 'tsv') {
                                         ?>
