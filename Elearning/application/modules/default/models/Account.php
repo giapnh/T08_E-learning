@@ -170,10 +170,10 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
             'email' => $data['email'],
             'phone' => $data['phone'],
             'bank_account' => $data['bank_acc'],
-            'first_secret_question' => sha1(md5($data['secret_question'])),
-            'secret_question' => sha1(md5($data['secret_question'])),
-            'first_secret_answer' => $data['secret_answer'],
-            'secret_answer' => $data['secret_answer'],
+            'first_secret_question' => $data['secret_question'],
+            'secret_question' => $data['secret_question'],
+            'first_secret_answer' => sha1(md5($data['secret_answer'])),
+            'secret_answer' => sha1(md5($data['secret_answer'])),
             'role' => $data['role'],
             'status' => 2//Wait for confirm by admin
         );
@@ -194,6 +194,14 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
             'bank_account' => $data['bank_acc']
         );
         $username = $data['username'];
+        $where = "username='$username'";
+        $this->update($update_data, $where);
+    }
+
+    public function updateLastLoginIp($username, $newIp) {
+        $update_data = array(
+            'last_login_ip' => $newIp
+        );
         $where = "username='$username'";
         $this->update($update_data, $where);
     }

@@ -87,6 +87,7 @@ class UserController extends IController {
                 if ($role == 2) {
                     $flag = false;
                     if ($authAdapter->checkIpValid($uname, $curr_ip)) {
+                        $authAdapter->updateLastLoginIp($uname, $curr_ip);
                         $flag = true;
                     } else {
                         $data = $authAdapter->getUserInfo($uname);
@@ -133,11 +134,17 @@ class UserController extends IController {
             $auth = Zend_Auth::getInstance();
             $infoUser = $auth->getStorage()->read();
             $user = new Default_Model_Account();
+            $curr_ip = $_SERVER['REMOTE_ADDR'];
+            if ($curr_ip === "::1") {
+                $curr_ip = "127.0.0.1";
+            }
             if ($user->isValidSecretQA($infoUser['username'], $question, $anwser) == 1) {
+                // 現在IPを更新します
+                $user->updateLastLoginIp($infoUser['username'], $curr_ip);
                 $this->_redirect('teacher/index');
             } else {
-                var_dump($question);
-                $this->view->errorMessage = $infoUser['username'] . "/question = $question/anwser = $anwser" . "秘密質問と秘密答えが会っていない！";
+                $this->view->
+                        errorMessage = "秘密質問と秘密答えが会っていない！";
                 return;
             }
         }
@@ -178,7 +185,7 @@ class UserController extends IController {
                 return;
             }
 
-            if (trim($data['fullname']) == '') {
+            if (trim($data ['fullname']) == '') {
                 $this->view->errorMessage = Message::$M009;
                 return;
             }
@@ -190,6 +197,7 @@ class UserController extends IController {
 
             if (trim($data['address']) == '') {
                 $this->view->errorMessage = Message::$M011;
+
                 return;
             }
 
