@@ -15,6 +15,21 @@
                 <div class="res_notes">
                     <span class="red"> （*） </span>があるというのは必要なフィールド
                 </div>
+                <script type="text/javascript">
+                    function student() {
+                        $("#secret_qa").hide();
+                    }
+
+                    function teacher() {
+                        $("#secret_qa").show();
+                    }
+                </script>
+                <!--ユーザルール-->
+                <div class="res_form_row">
+                    <input type="radio" name="role" checked="checked" value="1" onclick="javascript:student()"><b>学生</b> <input
+                        type="radio" name="role" value="2" onclick="javascript:teacher()"><b>先生</b>
+                </div>
+
                 <div class="res_form_row">
                     <div class="res_f_r_left">
                         <div class="res_f_r_left_up">
@@ -353,31 +368,28 @@
                                type="text">
                     </div>
                 </div>
-
-                <div class="res_form_row">
-                    <div class="res_f_r_left">
-                        <div class="res_f_r_left_up">機密質問:</div>
+                <div id="secret_qa">
+                    <div class="res_form_row" >
+                        <div class="res_f_r_left">
+                            <div class="res_f_r_left_up">機密質問:</div>
+                        </div>
+                        <div class="res_f_r_right">
+                            <input id="res_secret_question_q" class="res_input"
+                                   name="secret_question" type="text">
+                        </div>
                     </div>
-                    <div class="res_f_r_right">
-                        <input id="res_secret_question_q" class="res_input"
-                               name="secret_question" type="text">
+
+                    <div class="res_form_row">
+                        <div class="res_f_r_left">
+                            <div class="res_f_r_left_up">答え:</div>
+                        </div>
+                        <div class="res_f_r_right">
+                            <input id="res_secret_question_a" class="res_input"
+                                   name="secret_answer" type="text">
+                        </div>
                     </div>
                 </div>
 
-                <div class="res_form_row">
-                    <div class="res_f_r_left">
-                        <div class="res_f_r_left_up">答え:</div>
-                    </div>
-                    <div class="res_f_r_right">
-                        <input id="res_secret_question_a" class="res_input"
-                               name="secret_answer" type="text">
-                    </div>
-                </div>
-
-                <div class="res_form_row">
-                    <input type="radio" name="role" checked="checked" value="1"><b>学生</b> <input
-                        type="radio" name="role" value="2"><b>先生</b>
-                </div>
 
                 <div class="res_step_title">
                     <div class="res_step_t_num res_num3">使用規制</div>
@@ -386,7 +398,7 @@
                 <div class="res_form_row">
                     <div class="res_radio_box">
                         <div class="res_radio_te">
-                            <input type="checkbox" checked="checked" name="rule_accept"><span
+                            <input type="checkbox" checked="checked" disabled name="rule_accept"><span
                                 class="font_weight">私は<a href="#" target="_blank" class="blue2">Elearningシステムの使用規制</a>が納得しました<span
                                     class="red">*</span>
                             </span>
