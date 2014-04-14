@@ -520,21 +520,7 @@ class StudentController extends IController {
         $this->view->price = $master[Admin_Model_Master::$KEY_COMA_PRICE];
     }
     public function streamAction(){
-    	echo '<style type="text/css" media="print">
-        @page 
-        {
-            size: auto;   /* auto is the current printer page size */
-            margin: 0mm;  /* this affects the margin in the printer settings */
-        }
-
-        body 
-        {
-    		display:none;
-            background-color:#FFFFFF; 
-            border: solid 1px black ;
-            margin: 0px;  /* the margin on the content before printing */
-       }
-    </style>';
+    	
     	$fileId = $this->_request->getParam("id");
     	$lessonFileModel = new Default_Model_LessonFile();
     	$file = $lessonFileModel->findFileById($fileId);
@@ -551,9 +537,7 @@ class StudentController extends IController {
     		//echo $path;
     		header('Content-type: '.$arrayType[$currentFileExt]);
     		header("Content-Length: " . filesize($path));
-    		echo "thien";
     		readfile($path);
-    		echo "thien";
     	}
     	exit();
     }

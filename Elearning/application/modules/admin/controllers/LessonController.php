@@ -13,17 +13,23 @@ class Admin_LessonController extends IController {
 //        $this->view->headLink()->appendStylesheet($baseurl . "/public/css/style_2.css");
 //        $this->view->headScript()->appendFile($baseurl . "/public/js/jquery.min.js");
         
-        $lessons = new Default_Model_Lesson();
+        $lessonModel = new Default_Model_Lesson();
+        $copyrightModel = new Default_Model_CopyrightReport();
+        
         $get_type = $this->_request->getParam('type');
         $tagId = $this->_request->getParam('tagId');
         $teacherId = $this->_request->getParam('teacherId');
         $this->view->tagId = $tagId;
         $this->view->teacherId = $teacherId;
+        $tagModel = new Default_Model_Tag();
+        $userModel = new Default_Model_Account();
+        $this->view->tags = $tagModel->listAll();
+        $this->view->teachers = $userModel->listTeacher();
+        $this->view->reportsNum = $copyrightModel->countAllReport();
+        
         if ($get_type == null || $get_type == 1) {
-            $tags = new Default_Model_Tag();
-            $this->view->tags = $tags->listAll();
             $this->view->type = 1;
-            $paginator = Zend_Paginator::factory($lessons->listWithTag($tagId));
+            $paginator = Zend_Paginator::factory($lessonModel->listWithTag($tagId));
             $paginator->setItemCountPerPage(3);
             $paginator->setPageRange(3);
             $this->view->numpage = $paginator->count();
@@ -31,10 +37,8 @@ class Admin_LessonController extends IController {
             $paginator->setCurrentPageNumber($currentPage);
             $this->view->data = $paginator;
         } else {
-            $users = new Default_Model_Account();
-            $this->view->teachers = $users->listTeacher();
             $this->view->type = 2;
-            $paginator = Zend_Paginator::factory($lessons->listWithTeacher($teacherId));
+            $paginator = Zend_Paginator::factory($lessonModel->listWithTeacher($teacherId));
             $paginator->setItemCountPerPage(3);
             $paginator->setPageRange(3);
             $this->view->numpage = $paginator->count();
@@ -45,7 +49,7 @@ class Admin_LessonController extends IController {
 
         if ($this->_request->isPost()) {
             $keyword = $this->_request->getParam('keyword');
-            $paginator = Zend_Paginator::factory($lessons->findByKeyword($keyword));
+            $paginator = Zend_Paginator::factory($lessonModel->findByKeyword($keyword));
             $paginator->setItemCountPerPage(3);
             $paginator->setPageRange(3);
             $this->view->numpage = $paginator->count();

@@ -24,11 +24,24 @@ class Default_Model_CopyrightReport extends Zend_Db_Table_Abstract {
         );
         $this->insert($ins);
     }
-	public function getReport($fileId){
-		$select = $this->getAdapter()->select()
-			->from($this->_name)
-			->join("user", "copyright_report.user_id = user.id", array("username"))
-			->where("copyright_report.status = 1");
-		return $this->getAdapter()->fetchAll($select);
-	}
+    
+    public function getReport($fileId){
+            $select = $this->getAdapter()->select()
+                    ->from($this->_name)
+                    ->join("user", "copyright_report.user_id = user.id", array("username"))
+                    ->where("copyright_report.status = 1");
+            return $this->getAdapter()->fetchAll($select);
+    }
+    
+    /**
+     * 「Copyright」レポートを数える
+     *  
+     * @return int
+     */
+    public function countAllReport() {
+        $select = $this->getAdapter()->select()
+                    ->from($this->_name)
+                    ->where("copyright_report.status = 1");
+        return count($this->getAdapter()->fetchAll($select));
+    }
 }
