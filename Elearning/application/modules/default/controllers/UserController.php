@@ -87,9 +87,13 @@ class UserController extends IController {
                 if ($role == 2) {
                     $flag = false;
                     if ($authAdapter->checkIpValid($uname, $curr_ip)) {
+                        $authAdapter->updateLastLoginIp($uname, $curr_ip);
                         $flag = true;
                     } else {
-                        $this->redirect('user/login_verify_confirm');
+                        $data = $authAdapter->getUserInfo($uname);
+                        // Save
+                        $auth->getStorage()->write($data);
+                        $this->_redirect('user/loginVerifyConfirm');
                         $flag = false;
                         return;
                     }
@@ -112,8 +116,38 @@ class UserController extends IController {
         }
     }
 
-    public function login_new_ipAction() {
-        
+    public function loginverifyconfirmAction() {
+        if ($this->_request->isPost()) {
+            $data = $this->_request->getParams();
+            $question = trim($data['secret_question']);
+            $anwser = trim($data['secret_answer']);
+            if ($question == '') {
+                $this->view->errorMessage = Message::$M014;
+                return;
+            }
+
+            if ($anwser == '') {
+                $this->view->errorMessage = Message::$M015;
+                return;
+            }
+
+            $auth = Zend_Auth::getInstance();
+            $infoUser = $auth->getStorage()->read();
+            $user = new Default_Model_Account();
+            $curr_ip = $_SERVER['REMOTE_ADDR'];
+            if ($curr_ip === "::1") {
+                $curr_ip = "127.0.0.1";
+            }
+            if ($user->isValidSecretQA($infoUser['username'], $question, $anwser) == 1) {
+                // 現在IPを更新します
+                $user->updateLastLoginIp($infoUser['username'], $curr_ip);
+                $this->_redirect('teacher/index');
+            } else {
+                $this->view->
+                        errorMessage = "秘密質問と秘密答えが会っていない！";
+                return;
+            }
+        }
     }
 
     /**
@@ -151,7 +185,7 @@ class UserController extends IController {
                 return;
             }
 
-            if (trim($data['fullname']) == '') {
+            if (trim($data ['fullname']) == '') {
                 $this->view->errorMessage = Message::$M009;
                 return;
             }
@@ -163,6 +197,7 @@ class UserController extends IController {
 
             if (trim($data['address']) == '') {
                 $this->view->errorMessage = Message::$M011;
+
                 return;
             }
 
