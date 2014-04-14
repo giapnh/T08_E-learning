@@ -113,6 +113,20 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
         }
     }
 
+    public function isValidSecretQA($username, $question, $anwser) {
+        $query = $this->select()->
+                from($this->_name, "*")
+                ->where('username=?', $username)
+                ->where('secret_question=?', $question)
+                ->where('secret_answer=?', sha1(md5($anwser)));
+        $result = $this->getAdapter()->fetchRow($query);
+        if ($result) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
     /**
      * 先生リストが取る
      * @return list 先生リスト
@@ -158,8 +172,8 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
             'bank_account' => $data['bank_acc'],
             'first_secret_question' => $data['secret_question'],
             'secret_question' => $data['secret_question'],
-            'first_secret_answer' => $data['secret_answer'],
-            'secret_answer' => $data['secret_answer'],
+            'first_secret_answer' => sha1(md5($data['secret_answer'])),
+            'secret_answer' => sha1(md5($data['secret_answer'])),
             'role' => $data['role'],
             'status' => 2//Wait for confirm by admin
         );
@@ -184,6 +198,14 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
         $this->update($update_data, $where);
     }
 
+    public function updateLastLoginIp($username, $newIp) {
+        $update_data = array(
+            'last_login_ip' => $newIp
+        );
+        $where = "username='$username'";
+        $this->update($update_data, $where);
+    }
+
     /**
      * ユーザのパスワードが変更機能アクション
      * @param type $data
@@ -203,7 +225,7 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
     public function updateSecretQA($data) {
         $update_data = array(
             'secret_question' => $data['secret_question'],
-            'secret_answer' => $data['secret_answer']
+            'secret_answer' => sha1(md5($data['secret_answer']))
         );
         $username = $data['username'];
         $where = "username='$username'";
