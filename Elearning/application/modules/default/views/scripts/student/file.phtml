@@ -3,9 +3,7 @@
       $(function() {
           $("iframe").load(function(){
 			$("iframe").contents().find("html").attr("oncontextmenu","return false")
-				.attr("onclick", "return false")
-				.attr("onselect", "return false")
-				.attr("onmouseover", "return false")
+				.attr("onselect", "return false");
           });
           });
 </script>

@@ -552,10 +552,14 @@ class StudentController extends IController {
         	);
         	//echo $path;
         	if (is_readable($path)) {
-        		//echo $path;
+        		if($currentFileExt == "pdf"){
+        			echo $link = $this->view->serverUrl().$this->view->baseUrl()."/public/viewpdf/web/viewer.html?file=".$this->view->serverUrl().$this->view->baseUrl()."/".$file["location"];
+        			header("Location: ".$link);
+        		}else{
         		header('Content-type: ' . $arrayType[$currentFileExt]);
         		header("Content-Length: " . filesize($path));
         		readfile($path);
+        		}
         	}
         }
         exit();
