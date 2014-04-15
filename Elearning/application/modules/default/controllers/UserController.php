@@ -36,7 +36,7 @@ class UserController extends IController {
         // 		}
         //Ip cache
         $frontendOptions = array(
-            'lifetime' => Code::$LOGIN_FAIL_LOCK_TIME, // cache lifetime of 2 hours
+            'lifetime' => Code::$LOGIN_FAIL_LOCK_TIME,
             'automatic_serialization' => true
         );
         $backendOptions = array(
@@ -59,16 +59,15 @@ class UserController extends IController {
                 $this->view->errorMessage = Message::$M002;
                 return;
             } else {
-                echo $authAdapter->getFailCount($uname);
                 if ($authAdapter->getFailCount($uname) == 5 && !$cache->load($uname)) {
                     $authAdapter->incLoginFailure($uname);
                     $cache->save("1", $uname);
-                    $this->view->errorMessage = str_replace('%s', "" . Code::$LOGIN_FAIL_LOCK_TIME, Message::$M0041);
+                    $this->view->errorMessage = str_replace('%s', "" . (Code::$LOGIN_FAIL_LOCK_TIME / 86400), Message::$M0041);
                     return;
                 } else if ($authAdapter->getFailCount($uname) > 5) {
                     $authAdapter->incLoginFailure($uname);
                     if ($result = $cache->load($uname)) {
-                        $this->view->errorMessage = str_replace('%s', "" . Code::$LOGIN_FAIL_LOCK_TIME, Message::$M0041);
+                        $this->view->errorMessage = str_replace('%s', "" . (Code::$LOGIN_FAIL_LOCK_TIME / 86400), Message::$M0041);
                         return;
                     } else {
                         $authAdapter->resetFailCount($uname);
