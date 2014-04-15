@@ -85,9 +85,17 @@
     .file_description {
         line-height: 50px;
         overflow: hidden;
-        width: 520px;
+        width: 470px;
         height: 50px;
         float: left;
+    }
+    .copyright {
+        padding: 5px;
+        float: left;
+    }
+    .copyright img {
+        width: 40px;
+        height: 40px;
     }
     .btn-delete {
         line-height: 50px;
@@ -213,6 +221,11 @@
                     <img src="<?php echo $this->baseUrl(); ?>/public/images/student.png" width="15" height="15">
                     <span><?php echo $this->lessonInfo['students_num'] ?></span>
                 </span>
+                <?php if ($this->lessonInfo['is_reported']) { ?>
+                <span>
+                    <img src="<?php echo $this->baseUrl(); ?>/public/images/copyright_report.png" width="20" height="20">
+                </span>
+                <?php } ?>
             </div>
         </div>
         <div>
@@ -227,7 +240,7 @@
                     $ext = $ext[1];
                     if ($ext == 'pdf') {
                         $icon = "pdf.png";
-                    } else if ($ext == 'jpg' ||$ext == 'jpge' ) {
+                    } else if ($ext == 'jpg' || $ext == 'jpge' || $ext == 'png') {
                         $icon = "img_file.png";
                     } else if ($ext == 'mp3') {
                         $icon = "mp3.png";
@@ -242,6 +255,9 @@
                     <div class="file_type"><img src="<?php echo $this->baseUrl()."/public/images/".$icon ?>"></div>
                     <div class="file_name"><?php echo $file['filename']; ?></div>
                     <div class="file_description"><?php echo $file['description'] ?></div>
+                    <?php if ($file['copyright'] == 1) { ?>
+                        <div class="copyright"><img src="<?php echo $this->baseUrl()."/public/images/copyright_report.png" ?>"></div>
+                    <?php } ?>
                 </a>
                 <div class="btn-delete"></div>
             </div>

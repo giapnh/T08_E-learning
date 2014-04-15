@@ -44,6 +44,16 @@
     .comment-submit {
         margin-top: 10px;
     }
+    .lesson-title {
+        font-weight: bold;
+        font-size: 16px;
+    }
+    .lesson-teacher {
+        font-style: italic;
+    }
+    .lesson-created {
+        color: gray;
+    }
 </style>
 
 <?php echo $this->render('admin-layout.phtml') ?>
@@ -52,22 +62,77 @@
         <?php echo $this->lessonInfo['title']; ?>
     </div>
     <div class="left-content">
+        <div class="lesson-desc">
+            <a href="<?php echo $this->baseUrl(); ?>/admin/lesson/lesson?lesson_id=<?php echo $this->lessonInfo['id']; ?>">
+                <div class="lesson-title"><?php echo $this->lessonInfo['title'];?></div>
+            </a>
+            <a href="<?php echo $this->baseUrl(); ?>/admin/user/info?user_id=<?php echo $this->lessonInfo['teacher_id']; ?>">
+            <div class="lesson-teacher"><?php echo $this->lessonInfo['name'];?></div>
+            <div class="lesson-created"><?php echo $this->lessonInfo['create_time'];?></div>
+            <div>
+                <a href="<?php echo $this->baseUrl(); ?>/admin/lesson/index?teacherId=<?php echo $this->lessonInfo['teacher_id']; ?>">他の授業を見る</a>
+            </div>
+            <div class="like" style="width: 100%; margin: 10px 0px;">
+                <span>
+                    <img src="<?php echo $this->baseUrl(); ?>/public/images/num-like.png" width="15" height="15">
+                    <span><?php echo $this->lessonInfo['like'] ?></span>
+                </span>
+                <span>
+                    <img src="<?php echo $this->baseUrl(); ?>/public/images/num-view.png" width="15" height="15">
+                    <span><?php echo $this->lessonInfo['view'] ?></span>
+                </span>
+                <span>
+                    <img src="<?php echo $this->baseUrl(); ?>/public/images/student.png" width="15" height="15">
+                    <span><?php echo $this->lessonInfo['students_num'] ?></span>
+                </span>
+            </div>
+            
+        </div>
         <?php
         $count = 0;
         foreach ($this->files as $file) {
             $count++;
             $fileType = explode(".", $file['filename']);
-            $fileType =$fileType[1];
+            $fileType = $fileType[count($fileType)-1];
+            if ($fileType == 'pdf') {
+                $icon = "pdf.png";
+            } else if ($fileType == 'jpg' || $fileType == 'jpge' || $fileType == 'png') {
+                $icon = "img_file.png";
+            } else if ($fileType == 'mp3') {
+                $icon = "mp3.png";
+            } else if ($fileType == 'mp4') {
+                $icon = "video.png";
+            } else if ($fileType == 'html') {
+                $icon = "test.png";
+            }
         ?>
-            <a href="<?php echo $this->baseUrl(); ?>/teacher/file?lesson_id=<?php echo $this->lessonInfo['id']; ?>&file_id=<?php echo $file['id']; ?>">
-                <div>
-                    <font style="color: #7E3500">
-                    <?php echo $count . '.'; ?>
-                    </font>
-                    <?php echo $file['filename']; ?>
-                    <img src="<?php echo $this->baseUrl(); ?>/public/images/pdf.png" width="16" height="16">
+        <div class="file-link">
+            <a href="<?php echo $this->baseUrl(); ?>/admin/lesson/file?lesson_id=<?php echo $this->lessonInfo['id']; ?>&file_id=<?php echo $file['id']; ?>">
+                <div><font style="color: #7E3500">
+                <?php echo $count . '.'; ?>
+                </font>
+                <?php echo $file['filename']; ?>
+                <img src="<?php echo $this->baseUrl()."/public/images/".$icon; ?>" width="16" height="16">
                 </div>
             </a>
+            <div class="copyright-report">
+                <div class="report-num">
+                    <img src="<?php echo $this->baseUrl(); ?>/public/images/copyright_report.png" width="20" height="20">
+                    1レポート
+                </div>
+                <div class="report-content">
+                    <div class="report-user">
+                        学生１
+                    </div>
+                    <div class="reported-date">2014-04-12 14:32:25</div>
+                    <div class="reported-message">このファイルは私のです</div>
+                    <div class="report-action">
+                        <div class="hide-btn">隠る</div>
+                        <div class="delete-btn">削除</div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <?php
         }
         ?>

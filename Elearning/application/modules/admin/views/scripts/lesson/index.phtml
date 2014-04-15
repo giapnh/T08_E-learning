@@ -185,14 +185,14 @@
         <div class="left-title <?php if(isset($this->teacherId)) echo "title-active";?>" data-type="teacher">先生</div>
         <div class="bottom-border">&nbsp;</div>
         <div class="filter-list-tag">
-            <a href="?tagId=0">
+            <a href="<?php echo $this->baseUrl(); ?>/admin/lesson/index?tagId=0">
                 <div class="filter-item<?php if ($this->tagId == 0 || !$this->tagId) {echo " filter-item-active";} ?>">
                     全部
                 </div>
             </a>
             <?php foreach($this->tags as $tag) {
                 ?>
-                <a href="?tagId=<?php echo $tag['id']; ?>">
+                <a href="<?php echo $this->baseUrl(); ?>/admin/lesson/index?tagId=<?php echo $tag['id']; ?>">
                     <div class="filter-item<?php if ($tag['id'] == $this->tagId) {echo " filter-item-active";} ?>">
                         <?php echo $tag['tag_name']; ?>
                     </div>
@@ -201,14 +201,14 @@
             } ?>
         </div>
         <div class="filter-list-teacher">
-            <a href="?teacherId=0">
+            <a href="<?php echo $this->baseUrl(); ?>/admin/lesson/index?teacherId=0">
                 <div class="filter-item<?php if ($this->teacherId == 0 || !$this->teacherId) {echo " filter-item-active";} ?>">
                     全部
                 </div>
             </a>
             <?php foreach($this->teachers as $teacher) {
                 ?>
-                <a href="?teacherId=<?php echo $teacher['id']; ?>">
+                <a href="<?php echo $this->baseUrl(); ?>/admin/lesson/index?teacherId=<?php echo $teacher['id']; ?>">
                     <div class="filter-item<?php if ($teacher['id'] == $this->teacherId) {echo " filter-item-active";} ?>">
                         <?php echo $teacher['name']; ?>
                     </div>
@@ -252,8 +252,19 @@
         <div class="paging">
             <div class="page-item">
                 <?php
-                if ($this->numpage > 1)
-                    echo $this->paginationControl($this->data, 'Sliding', 'pageinator.phtml');
+                if ($this->numpage > 1) {
+                    echo $this->paginationControl(
+                                $this->data, 
+                                'Sliding', 
+                                'pageinator.phtml', 
+                                array(
+                                    "tagId" => $this->tagId,
+                                    "lessonId" => $this->lessonId,
+                                    "searchText" => $this->searchText,
+                                    "copyright" => $this->copyright
+                                )
+                            );
+                }
                 ?>
             </div>
         </div>

@@ -38,6 +38,9 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
      * @return boolean
      */
     public function isValid($username, $password, $role) {
+//        var_dump($username);
+//        var_dump(sha1(md5($username . '+' . $password . '+' . Code::$PASSWORD_CONST)));
+//        die();
         $query = $this->select()
                 ->from($this->_name, array('username', 'password', 'role'))
                 ->where('username=?', $username)
