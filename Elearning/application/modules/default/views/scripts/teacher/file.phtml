@@ -1,4 +1,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript">
+      $(function() {
+          $("iframe").load(function(){
+			$("iframe").contents().find("html").attr("oncontextmenu","return false")
+				.attr("onselect", "return false");
+          });
+          });
+</script>
 <center>
     <div class="content" style="background: #F0F0F0;">
         <?php 
@@ -100,25 +108,11 @@
                                     <?php
                                     $currentFile = explode(".", $this->currentFile['filename']);
                                     $currentFile = $currentFile[1];
-                                    if ($currentFile == 'pdf') { // PDFファイル
-                                        ?>
-                                        <embed src = "<?php echo $this->baseUrl(); ?>/<?php echo $this->currentFile['location']; ?>"
-                                               width = "100%" height = "600px;">
-                                               <?php
-                                           } else if ($currentFile == 'mp3') {
-                                               ?>
-                                        <audio controls>
-                                            <source src="<?php echo $this->baseUrl(); ?>/<?php echo $this->currentFile['location']; ?>" type="audio/mpeg">
-                                            <embed height="100" width="90%" src="<?php echo $this->baseUrl(); ?>/<?php echo $this->currentFile['location']; ?>">
-                                        </audio>
-                                        <?php
-                                    } else if ($currentFile == 'mp4') { // Videoファイル
-                                        ?>
-                                        <video width="100%" autoplay="false" controls>
-                                            <source src="<?php echo $this->baseUrl(); ?>/<?php echo $this->currentFile['location']; ?>" type="video/mp4">
-                                        </video>                                    
-                                        <?php
-                                    } else if ($currentFile == 'tsv') { // テストファイル
+                                    if ($currentFile == 'pdf' || $currentFile == "mp3" || $currentFile == "mp4") {
+                                            ?>
+                                           <iframe src="<?php echo $this->baseUrl()?>/teacher/stream/id/<?php echo $this->currentFile["id"]?>#toolbar=0&navpanes=0&scrollbar=0" width="100%" height="500"></iframe>
+                                               
+                                     <?php } else if ($currentFile == 'tsv') { // テストファイル
                                         ?>
                                         <!--フォームスタット-->
                                         <?php
