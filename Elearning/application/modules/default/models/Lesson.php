@@ -15,7 +15,11 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
         $select = $this->getAdapter()->select();
         $select->from('lesson')
                 ->join('user', 'lesson.teacher_id=user.id', array('name'));
-        return $this->getAdapter()->fetchAll($select);
+        $result = $this->getAdapter()->fetchAll($select);
+        foreach ($result as $index => $lesson) {
+            $result[$index]['is_reported'] = $this->isReported($lesson);
+        }
+        return $result;
     }
 
     public function listWithTag($tag) {
@@ -24,10 +28,14 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
         }
         $select = $this->getAdapter()->select();
         $select->from(array('l' => 'lesson'))
-                ->joinInner(array('lt' => 'lesson_tag'), 'l.id = lt.lesson_id')
+                ->joinInner(array('lt' => 'lesson_tag'), 'l.id = lt.lesson_id', array('lesson_tag.id'=>'tag_id'))
                 ->joinInner('user', 'l.teacher_id=user.id', array('name'))
                 ->where("lt.tag_id=$tag");
-        return $this->getAdapter()->fetchAll($select);
+        $result = $this->getAdapter()->fetchAll($select);
+        foreach ($result as $index => $lesson) {
+            $result[$index]['is_reported'] = $this->isReported($lesson);
+        }
+        return $result;
     }
     
     public function listTeacherLessonsByTag($teacher, $tag) {
@@ -50,10 +58,13 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
         }
         $select = $this->getAdapter()->select();
         $select->from(array('l' => 'lesson'))
-                ->joinInner(array('u' => 'user'), 'l.teacher_id = u.id')
                 ->joinInner('user', 'l.teacher_id=user.id', array('name'))
                 ->where("l.teacher_id=$teacher");
-        return $this->getAdapter()->fetchAll($select);
+        $result = $this->getAdapter()->fetchAll($select);
+        foreach ($result as $index => $lesson) {
+            $result[$index]['is_reported'] = $this->isReported($lesson);
+        }
+        return $result;
     }
 
     public function listAllByStudent($student) {
@@ -64,6 +75,26 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
                 ->where("learn.student_id=$student")
         		->where("learn.register_time + INTERVAL 7 DAY >= NOW()");
         return $this->getAdapter()->fetchAll($select);
+    }
+    
+    /**
+     * 「Copyright」レポートがある違犯の授業を取る
+     * 
+     * @return array $result
+     */
+    public function listCopyrightFalse() {
+        $select = $this->getAdapter()->select();
+        $select->from('lesson')
+                ->join('user', 'lesson.teacher_id=user.id', array('name'));
+        $result = $this->getAdapter()->fetchAll($select);
+        foreach ($result as $index => $lesson) {
+            if ($this->isReported($lesson)) {
+                $result[$index]['is_reported'] = true;
+            } else {
+                unset($result[$index]);
+            }
+        }
+        return $result;
     }
 
     public function findLessonWithTagByStudent($tagId, $studentId) {
@@ -98,7 +129,9 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
         $select->from('lesson')
                 ->where('lesson.id = ?', $lessonId)
                 ->joinInner('user', 'lesson.teacher_id = user.id', array('name'));
-        return $this->getAdapter()->fetchRow($select);
+        $result = $this->getAdapter()->fetchRow($select);
+        $result['is_reported'] = $this->isReported($result);
+        return $result;
     }
 
     public function incrementView($lessonId) {
@@ -143,4 +176,21 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
         return ($teacherId == $lesson['teacher_id']);
     }
     
+    /**
+     * この授業のファイルのなかに、「Copyright」レポートがあるかどうかをチェック
+     * 
+     * @param array $lesson
+     * @return boolean
+     */
+    public function isReported($lesson) {
+        $select = $this->getAdapter()->select();
+        $select->from(array('f' => 'lesson_file'))
+                ->joinInner(array('c' => 'copyright_report'), 'f.id = c.file_id')
+                ->where("f.lesson_id=".$lesson['id']." AND c.status=1");
+        $result = $this->getAdapter()->fetchAll($select);
+        if ($result) {
+            return true;
+        }
+        return false;
+    }
 }

@@ -537,40 +537,30 @@ class StudentController extends IController {
     }
 
     public function streamAction() {
-        echo '<style type="text/css" media="print">
-        @page 
-        {
-            size: auto;   /* auto is the current printer page size */
-            margin: 0mm;  /* this affects the margin in the printer settings */
-        }
-
-        body 
-        {
-    		display:none;
-            background-color:#FFFFFF; 
-            border: solid 1px black ;
-            margin: 0px;  /* the margin on the content before printing */
-       }
-    </style>';
+    	$this->initial();
         $fileId = $this->_request->getParam("id");
         $lessonFileModel = new Default_Model_LessonFile();
-        $file = $lessonFileModel->findFileById($fileId);
-        $path = APPLICATION_PATH . "\..\\" . $file["location"];
-        $currentFileExt = explode(".", $file['filename']);
-        $currentFileExt = $currentFileExt[1];
-        $arrayType = array(
-            "pdf" => "application/pdf",
-            "mp3" => "audio/mpeg",
-            "mp4" => "video/mp4"
-        );
-        //echo $path;
-        if (is_readable($path)) {
-            //echo $path;
-            header('Content-type: ' . $arrayType[$currentFileExt]);
-            header("Content-Length: " . filesize($path));
-            echo "thien";
-            readfile($path);
-            echo "thien";
+        if($lessonFileModel->checkUserCanSeeFile($this->currentUser["id"], $fileId)){
+        	$file = $lessonFileModel->findFileById($fileId);
+        	$path = APPLICATION_PATH . "\..\\" . $file["location"];
+        	$currentFileExt = explode(".", $file['filename']);
+        	$currentFileExt = $currentFileExt[1];
+        	$arrayType = array(
+        			"pdf" => "application/pdf",
+        			"mp3" => "audio/mpeg",
+        			"mp4" => "video/mp4"
+        	);
+        	//echo $path;
+        	if (is_readable($path)) {
+        		if($currentFileExt == "pdf"){
+        			echo $link = $this->view->serverUrl().$this->view->baseUrl()."/public/viewpdf/web/viewer.html?file=".$this->view->serverUrl().$this->view->baseUrl()."/".$file["location"];
+        			header("Location: ".$link);
+        		}else{
+        		header('Content-type: ' . $arrayType[$currentFileExt]);
+        		header("Content-Length: " . filesize($path));
+        		readfile($path);
+        		}
+        	}
         }
         exit();
     }

@@ -555,5 +555,30 @@ class TeacherController extends IController {
         }
         $this->view->totalPayment = $totalPay . "(VND)";
     }
+    public function streamAction() {
+    	$fileId = $this->_request->getParam("id");
+    	$lessonFileModel = new Default_Model_LessonFile();
+    		$file = $lessonFileModel->findFileById($fileId);
+    		$path = APPLICATION_PATH . "\..\\" . $file["location"];
+    		$currentFileExt = explode(".", $file['filename']);
+    		$currentFileExt = $currentFileExt[1];
+    		$arrayType = array(
+    				"pdf" => "application/pdf",
+    				"mp3" => "audio/mpeg",
+    				"mp4" => "video/mp4"
+    		);
+    		echo $path;
+    		if (is_readable($path)) {
+    			if($currentFileExt == "pdf"){
+    				echo $link = $this->view->serverUrl().$this->view->baseUrl()."/public/viewpdf/web/viewer.html?file=".$this->view->serverUrl().$this->view->baseUrl()."/".$file["location"];
+    				header("Location: ".$link);
+    			}else{
+    				header('Content-type: ' . $arrayType[$currentFileExt]);
+    				header("Content-Length: " . filesize($path));
+    				readfile($path);
+    			}
+    		}
+    	exit();
+    }
 
 }

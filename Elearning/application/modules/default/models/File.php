@@ -329,10 +329,11 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
     }
     
     public function getFileByLesson($lessonId) {
-        $query = $this->select()
-                ->from($this->_name, "*")
+        $select = $this->getAdapter()->select();
+        $select->from($this->_name, "*")
+                ->joinLeft('copyright_report', 'copyright_report.file_id=lesson_file.id', array('copyright'=>'copyright_report.status'))
                 ->where('lesson_id=?', $lessonId);
-        return $this->getAdapter()->fetchAll($query);
+        return $this->getAdapter()->fetchAll($select);
     }
     
 }
