@@ -159,6 +159,12 @@ class Admin_AccountController extends IController {
      * 
      */
     public function deleteIpAction() {
+        $ipId = $this->getParam('id');
+        $ipModel = new Admin_Model_AdminIp();
+        
+        $ipModel->deleteIp($ipId);
+        $this->_helper->FlashMessenger->addMessage(Message::$M4021, 'updateInfoSuccess');
+        
         $this->redirect("admin/account");
     }
 

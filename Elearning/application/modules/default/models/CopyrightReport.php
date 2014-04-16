@@ -45,4 +45,13 @@ class Default_Model_CopyrightReport extends Zend_Db_Table_Abstract {
                     ->where("copyright_report.status = 1");
         return count($this->getAdapter()->fetchAll($select));
     }
+    
+    /**
+     * レポートを削除する
+     * 
+     * @param type $reportId
+     */
+    public function deleteReport($reportId) {
+        $this->update(array("status"=>0), "id=".$reportId);
+    }
 }

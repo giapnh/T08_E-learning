@@ -193,4 +193,22 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
         }
         return false;
     }
+    
+    /**
+     * 授業をロックする
+     * 
+     * @param int $lessonId
+     */
+    public function lockLesson($lessonId) {
+        $this->update(array("status"=>0), "id=".$lessonId);
+    }
+    
+    /**
+     * 授業をアンロックする
+     * 
+     * @param int $lessonId
+     */
+    public function unlockLesson($lessonId) {
+        $this->update(array("status"=>1), "id=".$lessonId);
+    }
 }

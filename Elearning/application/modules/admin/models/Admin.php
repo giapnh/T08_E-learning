@@ -117,4 +117,5 @@ class Admin_Model_Admin extends Zend_Db_Table_Abstract {
         $sql = "INSERT INTO admin_ip VALUES(NULL, '$userId','$ip')";
         $this->db->query($sql);
     }
+    
 }
