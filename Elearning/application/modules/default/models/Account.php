@@ -160,10 +160,11 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
      * @param type $data ユーザの情報
      */
     public function insertNew($data) {
+        $master = new Default_Model_Master();
         $ins_data = array(
             'username' => $data['username'],
-            'first_password' => sha1(md5($data['username'] . '+' . $data['password'] . '+' . Code::$PASSWORD_CONST)),
-            'password' => sha1(md5($data['username'] . '+' . $data['password'] . '+' . Code::$PASSWORD_CONST)),
+            'first_password' => sha1(md5($data['username'] . '+' . $data['password'] . '+' . $master->getMasterValue(Default_Model_Master::$KEY_PASSWORD_CONST))),
+            'password' => sha1(md5($data['username'] . '+' . $data['password'] . '+' . $master->getMasterValue(Default_Model_Master::$KEY_PASSWORD_CONST))),
             'name' => $data['fullname'],
             'birthday' => $data['day'] . '-' . $data['month'] . '-' . $data['year'],
             'address' => $data['address'],
@@ -213,7 +214,7 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
      */
     public function updatePassword($data) {
         $update_data = array(
-            'password' => sha1(md5($data['username'] . '+' . $data['new_password'] . '+' . Code::$PASSWORD_CONST)));
+            'password' => sha1(md5($data['username'] . '+' . $data['new_password'] . '+' . $master->getMasterValue(Default_Model_Master::$KEY_PASSWORD_CONST))));
         $username = $data['username'];
         $where = "username='$username'";
         $this->update($update_data, $where);
