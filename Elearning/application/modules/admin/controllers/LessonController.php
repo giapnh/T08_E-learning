@@ -122,16 +122,15 @@ class Admin_LessonController extends IController {
         $this->view->lessonId = $lessonId;
     }
     
+    /**
+     * テストファイルからHtml文字列を取る
+     * 
+     * @param int $testId
+     * @return string Html String
+     */
     public function getTestHtml($testId) {
         $fileModel = new Default_Model_File();
         return $fileModel->getTestHtml($testId);
-    }
-    
-    /**
-     * レポートを見る画面
-     */
-    public function reportAction() {
-        
     }
     
     /**
