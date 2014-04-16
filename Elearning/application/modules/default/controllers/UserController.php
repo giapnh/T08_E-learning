@@ -15,28 +15,9 @@ class UserController extends IController {
      * @param string $role     役割
      */
     public function loginAction() {
-//         		//Ip cache
-//         		$frontendOptions = array(
-//         				'lifetime' => Code::$LOGIN_FAIL_LOCK_TIME, // cache lifetime of 2 hours
-//         				'automatic_serialization' => true
-//         		);
-//         		$backendOptions = array(
-//         				'cache_dir' => 'C:/Users/Public' // Directory where to put the cache files
-//         		);
-//         		$cache = Zend_Cache::factory('Core',
-//         				'File',
-//         				$frontendOptions,
-//         				$backendOptions);
-        // 		// see if a cache already exists:
-        // 		if($result = $cache->load('ip_locking')) {
-        // 			// 			$cache->save($result, 'myresult');
-        // 		} else {
-        // 			// cache hit! shout so that we know
-        // 			echo "This one is from cache!\n\n";
-        // 		}
-        //Ip cache
+        $master = new Default_Model_Master();
         $frontendOptions = array(
-            'lifetime' => Code::$LOGIN_FAIL_LOCK_TIME,
+            'lifetime' => $master->getMasterValue(Default_Model_Master::$KEY_LOGIN_FAIL_LOCK_TIME),
             'automatic_serialization' => true
         );
         $backendOptions = array(
@@ -62,12 +43,12 @@ class UserController extends IController {
                 if ($authAdapter->getFailCount($uname) == 5 && !$cache->load($uname)) {
                     $authAdapter->incLoginFailure($uname);
                     $cache->save("1", $uname);
-                    $this->view->errorMessage = str_replace('%s', "" . (Code::$LOGIN_FAIL_LOCK_TIME / 86400), Message::$M0041);
+                    $this->view->errorMessage = str_replace('%s', "" . ($master->getMasterValue(Default_Model_Master::$KEY_LOGIN_FAIL_LOCK_TIME) / 3600), Message::$M0041);
                     return;
                 } else if ($authAdapter->getFailCount($uname) > 5) {
                     $authAdapter->incLoginFailure($uname);
                     if ($result = $cache->load($uname)) {
-                        $this->view->errorMessage = str_replace('%s', "" . (Code::$LOGIN_FAIL_LOCK_TIME / 86400), Message::$M0041);
+                        $this->view->errorMessage = str_replace('%s', "" . ($master->getMasterValue(Default_Model_Master::$KEY_LOGIN_FAIL_LOCK_TIME) / 3600), Message::$M0041);
                         return;
                     } else {
                         $authAdapter->resetFailCount($uname);

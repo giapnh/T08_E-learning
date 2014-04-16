@@ -38,13 +38,11 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
      * @return boolean
      */
     public function isValid($username, $password, $role) {
-//        var_dump($username);
-//        var_dump(sha1(md5($username . '+' . $password . '+' . Code::$PASSWORD_CONST)));
-//        die();
+        $master = new Default_Model_Master();
         $query = $this->select()
                 ->from($this->_name, array('username', 'password', 'role'))
                 ->where('username=?', $username)
-                ->where('password=?', sha1(md5($username . '+' . $password . '+' . Code::$PASSWORD_CONST)))
+                ->where('password=?', sha1(md5($username . '+' . $password . '+' . $master->getMasterValue(Default_Model_Master::$KEY_PASSWORD_CONST))))
                 ->where('role=?', $role)
                 ->where('status=?', 1); //If this account is accepted by admin
         $result = $this->getAdapter()->fetchAll($query);
