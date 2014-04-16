@@ -119,7 +119,6 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
                 ->where('learn.student_id=?', $studentId)
                 ->where("learn.register_time + INTERVAL ".$this->_lessonDeadline." DAY >= NOW()")
                 ->joinInner('user', 'user.id=lesson.teacher_id', array("name"));
-        echo $select;
         return $this->getAdapter()->fetchAll($select);
     }
 
