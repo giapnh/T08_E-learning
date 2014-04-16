@@ -1,7 +1,4 @@
 <?php
-
-include "../models/Master.php";
-
 require_once 'IController.php';
 
 //require 'RegisterController.php';
@@ -236,7 +233,9 @@ class StudentController extends IController {
         $learnModel = new Default_Model_Learn();
         $commentModel = new Default_Model_Comment();
         $lfileModel = new Default_Model_LessonFile();
-        if (!$learnModel->isStudentLearn($userId, $lesson_id))
+        $master = new Default_Model_Master();
+        $lessonDeadline = $master->getMasterValue(Default_Model_Master::$KEY_LESSON_DEADLINE);
+        if (!$learnModel->isStudentLearn($userId, $lesson_id, $lessonDeadline))
             $this->_redirect("student/myLessonDetail?lessonId=" . $lesson_id);
         if ($this->_request->isGet()) {
             $lessonModel->incrementView($lesson_id);
@@ -259,6 +258,8 @@ class StudentController extends IController {
         $tagModel = new Default_Model_Tag();
         $learnModel = new Default_Model_Learn();
         $lfileModel = new Default_Model_LessonFile();
+        $master = new Default_Model_Master();
+        $lessonDeadline = $master->getMasterValue(Default_Model_Master::$KEY_LESSON_DEADLINE);
         if ($this->_request->isGet()) {
             $do = $this->_request->getParam('do');
             $this->view->do = $do;
@@ -274,7 +275,7 @@ class StudentController extends IController {
                 $this->view->filesInfo = $lfileModel->listFileOfLesson($lesson_id);
             } else if ($do == 'submit') {
                 $u = Zend_Auth::getInstance()->getStorage()->read();
-                $isLearn = $learnModel->isStudentLearn($u['id'], $lesson_id);
+                $isLearn = $learnModel->isStudentLearn($u['id'], $lesson_id, $lessonDeadline);
                 $this->view->isLearn = $isLearn;
                 if ($isLearn == 0) {
                     $this->view->notify = "前に、あなたはこの授業に登録した！";
