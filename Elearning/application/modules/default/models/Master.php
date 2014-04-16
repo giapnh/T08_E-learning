@@ -49,8 +49,6 @@ class Default_Model_Master extends Zend_Db_Table_Abstract {
                 ->where('master_key=?', $master_key);
         $row = $this->getAdapter()->fetchRow($query);
         if ($row) {
-            var_dump($row['master_value']);
-            die();
             return $row['master_value'];
         } else {
             return 0;
