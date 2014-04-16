@@ -10,6 +10,7 @@ and open the template in the editor.
 
 #submit, .normal-button {
     background: #52A20B;
+    color: white;
     width: 120px;
     padding: 5px;
     cursor: pointer;

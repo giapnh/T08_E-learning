@@ -29,7 +29,16 @@ class Default_Model_FileComment extends Zend_Db_Table_Abstract {
             'file_id' => $fileId,
             'comment' => $comment
         );
-        $this->insert($data);
+        $id = $this->insert($data);
+        return $this->getById($id);
     }
 
+    protected function getById($id) {
+        $select = $this->getAdapter()->select();
+        $select->from(array('cmt' => $this->_name))
+                ->joinInner('user', 'cmt.user_id=user.id', array('name', 'role'))
+                ->where("cmt.id='$id'");
+        $result = $this->getAdapter()->fetchAll($select);
+        return $result[0];
+    }
 }

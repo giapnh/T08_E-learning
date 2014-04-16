@@ -3,6 +3,8 @@
 <?php $this->headLink()->appendStylesheet($this->baseUrl() . "/public/css/ta123_style2.css"); ?>
 <?php $this->headLink()->appendStylesheet($this->baseUrl() . "/public/css/common-style.css"); ?>
 
+<?php $this->headScript()->appendFile($this->baseUrl() . "/public/js/jquery.min.js"); ?>
+
 <style type="text/css">
     #lesson_container {
         width: 800px;
@@ -136,42 +138,11 @@
 </style>
 <script type="text/javascript">
     $(document).ready(function(){
-        
-        $(".btn-add-file").click(function(){
-            $(this).hide();
-            $('form').show();
-        });
-        
-        $(".btn-delete").click(function(){
-            if (confirm("ファイルを本当に削除したいですか？")) {
-                return true;
-            } else {
-                return false;
+        $(".unlock-btn").click(function(){
+            if (confirm("この授業を本当にアンロックしたいですか？")) {
+                window.top.location = "<?php echo $this->baseUrl()."/admin/lesson/unlock?lesson_id=".$this->lessonInfo['id']; ?>";
             }
         });
-        
-        $(".btn-comment").click(function(){
-            var comment = $(".comment-input").val();
-            if (comment !== '') {
-                $.ajax({
-                    type: "POST",
-                    url: "<?php echo $this->baseUrl(); ?>/api/lesson-comment",
-                    data: { comment: comment, lesson_id: <?php echo $this->lessonId; ?> }
-                })
-                .done(function( data ) {
-                    console.log( data );
-                    $(".comment-input").before(
-                        "<div class='comment_slot'>"+
-                            "<div class='comment_owner'>"+data.name+"</div>"+
-                            "<div class='comment_content'>"+data.comment+"</div>"+
-                            "<div class='created_time'>"+data.time+"</div>"+
-                        "</div>");
-                    $(".comment-input").val("");
-                });
-            }
-            return false;
-        });
-        
     });
 </script>
 <?php echo $this->render('admin-layout.phtml') ?>
@@ -226,6 +197,13 @@
                     <img src="<?php echo $this->baseUrl(); ?>/public/images/copyright_report.png" width="20" height="20">
                 </span>
                 <?php } ?>
+                <?php if ($this->lessonInfo['status'] == 0) { ?>
+                    <div style="float:right;">
+                        <img src="<?php echo $this->baseUrl(); ?>/public/images/locked.png" width="20" height="20">
+                        <span style="color: red">この授業はロックされている</span>
+                        <button class="normal-button unlock-btn">アンロック</button>
+                    </div>
+                <?php } ?>
             </div>
         </div>
         <div>
@@ -255,7 +233,7 @@
                     <div class="file_type"><img src="<?php echo $this->baseUrl()."/public/images/".$icon ?>"></div>
                     <div class="file_name"><?php echo $file['filename']; ?></div>
                     <div class="file_description"><?php echo $file['description'] ?></div>
-                    <?php if ($file['copyright'] == 1) { ?>
+                    <?php if ($file['is_reported']) { ?>
                         <div class="copyright"><img src="<?php echo $this->baseUrl()."/public/images/copyright_report.png" ?>"></div>
                     <?php } ?>
                 </a>

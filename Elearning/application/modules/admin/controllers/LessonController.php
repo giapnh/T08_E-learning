@@ -4,7 +4,6 @@ class Admin_LessonController extends IController {
     
     public static $LESSON_PER_PAGE = 3;
 
-
     /**
      * 授業リスト画面
      */
@@ -71,6 +70,7 @@ class Admin_LessonController extends IController {
 
            $lesson = $lessonModel->findLessonById($lessonId);
            $files = $fileModel->getFileByLesson($lessonId);
+           
            $tags = $lessonTagModel->getTagsByLesson($lessonId);
            $comments = $commentModel->getAllCommentOfLesson($lessonId);
            $studentsNum = $learnModel->countStudenJoinLesson($lessonId);
@@ -90,34 +90,27 @@ class Admin_LessonController extends IController {
     public function fileAction() {
         
         $lessonModel = new Default_Model_Lesson();
-        $lessonFileModel = new Default_Model_LessonFile();
+        $lessonFileModel = new Default_Model_File();
         $filecommentModel = new Default_Model_FileComment();
         $reportModel = new Default_Model_CopyrightReport();
         $learnModel = new Default_Model_Learn();
 
-        if ($this->_request->isGet()) {
-            $lessonId = $this->_request->getParam('lesson_id');
-            $currentFileId = $this->_request->getParam('file_id');
-        }
-        if ($this->_request->isPost()) {
-            $u = Zend_Auth::getInstance()->getStorage()->read();
-            $lessonId = $this->_request->getParam('lesson_id');
-            $currentFileId = $this->_request->getParam('file_id');
-            $comment = $this->_request->getParam('comment');
-            if ($comment != NULL) {
-
-                $filecommentModel->addComment($currentFileId, $u['id'], $comment);
-            }
-        }
-        $this->view->reports = $reportModel->getReport($currentFileId);
-        $this->view->comments = $filecommentModel->getAllCommentOfFile($currentFileId);
+        $lessonId = $this->_request->getParam('lesson_id');
+        $currentFileId = $this->_request->getParam('file_id');
+        
         $currentFile = $lessonFileModel->findFileById($currentFileId);
         $lessonInfo = $lessonModel->findLessonById($lessonId);
         $studentsNum = $learnModel->countStudenJoinLesson($lessonId);
         $lessonInfo['students_num'] = $studentsNum;
+        $files = $lessonFileModel->getFileByLesson($lessonId);
+        $reports = $reportModel->getReport($currentFileId);
+        $comments = $filecommentModel->getAllCommentOfFile($currentFileId);
+        
+        //
         $this->view->lessonInfo = $lessonInfo;
-        $files = $lessonFileModel->listFileOfLesson($lessonId);
         $this->view->files = $files;
+        $this->view->reports = $reports;
+        $this->view->comments = $comments;
         if ($currentFile == NULL) {
             $this->view->currentFile = $files[0];
         } else {
@@ -141,4 +134,27 @@ class Admin_LessonController extends IController {
         
     }
     
+    /**
+     * 授業をロックする処理
+     */
+    public function lockAction() {
+        $lessonId = $this->getParam('lesson_id');
+        $lessonModel = new Default_Model_Lesson();
+        
+        $lessonModel->lockLesson($lessonId);
+        
+        $this->redirect('admin/lesson/lesson?lesson_id='.$lessonId);
+    }
+    
+    /**
+     * 授業をアンロックする処理
+     */
+    public function unlockAction() {
+        $lessonId = $this->getParam('lesson_id');
+        $lessonModel = new Default_Model_Lesson();
+        
+        $lessonModel->unlockLesson($lessonId);
+        
+        $this->redirect('admin/lesson/lesson?lesson_id='.$lessonId);
+    }
 }

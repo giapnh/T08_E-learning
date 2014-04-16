@@ -81,4 +81,32 @@ class ApiController extends Zend_Controller_Action {
             $this->redirect('api/error?code='.$this->ERROR_COMMENT_EMPTY);
         }
     }
+    
+    /**
+     * ファイルコメント処理
+     */
+    public function fileCommentAction() {
+        $comment = $this->getParam('comment');
+        $fileId = $this->getParam('file_id');
+        
+        $commentModel = new Default_Model_FileComment();
+        
+        if (isset($comment) && $comment != '') {
+            $commentInfo = $commentModel->addComment($fileId, $this->userInfo['id'], $comment);
+            echo json_encode($commentInfo);
+        } else {
+            $this->redirect('api/error?code='.$this->ERROR_COMMENT_EMPTY);
+        }
+    }
+    
+    /**
+     * ファイルのレポートを削除処理
+     */
+    public function deleteReportAction() {
+        $reportId = $this->getParam('report-id');
+        
+        $copyrightModel = new Default_Model_CopyrightReport();
+        $copyrightModel->deleteReport($reportId);
+        echo json_encode("Success");
+    }
 }

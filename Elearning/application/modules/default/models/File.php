@@ -328,12 +328,38 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
         return implode("\n", $fileLines);
     }
     
+    /**
+     * 授業のファイルリストを取る
+     * 
+     * @param int $lessonId
+     * @return array
+     */
     public function getFileByLesson($lessonId) {
         $select = $this->getAdapter()->select();
         $select->from($this->_name, "*")
-                ->joinLeft('copyright_report', 'copyright_report.file_id=lesson_file.id', array('copyright'=>'copyright_report.status'))
                 ->where('lesson_id=?', $lessonId);
-        return $this->getAdapter()->fetchAll($select);
+        $result = $this->getAdapter()->fetchAll($select);
+        foreach ($result as $index => $file) {
+            $result[$index]['is_reported'] = $this->isReported($file);
+        }
+        return $result;
+    }
+    
+    /**
+     * このファイルがレポートしたかどうかをチェック
+     * 
+     * @param array $file
+     * @return boolean
+     */
+    private function isReported($file) {
+        $select = $this->getAdapter()->select();
+        $select->from('copyright_report', "*")
+                ->where("file_id=".$file['id']." and status=1");
+        $result = $this->getAdapter()->fetchAll($select);
+        if ($result) {
+            return TRUE;
+        }
+        return FALSE;
     }
     
 }

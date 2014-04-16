@@ -236,6 +236,9 @@
                         <?php if ($item['is_reported']) { ?>
                             <img src="<?php echo $this->baseUrl(); ?>/public/images/copyright_report.png" width="30" height="30">
                         <?php } ?>
+                        <?php if ($item['status'] == 0) { ?>
+                            <img src="<?php echo $this->baseUrl(); ?>/public/images/locked.png" width="30" height="30">
+                        <?php } ?>
                     </div>
                 </div>
                 <div class="lesson-right">

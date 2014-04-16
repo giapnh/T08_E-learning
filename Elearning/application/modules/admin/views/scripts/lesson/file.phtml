@@ -3,11 +3,18 @@
 <?php $this->headLink()->appendStylesheet($this->baseUrl() . "/public/css/ta123_style2.css"); ?>
 <?php $this->headLink()->appendStylesheet($this->baseUrl() . "/public/css/common-style.css"); ?>
 
+<?php $this->headScript()->appendFile($this->baseUrl() . "/public/js/jquery.min.js"); ?>
+
 <style type="text/css">
     .content {
         width: 1000px;
         background-color: wheat;
         margin: 0px auto;
+        margin-top: 20px;
+        box-shadow: 0px 0px 1px 1px green;
+    }
+    .red {
+        color: red;
     }
     .top-content {
         padding: 5px;
@@ -17,32 +24,20 @@
         background-color: yellowgreen;
     }
     .left-content {
-        width: 190px;
+        width: 180px;
         height: 600px;
         float: left;
-        padding: 5px;
+        padding: 10px;
         overflow: auto;
     }
     .right-content {
-        width: 798px;
+        width: 778px;
+        padding: 10px;
         float: left;
     }
     .file-content {
         border: 1px solid gray;
         height: 700px;
-    }
-    .comment {
-        width: 400px;
-        border: 1px solid gray;
-        box-shadow: 0px 0px 5px 1px gray;
-        margin-left: 186px;
-        padding: 10px;
-    }
-    .comment-input {
-        width: 100%;
-    }
-    .comment-submit {
-        margin-top: 10px;
     }
     .lesson-title {
         font-weight: bold;
@@ -54,7 +49,105 @@
     .lesson-created {
         color: gray;
     }
+    .file-content {
+        padding: 5px;
+    }
+    .file-info {
+        padding-bottom: 10px;
+    }
+    .report-num {
+        color: red;
+        cursor: pointer;
+        text-decoration: underline;
+    }
+    .report-content {
+        display: none;
+    }
+    .copyright-report {
+        max-height: 200px;
+        overflow: auto;
+    }
+    .report-user {
+        width: 20%;
+        float: left;
+        font-weight: bold;
+    }
+    .reported-date {
+        width: 80%;
+        float: left;
+        font-style: italic;
+        color: gray;
+    }
+    .comment {
+        width: 756px;
+        border: 1px solid gray;
+        padding: 10px;
+    }
+    .comment-center {
+        width: 400px;
+        margin: 0px auto;
+    }
+    .comment-item {
+        margin-bottom: 10px;
+    }
+    .comment-name {
+        font-weight: bold;
+    }
+    .comment-time {
+        font-style: italic;
+        color: gray;
+    }
+    .comment-input {
+        width: 100%;
+    }
+    .comment-submit {
+        margin-top: 10px;
+    }
+    .delete-btn, .other-lesson {
+        font-style: italic;
+        text-decoration: underline;
+        cursor: pointer;
+    }
 </style>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $(".report-num").click(function(){
+            $(".report-content").toggle('slow');
+        });
+        $(".delete-btn").click(function(){
+            var reportId = $(this).data('report-id');
+            if (confirm("このレポートを本当に削除したいですか？")) {
+            
+                $.ajax({
+                    type: "POST",
+                    url: "<?php echo $this->baseUrl(); ?>/api/delete-report",
+                    data: { 'report-id': reportId }
+                }).done(function( data ) {
+                    console.log("success");
+                    $(".report-"+reportId).hide('slow',function(){
+                        $(this).remove();
+                        var reportsNum = $('.report-num').data('num');
+                        reportsNum --;
+                        if (reportsNum <= 0) {
+                            $('.report-num').remove();
+                        } else {
+                            $('.report-num').data('num', reportsNum);
+                            $('.report-num .text').text(reportsNum+'レポート');
+                        }
+                    });
+                });
+                
+            }
+            return false;
+        });
+        $(".unlock-btn").click(function(){
+            if (confirm("この授業を本当にアンロックしたいですか？")) {
+                window.top.location = "<?php echo $this->baseUrl()."/admin/lesson/unlock?lesson_id=".$this->lessonInfo['id']; ?>";
+            }
+        });
+    });
+</script>
 
 <?php echo $this->render('admin-layout.phtml') ?>
 <div class="content">
@@ -69,7 +162,7 @@
             <a href="<?php echo $this->baseUrl(); ?>/admin/user/info?user_id=<?php echo $this->lessonInfo['teacher_id']; ?>">
             <div class="lesson-teacher"><?php echo $this->lessonInfo['name'];?></div>
             <div class="lesson-created"><?php echo $this->lessonInfo['create_time'];?></div>
-            <div>
+            <div class="other-lesson">
                 <a href="<?php echo $this->baseUrl(); ?>/admin/lesson/index?teacherId=<?php echo $this->lessonInfo['teacher_id']; ?>">他の授業を見る</a>
             </div>
             <div class="like" style="width: 100%; margin: 10px 0px;">
@@ -86,8 +179,22 @@
                     <span><?php echo $this->lessonInfo['students_num'] ?></span>
                 </span>
             </div>
-            
+            <?php if ($this->lessonInfo['status'] == 0) { ?>
+                <div>
+                    <img src="<?php echo $this->baseUrl(); ?>/public/images/locked.png" width="20" height="20">
+                    <span style="color: red">この授業はロックされている</span>
+                </div>
+                <div>
+                    <button class="normal-button unlock-btn">アンロック</button>
+                </div>
+            <?php } else { ?>
+            <a href="<?php echo $this->baseUrl(); ?>/admin/lesson/lock?lesson_id=<?php echo $this->lessonInfo['id']; ?>">
+                <button class="normal-button lock-btn">ロック</button>
+            </a>
+            <?php } // End if check lesson status ?>
         </div>
+        <br>
+        <hr>
         <?php
         $count = 0;
         foreach ($this->files as $file) {
@@ -106,46 +213,77 @@
                 $icon = "test.png";
             }
         ?>
-        <div class="file-link">
-            <a href="<?php echo $this->baseUrl(); ?>/admin/lesson/file?lesson_id=<?php echo $this->lessonInfo['id']; ?>&file_id=<?php echo $file['id']; ?>">
-                <div><font style="color: #7E3500">
-                <?php echo $count . '.'; ?>
-                </font>
-                <?php echo $file['filename']; ?>
-                <img src="<?php echo $this->baseUrl()."/public/images/".$icon; ?>" width="16" height="16">
-                </div>
-            </a>
-            <div class="copyright-report">
-                <div class="report-num">
-                    <img src="<?php echo $this->baseUrl(); ?>/public/images/copyright_report.png" width="20" height="20">
-                    1レポート
-                </div>
-                <div class="report-content">
-                    <div class="report-user">
-                        学生１
+            <div class="file-link">
+                <a href="<?php echo $this->baseUrl(); ?>/admin/lesson/file?lesson_id=<?php echo $this->lessonInfo['id']; ?>&file_id=<?php echo $file['id']; ?>">
+                    <div>
+                    <?php echo $count . '.'; ?>
+                    <img src="<?php echo $this->baseUrl()."/public/images/".$icon; ?>" width="16" height="16">
+                    <?php echo $file['filename']; ?>
                     </div>
-                    <div class="reported-date">2014-04-12 14:32:25</div>
-                    <div class="reported-message">このファイルは私のです</div>
-                    <div class="report-action">
-                        <div class="hide-btn">隠る</div>
-                        <div class="delete-btn">削除</div>
+                    <?php if ($file['is_reported']) { ?>
+                    <div>
+                        <img src="<?php echo $this->baseUrl(); ?>/public/images/copyright_report.png" width="20" height="20">
                     </div>
-                </div>
+                    <?php } // End if check reported ?>
+                </a>
             </div>
-        </div>
+            <hr>
         <?php
-        }
+        } // End foreach files
         ?>
     </div>
     
     <div class="right-content">
         <div class="file-content">
-            file content
+            <div class="file-info">
+                <div class="file-name">
+                    <?php echo $this->currentFile['filename']; ?>
+                </div>
+                <div class="file-description">
+                    <?php echo $this->currentFile['description']; ?>
+                </div>
+                <?php if (count($this->reports) > 0) { ?>
+                    <div class="copyright-report">
+                        <div class="report-num" data-num="<?php echo count($this->reports); ?>">
+                            <img src="<?php echo $this->baseUrl(); ?>/public/images/copyright_report.png" width="20" height="20">
+                            <div class="text">
+                                <?php echo count($this->reports); ?>レポート
+                            </div>
+                        </div>
+                        <?php foreach($this->reports as $report) { ?>
+                            <div class="report-content report-<?php echo $report['id']; ?>">
+                                <hr>
+                                <div class="report-user">
+                                    <?php echo $report['username']; ?>
+                                </div>
+                                <div class="reported-date"></div>
+                                <div class="reported-message"><?php echo $report['reason'] ?></div>
+                                <div class="report-action">
+                                    <div class="delete-btn" data-report-id="<?php echo $report['id'] ?>">削除</div>
+                                </div>
+                            </div>
+                        <?php } // End foreach $this->reports ?>
+                    </div>
+                <?php } // End if count reports ?>
+            </div>
+            
+            <hr>
+            <div class="file-show">
+                <!-- TODO: Display file here -->
+            </div>
+            
         </div>
 
         <div class="comment">
-            <textarea class="comment-input"></textarea>
-            <button class="normal-button comment-submit">コメント</button>
+            <div class="comment-center">
+                <?php foreach ($this->comments as $comment) { ?>
+                <div class="comment-item">
+                    <div class="comment-name"><?php echo $comment['name']; ?></div>
+                    <div class="comment-time"><?php echo $comment['time']; ?></div>
+                    <div class="comment-content"><?php echo $comment['comment']; ?></div>
+                </div>
+                <?php } // End foreach comments ?>
+            </div>
         </div>
     </div>
     <div style="line-height:1px;">&nbsp;</div>
