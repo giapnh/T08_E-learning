@@ -227,6 +227,8 @@ class Admin_UserController extends IController {
      */
     public function addAdminAction() {
         $params = $this->getAllParams();
+        $master = new Default_Model_Master();
+        $passwordConst = $master->getMasterValue(Default_Model_Master::$KEY_PASSWORD_CONST);
         if ($this->_request->isPost()) {
             $username = $params["username"];
             $password = $params["password"];
@@ -259,7 +261,7 @@ class Admin_UserController extends IController {
                 return;
             }
             
-            $adminModel->createAdmin($this->currentUser['id'], $username, sha1(md5($username . '+' . $password . '+' . Code::$PASSWORD_CONST)));
+            $adminModel->createAdmin($this->currentUser['id'], $username, sha1(md5($username . '+' . $password . '+' . $passwordConst)));
             $this->redirect("admin/user");
         }
     }
