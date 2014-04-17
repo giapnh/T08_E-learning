@@ -82,6 +82,10 @@ class Message {
     public static $M4127 = "自動バックアップ期間が無効";
     public static $M4128 = "マスタデータが更新された";
     public static $M4129 = "データベースが<filename>にバックアップされた";
+    public static $M41210 = "<filename>が回復された";
+    public static $M41211 = "<filename>の回復が失敗した";
+    public static $M41212 = "ログイン誤り回が無効";
+    public static $M41213 = "自動セション終了時間が無効";
     
     public static $M4021 = "IPを削除された";
 }

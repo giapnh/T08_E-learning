@@ -4,6 +4,9 @@ require_once '/../../default/controllers/Message.php';
 require_once 'AccountController.php';
 
 class Admin_IndexController extends IController {
+    
+    public static $BACKUP_FILE_PER_PAGE = 5;
+    
     public function preDispatch() {
         $auth = Zend_Auth::getInstance();
         if ($auth->hasIdentity()) {
@@ -97,8 +100,13 @@ class Admin_IndexController extends IController {
         $masterData = $masterModel->getMasterData();
         $this->view->masterData = $masterData;
         
+        $page = $this->getParam('page');
+        if (!isset($page)) {
+            $page = 1;
+        }
+        
         // バックアップしたファイルリストを取る
-        $this->view->backupList = $dbModel->getBackupFiles();
+        $this->view->backupList = $dbModel->getBackupFilesPager($page, self::$BACKUP_FILE_PER_PAGE);
         
         if ($this->_request->isPost()) {
             $masterData = array();
@@ -107,17 +115,22 @@ class Admin_IndexController extends IController {
             $teacherFeeRate = $this->_request->getParam('teacher_fee_rate');
             $fileLocation = $this->_request->getParam('file_location');
             $lessonDeadline = $this->_request->getParam('lesson_deadline');
+            $lockCount = $this->_request->getParam('lock_count');
             $loginFailLockTime = $this->_request->getParam('login_fail_lock_time');
+            $sessonTime = $this->_request->getParam('session_time');
             $violationTime = $this->_request->getParam('violation_time');
             $backupTime = $this->_request->getParam('backup_time');
+            
             $masterData[Admin_Model_Master::$KEY_COMA_PRICE] = $comaPrice;
             $masterData[Admin_Model_Master::$KEY_TEACHER_FEE_RATE] = $teacherFeeRate;
             $masterData[Admin_Model_Master::$KEY_FILE_LOCATION] = $fileLocation;
             $masterData[Admin_Model_Master::$KEY_LESSON_DEADLINE] = $lessonDeadline;
+            $masterData[Admin_Model_Master::$KEY_LOCK_COUNT] = $lockCount;
             $masterData[Admin_Model_Master::$KEY_LOGIN_FAIL_LOCK_TIME] = $loginFailLockTime;
+            $masterData[Admin_Model_Master::$KEY_SESSION_TIME] = $sessonTime;
             $masterData[Admin_Model_Master::$KEY_VIOLATION_TIME] = $violationTime;
             $masterData[Admin_Model_Master::$KEY_BACKUP_TIME] = $backupTime;
-        
+            
             // インプットチェック
             if (!$this->isNumber($comaPrice) || $comaPrice > 1000000000) {
                 $this->view->errorMessage = Message::$M4121;
@@ -131,8 +144,16 @@ class Admin_IndexController extends IController {
                 $this->view->errorMessage = Message::$M4124;
                 return;
             }
+            if (!$this->isNumber($lockCount) || $lockCount > 1000000000) {
+                $this->view->errorMessage = Message::$M41212;
+                return;
+            }
             if (!$this->isNumber($loginFailLockTime) || $loginFailLockTime > 1000000000) {
                 $this->view->errorMessage = Message::$M4125;
+                return;
+            }
+            if (!$this->isNumber($sessonTime) || $sessonTime > 1000000000) {
+                $this->view->errorMessage = Message::$M41213;
                 return;
             }
             if (!$this->isNumber($violationTime) || $violationTime > 1000000000) {
@@ -177,10 +198,23 @@ class Admin_IndexController extends IController {
     }
     
     /**
-     * データベース回復処理
+     * データベースを回復処理
      */
     public function restoreAction() {
+        $file = $this->getParam('file');
         
+        $dbModel = new Admin_Model_DB();
+        $result = $dbModel->restore($file);
+        
+        if ($result) {
+            $successMessage = str_replace("<filename>", $file, Message::$M41210);
+            $this->_helper->FlashMessenger->addMessage($successMessage, 'backupSuccess');
+        } else {
+            $successMessage = str_replace("<filename>", $file, Message::$M41211);
+            $this->_helper->FlashMessenger->addMessage($successMessage, 'backupSuccess');
+        }
+        
+        $this->redirect('admin/index/maintain');
     }
     
     /**
