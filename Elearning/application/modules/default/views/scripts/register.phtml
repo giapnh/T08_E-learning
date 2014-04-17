@@ -18,10 +18,12 @@
                 <script type="text/javascript">
                     function student() {
                         $("#secret_qa").hide();
+                        $("#bank_acc_label").text("クレジットカード情報：");
                     }
 
                     function teacher() {
                         $("#secret_qa").show();
+                        $("#bank_acc_label").text("銀行アカウント：");
                     }
                 </script>
                 <!--ユーザルール-->
@@ -351,7 +353,7 @@
                 </div>
                 <div class="res_form_row">
                     <div class="res_f_r_left">
-                        <div class="res_f_r_left_up">電話番後:</div>
+                        <div class="res_f_r_left_up">電話番号:</div>
                     </div>
                     <div class="res_f_r_right">
                         <input id="res_phone_number" name="phone" class="res_input"
@@ -361,17 +363,17 @@
 
                 <div class="res_form_row">
                     <div class="res_f_r_left">
-                        <div class="res_f_r_left_up">銀後アカウント:</div>
+                        <div class="res_f_r_left_up" id = "bank_acc_label">クレジットカード情報：</div>
                     </div>
                     <div class="res_f_r_right">
                         <input id="res_bank_account" name="bank_acc" class="res_input"
                                type="text">
                     </div>
                 </div>
-                <div id="secret_qa">
+                <div id="secret_qa" style="display: none">
                     <div class="res_form_row" >
                         <div class="res_f_r_left">
-                            <div class="res_f_r_left_up">機密質問:</div>
+                            <div class="res_f_r_left_up">秘密質問:</div>
                         </div>
                         <div class="res_f_r_right">
                             <input id="res_secret_question_q" class="res_input"

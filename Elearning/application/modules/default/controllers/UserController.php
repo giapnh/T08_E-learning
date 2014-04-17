@@ -40,12 +40,12 @@ class UserController extends IController {
                 $this->view->errorMessage = Message::$M002;
                 return;
             } else {
-                if ($authAdapter->getFailCount($uname) == 5 && !$cache->load($uname)) {
+                if ($authAdapter->getFailCount($uname) == $master->getMasterValue(Default_Model_Master::$KEY_LOCK_COUNT) && !$cache->load($uname)) {
                     $authAdapter->incLoginFailure($uname);
                     $cache->save("1", $uname);
                     $this->view->errorMessage = str_replace('%s', "" . ($master->getMasterValue(Default_Model_Master::$KEY_LOGIN_FAIL_LOCK_TIME) / 3600), Message::$M0041);
                     return;
-                } else if ($authAdapter->getFailCount($uname) > 5) {
+                } else if ($authAdapter->getFailCount($uname) > $master->getMasterValue(Default_Model_Master::$KEY_LOCK_COUNT)) {
                     $authAdapter->incLoginFailure($uname);
                     if ($result = $cache->load($uname)) {
                         $this->view->errorMessage = str_replace('%s', "" . ($master->getMasterValue(Default_Model_Master::$KEY_LOGIN_FAIL_LOCK_TIME) / 3600), Message::$M0041);
@@ -174,30 +174,32 @@ class UserController extends IController {
                 $this->view->errorMessage = Message::$M010;
                 return;
             }
-
+            //アドレス
             if (trim($data['address']) == '') {
                 $this->view->errorMessage = Message::$M011;
 
                 return;
             }
-
+            // 電話番号
             if (trim($data['phone']) == '') {
                 $this->view->errorMessage = Message::$M012;
                 return;
             }
-
+            //銀行アカウント
             if (trim($data['bank_acc']) == '') {
                 $this->view->errorMessage = Message::$M013;
             }
+            // なぜユーザは先生です、秘密質問がチェックする
+            if ($data['role'] == 2) {
+                if (trim($data['secret_question']) == '') {
+                    $this->view->errorMessage = Message::$M014;
+                    return;
+                }
 
-            if (trim($data['secret_question']) == '') {
-                $this->view->errorMessage = Message::$M014;
-                return;
-            }
-
-            if (trim($data['secret_answer']) == '') {
-                $this->view->errorMessage = Message::$M015;
-                return;
+                if (trim($data['secret_answer']) == '') {
+                    $this->view->errorMessage = Message::$M015;
+                    return;
+                }
             }
 
             if ($user->isExits($data['username'])) {

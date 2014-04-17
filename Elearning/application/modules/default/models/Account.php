@@ -161,24 +161,43 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
      */
     public function insertNew($data) {
         $master = new Default_Model_Master();
-        $ins_data = array(
-            'username' => $data['username'],
-            'first_password' => sha1(md5($data['username'] . '+' . $data['password'] . '+' . $master->getMasterValue(Default_Model_Master::$KEY_PASSWORD_CONST))),
-            'password' => sha1(md5($data['username'] . '+' . $data['password'] . '+' . $master->getMasterValue(Default_Model_Master::$KEY_PASSWORD_CONST))),
-            'name' => $data['fullname'],
-            'birthday' => $data['day'] . '-' . $data['month'] . '-' . $data['year'],
-            'address' => $data['address'],
-            'sex' => $data['sex'],
-            'email' => $data['email'],
-            'phone' => $data['phone'],
-            'bank_account' => $data['bank_acc'],
-            'first_secret_question' => $data['secret_question'],
-            'secret_question' => $data['secret_question'],
-            'first_secret_answer' => sha1(md5($data['secret_answer'])),
-            'secret_answer' => sha1(md5($data['secret_answer'])),
-            'role' => $data['role'],
-            'status' => 2//Wait for confirm by admin
-        );
+        $role = $data['role'];
+        if ($role == 1) {
+            $ins_data = array(
+                'username' => $data['username'],
+                'first_password' => sha1(md5($data['username'] . '+' . $data['password'] . '+' . $master->getMasterValue(Default_Model_Master::$KEY_PASSWORD_CONST))),
+                'password' => sha1(md5($data['username'] . '+' . $data['password'] . '+' . $master->getMasterValue(Default_Model_Master::$KEY_PASSWORD_CONST))),
+                'name' => $data['fullname'],
+                'birthday' => $data['day'] . '-' . $data['month'] . '-' . $data['year'],
+                'address' => $data['address'],
+                'sex' => $data['sex'],
+                'email' => $data['email'],
+                'phone' => $data['phone'],
+                'bank_account' => $data['bank_acc'],
+                'role' => $data['role'],
+                'status' => 2//Wait for confirm by admin
+            );
+        } else if ($role == 2) {
+            $ins_data = array(
+                'username' => $data['username'],
+                'first_password' => sha1(md5($data['username'] . '+' . $data['password'] . '+' . $master->getMasterValue(Default_Model_Master::$KEY_PASSWORD_CONST))),
+                'password' => sha1(md5($data['username'] . '+' . $data['password'] . '+' . $master->getMasterValue(Default_Model_Master::$KEY_PASSWORD_CONST))),
+                'name' => $data['fullname'],
+                'birthday' => $data['day'] . '-' . $data['month'] . '-' . $data['year'],
+                'address' => $data['address'],
+                'sex' => $data['sex'],
+                'email' => $data['email'],
+                'phone' => $data['phone'],
+                'bank_account' => $data['bank_acc'],
+                'first_secret_question' => $data['secret_question'],
+                'secret_question' => $data['secret_question'],
+                'first_secret_answer' => sha1(md5($data['secret_answer'])),
+                'secret_answer' => sha1(md5($data['secret_answer'])),
+                'role' => $data['role'],
+                'status' => 2//Wait for confirm by admin
+            );
+        }
+
         $this->insert($ins_data);
     }
 
