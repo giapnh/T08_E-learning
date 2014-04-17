@@ -14,10 +14,11 @@ class Admin_Model_DB {
     {
         // データベース設定をとる
         $bootstrap = Zend_Controller_Front::getInstance()->getParam('bootstrap');
-        $host = $bootstrap->getOption('resources')['db']['params']['host'];
-        $user = $bootstrap->getOption('resources')['db']['params']['username'];
-        $pass = $bootstrap->getOption('resources')['db']['params']['password'];
-        $name = $bootstrap->getOption('resources')['db']['params']['dbname'];
+        $resources = $bootstrap->getOption('resources');
+        $host = $resources['db']['params']['host'];
+        $user = $resources['db']['params']['username'];
+        $pass = $resources['db']['params']['password'];
+        $name = $resources['db']['params']['dbname'];
         $tables = '*';
         
         $link = mysql_connect($host,$user,$pass);
@@ -154,10 +155,11 @@ class Admin_Model_DB {
         
         // データベース設定をとる
         $bootstrap = Zend_Controller_Front::getInstance()->getParam('bootstrap');
-        $host = $bootstrap->getOption('resources')['db']['params']['host'];
-        $user = $bootstrap->getOption('resources')['db']['params']['username'];
-        $pass = $bootstrap->getOption('resources')['db']['params']['password'];
-        $dbName = $bootstrap->getOption('resources')['db']['params']['dbname'];
+        $resources = $bootstrap->getOption('resources');
+        $host = $resources['db']['params']['host'];
+        $user = $resources['db']['params']['username'];
+        $pass = $resources['db']['params']['password'];
+        $dbName = $resources['db']['params']['dbname'];
         
         $mysqli = new mysqli($host, $user, $pass, $dbName);
 
