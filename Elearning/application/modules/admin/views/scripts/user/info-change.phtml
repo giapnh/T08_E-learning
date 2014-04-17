@@ -15,29 +15,19 @@ $(document).ready(function(){
         }
     });
     $("#btn-reset-password").click(function(){
-        if (confirm("パスワードをリセットするのを同意しますか？")) {
+        if (confirm("このユーザを許可するのを同意しますか？")) {
             window.top.location = "<?php echo $this->baseUrl()."/admin/user/reset-password?user_id=".$this->user[Admin_Model_User::$ID]; ?>";
         }
     });
     $("#btn-reset-verifycode").click(function(){
-        if (confirm("verifycodeをリセットするのを同意しますか？")) {
+        if (confirm("このユーザを許可するのを同意しますか？")) {
             window.top.location = "<?php echo $this->baseUrl()."/admin/user/reset-verifycode?user_id=".$this->user[Admin_Model_User::$ID]; ?>";
         }
     });
     $("#btn-delete").click(function(){
-        if (confirm("このユーザを削除するのを同意しますか？")) {
+        if (confirm("このユーザを許可するのを同意しますか？")) {
             window.top.location = "<?php echo $this->baseUrl()."/admin/user/delete?user_id=".$this->user[Admin_Model_User::$ID]; ?>";
         }
-    });
-    $("#btn-refuse").click(function(){
-        if (confirm("このユーザを拒否するのを同意しますか？")) {
-            window.top.location = "<?php echo $this->baseUrl()."/admin/user/delete?user_id=".$this->user[Admin_Model_User::$ID]; ?>";
-        }
-    });
-    $("#btn-change-info").click(function(){
-        
-        window.top.location = "<?php echo $this->baseUrl()."/admin/user/info-change?user_id=".$this->user[Admin_Model_User::$ID]; ?>";
-        
     });
 });
 </script>
@@ -55,7 +45,8 @@ $(document).ready(function(){
             <?php } ?>
             <?php foreach ($this->errorMessages as $errorMessage) { ?>
             <div style="color: red"><?php echo $errorMessage; ?></div>
-            <?php } ?>        
+            <?php } ?>
+            <form action="" method="post">        
             <table>
                 <tr>
                     <td width="200">ユーザ名</td>
@@ -64,50 +55,38 @@ $(document).ready(function(){
                 </tr>
                 <tr>
                     <td>名前</td>
-                    <td><?php echo $this->user[Admin_Model_User::$NAME] ?></td>
+                    <td><input type = "text" name = "name" value="<?php echo $this->user[Admin_Model_User::$NAME] ?>"></td>
                     <td></td>
                 </tr>
                 <tr>
                     <td>生年月日</td>
-                    <td><?php echo $this->user[Admin_Model_User::$BIRTHDAY] ?></td>
+                    <td><input type="date" name ="birthday" value="<?php echo date("Y-m-d", strtotime($this->user[Admin_Model_User::$BIRTHDAY])) ?>"></td>
+                    
                     <td></td>
                 </tr>
                 <tr>
                     <td>住所</td>
-                    <td><?php echo $this->user[Admin_Model_User::$ADDRESS] ?></td>
+                    <td><input type = "text" name ="<?php echo Admin_Model_User::$ADDRESS ?>" value="<?php echo $this->user[Admin_Model_User::$ADDRESS] ?>"></td>
                     <td></td>
                 </tr>
                 <tr>
                     <td>電話番号</td>
-                    <td><?php echo $this->user[Admin_Model_User::$PHONE] ?></td>
+                    <td><input type="text" value="<?php echo $this->user[Admin_Model_User::$PHONE] ?>" name = "<?php echo Admin_Model_User::$PHONE ?>"></td>
                     <td></td>
                 </tr>
                 <tr>
-                    <td>クレジットカード情報</td>
-                    <td><?php echo $this->user[Admin_Model_User::$BANK_ACCOUNT] ?></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>ステータス</td>
-                    <td><?php 
-                        if ($this->user[Admin_Model_User::$STATUS] == Admin_Model_User::$USER_STATUS_AVAILABLE) {
-                            echo "可用";
-                        } else {
-                            echo "許可を待っている";
-                        }
-                    ?></td>
-                    <?php if ($this->user[Admin_Model_User::$STATUS] == Admin_Model_User::$USER_STATUS_WAITING) { ?>
-                    <td><button class="normal-button" id="btn-accept">許可をする</button><button class="normal-button" id="btn-refuse" style="width: 150px; margin: 0px 10px">拒否する</button></td>
-                    <?php } ?>
+                    <td><?php if($this->user["role"] == 1) echo "クレジットカード情報"; else echo "銀行アカウント"?></td>
+                    <td><input type ="text" name = "<?php echo Admin_Model_User::$BANK_ACCOUNT ?>" value ="<?php echo $this->user[Admin_Model_User::$BANK_ACCOUNT] ?>"></td>
+                    <td><button class="normal-button" type="submit" style="width: 120px; margin: 0px 10px">変更</button><a href ="<?php echo $this->baseUrl()?>/admin/user/info/user_id/<?php echo $this->user["id"]?>"><button class="normal-button" type="submit" style="width: 120px; margin: 0px 10px">キャンセル</button></a></td>
                 </tr>
             </table>
+            </form>
         </div>
         <div class="detail_layout_content">
-            <div style="width: 720px; margin: 0px auto">
+            <div style="width: 520px; margin: 0px auto">
                 <button class="normal-button" id="btn-reset-password" style="width: 150px; margin: 0px 10px">パースワードリセット</button>
                 <button class="normal-button" id="btn-reset-verifycode" style="width: 150px; margin: 0px 10px">「Verifycode」リセット</button>
                 <button class="normal-button" id="btn-delete" style="width: 150px; margin: 0px 10px">ユーザを削除</button>
-            	<button class="normal-button" id="btn-change-info" style="width: 150px; margin: 0px 10px">情報変更</button>
             </div>
         </div>
     </div>
