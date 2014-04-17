@@ -187,6 +187,7 @@ class Admin_IndexController extends IController {
             
             // データ更新
             if ($masterModel->setMasterData($masterData)) {
+                $this->view->masterData = $masterData;
                 $this->view->message = Message::$M4128;
             }
         } else {
