@@ -4,7 +4,7 @@ require_once '/../controllers/Code.php';
 
 class Default_Model_Like extends Zend_Db_Table_Abstract {
 
-    protected $_name = "like";
+    protected $_name = "lesson_like";
     protected $_primary = "id";
     protected $db;
 
