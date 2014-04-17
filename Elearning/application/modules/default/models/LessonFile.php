@@ -5,10 +5,12 @@ class Default_Model_LessonFile extends Zend_Db_Table_Abstract {
     protected $_name = "lesson_file";
     protected $_primary = "id";
     protected $db;
-
+	protected $lessonDeadline;
     public function __construct() {
         parent::__construct();
         $this->db = Zend_Registry::get('connectDB');
+        $master = new Default_Model_Master();
+        $this->_lessonDeadline = $master->getMasterValue(Default_Model_Master::$KEY_LESSON_DEADLINE);
     }
 
     public function findFileById($fileId) {
@@ -28,7 +30,7 @@ class Default_Model_LessonFile extends Zend_Db_Table_Abstract {
     			->join("learn", "learn.lesson_id = lesson_file.lesson_id")
     			->where("lesson_file.id = ?", $fileId)
     			->where("student_id = ?", $userId)
-    			->where("learn.register_time + INTERVAL 7 DAY >= NOW() ");
+    			->where("learn.register_time + INTERVAL ".$this->_lessonDeadline." DAY >= NOW() ");
     	return $this->getAdapter()->fetchAll($select);
     }
 

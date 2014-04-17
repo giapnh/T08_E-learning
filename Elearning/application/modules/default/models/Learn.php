@@ -21,12 +21,12 @@ class Default_Model_Learn extends Zend_Db_Table_Abstract {
      * @param type $lesson
      * @return int
      */
-    public function isStudentLearn($studentId, $lesson) {
+    public function isStudentLearn($studentId, $lesson, $time) {
         $select = $this->getAdapter()->select();
         $select->from(array('l' => 'learn'), "*")
                 ->where("student_id=?", $studentId)
                 ->where("lesson_id=?", $lesson)
-                ->where('NOW() - INTERVAL 7 DAY < register_time');
+                ->where('NOW() - INTERVAL '.$time.' DAY < register_time');
         if ($this->getAdapter()->fetchRow($select) != NULL) {
             return 0; //Unsuccesful
         } else {

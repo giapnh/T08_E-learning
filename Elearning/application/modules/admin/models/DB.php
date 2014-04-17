@@ -3,7 +3,7 @@
 class Admin_Model_DB {
     
     public static $BACKUP_DIR = "backup";
-
+    public static $DB_BACKUP_PREFIX = "db-backup-";
 
     /**
      * データベースをバックアップする
@@ -75,12 +75,27 @@ class Admin_Model_DB {
         $now = getdate();
         $timeStr = $now['year']."-".$now['mon']."-".$now['mday']."-".$now['hours']."-".$now['minutes']."-".$now['seconds'];
         
-        $filename = self::$BACKUP_DIR.'/db-backup-'.$timeStr.'.sql';
+        $filename = self::$BACKUP_DIR.'/'.self::$DB_BACKUP_PREFIX.$timeStr.'.sql';
         $handle = fopen($filename, 'w+');
         fwrite($handle, $return);
         fclose($handle);
         
         return $filename;
+    }
+    
+    /**
+     * バックアップしたファイルリストを取る
+     * @return array Files list
+     */
+    public function getBackupFiles() {
+        $filesList = scandir(self::$BACKUP_DIR);
+        
+        foreach($filesList as $index => $file) {
+            if (strpos($file, self::$DB_BACKUP_PREFIX) === FALSE) {
+                unset($filesList[$index]);
+            }
+        }
+        return $filesList;
     }
 }
 

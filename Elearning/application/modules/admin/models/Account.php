@@ -42,10 +42,12 @@ class Admin_Model_Account extends Zend_Db_Table_Abstract {
      * @return boolean
      */
     public function isValid($username, $password) {
+        $master = new Default_Model_Master();
+        $passwordConst = $master->getMasterValue(Default_Model_Master::$KEY_PASSWORD_CONST);
         $query = $this->select()
                 ->from($this->_name, array('username', 'password'))
                 ->where('username=?', $username)
-                ->where('password=?', sha1(md5($username . '+' . $password . '+' . Code::$PASSWORD_CONST)));
+                ->where('password=?', sha1(md5($username . '+' . $password . '+' . $passwordConst)));
         $result = $this->getAdapter()->fetchAll($query);
         if ($result) {
             return true;
@@ -124,8 +126,10 @@ class Admin_Model_Account extends Zend_Db_Table_Abstract {
      * @param type $password
      */
     public function changePassword($username, $password) {
+        $master = new Default_Model_Master();
+        $passwordConst = $master->getMasterValue(Default_Model_Master::$KEY_PASSWORD_CONST);
         $update_data = array(
-            'password' => sha1(md5($username . '+' . $password . '+' . Code::$PASSWORD_CONST)));
+            'password' => sha1(md5($username . '+' . $password . '+' . $passwordConst)));
         $where = "username='$username'";
         $this->update($update_data, $where);
     }

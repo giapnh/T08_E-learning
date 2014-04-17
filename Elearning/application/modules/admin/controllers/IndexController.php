@@ -92,9 +92,13 @@ class Admin_IndexController extends IController {
      */
     public function maintainAction() {
         $masterModel = new Admin_Model_Master();
+        $dbModel = new Admin_Model_DB();
         
         $masterData = $masterModel->getMasterData();
         $this->view->masterData = $masterData;
+        
+        // バックアップしたファイルリストを取る
+        $this->view->backupList = $dbModel->getBackupFiles();
         
         if ($this->_request->isPost()) {
             $masterData = array();
@@ -172,6 +176,19 @@ class Admin_IndexController extends IController {
         $this->redirect('admin/index/maintain');
     }
     
+    /**
+     * データベース回復処理
+     */
+    public function restoreAction() {
+        
+    }
+    
+    /**
+     * 文字列が数字かどうかをチェック
+     * 
+     * @param string $string
+     * @return boolean
+     */
     protected function isNumber($string) {
         return ctype_digit($string);
     }

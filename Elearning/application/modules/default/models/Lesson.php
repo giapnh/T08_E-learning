@@ -5,10 +5,12 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
     protected $_name = "lesson";
     protected $_primary = "id";
     protected $db;
-
+    protected $lessonDeadline;
     public function __construct() {
         parent::__construct();
         $this->db = Zend_Registry::get('connectDB');
+        $master = new Default_Model_Master();
+        $this->_lessonDeadline = $master->getMasterValue(Default_Model_Master::$KEY_LESSON_DEADLINE);
     }
 
     public function listAll() {
@@ -73,7 +75,7 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
                 ->joinInner('user', 'lesson.teacher_id=user.id', array('name'))
                 ->joinInner('learn', 'learn.lesson_id=lesson.id', array('status'))
                 ->where("learn.student_id=$student")
-        		->where("learn.register_time + INTERVAL 7 DAY >= NOW()");
+        		->where("learn.register_time + INTERVAL ".$this->_lessonDeadline." DAY >= NOW()");
         return $this->getAdapter()->fetchAll($select);
     }
     
@@ -104,7 +106,8 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
                 ->where('lesson_tag.tag_id=?', $tagId)
                 ->joinInner('learn', 'learn.lesson_id=lesson_tag.lesson_id', array('status'))
                 ->joinInner('user', 'user.id=lesson.teacher_id', array('name'))
-                ->where('learn.student_id=?', $studentId);
+                ->where('learn.student_id=?', $studentId)
+                ->where("learn.register_time + INTERVAL ".$this->_lessonDeadline." DAY >= NOW()");
         return $this->getAdapter()->fetchAll($select);
     }
 
@@ -114,8 +117,8 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
                 ->joinInner('learn', 'lesson.id=learn.lesson_id', array('status'))
                 ->where('lesson.teacher_id=?', $teacher)
                 ->where('learn.student_id=?', $studentId)
-                ->joinInner('user', 'user.id=lesson.teacher_id', array(name));
-        echo $select;
+                ->where("learn.register_time + INTERVAL ".$this->_lessonDeadline." DAY >= NOW()")
+                ->joinInner('user', 'user.id=lesson.teacher_id', array("name"));
         return $this->getAdapter()->fetchAll($select);
     }
 
