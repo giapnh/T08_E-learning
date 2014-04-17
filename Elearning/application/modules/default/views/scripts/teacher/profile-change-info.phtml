@@ -4,8 +4,8 @@
     <body>
     <center>
         <div class="content">
-            <?php 
-                echo $this->partial("teacher/teacher-top.phtml", array('username'=>$this->user_info['name']));
+            <?php
+            echo $this->partial("teacher/teacher-top.phtml", array('username' => $this->user_info['name']));
             ?>
             <form action="" method="post">
                 <div class="row-show" style="padding: 20px 0 20px 0">
@@ -43,7 +43,7 @@
                                 $month = $birthday[1];
                                 $year = $birthday[2];
                                 ?>
-                                <select id = "day" name = "day" style="width: 40px; text-align: right;">
+                                <select id = "day" name = "day" style="width: 50px; text-align: right;">
                                     <option value = "<?php echo $day; ?>"><?php echo $day; ?></option>
 
                                     <option value = "1">1</option>
@@ -323,7 +323,7 @@
                 </div>
                 <div style="width: 30%;">
                     <button type="submit" class="showlogfromm">更新</button>
-                    <a href="../teacher/profile"><button class="register-cus" style="width: 130px;">キャンセル</button></a>
+                    <a href="<?php echo $this->baseUrl(); ?>/teacher/profile"><button class="register-cus" style="width: 130px;">キャンセル</button></a>
                 </div>
             </form>
 

@@ -131,7 +131,7 @@ class TeacherController extends IController {
             $auth = Zend_Auth::getInstance();
             $auth->getStorage()->write($user->getUserInfo($data['username']));
             $this->view->user_info = $auth->getStorage()->read();
-            $this->_redirect('student/profile');
+            $this->_redirect('teacher/profile');
         }
     }
 
@@ -188,7 +188,7 @@ class TeacherController extends IController {
             $auth = Zend_Auth::getInstance();
             $auth->getStorage()->write($user->getUserInfo($data['username']));
             $this->view->user_info = $auth->getStorage()->read();
-            $this->_redirect('student/profile');
+            $this->_redirect('teacher/profile');
         }
     }
 
@@ -212,7 +212,7 @@ class TeacherController extends IController {
             $auth = Zend_Auth::getInstance();
             $auth->getStorage()->write($user->getUserInfo($data['username']));
             $this->view->user_info = $auth->getStorage()->read();
-            $this->_redirect('student/profile');
+            $this->_redirect('teacher/profile');
         }
     }
 
