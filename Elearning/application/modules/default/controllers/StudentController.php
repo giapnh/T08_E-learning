@@ -1,7 +1,5 @@
 <?php
 
-include "../models/Master.php";
-
 require_once 'IController.php';
 
 //require 'RegisterController.php';
