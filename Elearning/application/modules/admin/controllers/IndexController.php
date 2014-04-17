@@ -100,6 +100,9 @@ class Admin_IndexController extends IController {
         $masterData = $masterModel->getMasterData();
         $this->view->masterData = $masterData;
         
+        // TODO: get autobackup status
+        $this->view->autoBackup = true;
+        
         $page = $this->getParam('page');
         if (!isset($page)) {
             $page = 1;
@@ -119,7 +122,9 @@ class Admin_IndexController extends IController {
             $loginFailLockTime = $this->_request->getParam('login_fail_lock_time');
             $sessonTime = $this->_request->getParam('session_time');
             $violationTime = $this->_request->getParam('violation_time');
-            $backupTime = $this->_request->getParam('backup_time');
+            $backupTimeHour = $this->_request->getParam('backup_time_hour');
+            $backupTimeMinute = $this->_request->getParam('backup_time_minute');
+            $backupTimeSecond = $this->_request->getParam('backup_time_second');
             
             $masterData[Admin_Model_Master::$KEY_COMA_PRICE] = $comaPrice;
             $masterData[Admin_Model_Master::$KEY_TEACHER_FEE_RATE] = $teacherFeeRate;
@@ -129,7 +134,7 @@ class Admin_IndexController extends IController {
             $masterData[Admin_Model_Master::$KEY_LOGIN_FAIL_LOCK_TIME] = $loginFailLockTime;
             $masterData[Admin_Model_Master::$KEY_SESSION_TIME] = $sessonTime;
             $masterData[Admin_Model_Master::$KEY_VIOLATION_TIME] = $violationTime;
-            $masterData[Admin_Model_Master::$KEY_BACKUP_TIME] = $backupTime;
+            $masterData[Admin_Model_Master::$KEY_BACKUP_TIME] = $backupTimeHour*3600 + $backupTimeMinute*60 + $backupTimeSecond;
             
             // インプットチェック
             if (!$this->isNumber($comaPrice) || $comaPrice > 1000000000) {
@@ -160,14 +165,24 @@ class Admin_IndexController extends IController {
                 $this->view->errorMessage = Message::$M4126;
                 return;
             }
-            if (!$this->isNumber($backupTime) || $backupTime > 1000000000) {
+            if (!$this->isNumber($backupTimeHour) || $backupTimeHour > 1000000000) {
+                $this->view->errorMessage = Message::$M4127;
+                return;
+            }
+            if (!$this->isNumber($backupTimeMinute) || $backupTimeMinute > 59) {
+                $this->view->errorMessage = Message::$M4127;
+                return;
+            }
+            if (!$this->isNumber($backupTimeSecond) || $backupTimeSecond > 59) {
                 $this->view->errorMessage = Message::$M4127;
                 return;
             }
             // file location チェック
-            if (!mkdir($fileLocation, 0777, true)) {
-                $this->view->errorMessage = Message::$M4123;
-                return;
+            if ($fileLocation != $masterData[Admin_Model_Master::$KEY_FILE_LOCATION]) {
+                if (!mkdir($fileLocation, 0777, true)) {
+                    $this->view->errorMessage = Message::$M4123;
+                    return;
+                }
             }
             
             // データ更新
@@ -197,6 +212,23 @@ class Admin_IndexController extends IController {
         $this->redirect('admin/index/maintain');
     }
     
+    /**
+     * 自動バックアップ処理
+     */
+    public function autoBackupAction() {
+        $status = $this->getParam('turn');
+        
+        if ($status == 'on') {
+            // TODO: turn autobackup on
+            $this->_helper->FlashMessenger->addMessage("自動バックアップをオンにしている", 'backupSuccess');
+        } else if ($status == 'off') {
+            // TODO: turn autobackup off
+            $this->_helper->FlashMessenger->addMessage("自動バックアップをオフにした", 'backupSuccess');
+        }
+        
+        $this->redirect('admin/index/maintain');
+    }
+
     /**
      * データベースを回復処理
      */

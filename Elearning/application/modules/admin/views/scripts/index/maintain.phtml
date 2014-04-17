@@ -22,6 +22,22 @@
     }
     .restore-btn {
     }
+    .off {
+        color: red;
+        display: none;
+    }
+    .on, .off {
+        font-weight: bold;
+    }
+    .on {
+        color: blue;
+    }
+    td {
+        vertical-align: top;
+    }
+    .backup-input input {
+        width: 100px; 
+    }
 </style>
 <div style="width: 1000px; margin: 20px auto">
     <div class="detail_layout">
@@ -80,15 +96,56 @@
                             echo $this->masterData[Admin_Model_Master::$KEY_VIOLATION_TIME] ?>" /></td>
                     </tr>
                     <tr>
-                        <td>自動バックアップ時刻（日）</td>
-                        <td width="120"><input type="text" name="backup_time" value="<?php 
-                            echo $this->masterData[Admin_Model_Master::$KEY_BACKUP_TIME] ?>" /></td>
+                        <td>自動バックアップ時刻</td>
+                        <?php 
+                            $backupTime = $this->masterData[Admin_Model_Master::$KEY_BACKUP_TIME];
+                            $backupHour = floor($backupTime/3600);
+                            $backupMinute = floor(($backupTime - $backupHour*3600)/60);
+                            $backupSecond = $backupTime - $backupHour*3600 - $backupMinute*60;
+                        ?>
+                        <td width="120" class="backup-input">
+                            <div>
+                                <input type="text" name="backup_time_hour" value="<?php echo $backupHour ?>" />時
+                            </div>
+                            <div>
+                                <input type="text" name="backup_time_minute" value="<?php echo $backupMinute ?>" />分
+                            </div>
+                            <div>
+                                <input type="text" name="backup_time_second" value="<?php echo $backupSecond ?>" />秒
+                            </div>
+                        </td>
                     </tr>
                 </table>
                 <div><input type="submit" class="normal-button" value="更新" /></div>
             </form>
             <div class="res_step_t_r" style="margin-bottom: 20px;width: 685px"></div>
-            <div><a href="<?php echo $this->baseUrl() ?>/admin/index/backup"><button class="normal-button" style="width: 200px">システムをバックアップする</button></a></div>
+            <div>
+                <a href="<?php echo $this->baseUrl() ?>/admin/index/backup">
+                    <button class="normal-button" style="width: 200px">システムをバックアップする</button>
+                </a>
+            </div>
+            <div class="auto-backup">
+                <div class="status">
+                    <span>
+                        自動バックアップステータス:
+                    </span>
+                    <?php if ($this->autoBackup) { ?>
+                    <span class="on">
+                        <span>オン</span>
+                        <a href="<?php echo $this->baseUrl() ?>/admin/index/auto-backup?turn=off">
+                            <button class="normal-button">オフにする</button>
+                        </a>
+                    </span>
+                    <?php } else { ?>
+                    <span class="off">
+                        <span>オフ</span>
+                        <a href="<?php echo $this->baseUrl() ?>/admin/index/auto-backup?turn=on">
+                            <button class="normal-button">オンにする</button>
+                        </a>
+                    </span>
+                    <?php } ?>
+                </div>
+            </div>
             <div>
                 <?php foreach($this->backupList['data'] as $file) { ?>
                 <div class="backup-file">
