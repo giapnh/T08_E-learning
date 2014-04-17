@@ -162,6 +162,7 @@ class Admin_Model_DB {
         $dbName = $resources['db']['params']['dbname'];
         
         $mysqli = new mysqli($host, $user, $pass, $dbName);
+        mysqli_set_charset($mysqli, 'utf8');
 
         /* check connection */
         if (mysqli_connect_errno()) {
