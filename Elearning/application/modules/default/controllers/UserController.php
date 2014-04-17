@@ -40,12 +40,12 @@ class UserController extends IController {
                 $this->view->errorMessage = Message::$M002;
                 return;
             } else {
-                if ($authAdapter->getFailCount($uname) == 5 && !$cache->load($uname)) {
+                if ($authAdapter->getFailCount($uname) == $master->getMasterValue(Default_Model_Master::$KEY_LOCK_COUNT) && !$cache->load($uname)) {
                     $authAdapter->incLoginFailure($uname);
                     $cache->save("1", $uname);
                     $this->view->errorMessage = str_replace('%s', "" . ($master->getMasterValue(Default_Model_Master::$KEY_LOGIN_FAIL_LOCK_TIME) / 3600), Message::$M0041);
                     return;
-                } else if ($authAdapter->getFailCount($uname) > 5) {
+                } else if ($authAdapter->getFailCount($uname) > $master->getMasterValue(Default_Model_Master::$KEY_LOCK_COUNT)) {
                     $authAdapter->incLoginFailure($uname);
                     if ($result = $cache->load($uname)) {
                         $this->view->errorMessage = str_replace('%s', "" . ($master->getMasterValue(Default_Model_Master::$KEY_LOGIN_FAIL_LOCK_TIME) / 3600), Message::$M0041);
@@ -201,7 +201,7 @@ class UserController extends IController {
                     return;
                 }
             }
-            
+
             if ($user->isExits($data['username'])) {
                 $this->view->errorMessage = Message::$M034;
                 return;
