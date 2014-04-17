@@ -117,6 +117,32 @@ class Admin_UserController extends IController {
     }
     
     /**
+     * ユーザ情報画面
+     *
+     * @param string $user_id ユーザID
+     */
+    public function infoChangeAction() {
+    	$userId = $this->_request->getParam('user_id');
+    
+    	$userModel = new Admin_Model_User();
+    	$this->view->user = $userModel->getUser($userId);
+    	$messages = $this->_helper->FlashMessenger->getMessages('updateInfoSuccess');
+    	$this->view->messages = $messages;
+    	$errorMessages = $this->_helper->FlashMessenger->getMessages('updateInfoError');
+    	$this->view->errorMessages = $errorMessages;
+    	if($this->_request->isPost() ) {
+    		$data = $this->_request->getParams();
+    		unset($data["module"]);
+    		unset($data["controller"]);
+    		unset($data["action"]);
+    		unset($data["user_id"]);
+    		//var_dump($data);
+    		$userModel->update($data, "id = ". $userId);
+    		$this->_redirect("admin/user/info/user_id/".$userId);
+    	}
+    }
+    
+    /**
      * 許可する処理
      * 
      * @param string user_id ユーザ名
