@@ -10,9 +10,6 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
     protected $tmp;
     protected $lines;
     public $fileSaved;
-
-//    public static $UPLOAD_DIR = '\..\files\\';
-    public static $UPLOAD_DIR = 'files';
     
     public static $ID = "id";
     public static $LESSON_ID = "lesson_id";
@@ -38,9 +35,9 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
      * 
      * @return string ファイルを格納するフォールダ
      */
-    public function getFileLocation() {
+    public function getFileFolder() {
         $masterModel = new Default_Model_Master();
-        return $masterModel->getMasterValue(Default_Model_Master::$KEY_FILE_LOCATION);
+        return APPLICATION_PATH . "\\..\\" . $masterModel->getMasterValue(Default_Model_Master::$KEY_FILE_LOCATION);
     }
     
     /**
@@ -88,6 +85,15 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
         return true;
     }
     
+    /**
+     * ファイル処理
+     * 
+     * @param type $file
+     * @param type $info
+     * @param type $description
+     * @param type $index
+     * @return boolean
+     */
     public function exercuteFile($file, $info, $description, $index) {
         $ext = $this->_findexts($info['name']);
         if ($ext == "tsv") {
@@ -102,7 +108,13 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
         }
     }
 
-    protected function _findexts($filename) {
+    /**
+     * ファイルのタイプを取る
+     * 
+     * @param type $filename
+     * @return type
+     */
+    public function _findexts($filename) {
         $filename = strtolower($filename);
         $exts = explode(".", $filename);
         $n = count($exts) - 1;
@@ -110,15 +122,23 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
         return $exts;
     }
     
+    /**
+     * TSVじゃないのファイル
+     * 
+     * @param type $file
+     * @param type $info
+     * @param type $description
+     * @param type $index
+     * @return boolean
+     */
     protected function exercuteNormalFile($file, $info, $description, $index) {
         $ext = $this->_findexts($info['name']);
         $fileName = time() . $index . '.' . $ext;
 
-        $target = APPLICATION_PATH . "\\..\\" . self::$UPLOAD_DIR . "\\" .$fileName;
+        $target = $this->getFileFolder() . "\\" .$fileName;
         $this->adapter->addFilter('Rename', array('target' => $target,
             'overwrite' => true));
         if (!$this->adapter->receive($file)) {
-            $message = $this->adapter->getMessages();
             return false;
         } else {
             $this->fileSaved[] = array(
@@ -133,14 +153,21 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
         }
     }
 
+    /**
+     * TSVファイルを読む
+     * 
+     * @param type $file
+     * @param type $info
+     * @param type $description
+     * @param type $index
+     * @return boolean
+     */
     public function exercuteTsvFile($file, $info, $description, $index) {
         $fileName = time() . $index . '.html';
-        $target = APPLICATION_PATH . "\\..\\" . self::$UPLOAD_DIR . "\\" . $fileName;
+        $target = $this->getFileFolder() . "\\" . $fileName;
         $this->adapter->addFilter('Rename', array('target' => $target,
             'overwrite' => true));
         if (!$this->adapter->receive($file)) {
-            $message = $this->adapter->getMessages();
-//            die($message);
             return false;
         } else {
             if ($this->tsvFileToTest($fileName, $info, $description)) {
@@ -151,8 +178,16 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
         }
     }
     
+    /**
+     * TSVファイルをテスト内容に更新する
+     * 
+     * @param type $fileName
+     * @param type $info
+     * @param type $description
+     * @return boolean
+     */
     public function tsvFileToTest($fileName, $info, $description) {
-        $target = APPLICATION_PATH . "\\..\\" . self::$UPLOAD_DIR . "\\" . $fileName;
+        $target = $this->getFileFolder() . "\\" . $fileName;
         $this->tmp = file($target);
         $this->fileToLines();
         
@@ -198,6 +233,9 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
         return true;
     }
     
+    /**
+     * TSVファイルを行リストに分ける
+     */
     protected function fileToLines() {
         $firstLine = $this->tmp[0];
         $this->tmp[0] = substr($firstLine, 3);
@@ -218,6 +256,11 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
         }
     }
     
+    /**
+     * テストタイトルを読む
+     * 
+     * @return string
+     */
     protected function readTestTitle() {
         $nextLine = $this->nextLine();
         
@@ -228,6 +271,11 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
         return null;
     }
     
+    /**
+     * テストサブタイトルを読む
+     * 
+     * @return string
+     */
     protected function readTestSubtitle() {
         $nextLine = $this->nextLine();
         
@@ -238,6 +286,12 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
         return null;
     }
     
+    /**
+     * テストの質問を読む
+     * 
+     * @param type $questionIndex
+     * @return null
+     */
     protected function readQuestion($questionIndex) {
         $nextLine = $this->nextLine();
         if ($nextLine[0] == self::$TSV_KEY_END) {
@@ -280,6 +334,11 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
         return $question;
     }
     
+    /**
+     * TSVファイルの次の行を取る
+     * 
+     * @return type
+     */
     protected function nextLine() {
         $nextLine = array_values($this->lines);
         $nextLine = $nextLine[0];
@@ -289,6 +348,12 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
         return $nextLine;
     }
     
+    /**
+     * テストのHtmlを作成する
+     * 
+     * @param type $questions
+     * @return string
+     */
     protected function createTestHtml($questions) {
         $testHtml = "<div class='test_container'>\n";
         foreach ($questions as $question) {
@@ -300,6 +365,12 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
         return $testHtml;
     }
     
+    /**
+     * 質問Htmlを作成
+     * 
+     * @param type $question
+     * @return string
+     */
     protected function createQuestionHtml($question) {
         $questionHtml = "<div class='question_container'>\n";
         $questionHtml .= "\t<div class='question'>Q".$question["index"].": ".$question["question"]."</div>\n";
@@ -314,10 +385,15 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
         return $questionHtml;
     }
     
+    /**
+     * ファイルデータを作成
+     * 
+     * @param type $lessonId
+     */
     public function createFilesData($lessonId) {
         
         // Create lesson folder
-        $fileFolder = APPLICATION_PATH . "\\..\\" . self::$UPLOAD_DIR . "\\";
+        $fileFolder = $this->getFileFolder() . "\\";
         $lessonFolder = $fileFolder . $lessonId;
         if (!file_exists($lessonFolder)) {
             mkdir($lessonFolder, 0777, true);
@@ -333,7 +409,7 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
                 self::$DESCRIPTION => $fileInfo['description'],
                 self::$TITLE => $fileInfo['title'],
                 self::$SUBTITLE => $fileInfo['subtitle'],
-                self::$LOCATION => self::$UPLOAD_DIR."\\".$lessonId."\\".$fileInfo['location']
+                self::$LOCATION => "\\".$lessonId."\\".$fileInfo['location']
             );
             $fileId = $this->insert($insertData);
             
@@ -350,13 +426,25 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
         }
     }
     
+    /**
+     * ファイルを取る
+     * 
+     * @param int $fileId
+     * @return array
+     */
     public function findFileById($fileId) {
         return $this->fetchRow("id='$fileId'");
     }
     
+    /**
+     * テストHtmlを取る
+     * 
+     * @param int $testId
+     * @return string
+     */
     public function getTestHtml($testId) {
         $fileInfo = $this->findFileById($testId);
-        $fileLines = file(APPLICATION_PATH . "\\..\\" . $fileInfo['location']);
+        $fileLines = file($this->getFileFolder() . $fileInfo['location']);
         return implode("\n", $fileLines);
     }
     

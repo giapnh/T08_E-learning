@@ -543,10 +543,10 @@ class StudentController extends IController {
     public function streamAction() {
         $this->initial();
         $fileId = $this->_request->getParam("id");
-        $lessonFileModel = new Default_Model_LessonFile();
+        $lessonFileModel = new Default_Model_File();
         if ($lessonFileModel->checkUserCanSeeFile($this->currentUser["id"], $fileId)) {
             $file = $lessonFileModel->findFileById($fileId);
-            $path = APPLICATION_PATH . "\..\\" . $file["location"];
+            $path = $lessonFileModel->getFileFolder() . $file["location"];
             $currentFileExt = explode(".", $file['filename']);
             $currentFileExt = $currentFileExt[1];
             $arrayType = array(

@@ -109,8 +109,8 @@
                                     $currentFile = explode(".", $this->currentFile['filename']);
                                     $currentFile = $currentFile[1];
                                     if ($currentFile == 'pdf' || $currentFile == "mp3" || $currentFile == "mp4") {
-                                            ?>
-                                           <iframe src="<?php echo $this->baseUrl()?>/teacher/stream/id/<?php echo $this->currentFile["id"]?>#toolbar=0&navpanes=0&scrollbar=0" width="100%" height="500"></iframe>
+                                    ?>
+                                        <iframe src="<?php echo $this->baseUrl()?>/teacher/stream/id/<?php echo $this->currentFile["id"]?>#toolbar=0&navpanes=0&scrollbar=0" width="100%" height="500"></iframe>
                                                
                                      <?php } else if ($currentFile == 'tsv') { // テストファイル
                                         ?>

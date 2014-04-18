@@ -559,17 +559,17 @@ class TeacherController extends IController {
 
     public function streamAction() {
         $fileId = $this->_request->getParam("id");
-        $lessonFileModel = new Default_Model_LessonFile();
+        $lessonFileModel = new Default_Model_File();
         $file = $lessonFileModel->findFileById($fileId);
-        $path = APPLICATION_PATH . "\..\\" . $file["location"];
+        $path = $lessonFileModel->getFileFolder() . $file["location"];
         $currentFileExt = explode(".", $file['filename']);
-        $currentFileExt = $currentFileExt[1];
+        $currentFileExt = $currentFileExt[count($currentFileExt)-1];
         $arrayType = array(
             "pdf" => "application/pdf",
             "mp3" => "audio/mpeg",
             "mp4" => "video/mp4"
         );
-        echo $path;
+        
         if (is_readable($path)) {
             if ($currentFileExt == "pdf") {
                 echo $link = $this->view->serverUrl() . $this->view->baseUrl() . "/public/viewpdf/web/viewer.html?file=" . $this->view->serverUrl() . $this->view->baseUrl() . "/" . $file["location"];
