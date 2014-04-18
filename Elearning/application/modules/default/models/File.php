@@ -9,6 +9,8 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
     protected $adapter = null;
     protected $tmp;
     protected $lines;
+    protected $lessonDeadline;
+    
     public $fileSaved;
     
     public static $ID = "id";
@@ -28,6 +30,8 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
     public function __construct() {
         parent::__construct();
         $this->db = Zend_Registry::get('connectDB');
+        $master = new Default_Model_Master();
+        $this->_lessonDeadline = $master->getMasterValue(Default_Model_Master::$KEY_LESSON_DEADLINE);
     }
 
     /**
@@ -38,6 +42,11 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
     public function getFileFolder() {
         $masterModel = new Default_Model_Master();
         return APPLICATION_PATH . "\\..\\" . $masterModel->getMasterValue(Default_Model_Master::$KEY_FILE_LOCATION);
+    }
+    
+    public function getFileFolderName() {
+        $masterModel = new Default_Model_Master();
+        return $masterModel->getMasterValue(Default_Model_Master::$KEY_FILE_LOCATION);
     }
     
     /**
@@ -480,6 +489,17 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
             return TRUE;
         }
         return FALSE;
+    }
+    
+    //thiennx check user can see the file
+    public function checkUserCanSeeFile($userId, $fileId){
+    	$select = $this->getAdapter()->select()
+    			->from($this->_name)
+    			->join("learn", "learn.lesson_id = lesson_file.lesson_id")
+    			->where("lesson_file.id = ?", $fileId)
+    			->where("student_id = ?", $userId)
+    			->where("learn.register_time + INTERVAL ".$this->_lessonDeadline." DAY >= NOW() ");
+    	return $this->getAdapter()->fetchAll($select);
     }
     
 }

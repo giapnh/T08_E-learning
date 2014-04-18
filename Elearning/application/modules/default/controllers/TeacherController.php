@@ -567,12 +567,17 @@ class TeacherController extends IController {
         $arrayType = array(
             "pdf" => "application/pdf",
             "mp3" => "audio/mpeg",
-            "mp4" => "video/mp4"
+            "mp4" => "video/mp4",
+            "jpg" => "image/jpeg",
+            "png" => "image/jpeg",
+            "gif" => "image/jpeg",
+            "wav" => "audio/mpeg"
         );
         
         if (is_readable($path)) {
             if ($currentFileExt == "pdf") {
-                echo $link = $this->view->serverUrl() . $this->view->baseUrl() . "/public/viewpdf/web/viewer.html?file=" . $this->view->serverUrl() . $this->view->baseUrl() . "/" . $file["location"];
+                echo    $link = $this->view->serverUrl() . $this->view->baseUrl() . "/public/viewpdf/web/viewer.html?file=" 
+                        . $this->view->serverUrl() . $this->view->baseUrl() . "/" . $lessonFileModel->getFileFolderName() . $file["location"];
                 header("Location: " . $link);
             } else {
                 header('Content-type: ' . $arrayType[$currentFileExt]);
