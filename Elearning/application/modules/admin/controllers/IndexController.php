@@ -39,9 +39,9 @@ class Admin_IndexController extends IController {
         $paymentInfos = $modelLearn->getTotalPaymentInfo();
         //Zend_Debug::dump($paymentInfos);
         $this->view->paymentInfos = $paymentInfos;
-        $modelMaster = new Admin_Model_Master();
+        $modelMaster = new Default_Model_Master();
         $master = $modelMaster->getMasterData();
-        $this->view->price = $master[Admin_Model_Master::$KEY_COMA_PRICE];
+        $this->view->price = $master[Default_Model_Master::$KEY_COMA_PRICE];
         
     }
     
@@ -64,7 +64,7 @@ class Admin_IndexController extends IController {
     	$teacherPaymentInfos = $modelLearn->getTeacherPaymentInfoByMonth($param["month"], $param["year"]);
     	//Zend_Debug::dump($teacherPaymentInfos);
     	$this->view->teacherPaymentInfos = $teacherPaymentInfos;
-    	$modelMaster = new Admin_Model_Master();
+    	$modelMaster = new Default_Model_Master();
     	$master = $modelMaster->getMasterData();
     	$this->view->price = $master[Admin_Model_Master::$KEY_COMA_PRICE];
     	if(isset($param["download"])){
@@ -94,8 +94,9 @@ class Admin_IndexController extends IController {
      * 保守処理
      */
     public function maintainAction() {
-        $masterModel = new Admin_Model_Master();
+        $masterModel = new Default_Model_Master();
         $dbModel = new Admin_Model_DB();
+        $fileModel = new Default_Model_File();
         
         $masterData = $masterModel->getMasterData();
         $this->view->masterData = $masterData;
@@ -116,7 +117,7 @@ class Admin_IndexController extends IController {
             
             $comaPrice = $this->_request->getParam('coma_price');
             $teacherFeeRate = $this->_request->getParam('teacher_fee_rate');
-            $fileLocation = $this->_request->getParam('file_location');
+//            $fileLocation = $this->_request->getParam('file_location');
             $lessonDeadline = $this->_request->getParam('lesson_deadline');
             $lockCount = $this->_request->getParam('lock_count');
             $loginFailLockTime = $this->_request->getParam('login_fail_lock_time');
@@ -126,15 +127,15 @@ class Admin_IndexController extends IController {
             $backupTimeMinute = $this->_request->getParam('backup_time_minute');
             $backupTimeSecond = $this->_request->getParam('backup_time_second');
             
-            $masterData[Admin_Model_Master::$KEY_COMA_PRICE] = $comaPrice;
-            $masterData[Admin_Model_Master::$KEY_TEACHER_FEE_RATE] = $teacherFeeRate;
-            $masterData[Admin_Model_Master::$KEY_FILE_LOCATION] = $fileLocation;
-            $masterData[Admin_Model_Master::$KEY_LESSON_DEADLINE] = $lessonDeadline;
-            $masterData[Admin_Model_Master::$KEY_LOCK_COUNT] = $lockCount;
-            $masterData[Admin_Model_Master::$KEY_LOGIN_FAIL_LOCK_TIME] = $loginFailLockTime;
-            $masterData[Admin_Model_Master::$KEY_SESSION_TIME] = $sessonTime;
-            $masterData[Admin_Model_Master::$KEY_VIOLATION_TIME] = $violationTime;
-            $masterData[Admin_Model_Master::$KEY_BACKUP_TIME] = $backupTimeHour*3600 + $backupTimeMinute*60 + $backupTimeSecond;
+            $masterData[Default_Model_Master::$KEY_COMA_PRICE] = $comaPrice;
+            $masterData[Default_Model_Master::$KEY_TEACHER_FEE_RATE] = $teacherFeeRate;
+//            $masterData[Default_Model_Master::$KEY_FILE_LOCATION] = $fileLocation;
+            $masterData[Default_Model_Master::$KEY_LESSON_DEADLINE] = $lessonDeadline;
+            $masterData[Default_Model_Master::$KEY_LOCK_COUNT] = $lockCount;
+            $masterData[Default_Model_Master::$KEY_LOGIN_FAIL_LOCK_TIME] = $loginFailLockTime;
+            $masterData[Default_Model_Master::$KEY_SESSION_TIME] = $sessonTime;
+            $masterData[Default_Model_Master::$KEY_VIOLATION_TIME] = $violationTime;
+            $masterData[Default_Model_Master::$KEY_BACKUP_TIME] = $backupTimeHour*3600 + $backupTimeMinute*60 + $backupTimeSecond;
             
             // インプットチェック
             if (!$this->isNumber($comaPrice) || $comaPrice > 1000000000) {
@@ -178,12 +179,11 @@ class Admin_IndexController extends IController {
                 return;
             }
             // file location チェック
-            if ($fileLocation != $masterData[Admin_Model_Master::$KEY_FILE_LOCATION]) {
-                if (!mkdir($fileLocation, 0777, true)) {
-                    $this->view->errorMessage = Message::$M4123;
-                    return;
-                }
-            }
+//            if ($fileLocation != $masterModel->getMasterValue([Admin_Model_Master::$KEY_FILE_LOCATION])) {
+//                if (!$fileModel->setFileLocation($fileLocation)) {
+//                    $this->view->errorMessage = Message::$M4123;
+//                }
+//            }
             
             // データ更新
             if ($masterModel->setMasterData($masterData)) {

@@ -32,7 +32,38 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
         parent::__construct();
         $this->db = Zend_Registry::get('connectDB');
     }
+
+    /**
+     * ファイルを格納するフォールダを取る
+     * 
+     * @return string ファイルを格納するフォールダ
+     */
+    public function getFileLocation() {
+        $masterModel = new Default_Model_Master();
+        return $masterModel->getMasterValue(Default_Model_Master::$KEY_FILE_LOCATION);
+    }
     
+    /**
+     * ファイルを格納するフォールダを設定
+     * 
+     * @param string $path
+     * @return boolean
+     * 
+     */
+    public function setFileLocation($path) {
+        // TODO: rename dir only
+//        if (!mkdir($fileLocation, 0777, true)) {
+//            return FALSE;
+//        }
+        return true;
+    }
+    
+    /**
+     * ファイルアップロード処理
+     * 
+     * @param array $fileDescriptions
+     * @return boolean
+     */
     public function exercuteFiles($fileDescriptions) {
         $this->fileSaved = array();
         if ($this->adapter == null) {
@@ -44,7 +75,6 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
             if ($this->adapter->isUploaded($file)) {
                 $description = $fileDescriptions[$k];
                 if (!$this->exercuteFile($file, $info, $description, $k)) {
-//                    die("Here");
                     return false;
                 }
                 $k++;
@@ -52,7 +82,6 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
         }
         
         if ($k == 0) {
-//            die("No file");
             return false;
         }
         
@@ -63,7 +92,10 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
         $ext = $this->_findexts($info['name']);
         if ($ext == "tsv") {
             return $this->exercuteTsvFile($file, $info, $description, $index);
-        } else if ($ext == "mp4" || $ext == "mp3" || $ext == "pdf" || $ext == "png" || $ext == "jpg") {
+        } else if ( $ext == "mp4" || $ext == "wav" || 
+                    $ext == "mp3" || 
+                    $ext == "pdf" || 
+                    $ext == "png" || $ext == "jpg" || $ext == "gif") {
             return $this->exercuteNormalFile($file, $info, $description, $index);
         } else {
             return false;
