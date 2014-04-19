@@ -514,8 +514,11 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
     	return $this->getAdapter()->fetchAll($select);
     }
     
-    public function editFile($fileId, $description, $newFileInfo) {
+    public function editFile($fileId, $description) {
         $adapter = new Zend_File_Transfer_Adapter_Http();
+        
+        $currentFile = $this->findFileById($fileId);
+        $fileFolder = $this->getFileFolder();
         
         var_dump($fileId);
         var_dump($description);
@@ -527,7 +530,29 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
         }
         
         if ($this->adapter->isUploaded('file')) {
+            $file = $this->adapter->getFileInfo();
+            $fileInfo = $file['file'];
+            if ($this->exercuteFile('file', $fileInfo , $description, 0) == FALSE ){
+                return false;
+            }
+            $fileSavedInfo = $this->fileSaved[0];
+            $fileData = array(
+                self::$FILENAME => $fileSavedInfo['filename'],
+                self::$DESCRIPTION => $fileSavedInfo['description'],
+                self::$TITLE => $fileSavedInfo['title'],
+                self::$SUBTITLE => $fileSavedInfo['subtitle'],
+                self::$LOCATION => "\\".$currentFile['lesson_id']."\\".$fileSavedInfo['location']
+            );
             
+            var_dump($fileData);
+            
+            // 現在のファイルを削除
+            unlink($fileFolder.$currentFile['location']);
+            copy($fileFolder."\\".$fileSavedInfo['location'], $fileFolder.$fileData['location']);
+            unlink($fileFolder."\\".$fileSavedInfo['location']);
+            
+            $this->update($fileData, "id=".$fileId);
+            return true;
         }
     }
     

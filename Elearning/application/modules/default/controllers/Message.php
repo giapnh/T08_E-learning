@@ -63,6 +63,7 @@ class Message {
     public static $M2082 = "500MB以下のファイルをアップロードしてください";
     public static $M2083 = "著作権規則と同意してください";
     public static $M2084 = "ファイルを選択してください";
+    public static $M2085 = "ファイルが読めない、チェックお願いします";
     
     // 管理者
     public static $M4011 = "ユーザ名を入力してください";
