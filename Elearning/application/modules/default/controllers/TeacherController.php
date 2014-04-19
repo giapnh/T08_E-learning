@@ -433,6 +433,59 @@ class TeacherController extends IController {
         $this->view->fileModel = new Default_Model_File();
         $this->view->controller = $this;
         $this->view->lessonId = $lessonId;
+        
+        $uploadErrors = $this->_helper->FlashMessenger->getMessages('uploadError');
+        if (count($uploadErrors) >= 1) {
+            $this->view->fileUploadError = $uploadErrors[0];
+        }
+    }
+    
+    public function editFileAction() {
+        $this->getHelper('ViewRenderer')
+             ->setNoRender();
+        
+        $fileId = $this->getParam('file_id');
+        $fileDescription = $this->getParam('description');
+        $lessonId = $this->getParam('lesson_id');
+        $copyrightCheck = $this->getParam('copyright_check');
+        
+        $fileModel = new Default_Model_File();
+        
+        /*
+         *  チェック
+         */
+        $adapter = new Zend_File_Transfer_Adapter_Http();
+        $newFile = $adapter->getFileInfo();
+        // ファイルがあるかどうか
+        if ($newFile['file']['type'] == null) {
+            $msg = Message::$M2084;
+            $this->_helper->FlashMessenger->addMessage($msg, 'uploadError');
+            $this->redirect('teacher/file?lesson_id='.$lessonId."&file_id=".$fileId);
+        }
+        // ファイルタイプチェック
+        $currentFile = $fileModel->findFileById($fileId);
+        $fileExt = $fileModel->getFileExt($currentFile['filename']);
+        $newFileExt = $fileModel->getFileExt($newFile['file']['name']);
+        if ($fileExt != $newFileExt) {
+            $msg = str_replace("<filetype>", $fileExt, Message::$M2081);
+            $this->_helper->FlashMessenger->addMessage($msg, 'uploadError');
+            $this->redirect('teacher/file?lesson_id='.$lessonId."&file_id=".$fileId);
+        }
+        // ファイルサイズ
+        if ($newFile['file']['size'] > Default_Model_File::$FILE_MAX_SIZE) {
+            $msg = Message::$M2082;
+            $this->_helper->FlashMessenger->addMessage($msg, 'uploadError');
+            $this->redirect('teacher/file?lesson_id='.$lessonId."&file_id=".$fileId);
+        }
+        // Copyrightチェック
+        if (!isset($copyrightCheck)) {
+            $msg = Message::$M2083;
+            $this->_helper->FlashMessenger->addMessage($msg, 'uploadError');
+            $this->redirect('teacher/file?lesson_id='.$lessonId."&file_id=".$fileId);
+        }
+        
+        // ファイル更新
+        $fileModel->editFile($fileId, $fileDescription, $newFile);
     }
 
     public function getTestHtml($testId) {
@@ -573,6 +626,8 @@ class TeacherController extends IController {
             "gif" => "image/jpeg",
             "wav" => "audio/mpeg"
         );
+        
+        set_time_limit(0);
         
         if (is_readable($path)) {
             if ($currentFileExt == "pdf") {

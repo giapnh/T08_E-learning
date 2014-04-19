@@ -59,6 +59,10 @@ class Message {
     public static $M2065 = "授業の説明を入力してください";
     public static $M2066 = "タグを入力してください";
     
+    public static $M2081 = "<filetype>のファイルをアップロードしてください";
+    public static $M2082 = "500MB以下のファイルをアップロードしてください";
+    public static $M2083 = "著作権規則と同意してください";
+    public static $M2084 = "ファイルを選択してください";
     
     // 管理者
     public static $M4011 = "ユーザ名を入力してください";

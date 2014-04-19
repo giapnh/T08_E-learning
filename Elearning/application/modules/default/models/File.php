@@ -26,6 +26,8 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
 
     public static $FILE_TYPE_TEST = 1;
     public static $FILE_TYPE_NORMAL = 2;
+    
+    public static $FILE_MAX_SIZE = 524288000;
 
     public function __construct() {
         parent::__construct();
@@ -120,15 +122,25 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
     /**
      * ファイルのタイプを取る
      * 
-     * @param type $filename
-     * @return type
+     * @param string $filename
+     * @return string
      */
-    public function _findexts($filename) {
+    private function _findexts($filename) {
         $filename = strtolower($filename);
         $exts = explode(".", $filename);
         $n = count($exts) - 1;
         $exts = $exts[$n];
         return $exts;
+    }
+    
+    /**
+     * ファイルのタイプを取る
+     * 
+     * @param string $filename
+     * @return string
+     */
+    public function getFileExt($filename) {
+        return $this->_findexts($filename);
     }
     
     /**
@@ -500,6 +512,23 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
     			->where("student_id = ?", $userId)
     			->where("learn.register_time + INTERVAL ".$this->_lessonDeadline." DAY >= NOW() ");
     	return $this->getAdapter()->fetchAll($select);
+    }
+    
+    public function editFile($fileId, $description, $newFileInfo) {
+        $adapter = new Zend_File_Transfer_Adapter_Http();
+        
+        var_dump($fileId);
+        var_dump($description);
+//        die();
+        
+        $this->fileSaved = array();
+        if ($this->adapter == null) {
+             $this->adapter = new Zend_File_Transfer_Adapter_Http();
+        }
+        
+        if ($this->adapter->isUploaded('file')) {
+            
+        }
     }
     
 }

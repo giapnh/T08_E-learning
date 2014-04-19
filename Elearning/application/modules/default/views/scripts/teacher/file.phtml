@@ -1,12 +1,28 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <script type="text/javascript">
-      $(function() {
-          $("iframe").load(function(){
-			$("iframe").contents().find("html").attr("oncontextmenu","return false")
-				.attr("onselect", "return false");
-          });
-          });
+    $(function() {
+        $("iframe").load(function(){
+            $("iframe").contents().find("html").attr("oncontextmenu","return false")
+                    .attr("onselect", "return false");
+        });
+        $(".file-upload").hide();
+        $(".file-update-btn").click(function(){
+            $(".file-upload").toggle('slow');
+        });
+    });
 </script>
+<style type="text/css">
+    .file-nav{
+        padding: 10px;
+    }
+    .file-update-btn .btn-text {
+        margin: 5px;
+        font-size: 16px;
+    }
+    .file-upload-msg {
+        color: red;
+    }
+</style>
 <center>
     <div class="content" style="background: #F0F0F0;">
         <?php 
@@ -24,9 +40,27 @@
                             <!--Left content-->
                             <td style="width: 22%;">
                                 <div class="full-width" style="font-weight: bolder; color: white; padding-top: 3px;font-size: 16px; background: #51A007; width: 100%;">
-                                    ファイル一覧
+                                    <?php echo $this->lessonInfo['title']; ?>
                                 </div>
                                 <div class="full-width" style="background: wheat; padding-top: 3px;">
+                                    作成者：<?php echo $this->lessonInfo['name']; ?>
+                                    <div>
+                                        <?php echo $this->lessonInfo['create_time']; ?>
+                                    </div>
+                                    <div class="like" style="width: 100%; margin: 10px 0px;">
+                                        <span>
+                                            <img src="<?php echo $this->baseUrl(); ?>/public/images/num-like.png" width="15" height="15">
+                                            <span><?php echo $this->lessonInfo['like'] ?></span>
+                                        </span>
+                                        <span>
+                                            <img src="<?php echo $this->baseUrl(); ?>/public/images/num-view.png" width="15" height="15">
+                                            <span><?php echo $this->lessonInfo['view'] ?></span>
+                                        </span>
+                                        <span>
+                                            <img src="<?php echo $this->baseUrl(); ?>/public/images/student.png" width="15" height="15">
+                                            <span><?php // echo $this->lessonInfo['students_num'] ?></span>
+                                        </span>
+                                    </div>
                                     <?php
                                     $count = 0;
                                     foreach ($this->files as $file) {
@@ -101,7 +135,36 @@
                             <!--View-->
                             <td>
                                 <div class="full-width" style="font-weight: bolder; color: white; padding-top: 3px; padding-bottom: 3px; font-size: 16px; background: #51A007;">
-                                    ファイル内容
+                                    <?php echo $this->currentFile['filename']; ?>
+                                </div>
+                                <div class="file-nav">
+                                    <div class="file-discription"><?php echo $this->currentFile['description']; ?></div>
+                                    <div>
+                                        <button class="normal-button file-update-btn">
+                                            <div class="btn-img" style="float: left">
+                                                <img src="<?php echo $this->baseUrl(); ?>/public/images/upload.png" width="30" height="30">
+                                            </div>
+                                            <div class="btn-text">更新</div>
+                                        </button>
+                                    </div>
+                                    <div class="file-upload">
+                                        <form action="<?php echo $this->baseUrl()."/teacher/edit-file"; ?>" method="post"  enctype="multipart/form-data">
+                                            <input type="hidden" name="lesson_id" value="<?php echo $this->lessonInfo['id']; ?>">
+                                            <input type="hidden" name="file_id" value="<?php echo $this->currentFile['id']; ?>">
+                                            <input name="file" type="file"></br>
+                                            <div style="font-size: 14px;">ファイルの説明：</div>
+                                            <textarea style="width: 350px;height: 80px" name="description"></textarea></br>
+                                            <input type="checkbox" name="copyright_check" value="">著作権規則と同意する
+                                            <input type="submit" value="アップロード" class="normal-button">
+                                        </form>
+                                    </div>
+                                    <div class="file-upload-msg">
+                                        <?php 
+                                            if (isset($this->fileUploadError)) {
+                                                echo $this->fileUploadError;
+                                            } 
+                                        ?>
+                                    </div>
                                 </div>
                                 <div style="margin: 10px; width: 95%;min-height: 500px;max-height: 800px; border-color: #007F9F; border-style: solid; border-width: thin;">
                                     <!--Content here-->
