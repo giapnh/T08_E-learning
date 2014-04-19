@@ -4,10 +4,11 @@ class Message {
 
     public static $M001 = "ユーザネームがない";
     public static $M002 = "パスワードがない";
-    public static $M003 = "ユーザネームとパスワードが会っていないとか、このアカウントがまだ確認させない";
+    public static $M003 = "ユーザネームとパスワードが会っていない";
+    public static $M0032 = "このアカウントがまだ確認させない";
     public static $M0031 = "ユーザネームとパスワードが会っていない";
     public static $M004 = "この IP がロックさせている。%s 時後に戻してください";
-    public static $M0041 = "このアカウントがロックさせている。%s 時後に戻してください";
+    public static $M0041 = "このアカウントがロックさせている。{%s}後に戻してください";
     public static $M005 = "このユーザが削除しました。システムの管理者に連絡してください";
     public static $M006 = "ユーザネームが無効";
     public static $M007 = "パスワードが無効";
@@ -23,7 +24,6 @@ class Message {
     public static $M017 = "新しいパスワードが無効";
     public static $M018 = "新しいパスワード確認が無効";
     public static $M019 = "パスワードが正しくない";
-    
     public static $M022 = "ファイル名が無効";
     public static $M024 = "ファイルが存在していない";
     public static $M025 = "申し訳ありません、ファイルがなくなりました";
@@ -51,33 +51,28 @@ class Message {
     public static $M049 = "IPを入力してください";
     public static $M050 = "このIPが存在している";
     public static $M051 = "IPを追加するのが完成しました";
-    
     public static $M2061 = "著作権規則と同意してください";
     public static $M2062 = "ファイルが無効、ファイルをチェックしてください";
     public static $M2063 = "ファイルのアップロードが完成した";
     public static $M2064 = "授業のタイトルを入力してください";
     public static $M2065 = "授業の説明を入力してください";
     public static $M2066 = "タグを入力してください";
-    
     public static $M2081 = "<filetype>のファイルをアップロードしてください";
     public static $M2082 = "500MB以下のファイルをアップロードしてください";
     public static $M2083 = "著作権規則と同意してください";
     public static $M2084 = "ファイルを選択してください";
     public static $M2085 = "ファイルが読めない、チェックお願いします";
-    
     // 管理者
     public static $M4011 = "ユーザ名を入力してください";
     public static $M4012 = "パースワードを入力してください";
     public static $M4013 = "ユーザ名が正しくない";
     public static $M4014 = "パースワードが正しくない";
     public static $M4015 = "このIPアドレスはログインできない";
-    
     public static $M4051 = "パースワードが無効";
     public static $M4052 = "パースワード確認が無効";
     public static $M4053 = "現在のパースワードが正しくない";
     public static $M4054 = "現在パースワードを入力してください";
     public static $M4055 = "パースワードが更新された";
-    
     public static $M4121 = "授業の値段が無効";
     public static $M4122 = "先生の利益率が無効";
     public static $M4123 = "授業のファイルを格納フォールダが無効";
@@ -91,7 +86,6 @@ class Message {
     public static $M41211 = "<filename>の回復が失敗した";
     public static $M41212 = "ログイン誤り回が無効";
     public static $M41213 = "自動セション終了時間が無効";
-    
     public static $M4021 = "IPを削除された";
-}
 
+}

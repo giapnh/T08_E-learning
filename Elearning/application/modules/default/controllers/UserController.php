@@ -16,23 +16,23 @@ class UserController extends IController {
      */
     public function loginAction() {
         $master = new Default_Model_Master();
-        $frontendOptions = array(
-            'lifetime' => $master->getMasterValue(Default_Model_Master::$KEY_LOGIN_FAIL_LOCK_TIME),
-            'automatic_serialization' => true
-        );
-        $backendOptions = array(
-            'cache_dir' => 'C:/' // Directory where to put the cache files
-        );
-        $cache = Zend_Cache::factory('Core', 'File', $frontendOptions, $backendOptions);
+        $authAdapter = new Default_Model_Account();
+//        $frontendOptions = array(
+//            'lifetime' => $master->getMasterValue(Default_Model_Master::$KEY_LOGIN_FAIL_LOCK_TIME),
+//            'automatic_serialization' => true
+//        );
+//        $backendOptions = array(
+//            'cache_dir' => 'C:/' // Directory where to put the cache files
+//        );
+//        $cache = Zend_Cache::factory('Core', 'File', $frontendOptions, $backendOptions);
         $form = new Default_Form_Login ();
         $this->view->form = $form;
         if ($this->_request->isPost()) {
-            $authAdapter = new Default_Model_Account();
             $auth = Zend_Auth::getInstance();
             $uname = $this->_request->getParam('username');
             $paswd = $this->_request->getParam('password');
             $role = $this->_request->getParam('role');
-            // If filed is null
+// If filed is null
             if (trim($uname) == '') {
                 $this->view->errorMessage = Message::$M001;
                 return;
@@ -40,57 +40,91 @@ class UserController extends IController {
                 $this->view->errorMessage = Message::$M002;
                 return;
             } else {
-                if ($authAdapter->getFailCount($uname) == $master->getMasterValue(Default_Model_Master::$KEY_LOCK_COUNT) && !$cache->load($uname)) {
-                    $authAdapter->incLoginFailure($uname);
-                    $cache->save("1", $uname);
-                    $this->view->errorMessage = str_replace('%s', "" . ($master->getMasterValue(Default_Model_Master::$KEY_LOGIN_FAIL_LOCK_TIME) / 3600), Message::$M0041);
+//Update last login time
+                $status = $authAdapter->getUserInfo($uname)['status'];
+                if ($status == 3) {// Check if user is activing
+                    $last_time = $authAdapter->getUserInfo($uname)['last_login_time'];
+                    $offset = time() - $last_time;
+                    //Unlock
+                    if ($offset >= $master->getMasterValue(Default_Model_Master::$KEY_LOGIN_FAIL_LOCK_TIME)) {
+                        $authAdapter->unlock($uname);
+                        if ($role == 1) {
+                            $status = 1;
+                        } else {
+                            $data = $authAdapter->getUserInfo($uname);
+//Update last login time
+                            $authAdapter->updateLastLoginTime($uname);
+// Save
+                            $auth->getStorage()->write($data);
+                            $this->_redirect('user/loginVerifyConfirm');
+                            return;
+                        }
+                    } else {
+                        $message = Message::$M0041;
+                        $lock_time = $master->getMasterValue(Default_Model_Master::$KEY_LOGIN_FAIL_LOCK_TIME);
+                        $hour = round($lock_time / 3600);
+                        $min = round(($lock_time - 3600 * $hour) / 60);
+                        $sec = $lock_time - 3600 * $hour - 60 * $min;
+                        $message = str_replace("{%s}", $hour . "時" . $min . "分" . $sec . "秒", $message);
+                        $this->view->errorMessage = $message;
+                    }
                     return;
-                } else if ($authAdapter->getFailCount($uname) > $master->getMasterValue(Default_Model_Master::$KEY_LOCK_COUNT)) {
-                    $authAdapter->incLoginFailure($uname);
-                    if ($result = $cache->load($uname)) {
-                        $this->view->errorMessage = str_replace('%s', "" . ($master->getMasterValue(Default_Model_Master::$KEY_LOGIN_FAIL_LOCK_TIME) / 3600), Message::$M0041);
-                        return;
-                    } else {
-                        $authAdapter->resetFailCount($uname);
-                    }
-                }
-            }
-
-            $flag = false;
-            if ($authAdapter->isValid($uname, $paswd, $role)) {
-                $flag = true;
-                $curr_ip = $_SERVER['REMOTE_ADDR'];
-                if ($curr_ip === "::1") {
-                    $curr_ip = "127.0.0.1";
-                }
-                // If user is teacher, check ip address valid or invalid
-                if ($role == 2) {
-                    $flag = false;
-                    if ($authAdapter->checkIpValid($uname, $curr_ip)) {
-                        $authAdapter->updateLastLoginIp($uname, $curr_ip);
-                        $flag = true;
-                    } else {
-                        $data = $authAdapter->getUserInfo($uname);
-                        // Save
-                        $auth->getStorage()->write($data);
-                        $this->_redirect('user/loginVerifyConfirm');
-                        $flag = false;
-                        return;
-                    }
                 }
 
-                $data = $authAdapter->getUserInfo($uname);
-                // Save
-                $auth->getStorage()->write($data);
-            } else {
-                $authAdapter->incLoginFailure($uname);
-                $this->view->errorMessage = Message::$M003;
-            }
-            if ($flag == true) {
-                if ($role == 1) {
-                    $this->_redirect('/student/index');
-                } else {
-                    $this->_redirect('/teacher/index');
+                if ($status == 2) {// If not confirm yet
+                    $this->view->errorMessage = Message::$M0032;
+                    return;
+                }
+                $flag = false;
+                if ($status == 1) {// User active
+// Check valid
+                    if ($authAdapter->isValid($uname, $paswd, $role)) {
+                        if ($role == 2) {
+//Check IP
+                            $curr_ip = $_SERVER['REMOTE_ADDR'];
+                            if ($curr_ip === "::1") {
+                                $curr_ip = "127.0.0.1";
+                            }
+                            if ($authAdapter->checkIpValid($uname, $curr_ip)) {
+                                $authAdapter->updateLastLoginIp($uname, $curr_ip);
+                                $authAdapter->updateLastLoginTime($uname);
+                                $this->_redirect('teacher/index');
+                            } else {
+                                $data = $authAdapter->getUserInfo($uname);
+//Update last login time
+                                $authAdapter->updateLastLoginTime($uname);
+// Save
+                                $auth->getStorage()->write($data);
+                                $this->_redirect('user/loginVerifyConfirm');
+                                $flag = false;
+                                return;
+                            }
+                        } else {
+                            $data = $authAdapter->getUserInfo($uname);
+//Update last login time
+                            $authAdapter->updateLastLoginTime($uname);
+// Save
+                            $auth->getStorage()->write($data);
+                            $this->_redirect('student/index');
+                        }
+                    } else {
+                        $authAdapter->incLoginFailure($uname);
+                        if ($authAdapter->getFailCount($uname) >= //
+                                $master->getMasterValue(Default_Model_Master::$KEY_LOCK_COUNT)) {
+                            //Lock
+                            $authAdapter->lock($uname);
+                            $message = Message::$M0041;
+                            $lock_time = $master->getMasterValue(Default_Model_Master::$KEY_LOGIN_FAIL_LOCK_TIME);
+                            $hour = round($lock_time / 3600);
+                            $min = round(($lock_time - 3600 * $hour) / 60);
+                            $sec = $lock_time - 3600 * $hour - 60 * $min;
+                            $message = str_replace("{%s}", $hour . "時" . $min . "分" . $sec . "秒", $message);
+                            $this->view->errorMessage = $message;
+                            $authAdapter->updateLastLoginTime($uname);
+                            return;
+                        }
+                        $this->view->errorMessage = Message::$M003;
+                    }
                 }
             }
         }
@@ -119,7 +153,7 @@ class UserController extends IController {
                 $curr_ip = "127.0.0.1";
             }
             if ($user->isValidSecretQA($infoUser['username'], $question, $anwser) == 1) {
-                // 現在IPを更新します
+// 現在IPを更新します
                 $user->updateLastLoginIp($infoUser['username'], $curr_ip);
                 $this->_redirect('teacher/index');
             } else {
@@ -140,7 +174,7 @@ class UserController extends IController {
         $this->view->form = $form;
         if ($this->_request->isPost()) {
             $data = $this->_request->getParams();
-            //Check empty
+//Check empty
             if (trim($data['username']) == '') {
                 $this->view->errorMessage = Message::$M006;
                 return;
@@ -174,22 +208,22 @@ class UserController extends IController {
                 $this->view->errorMessage = Message::$M010;
                 return;
             }
-            //アドレス
+//アドレス
             if (trim($data['address']) == '') {
                 $this->view->errorMessage = Message::$M011;
 
                 return;
             }
-            // 電話番号
+// 電話番号
             if (trim($data['phone']) == '') {
                 $this->view->errorMessage = Message::$M012;
                 return;
             }
-            //銀行アカウント
+//銀行アカウント
             if (trim($data['bank_acc']) == '') {
                 $this->view->errorMessage = Message::$M013;
             }
-            // なぜユーザは先生です、秘密質問がチェックする
+// なぜユーザは先生です、秘密質問がチェックする
             if ($data['role'] == 2) {
                 if (trim($data['secret_question']) == '') {
                     $this->view->errorMessage = Message::$M014;

@@ -155,6 +155,39 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
         return $this->fetchAll()->toArray();
     }
 
+    /*
+     * ユーザがロック状態にさせます
+     */
+
+    public function lock($username) {
+        $update_data = array(
+            'status' => 3
+        );
+        $where = "username='$username'";
+        $this->update($update_data, $where);
+    }
+
+    public function updateLastLoginTime($uname) {
+        $update_data = array(
+            'last_login_time' => time()
+        );
+        $where = "username='$uname'";
+        $this->update($update_data, $where);
+    }
+
+    /*
+     * ユーザが発動状態にさせます
+     */
+
+    public function unlock($username) {
+        $update_data = array(
+            'fail_login_count' => 0,
+            'status' => 1
+        );
+        $where = "username='$username'";
+        $this->update($update_data, $where);
+    }
+
     /**
      * 新しいユーザが追加機能
      * @param type $data ユーザの情報
