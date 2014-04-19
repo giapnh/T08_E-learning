@@ -13,6 +13,8 @@ class IController extends Zend_Controller_Action {
         $this->view->headLink()->appendStylesheet($baseurl . "/public/css/style.css");
         $this->view->headLink()->appendStylesheet($baseurl . "/public/css/style_2.css");
         $this->view->headScript()->appendFile($baseurl . "/public/js/jquery.min.js");
+        header("Cache-Control: no-store, must-revalidate, max-age=0");
+        header("Pragma: no-cache");
     }
 
 }
