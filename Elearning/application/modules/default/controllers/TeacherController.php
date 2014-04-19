@@ -92,7 +92,17 @@ class TeacherController extends IController {
     public function profileAction() {
         $this->initial();
     }
-
+	//thiennx delete acount
+	public function deleteAcountAction(){
+		$this->initial();
+		if($this->currentTeacherId){
+			$modelUser = new Default_Model_Account();
+			$modelUser->deleteTeacher($this->currentTeacherId);
+			$auth = Zend_Auth::getInstance();
+			$auth->clearIdentity();
+		}
+		$this->_redirect("user/login");
+	}
     /**
      * プロファイが変更機能アクション
      * @return type
