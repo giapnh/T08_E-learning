@@ -541,6 +541,7 @@ class StudentController extends IController {
     }
 
     public function streamAction() {
+    	set_time_limit(0);
         $this->initial();
         $fileId = $this->_request->getParam("id");
         $lessonFileModel = new Default_Model_File();
@@ -553,6 +554,7 @@ class StudentController extends IController {
                 "pdf" => "application/pdf",
                 "mp3" => "audio/mpeg",
                 "mp4" => "video/mp4",
+            	"MP4" => "video/mp4",
                 "jpg" => "image/jpeg",
                 "png" => "image/jpeg",
                 "gif" => "image/jpeg",
@@ -567,7 +569,10 @@ class StudentController extends IController {
                 } else {
                     header('Content-type: ' . $arrayType[$currentFileExt]);
                     header("Content-Length: " . filesize($path));
-                    readfile($path);
+                    //readfile($path);
+                    $handle = fopen($path, "rb");
+                    echo stream_get_contents($handle);
+                    fclose($handle);
                 }
             }
         }

@@ -72,7 +72,7 @@
                                         foreach ($this->files as $file) {
                                             $count++;
                                             $fileType = explode(".", $file['filename']);
-                                            $fileType = $fileType[1];
+                                            $fileType = strtolower($fileType[1]);
                                             if ($fileType == 'pdf') {
                                                 ?>
                                                 <a href="<?php echo $this->baseUrl(); ?>/student/file?lessonId=<?php echo $this->lessonInfo['id']; ?>&fileId=<?php echo $file['id']; ?>">
@@ -152,7 +152,7 @@
                                         echo "ファイルがない";
                                     } else {
                                         $currentFiles = explode(".", $this->currentFile['filename']);
-                                        $currentFile = $currentFiles[count($currentFiles)-1];
+                                        $currentFile = strtolower($currentFiles[count($currentFiles)-1]);
                                         if (    $currentFile == 'pdf' || 
                                                 $currentFile == "mp3" || 
                                                 $currentFile == "mp4" ||

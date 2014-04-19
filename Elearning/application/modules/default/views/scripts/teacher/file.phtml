@@ -107,7 +107,7 @@
                                     <!--Content here-->
                                     <?php
                                     $currentFiles = explode(".", $this->currentFile['filename']);
-                                    $currentFile = $currentFiles[count($currentFiles)-1];
+                                    $currentFile = strtolower( $currentFiles[count($currentFiles)-1]);
                                     if (    $currentFile == 'pdf' || 
                                             $currentFile == "mp3" || 
                                             $currentFile == "mp4" ||
