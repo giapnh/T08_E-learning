@@ -11,7 +11,6 @@ class TeacherController extends IController {
     public function preDispatch() {
         $auth = Zend_Auth::getInstance();
         $master = new Default_Model_Master();
-
         if (!$_SESSION) {
             session_start();
         }
