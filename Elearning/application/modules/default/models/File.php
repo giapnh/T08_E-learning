@@ -214,11 +214,13 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
         
         $title = $this->readTestTitle();
         if ($title == null) {
+            die("title");
             return false;
         }
         
         $subtitle = $this->readTestSubtitle();
         if ($subtitle == null) {
+            die("sub title");
             return false;
         }
         
@@ -229,7 +231,7 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
             $question = $this->readQuestion($questionIndex);
             
             if ($question == null) {
-//                die($questionIndex.": Question read error");
+                die($questionIndex.": Question read error");
                 return false;
             }
             if ($question["question"]!=null) {
@@ -259,7 +261,14 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
      */
     protected function fileToLines() {
         $firstLine = $this->tmp[0];
-        $this->tmp[0] = substr($firstLine, 3);
+        $encodeStr = substr($firstLine, 0, 3);
+        if ($encodeStr == "Tes") {
+//            echo 'none encoded';
+        } else {
+            $this->tmp[0] = substr($firstLine, 3);
+//            echo 'encoded';
+        }
+        
         $this->lines = array();
         
         foreach ($this->tmp as $lineNum => $line) {
@@ -284,6 +293,8 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
      */
     protected function readTestTitle() {
         $nextLine = $this->nextLine();
+        
+        var_dump($nextLine);
         
         if (($nextLine[0] == self::$TSV_KEY_TITLE) && isset($nextLine[1])) {
             return $nextLine[1];
