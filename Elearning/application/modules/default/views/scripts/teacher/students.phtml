@@ -12,6 +12,8 @@
 				<td>ユーザ名</td>
 				<td>名前</td>
 				<td>勉強時間</td>
+				<td>ライク</td>
+				<td>コメント</td>
 				<td></td>
 				<td></td>
 			</tr>
@@ -19,13 +21,15 @@
 				<tr>
 					<td><?php echo $student["username"]?></td>
 					<td><?php echo $student["name"]?></td>
-					<td><?php echo $student["register_time"]?></td>
+					<td><?php echo $student["register_time"] ?></td>
+					<td><?php if($student["liked"] != NULL ) echo "ライク"?></td>
+					<td><?php echo $student["comment"] ?></td>
 					<?php if($student["status"] == 1):?>
 					<td><a href="<?php echo $this->baseUrl()?>/teacher/lock-student?lesson_id=<?php echo $this->lessonId?>&id=<?php echo $student["id"]?>"/><u>ロック</u></a></td>
 					<?php else : ?>
 					<td><a href="<?php echo $this->baseUrl()?>/teacher/unlock-student?lesson_id=<?php echo $this->lessonId?>&id=<?php echo $student["id"]?>"/><u>アンロック</u></a></td>
 					<?php endif;?>
-					<td> <a href = "<?php echo $this->baseUrl() ?>/teacher/student-result/learn_id/<?php echo $student["id"]?> ">テスト結果</a></td>
+					<td> <u><a href = "<?php echo $this->baseUrl() ?>/teacher/student-result/learn_id/<?php echo $student["id"]?> ">テスト結果</a></u></td>
 				</tr>
 			<?php endforeach;?>
 			</table>

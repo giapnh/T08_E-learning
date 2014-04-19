@@ -82,7 +82,10 @@ class Default_Model_Learn extends Zend_Db_Table_Abstract {
     		->from($this->_name)
     		->join("lesson", "lesson.id = learn.lesson_id", array("title"))
     		->join("user", "learn.student_id = user.id", array("username", "name", "email", "phone"))
-    		->where("lesson_id = $lessonId")
+    		->joinLeft("lesson_like", "lesson_like.user_id = learn.student_id AND lesson_like.lesson_id = ".$lessonId, array("liked" => "id"))
+    		->joinLeft("comment","comment.user_id = learn.student_id AND comment.lesson_id=".$lessonId, array("comment" => "COUNT(comment.id)"))
+    		->group("learn.student_id")
+    		->where("learn.lesson_id = $lessonId")
     		->order("register_time DESC");
     	return $this->getAdapter()->fetchAll($query);
     }
