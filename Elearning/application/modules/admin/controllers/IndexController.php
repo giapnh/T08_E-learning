@@ -4,6 +4,9 @@ require_once '/../../default/controllers/Message.php';
 require_once 'AccountController.php';
 
 class Admin_IndexController extends IController {
+    
+    public static $BACKUP_FILE_PER_PAGE = 5;
+    
     public function preDispatch() {
         $auth = Zend_Auth::getInstance();
         if ($auth->hasIdentity()) {
@@ -36,9 +39,9 @@ class Admin_IndexController extends IController {
         $paymentInfos = $modelLearn->getTotalPaymentInfo();
         //Zend_Debug::dump($paymentInfos);
         $this->view->paymentInfos = $paymentInfos;
-        $modelMaster = new Admin_Model_Master();
+        $modelMaster = new Default_Model_Master();
         $master = $modelMaster->getMasterData();
-        $this->view->price = $master[Admin_Model_Master::$KEY_COMA_PRICE];
+        $this->view->price = $master[Default_Model_Master::$KEY_COMA_PRICE];
         
     }
     
@@ -61,7 +64,7 @@ class Admin_IndexController extends IController {
     	$teacherPaymentInfos = $modelLearn->getTeacherPaymentInfoByMonth($param["month"], $param["year"]);
     	//Zend_Debug::dump($teacherPaymentInfos);
     	$this->view->teacherPaymentInfos = $teacherPaymentInfos;
-    	$modelMaster = new Admin_Model_Master();
+    	$modelMaster = new Default_Model_Master();
     	$master = $modelMaster->getMasterData();
     	$this->view->price = $master[Admin_Model_Master::$KEY_COMA_PRICE];
     	if(isset($param["download"])){
@@ -91,33 +94,49 @@ class Admin_IndexController extends IController {
      * 保守処理
      */
     public function maintainAction() {
-        $masterModel = new Admin_Model_Master();
+        $masterModel = new Default_Model_Master();
         $dbModel = new Admin_Model_DB();
+        $fileModel = new Default_Model_File();
         
         $masterData = $masterModel->getMasterData();
         $this->view->masterData = $masterData;
         
+        // TODO: get autobackup status
+        $this->view->autoBackup = true;
+        
+        $page = $this->getParam('page');
+        if (!isset($page)) {
+            $page = 1;
+        }
+        
         // バックアップしたファイルリストを取る
-        $this->view->backupList = $dbModel->getBackupFiles();
+        $this->view->backupList = $dbModel->getBackupFilesPager($page, self::$BACKUP_FILE_PER_PAGE);
         
         if ($this->_request->isPost()) {
             $masterData = array();
             
             $comaPrice = $this->_request->getParam('coma_price');
             $teacherFeeRate = $this->_request->getParam('teacher_fee_rate');
-            $fileLocation = $this->_request->getParam('file_location');
+//            $fileLocation = $this->_request->getParam('file_location');
             $lessonDeadline = $this->_request->getParam('lesson_deadline');
+            $lockCount = $this->_request->getParam('lock_count');
             $loginFailLockTime = $this->_request->getParam('login_fail_lock_time');
+            $sessonTime = $this->_request->getParam('session_time');
             $violationTime = $this->_request->getParam('violation_time');
-            $backupTime = $this->_request->getParam('backup_time');
-            $masterData[Admin_Model_Master::$KEY_COMA_PRICE] = $comaPrice;
-            $masterData[Admin_Model_Master::$KEY_TEACHER_FEE_RATE] = $teacherFeeRate;
-            $masterData[Admin_Model_Master::$KEY_FILE_LOCATION] = $fileLocation;
-            $masterData[Admin_Model_Master::$KEY_LESSON_DEADLINE] = $lessonDeadline;
-            $masterData[Admin_Model_Master::$KEY_LOGIN_FAIL_LOCK_TIME] = $loginFailLockTime;
-            $masterData[Admin_Model_Master::$KEY_VIOLATION_TIME] = $violationTime;
-            $masterData[Admin_Model_Master::$KEY_BACKUP_TIME] = $backupTime;
-        
+            $backupTimeHour = $this->_request->getParam('backup_time_hour');
+            $backupTimeMinute = $this->_request->getParam('backup_time_minute');
+            $backupTimeSecond = $this->_request->getParam('backup_time_second');
+            
+            $masterData[Default_Model_Master::$KEY_COMA_PRICE] = $comaPrice;
+            $masterData[Default_Model_Master::$KEY_TEACHER_FEE_RATE] = $teacherFeeRate;
+//            $masterData[Default_Model_Master::$KEY_FILE_LOCATION] = $fileLocation;
+            $masterData[Default_Model_Master::$KEY_LESSON_DEADLINE] = $lessonDeadline;
+            $masterData[Default_Model_Master::$KEY_LOCK_COUNT] = $lockCount;
+            $masterData[Default_Model_Master::$KEY_LOGIN_FAIL_LOCK_TIME] = $loginFailLockTime;
+            $masterData[Default_Model_Master::$KEY_SESSION_TIME] = $sessonTime;
+            $masterData[Default_Model_Master::$KEY_VIOLATION_TIME] = $violationTime;
+            $masterData[Default_Model_Master::$KEY_BACKUP_TIME] = $backupTimeHour*3600 + $backupTimeMinute*60 + $backupTimeSecond;
+            
             // インプットチェック
             if (!$this->isNumber($comaPrice) || $comaPrice > 1000000000) {
                 $this->view->errorMessage = Message::$M4121;
@@ -131,26 +150,44 @@ class Admin_IndexController extends IController {
                 $this->view->errorMessage = Message::$M4124;
                 return;
             }
+            if (!$this->isNumber($lockCount) || $lockCount > 1000000000) {
+                $this->view->errorMessage = Message::$M41212;
+                return;
+            }
             if (!$this->isNumber($loginFailLockTime) || $loginFailLockTime > 1000000000) {
                 $this->view->errorMessage = Message::$M4125;
+                return;
+            }
+            if (!$this->isNumber($sessonTime) || $sessonTime > 1000000000) {
+                $this->view->errorMessage = Message::$M41213;
                 return;
             }
             if (!$this->isNumber($violationTime) || $violationTime > 1000000000) {
                 $this->view->errorMessage = Message::$M4126;
                 return;
             }
-            if (!$this->isNumber($backupTime) || $backupTime > 1000000000) {
+            if (!$this->isNumber($backupTimeHour) || $backupTimeHour > 1000000000) {
+                $this->view->errorMessage = Message::$M4127;
+                return;
+            }
+            if (!$this->isNumber($backupTimeMinute) || $backupTimeMinute > 59) {
+                $this->view->errorMessage = Message::$M4127;
+                return;
+            }
+            if (!$this->isNumber($backupTimeSecond) || $backupTimeSecond > 59) {
                 $this->view->errorMessage = Message::$M4127;
                 return;
             }
             // file location チェック
-            if (!mkdir($fileLocation, 0777, true)) {
-                $this->view->errorMessage = Message::$M4123;
-                return;
-            }
+//            if ($fileLocation != $masterModel->getMasterValue([Admin_Model_Master::$KEY_FILE_LOCATION])) {
+//                if (!$fileModel->setFileLocation($fileLocation)) {
+//                    $this->view->errorMessage = Message::$M4123;
+//                }
+//            }
             
             // データ更新
             if ($masterModel->setMasterData($masterData)) {
+                $this->view->masterData = $masterData;
                 $this->view->message = Message::$M4128;
             }
         } else {
@@ -177,10 +214,40 @@ class Admin_IndexController extends IController {
     }
     
     /**
-     * データベース回復処理
+     * 自動バックアップ処理
+     */
+    public function autoBackupAction() {
+        $status = $this->getParam('turn');
+        
+        if ($status == 'on') {
+            // TODO: turn autobackup on
+            $this->_helper->FlashMessenger->addMessage("自動バックアップをオンにしている", 'backupSuccess');
+        } else if ($status == 'off') {
+            // TODO: turn autobackup off
+            $this->_helper->FlashMessenger->addMessage("自動バックアップをオフにした", 'backupSuccess');
+        }
+        
+        $this->redirect('admin/index/maintain');
+    }
+
+    /**
+     * データベースを回復処理
      */
     public function restoreAction() {
+        $file = $this->getParam('file');
         
+        $dbModel = new Admin_Model_DB();
+        $result = $dbModel->restore($file);
+        
+        if ($result) {
+            $successMessage = str_replace("<filename>", $file, Message::$M41210);
+            $this->_helper->FlashMessenger->addMessage($successMessage, 'backupSuccess');
+        } else {
+            $successMessage = str_replace("<filename>", $file, Message::$M41211);
+            $this->_helper->FlashMessenger->addMessage($successMessage, 'backupSuccess');
+        }
+        
+        $this->redirect('admin/index/maintain');
     }
     
     /**

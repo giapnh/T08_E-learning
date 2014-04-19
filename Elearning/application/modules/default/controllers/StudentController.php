@@ -541,28 +541,38 @@ class StudentController extends IController {
     }
 
     public function streamAction() {
+    	set_time_limit(0);
         $this->initial();
         $fileId = $this->_request->getParam("id");
-        $lessonFileModel = new Default_Model_LessonFile();
+        $lessonFileModel = new Default_Model_File();
         if ($lessonFileModel->checkUserCanSeeFile($this->currentUser["id"], $fileId)) {
             $file = $lessonFileModel->findFileById($fileId);
-            $path = APPLICATION_PATH . "\..\\" . $file["location"];
+            $path = $lessonFileModel->getFileFolder() . $file["location"];
             $currentFileExt = explode(".", $file['filename']);
             $currentFileExt = $currentFileExt[1];
             $arrayType = array(
                 "pdf" => "application/pdf",
                 "mp3" => "audio/mpeg",
-                "mp4" => "video/mp4"
+                "mp4" => "video/mp4",
+            	"MP4" => "video/mp4",
+                "jpg" => "image/jpeg",
+                "png" => "image/jpeg",
+                "gif" => "image/jpeg",
+                "wav" => "audio/mpeg"
             );
             //echo $path;
             if (is_readable($path)) {
                 if ($currentFileExt == "pdf") {
-                    echo $link = $this->view->serverUrl() . $this->view->baseUrl() . "/public/viewpdf/web/viewer.html?file=" . $this->view->serverUrl() . $this->view->baseUrl() . "/" . $file["location"];
-                    header("Location: " . $link);
+                    echo    $link = $this->view->serverUrl() . $this->view->baseUrl() . "/public/viewpdf/web/viewer.html?file=" 
+                        . $this->view->serverUrl() . $this->view->baseUrl() . "/" . $lessonFileModel->getFileFolderName() . $file["location"];
+                header("Location: " . $link);
                 } else {
                     header('Content-type: ' . $arrayType[$currentFileExt]);
                     header("Content-Length: " . filesize($path));
-                    readfile($path);
+                    //readfile($path);
+                    $handle = fopen($path, "rb");
+                    echo stream_get_contents($handle);
+                    fclose($handle);
                 }
             }
         }

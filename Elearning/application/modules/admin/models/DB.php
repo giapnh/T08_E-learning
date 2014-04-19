@@ -14,10 +14,11 @@ class Admin_Model_DB {
     {
         // データベース設定をとる
         $bootstrap = Zend_Controller_Front::getInstance()->getParam('bootstrap');
-        $host = $bootstrap->getOption('resources')['db']['params']['host'];
-        $user = $bootstrap->getOption('resources')['db']['params']['username'];
-        $pass = $bootstrap->getOption('resources')['db']['params']['password'];
-        $name = $bootstrap->getOption('resources')['db']['params']['dbname'];
+        $resources = $bootstrap->getOption('resources');
+        $host = $resources['db']['params']['host'];
+        $user = $resources['db']['params']['username'];
+        $pass = $resources['db']['params']['password'];
+        $name = $resources['db']['params']['dbname'];
         $tables = '*';
         
         $link = mysql_connect($host,$user,$pass);
@@ -85,7 +86,10 @@ class Admin_Model_DB {
     
     /**
      * バックアップしたファイルリストを取る
-     * @return array Files list
+     * 
+     * @param int $page
+     * @param int $itemPerPage
+     * @return array
      */
     public function getBackupFiles() {
         $filesList = scandir(self::$BACKUP_DIR);
@@ -97,5 +101,83 @@ class Admin_Model_DB {
         }
         return $filesList;
     }
+    
+    /**
+     * バックアップしたファイルリストを取る
+     * 
+     * @param int $page
+     * @param int $itemPerPage
+     * @return array
+     */
+    public function getBackupFilesPager($page, $itemPerPage) {
+        $filesList = scandir(self::$BACKUP_DIR);
+        
+        foreach($filesList as $index => $file) {
+            if (strpos($file, self::$DB_BACKUP_PREFIX) === FALSE) {
+                unset($filesList[$index]);
+            }
+        }
+        
+        // データ
+        $pagerData = array_slice($filesList, ($page-1)*$itemPerPage, $itemPerPage);
+        
+        // 次
+        if (count($filesList) > $page * $itemPerPage) {
+            $next = true;
+        } else {
+            $next = false;
+        }
+        
+        // 前
+        if ($page > 1) {
+            $pre = true;
+        } else {
+            $pre = false;
+        }
+        $total = ceil(count($filesList) / $itemPerPage);
+        
+        return array(
+            "data" => $pagerData,
+            "next" => $next,
+            "pre" => $pre,
+            "currentPage" => $page,
+            "total" => $total
+        );
+    }
+    
+    /**
+     * データベースを回復
+     * 
+     * @param string $file
+     */
+    public function restore($file) {
+        $filePath = self::$BACKUP_DIR.'/'.$file;
+        
+        // データベース設定をとる
+        $bootstrap = Zend_Controller_Front::getInstance()->getParam('bootstrap');
+        $resources = $bootstrap->getOption('resources');
+        $host = $resources['db']['params']['host'];
+        $user = $resources['db']['params']['username'];
+        $pass = $resources['db']['params']['password'];
+        $dbName = $resources['db']['params']['dbname'];
+        
+        $mysqli = new mysqli($host, $user, $pass, $dbName);
+        mysqli_set_charset($mysqli, 'utf8');
+
+        /* check connection */
+        if (mysqli_connect_errno()) {
+            printf("Connect failed: %s\n", mysqli_connect_error());
+            exit();
+        }
+        
+        $query = file_get_contents($filePath);
+
+        if ($mysqli->multi_query($query)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
 }
 

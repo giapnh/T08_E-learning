@@ -72,7 +72,7 @@
                                         foreach ($this->files as $file) {
                                             $count++;
                                             $fileType = explode(".", $file['filename']);
-                                            $fileType = $fileType[1];
+                                            $fileType = strtolower($fileType[1]);
                                             if ($fileType == 'pdf') {
                                                 ?>
                                                 <a href="<?php echo $this->baseUrl(); ?>/student/file?lessonId=<?php echo $this->lessonInfo['id']; ?>&fileId=<?php echo $file['id']; ?>">
@@ -151,13 +151,20 @@
                                     if ($this->files == null) {
                                         echo "ファイルがない";
                                     } else {
-										$currentFile = explode(".", $this->currentFile['filename']);
-                                        $currentFile =$currentFile[1];
-                                        if ($currentFile == 'pdf' || $currentFile == "mp3" || $currentFile == "mp4") {
-                                            ?>
-                                           <iframe src="<?php echo $this->baseUrl()?>/student/stream/id/<?php echo $this->currentFile["id"]?>#toolbar=0&navpanes=0&scrollbar=0" width="100%" height="500"></iframe>
+                                        $currentFiles = explode(".", $this->currentFile['filename']);
+                                        $currentFile = strtolower($currentFiles[count($currentFiles)-1]);
+                                        if (    $currentFile == 'pdf' || 
+                                                $currentFile == "mp3" || 
+                                                $currentFile == "mp4" ||
+                                                $currentFile == "png" ||
+                                                $currentFile == "gif" ||
+                                                $currentFile == "wav" ||
+                                                $currentFile == "jpg"
+                                            ) {
+                                    ?>
+                                       <iframe src="<?php echo $this->baseUrl()?>/student/stream/id/<?php echo $this->currentFile["id"]?>#toolbar=0&navpanes=0&scrollbar=0" width="100%" height="500"></iframe>
                                            
-                                        <?php
+                                    <?php
                                     } else if ($currentFile == 'tsv') {
                                         ?>
                                         <div>
