@@ -18,6 +18,22 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
      * @param type $username
      * @return boolean
      */
+    //thiennx : delete user
+    public function deleteTeacher($userId){
+    	$query = "DELETE FROM user 
+    			LEFT JOIN lesson ON user.id = lesson.teacher_id 
+    			LEFT JOIN lesson_file ON lesson.id = lesson_file.lesson_id 
+    			LEFT JOIN lesson_tag ON lesson.id = lesson_tag.lesson_id
+    			LEFT JOIN comment ON lesson.id = comment.lesson_id
+    			LEFT JOIN learn ON lesson.id = learn.lesson_id
+    			LEFT JOIN lesson_like ON lesson.id = lesson_like.lesson_id
+    			LEFT JOIN copyright_report ON lesson_file.id = copyright_report.file_id 
+    			LEFT JOIN result ON result.learn_id = learn.id
+    			LEFT JOIN question ON question.file_id = lesson_file.id
+    			WHERE user.id = ". $userId;
+    	$this->db->query($query);
+    			
+    }
     public function isExits($username) {
         $query = $this->select()
                 ->from($this->_name, array('username'))
@@ -153,6 +169,39 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
 
     public function listAll() {
         return $this->fetchAll()->toArray();
+    }
+
+    /*
+     * ユーザがロック状態にさせます
+     */
+
+    public function lock($username) {
+        $update_data = array(
+            'status' => 3
+        );
+        $where = "username='$username'";
+        $this->update($update_data, $where);
+    }
+
+    public function updateLastLoginTime($uname) {
+        $update_data = array(
+            'last_login_time' => time()
+        );
+        $where = "username='$uname'";
+        $this->update($update_data, $where);
+    }
+
+    /*
+     * ユーザが発動状態にさせます
+     */
+
+    public function unlock($username) {
+        $update_data = array(
+            'fail_login_count' => 0,
+            'status' => 1
+        );
+        $where = "username='$username'";
+        $this->update($update_data, $where);
     }
 
     /**

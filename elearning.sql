@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.0.4
+-- version 4.0.4.1
 -- http://www.phpmyadmin.net
 --
--- Host: localhost
--- Generation Time: Apr 19, 2014 at 05:07 AM
--- Server version: 5.6.12-log
--- PHP Version: 5.4.12
+-- Host: 127.0.0.1
+-- Generation Time: Apr 19, 2014 at 07:35 PM
+-- Server version: 5.5.32
+-- PHP Version: 5.4.16
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -320,8 +320,8 @@ INSERT INTO `master` (`master_key`, `master_value`) VALUES
 ('COMA_PRICE', '20000'),
 ('FILE_LOCATION', 'files'),
 ('LESSON_DEADLINE', '7'),
-('LOCK_COUNT', '5'),
-('LOGIN_FAIL_LOCK_TIME', '3600'),
+('LOCK_COUNT', '3'),
+('LOGIN_FAIL_LOCK_TIME', '10'),
 ('PASSWORD_CONST', '100'),
 ('SESSION_TIME', '86400'),
 ('TEACHER_FEE_RATE', '60'),
@@ -463,19 +463,21 @@ CREATE TABLE IF NOT EXISTS `user` (
   `status` int(11) NOT NULL DEFAULT '2' COMMENT '1: avaiable; 2:wait for confirm by admin; 3:block',
   `last_login_ip` varchar(255) DEFAULT NULL,
   `fail_login_count` int(11) NOT NULL DEFAULT '0',
-  `last_login_time` varchar(100) DEFAULT NULL,
+  `last_login_time` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=24 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=26 ;
 
 --
 -- Dumping data for table `user`
 --
 
 INSERT INTO `user` (`id`, `username`, `first_password`, `password`, `name`, `sex`, `email`, `birthday`, `address`, `phone`, `bank_account`, `first_secret_question`, `first_secret_answer`, `secret_question`, `secret_answer`, `role`, `status`, `last_login_ip`, `fail_login_count`, `last_login_time`) VALUES
-(18, 'thayminh', '87683ef352817ffc68a1bcddf45f4e18930a617f', '87683ef352817ffc68a1bcddf45f4e18930a617f', 'Minh Tran', 0, 'tminhhp@gmail.com', '13-10-2001', '45 Trần Đại Nghĩa', '0987654321', '711A12334534', 'nick gg', 'hnimnart', 'nick gg', 'hnimnart', 2, 1, '127.0.0.1', 1, ''),
-(19, 'minhtq', '976450ee760f6dace9a481bdf6406728019ce7ca', '976450ee760f6dace9a481bdf6406728019ce7ca', 'Trần Quang Minh', 0, 'tminh_1234@yahoo.com', '17-6-2001', '42 Lê Thanh Nghị', '0987654321', '711A12334534', 'nick gg', 'hnimnart', 'nick gg', 'hnimnart', 1, 1, '127.0.0.1', 4, ''),
-(22, 'thayminh2', '11ed51e5fbac4770f5db86f67db563c4273cb747', '11ed51e5fbac4770f5db86f67db563c4273cb747', 'Giao Su Minh', 0, 'tminh.hp@hotmail.com', '17-9-2006', '69 Trần Đại Nghĩa', '0987654321', '711A12334534', 'nick gg', 'c978ce09940e3c299827392480c655cd596b32ee', 'nick gg', 'c978ce09940e3c299827392480c655cd596b32ee', 2, 1, '127.0.0.1', 0, ''),
-(23, 'thayminh3', '8d3ae284cd69f79feb06b861297b3db631f60e92', '8d3ae284cd69f79feb06b861297b3db631f60e92', 'Tiến Sĩ Minh', 0, 'minhtq@rikkei.com', '15-7-2002', '45 Trần Đại Nghĩa', '0987654321', '711A12334534', 'nick gg', 'c978ce09940e3c299827392480c655cd596b32ee', 'nick gg', 'c978ce09940e3c299827392480c655cd596b32ee', 2, 1, '127.0.0.1', 0, '');
+(18, 'thayminh', '87683ef352817ffc68a1bcddf45f4e18930a617f', '87683ef352817ffc68a1bcddf45f4e18930a617f', 'Minh Tran', 0, 'tminhhp@gmail.com', '13-10-2001', '45 Trần Đại Nghĩa', '0987654321', '711A12334534', 'nick gg', 'hnimnart', 'nick gg', 'hnimnart', 2, 1, '127.0.0.1', 1, 0),
+(19, 'minhtq', '976450ee760f6dace9a481bdf6406728019ce7ca', '976450ee760f6dace9a481bdf6406728019ce7ca', 'Trần Quang Minh', 0, 'tminh_1234@yahoo.com', '17-6-2001', '42 Lê Thanh Nghị', '0987654321', '711A12334534', 'nick gg', 'hnimnart', 'nick gg', 'hnimnart', 1, 1, '127.0.0.1', 4, 0),
+(22, 'thayminh2', '11ed51e5fbac4770f5db86f67db563c4273cb747', '11ed51e5fbac4770f5db86f67db563c4273cb747', 'Giao Su Minh', 0, 'tminh.hp@hotmail.com', '17-9-2006', '69 Trần Đại Nghĩa', '0987654321', '711A12334534', 'nick gg', 'c978ce09940e3c299827392480c655cd596b32ee', 'nick gg', 'c978ce09940e3c299827392480c655cd596b32ee', 2, 1, '127.0.0.1', 0, 0),
+(23, 'thayminh3', '8d3ae284cd69f79feb06b861297b3db631f60e92', '8d3ae284cd69f79feb06b861297b3db631f60e92', 'Tiến Sĩ Minh', 0, 'minhtq@rikkei.com', '15-7-2002', '45 Trần Đại Nghĩa', '0987654321', '711A12334534', 'nick gg', 'c978ce09940e3c299827392480c655cd596b32ee', 'nick gg', 'c978ce09940e3c299827392480c655cd596b32ee', 2, 1, '127.0.0.1', 0, 0),
+(24, 'giapnh', '4b85e82bcd41747e0a2ee60b8f7ef26fc6bb2ce7', '4b85e82bcd41747e0a2ee60b8f7ef26fc6bb2ce7', 'Nguyễn Hữu Giáp', 0, '', '2-2-2011', '151 Nguyễn Đức Cảnh', '01664643234', '711A948594898', '', '', '', '', 1, 3, NULL, 3, 1397928434),
+(25, 'thaygiap', 'ff118180fdde6ac7127376143342336f59e81091', 'ff118180fdde6ac7127376143342336f59e81091', 'Nguyễn Hữu Giáp', 0, 'hgbk.it@gmail.com', '16-3-1996', '151 Nguyễn Đức Cảnh', '01664643234', '711A948594898', '1', '0937afa17f4dc08f3c0e5dc908158370ce64df86', '1', '0937afa17f4dc08f3c0e5dc908158370ce64df86', 2, 1, '127.0.0.1', 0, 1397928787);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
