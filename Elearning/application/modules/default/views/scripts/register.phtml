@@ -19,11 +19,13 @@
                     function student() {
                         $("#secret_qa").hide();
                         $("#bank_acc_label").text("クレジットカード情報：");
+                        $("#acc_hint").text("例：12345678-1111-2222-3333-4444");
                     }
 
                     function teacher() {
                         $("#secret_qa").show();
                         $("#bank_acc_label").text("銀行アカウント：");
+                        $("#acc_hint").text("例：1111-222-3-4444444");
                     }
                 </script>
                 <!--ユーザルール-->
@@ -364,6 +366,7 @@
                 <div class="res_form_row">
                     <div class="res_f_r_left">
                         <div class="res_f_r_left_up" id = "bank_acc_label">クレジットカード情報：</div>
+                        <div style="font-size: 12px; font-style: italic;" id="acc_hint">例：12345678-1111-2222-3333-4444</div>
                     </div>
                     <div class="res_f_r_right">
                         <input id="res_bank_account" name="bank_acc" class="res_input"

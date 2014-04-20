@@ -18,6 +18,8 @@ class Message {
     public static $M011 = "住所が無効";
     public static $M012 = "電話番号が無効";
     public static $M013 = "銀行アカウントが無効";
+    public static $M0131 = "クレジットアカウントフォーマットが無効";
+    public static $M0132 = "銀行アカウントフォーマットが無効";
     public static $M014 = "秘密質問が無効";
     public static $M015 = "秘密質問の答えが無効";
     public static $M016 = "更新が完成した";

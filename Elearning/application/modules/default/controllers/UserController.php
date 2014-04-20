@@ -205,6 +205,7 @@ class UserController extends IController {
         $this->view->form = $form;
         if ($this->_request->isPost()) {
             $data = $this->_request->getParams();
+
 //Check empty
             if (trim($data['username']) == '') {
                 $this->view->errorMessage = Message::$M006;
@@ -253,9 +254,23 @@ class UserController extends IController {
                 $this->view->errorMessage = Message::$M012;
                 return;
             }
-//銀行アカウント
+
+            //銀行アカウント
             if (trim($data['bank_acc']) == '') {
                 $this->view->errorMessage = Message::$M013;
+                return;
+            } else {
+                if ($data['role'] == 1) {
+                    if (!preg_match(Code::$REGEX_STUDENT_CREADIT, $data['bank_acc'])) {
+                        $this->view->errorMessage = Message::$M0131;
+                        return;
+                    }
+                } else if ($data['role'] == 2) {
+                    if (!preg_match(Code::$REGEX_TEACHER_BANK_ACC, $data['bank_acc'])) {
+                        $this->view->errorMessage = Message::$M0132;
+                        return;
+                    }
+                }
             }
 // なぜユーザは先生です、秘密質問がチェックする
             if ($data['role'] == 2) {
