@@ -198,7 +198,7 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
                     ->joinInner('lesson_tag', 'lesson.id=lesson_tag.lesson_id')
                     ->joinInner('tag', 'lesson_tag.tag_id=tag.id', array('tag_name'));
             for ($i = 0; $i < count($subKey); $i++) {
-                $select->orWhere("name LIKE '%$subKey[$i]%'");
+                $select->orWhere("name LIKE '%" . trim($subKey[$i]) . "%'");
             }
             $select->orWhere("tag_name  LIKE '%$keyword%'")
                     ->orWhere("title LIKE '%$keyword%'")
