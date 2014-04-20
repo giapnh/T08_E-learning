@@ -27,6 +27,17 @@ class Default_Model_Tag extends Zend_Db_Table_Abstract {
         return $this->fetchAll()->toArray();
     }
 
+    public function listAllOfTeacher($teacherId) {
+        $select = $this->getAdapter()->select();
+        $select->from(array('t' => 'tag'))
+                ->joinInner(array('lt' => 'lesson_tag'), 't.id=lt.tag_id', NULL)
+                ->joinInner(array('l' => 'lesson'), 'l.lesson_id = lt.lesson_id')
+                ->joinInner(array('u' => 'user'), 'l.teacher_id = u.id')
+                ->where('u.id=?', $teacherId)
+                ->group('t.id');
+        return $this->fetchAll()->toArray();
+    }
+
     public function getAllTagOfLesson($lessonId) {
         $select = $this->getAdapter()->select();
         $select->from(array('t' => 'tag'))
@@ -58,5 +69,5 @@ class Default_Model_Tag extends Zend_Db_Table_Abstract {
                 ->where('learn.student_id=?', $studentId);
         return $this->getAdapter()->fetchAll($select);
     }
-        
+
 }

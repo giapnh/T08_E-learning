@@ -41,6 +41,23 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
         return $result;
     }
 
+    public function listWithTagByTeacher($tag, $teacher_id) {
+        if ($tag == 0) {
+            return $this->listAll();
+        }
+        $select = $this->getAdapter()->select();
+        $select->from(array('l' => 'lesson'))
+                ->joinInner(array('lt' => 'lesson_tag'), 'l.id = lt.lesson_id', array('lesson_tag.id' => 'tag_id'))
+                ->joinInner('user', 'l.teacher_id=user.id', array('name'))
+                ->where('user.id=?', $teacher_id)
+                ->where("lt.tag_id=$tag");
+        $result = $this->getAdapter()->fetchAll($select);
+        foreach ($result as $index => $lesson) {
+            $result[$index]['is_reported'] = $this->isReported($lesson);
+        }
+        return $result;
+    }
+
     public function listTeacherLessonsByTag($teacher, $tag) {
         $select = $this->getAdapter()->select();
         if ($tag == 0) {

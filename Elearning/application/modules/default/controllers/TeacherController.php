@@ -7,7 +7,7 @@ class TeacherController extends IController {
 
     protected $user;
     protected $currentTeacherId;
-    
+
     public function preDispatch() {
         $auth = Zend_Auth::getInstance();
         $master = new Default_Model_Master();
@@ -60,50 +60,116 @@ class TeacherController extends IController {
     public function indexAction() {
         $this->initial();
         $lessons = new Default_Model_Lesson();
-        $tagId = $this->_request->getParam('tag_id');
-        $tags = new Default_Model_Tag();
-
+        $get_type = $this->_request->getParam('type');
+        $tagId = $this->_request->getParam('tagId');
+        $teacherId = $this->_request->getParam('teacherId');
         $this->view->tagId = $tagId;
-        $this->view->tags = $tags->listAll();
-        $this->view->type = 1;
+        $this->view->teacherId = $teacherId;
+        if ($get_type == null || $get_type == 1) {
+            $tags = new Default_Model_Tag();
+            $this->view->tags = $tags->listAll();
+            $this->view->type = 1;
+            $paginator = Zend_Paginator::factory($lessons->listWithTag($tagId));
+            $paginator->setItemCountPerPage(6);
+            $paginator->setPageRange(3);
+            $this->view->numpage = $paginator->count();
+            $currentPage = $this->_request->getParam('page', 1);
+            $paginator->setCurrentPageNumber($currentPage);
+            $this->view->data = $paginator;
+        } else {
+            $users = new Default_Model_Account();
+            $this->view->teachers = $users->listTeacher();
+            $this->view->type = 2;
+            $paginator = Zend_Paginator::factory($lessons->listWithTeacher($teacherId));
+            $paginator->setItemCountPerPage(6);
+            $paginator->setPageRange(3);
+            $this->view->numpage = $paginator->count();
+            $currentPage = $this->_request->getParam('page', 1);
+            $paginator->setCurrentPageNumber($currentPage);
+            $this->view->data = $paginator;
+        }
 
-        $paginator = Zend_Paginator::factory($lessons->listTeacherLessonsByTag($this->currentTeacherId, $tagId));
-        $paginator->setItemCountPerPage(6);
-        $paginator->setPageRange(3);
-        $this->view->numpage = $paginator->count();
-        $currentPage = $this->_request->getParam('page', 1);
-        $paginator->setCurrentPageNumber($currentPage);
-        $this->view->data = $paginator;
-        //        foreach($this->view->data as $item) {
-        //            var_dump($item);
-        //        }
-        //        die();
         if ($this->_request->isPost()) {
-            //            $keyword = $this->_request->getParam('keyword');
-            //            $paginator = Zend_Paginator::factory($lessons->findByKeyword($keyword));
-            //            $paginator->setItemCountPerPage(6);
-            //            $paginator->setPageRange(3);
-            //            $this->view->numpage = $paginator->count();
-            //            $currentPage = $this->_request->getParam('page', 1);
-            //            $paginator->setCurrentPageNumber($currentPage);
-            //            $this->view->data = $paginator;
+            $keyword = $this->_request->getParam('keyword');
+            $type = $this->_request->getParam('sort_type');
+            $asc = $this->_request->getParam('sort_asc');
+            $paginator = Zend_Paginator::factory($lessons->findByKeyword($keyword, $type, $asc));
+            $paginator->setItemCountPerPage(12);
+            $paginator->setPageRange(3);
+            $this->view->numpage = 1;
+            $currentPage = $this->_request->getParam('page', 1);
+            $paginator->setCurrentPageNumber($currentPage);
+            $this->view->data = $paginator;
+            $this->view->sortType = $type;
+            $this->view->asc = $asc;
+        }
+    }
+
+    public function mylessonAction() {
+        $this->initial();
+        $auth = Zend_Auth::getInstance();
+        $uInfo = $auth->getStorage()->read();
+        $lessons = new Default_Model_Lesson();
+        $get_type = $this->_request->getParam('type');
+        $tagId = $this->_request->getParam('tagId');
+        $teacherId = $this->_request->getParam('teacherId');
+        $this->view->tagId = $tagId;
+        $this->view->teacherId = $teacherId;
+        if ($get_type == null || $get_type == 1) {
+            $tags = new Default_Model_Tag();
+            $this->view->tags = $tags->listAllOfTeacher($uInfo['id']);
+            $this->view->type = 1;
+            $paginator = Zend_Paginator::factory($lessons->listWithTagByTeacher($tagId, $uInfo['id']));
+            $paginator->setItemCountPerPage(6);
+            $paginator->setPageRange(3);
+            $this->view->numpage = $paginator->count();
+            $currentPage = $this->_request->getParam('page', 1);
+            $paginator->setCurrentPageNumber($currentPage);
+            $this->view->data = $paginator;
+        } else {
+            $users = new Default_Model_Account();
+            $this->view->type = 2;
+            $paginator = Zend_Paginator::factory($lessons->listWithTeacher($uInfo['id']));
+            $paginator->setItemCountPerPage(6);
+            $paginator->setPageRange(3);
+            $this->view->numpage = $paginator->count();
+            $currentPage = $this->_request->getParam('page', 1);
+            $paginator->setCurrentPageNumber($currentPage);
+            $this->view->data = $paginator;
+        }
+
+        if ($this->_request->isPost()) {
+            $keyword = $this->_request->getParam('keyword');
+            $type = $this->_request->getParam('sort_type');
+            $asc = $this->_request->getParam('sort_asc');
+            $paginator = Zend_Paginator::factory($lessons->findByKeyword($keyword, $type, $asc));
+            $paginator->setItemCountPerPage(12);
+            $paginator->setPageRange(3);
+            $this->view->numpage = 1;
+            $currentPage = $this->_request->getParam('page', 1);
+            $paginator->setCurrentPageNumber($currentPage);
+            $this->view->data = $paginator;
+            $this->view->sortType = $type;
+            $this->view->asc = $asc;
         }
     }
 
     public function profileAction() {
         $this->initial();
     }
-	//thiennx delete acount
-	public function deleteAcountAction(){
-		$this->initial();
-		if($this->currentTeacherId){
-			$modelUser = new Default_Model_Account();
-			$modelUser->deleteTeacher($this->currentTeacherId);
-			$auth = Zend_Auth::getInstance();
-			$auth->clearIdentity();
-		}
-		$this->_redirect("user/login");
-	}
+
+    //thiennx delete acount
+    public function deleteAcountAction() {
+        $this->initial();
+        if ($this->currentTeacherId) {
+            $modelUser = new Default_Model_Account();
+            $modelUser->deleteTeacher($this->currentTeacherId);
+            $auth = Zend_Auth::getInstance();
+            $auth->clearIdentity();
+        }
+        $this->_redirect("user/login");
+    }
+
     /**
      * プロファイが変更機能アクション
      * @return type
@@ -281,7 +347,7 @@ class TeacherController extends IController {
             $fileModel->createFilesData($lessonId);
 
             // Redirect
-            $this->redirect("teacher/lesson?lesson_id=" . $lessonId);
+            $this->_redirect("teacher/lesson?lesson_id=" . $lessonId);
         }
     }
 
@@ -298,7 +364,7 @@ class TeacherController extends IController {
         $commentModel = new Default_Model_Comment();
         $learnModel = new Default_Model_Learn();
 
-        $comment = $this->getParam('comment');
+        $comment = $this->_request->getParam('comment');
         if (isset($comment) && $comment != '') {
             $commentModel->addComment($lessonId, $this->currentTeacherId, $comment);
         }
@@ -310,7 +376,7 @@ class TeacherController extends IController {
         if ($lesson['teacher_id'] != $this->user['id']) {
             $this->redirect('teacher/index');
         }
-        
+
         $files = $fileModel->getFileByLesson($lessonId);
         $tags = $lessonTagModel->getTagsByLesson($lessonId);
         $comments = $commentModel->getAllCommentOfLesson($lessonId);
@@ -330,7 +396,7 @@ class TeacherController extends IController {
      * 
      */
     public function addFileAction() {
-        $params = $this->getAllParams();
+        $params = $this->_request->getAllParams();
         $lessonId = $params['lesson_id'];
         $descriptions = $params['description'];
         $copyright_check = isset($params['copyright_check']);
@@ -371,7 +437,7 @@ class TeacherController extends IController {
             $lessonModel->delete("id=" . $lessonId);
         }
 
-        $this->redirect("teacher");
+        $this->_redirect("teacher");
     }
 
     /**
@@ -408,7 +474,7 @@ class TeacherController extends IController {
 
         $lessonId = $this->_request->getParam('lesson_id');
         $currentFileId = $this->_request->getParam('file_id');
-        
+
         if ($this->_request->isPost()) {
             $u = Zend_Auth::getInstance()->getStorage()->read();
             $lessonId = $this->_request->getParam('lesson_id');
@@ -418,10 +484,10 @@ class TeacherController extends IController {
                 $filecommentModel->addComment($currentFileId, $u['id'], $comment);
             }
         }
-        
+
         $currentFile = $lessonFileModel->findFileById($currentFileId);
         $lessonInfo = $lessonModel->findLessonById($lessonId);
-        
+
         $files = $lessonFileModel->getFileByLesson($lessonId);
         $this->view->files = $files;
         if ($currentFile == NULL) {
@@ -431,12 +497,12 @@ class TeacherController extends IController {
                 $this->view->fileError = "ファイルがない";
             }
         }
-        
+
         // 授業はこのユーザの授業かをチェック
         if ($lessonInfo['teacher_id'] != $this->user['id']) {
-            $this->redirect('teacher/index');
+            $this->_redirect('teacher/index');
         }
-        
+
         // ファイルは授業のファイルかをチェック
         if ($currentFile != NULL) {
             if ($currentFile['lesson_id'] != $lessonInfo['id']) {
@@ -452,24 +518,24 @@ class TeacherController extends IController {
         $this->view->lessonId = $lessonId;
         $this->view->reports = $reportModel->getReport($currentFileId);
         $this->view->comments = $filecommentModel->getAllCommentOfFile($currentFileId);
-        
+
         $uploadErrors = $this->_helper->FlashMessenger->getMessages('uploadError');
         if (count($uploadErrors) >= 1) {
             $this->view->fileUploadError = $uploadErrors[0];
         }
     }
-    
+
     public function editFileAction() {
         $this->getHelper('ViewRenderer')
-             ->setNoRender();
-        
-        $fileId = $this->getParam('file_id');
-        $fileDescription = $this->getParam('description');
-        $lessonId = $this->getParam('lesson_id');
-        $copyrightCheck = $this->getParam('copyright_check');
-        
+                ->setNoRender();
+
+        $fileId = $this->_request->getParam('file_id');
+        $fileDescription = $this->_request->getParam('description');
+        $lessonId = $this->_request->getParam('lesson_id');
+        $copyrightCheck = $this->_request->getParam('copyright_check');
+
         $fileModel = new Default_Model_File();
-        
+
         /*
          *  チェック
          */
@@ -479,7 +545,7 @@ class TeacherController extends IController {
         if ($newFile['file']['type'] == null) {
             $msg = Message::$M2084;
             $this->_helper->FlashMessenger->addMessage($msg, 'uploadError');
-            $this->redirect('teacher/file?lesson_id='.$lessonId."&file_id=".$fileId);
+            $this->_redirect('teacher/file?lesson_id=' . $lessonId . "&file_id=" . $fileId);
         }
         // ファイルタイプチェック
         $currentFile = $fileModel->findFileById($fileId);
@@ -488,27 +554,27 @@ class TeacherController extends IController {
         if ($fileExt != $newFileExt) {
             $msg = str_replace("<filetype>", $fileExt, Message::$M2081);
             $this->_helper->FlashMessenger->addMessage($msg, 'uploadError');
-            $this->redirect('teacher/file?lesson_id='.$lessonId."&file_id=".$fileId);
+            $this->_redirect('teacher/file?lesson_id=' . $lessonId . "&file_id=" . $fileId);
         }
         // ファイルサイズ
         if ($newFile['file']['size'] > Default_Model_File::$FILE_MAX_SIZE) {
             $msg = Message::$M2082;
             $this->_helper->FlashMessenger->addMessage($msg, 'uploadError');
-            $this->redirect('teacher/file?lesson_id='.$lessonId."&file_id=".$fileId);
+            $this->_redirect('teacher/file?lesson_id=' . $lessonId . "&file_id=" . $fileId);
         }
         // Copyrightチェック
         if (!isset($copyrightCheck)) {
             $msg = Message::$M2083;
             $this->_helper->FlashMessenger->addMessage($msg, 'uploadError');
-            $this->redirect('teacher/file?lesson_id='.$lessonId."&file_id=".$fileId);
+            $this->_redirect('teacher/file?lesson_id=' . $lessonId . "&file_id=" . $fileId);
         }
-        
+
         // ファイル更新
         if (!$fileModel->editFile($fileId, $fileDescription)) {
             $msg = Message::$M2085;
             $this->_helper->FlashMessenger->addMessage($msg, 'uploadError');
         }
-        $this->redirect('teacher/file?lesson_id='.$lessonId."&file_id=".$fileId);
+        $this->_redirect('teacher/file?lesson_id=' . $lessonId . "&file_id=" . $fileId);
     }
 
     public function getTestHtml($testId) {
@@ -586,7 +652,7 @@ class TeacherController extends IController {
      */
     public function paymentAction() {
         $this->initial();
-        $param = $this->getAllParams();
+        $param = $this->_request->getAllParams();
         if (isset($param["month"]) && isset($param["year"])) {
             $month = $param["month"];
             $year = $param["year"];
@@ -640,21 +706,21 @@ class TeacherController extends IController {
         $file = $lessonFileModel->findFileById($fileId);
         $path = $lessonFileModel->getFileFolder() . $file["location"];
         $currentFileExt = explode(".", $file['filename']);
-        $currentFileExt = $currentFileExt[count($currentFileExt)-1];
+        $currentFileExt = $currentFileExt[count($currentFileExt) - 1];
         $arrayType = array(
-                        "pdf" => "application/pdf",
-                        "mp3" => "audio/mpeg",
-                        "mp4" => "video/mp4",
-                        "MP4" => "video/mp4",
-                        "jpg" => "image/jpeg",
-                        "png" => "image/jpeg",
-                        "gif" => "image/jpeg",
-                        "wav" => "audio/mpeg"
+            "pdf" => "application/pdf",
+            "mp3" => "audio/mpeg",
+            "mp4" => "video/mp4",
+            "MP4" => "video/mp4",
+            "jpg" => "image/jpeg",
+            "png" => "image/jpeg",
+            "gif" => "image/jpeg",
+            "wav" => "audio/mpeg"
         );
         if (is_readable($path)) {
             if ($currentFileExt == "pdf") {
-                echo    $link = $this->view->serverUrl() . $this->view->baseUrl() . "/public/viewpdf/web/viewer.html?file="
-                                . $this->view->serverUrl() . $this->view->baseUrl() . "/" . $lessonFileModel->getFileFolderName() . $file["location"];
+                echo $link = $this->view->serverUrl() . $this->view->baseUrl() . "/public/viewpdf/web/viewer.html?file="
+                . $this->view->serverUrl() . $this->view->baseUrl() . "/" . $lessonFileModel->getFileFolderName() . $file["location"];
                 header("Location: " . $link);
             } else {
                 header('Content-type: ' . $arrayType[$currentFileExt]);

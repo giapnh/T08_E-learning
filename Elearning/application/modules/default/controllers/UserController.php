@@ -4,6 +4,38 @@ require_once 'IController.php';
 
 class UserController extends IController {
 
+    /**
+     * Check login or not yet
+     */
+    public function checkFirst() {
+        $auth = Zend_Auth::getInstance();
+        if (!$auth->hasIdentity()) {
+            if ($this->_request->getActionName() != 'login') {
+                $this->_redirect('user/login');
+            }
+        } else {
+            var_dump("Here");
+            $infoUser = $auth->getStorage()->read();
+            if ($infoUser['role'] == 1) {
+                //学生チェックする
+                $this->_redirect('student/index');
+            } else if ($infoUser['role'] == 2) {
+                $this->_redirect('teacher/index');
+            }
+        }
+    }
+
+    /**
+     * If loged in, get user information
+     */
+    public function initial() {
+        $auth = Zend_Auth::getInstance();
+        $infoUser = $auth->getStorage()->read();
+        $this->view->user_info = $infoUser;
+        $this->user = $infoUser;
+        $this->currentUser = $infoUser;
+    }
+
     public function indexAction() {
         $this->redirect('user/login');
     }
@@ -15,6 +47,7 @@ class UserController extends IController {
      * @param string $role     役割
      */
     public function loginAction() {
+        $this->checkFirst();
         $master = new Default_Model_Master();
         $authAdapter = new Default_Model_Account();
         $form = new Default_Form_Login ();
@@ -253,6 +286,7 @@ class UserController extends IController {
     public function logoutAction() {
         $auth = Zend_Auth::getInstance();
         $auth->clearIdentity();
+        $auth->getStorage()->clear();
         $this->_redirect('user/login');
     }
 

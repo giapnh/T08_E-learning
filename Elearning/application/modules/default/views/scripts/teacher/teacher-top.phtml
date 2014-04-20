@@ -1,5 +1,5 @@
-<?php 
-$vars = $this->getVars(); 
+<?php
+$vars = $this->getVars();
 $username = $vars['username'];
 ?>
 <div class="top_content clear banner">
@@ -11,21 +11,21 @@ $username = $vars['username'];
 </div>
 <big>
 
-<!--Menu Tab Bar-->
-<div class="menus clear">
-    <div class="mn first_mn">
-        <a class="home" href="<?php echo $this->baseUrl(); ?>/teacher/index">
-            <font style="color: white;">ホーム</font>
-        </a>
-    </div>
-    <div title="" class="mn"><a href="<?php echo $this->baseUrl(); ?>/teacher/index"><font style="color: white;">マイレッスン</font></a>
-    </div>
-    <div title="" class="mn "><a href="<?php echo $this->baseUrl(); ?>/teacher/payment">
-        <font style="color: white;">支払い</font></a><font style="color: white;">
-        </font>
-    </div>
-    <font style="color: white;">
+    <!--Menu Tab Bar-->
+    <div class="menus clear">
+        <div class="mn first_mn">
+            <a class="home" href="<?php echo $this->baseUrl(); ?>/teacher/index">
+                <font style="color: white;">ホーム</font>
+            </a>
+        </div>
+        <div title="" class="mn"><a href="<?php echo $this->baseUrl(); ?>/teacher/myLesson"><font style="color: white;">マイレッスン</font></a>
+        </div>
+        <div title="" class="mn "><a href="<?php echo $this->baseUrl(); ?>/teacher/payment">
+                <font style="color: white;">支払い</font></a><font style="color: white;">
+            </font>
+        </div>
+        <font style="color: white;">
         <div title="" class="mn "><a href="<?php echo $this->baseUrl(); ?>/teacher/profile"><font style="color: white;">プロファイル</font></a>
         </div>
-    </font>
-</div>
+        </font>
+    </div>
