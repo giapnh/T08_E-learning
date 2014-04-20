@@ -74,12 +74,14 @@
                                                 <tr>
                                                     <td style="width: 100%;overflow: hidden; height: 15px;line-height: 20px;" colspan="1" class="lession-title">
                                                         <div style="width: 90%;float: left;"><?php echo $item['title']; ?></div>
-                                                        <a href="<?php echo $this->baseUrl() . "/teacher/delete-lesson?lesson_id=" . $item['id']; ?>" style="text-align: center; color: orange; width: 10%;float: left;">X</a>
+                                                        <?php if ($item['name'] == $this->user_info['name']) { ?>
+                                                            <a href="<?php echo $this->baseUrl() . "/teacher/delete-lesson?lesson_id=" . $item['id']; ?>" style="text-align: center; color: orange; width: 10%;float: left;">X</a>
+                                                        <?php } ?>
                                                     </td>
                                                 </tr>
                                                 <tr><td><hr></td></tr>
                                                 <tr>
-                                                    <td class="lession-teacher"></td>
+                                                    <td class="lession-teacher"><b>先生: </b><?php echo $item['name']; ?></td>
                                                     <td class="lession-time"><?php echo $item['create_time']; ?></td>
                                                 </tr>
                                                 <tr>
@@ -104,12 +106,14 @@
                                                 <tr>
                                                     <td style="width: 100%;overflow: hidden; height: 15px;line-height: 20px;" colspan="2" class="lession-title">
                                                         <div style="width: 90%;float: left;"><?php echo $item['title']; ?></div>
-                                                        <a href="<?php echo $this->baseUrl() . "/teacher/delete-lesson?lesson_id=" . $item['id']; ?>" style="text-align: center; color: orange; width: 10%;float: left;">X</a>
+                                                        <?php if ($item['name'] == $this->user_info['name']) { ?>
+                                                            <a href="<?php echo $this->baseUrl() . "/teacher/delete-lesson?lesson_id=" . $item['id']; ?>" style="text-align: center; color: orange; width: 10%;float: left;">X</a>
+                                                        <?php } ?>
                                                     </td>
                                                 </tr>
                                                 <tr><td><hr></td></tr>
                                                 <tr style="width: 100%;">
-                                                    <td class="lession-teacher"></td>
+                                                    <td class="lession-teacher"><b>先生: </b><?php echo $item['name']; ?></td>
                                                     <td class="lession-time"><?php echo $item['create_time']; ?></td>
                                                 </tr>
                                                 <tr class="lession-description lesson-description-correct" style="width: 100%;">
