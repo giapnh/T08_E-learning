@@ -364,7 +364,7 @@ class TeacherController extends IController {
         $lessonTagModel = new Default_Model_LessonTag();
         $commentModel = new Default_Model_Comment();
         $learnModel = new Default_Model_Learn();
-
+        $reportModel = new Default_Model_CopyrightReport();
         $comment = $this->_request->getParam('comment');
         if (isset($comment) && $comment != '') {
             $commentModel->addComment($lessonId, $this->currentTeacherId, $comment);
@@ -390,6 +390,7 @@ class TeacherController extends IController {
         $this->view->comments = $comments;
         $this->view->errorMessages = $this->_helper->FlashMessenger->getMessages('addFileFailed');
         $this->view->messages = $this->_helper->FlashMessenger->getMessages('addFileSuccess');
+        $this->view->reports = $reportModel->getReportLesson($lessonId);
     }
 
     public function lessondetailAction() {
@@ -402,7 +403,6 @@ class TeacherController extends IController {
         $lfileModel = new Default_Model_LessonFile();
         $master = new Default_Model_Master();
         $lessonDeadline = $master->getMasterValue(Default_Model_Master::$KEY_LESSON_DEADLINE);
-        if ($this->_request->isGet()) {
             $lessonModel->incrementView($lesson_id);
             $info = $lessonModel->findLessonById($lesson_id);
             $this->view->numComment = $commentModel->countCommentOnLesson($lesson_id);
@@ -414,6 +414,20 @@ class TeacherController extends IController {
             $num = $learnModel->countStudenJoinLesson($lesson_id);
             $this->view->numStudent = $num[0];
             $this->view->filesInfo = $lfileModel->listFileOfLesson($lesson_id);
+        if ($this->_request->isPost()) {
+        	$u = Zend_Auth::getInstance()->getStorage()->read();
+        	$report = $this->_request->getParam('report_content');
+        	$repordModel = new Default_Model_CopyrightReport();
+        	if ($report != NULL) {
+        		$repordModel->insert(array(
+        				"user_id" => $u['id'], 
+        				"lesson_id" => $lesson_id, 
+        				"reason" => $report,
+        				"status" => 1
+        				
+        		));
+        		$this->view->reportNotify = Message::$M047;
+        	}
         }
     }
 

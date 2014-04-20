@@ -15,16 +15,16 @@
         <!--Menu Tab Bar-->
         <div class="menus clear">
             <div class="mn first_mn">
-                <a class="home" href="<?php echo $this->baseUrl() ?>/student/index">
+                <a class="home" href="<?php echo $this->baseUrl() ?>/teacher/index">
                     <font style="color: white;">ホーム</font>
                 </a>
             </div>
-            <div title="" class="mn"><a href="<?php echo $this->baseUrl(); ?>/student/myLesson"><font style="color: white;">マイ授業</font></a>
+            <div title="" class="mn"><a href="<?php echo $this->baseUrl(); ?>/teacher/myLesson"><font style="color: white;">マイ授業</font></a>
             </div>
 
-            <div title="" class="mn "><a href="<?php echo $this->baseUrl(); ?>/student/payment"><font style="color: white;">支払い</a>
+            <div title="" class="mn "><a href="<?php echo $this->baseUrl(); ?>/teacher/payment"><font style="color: white;">支払い</a>
             </div>
-            <div title="" class="mn "><a href="<?php echo $this->baseUrl(); ?>/student/profile"><font style="color: white;">プロファイル</font></a>
+            <div title="" class="mn "><a href="<?php echo $this->baseUrl(); ?>/teacher/profile"><font style="color: white;">プロファイル</font></a>
             </div>
         </div>
         <div class="row-show float-left" style="margin-bottom: 40px;">
@@ -131,7 +131,7 @@
 
                                 </script>
                                 <div id="report_form" style="display: none; width: 60%; margin-left: 100px; border: none; border-radius: 4px;">
-                                    <form method="post" action="<?php echo $this->baseUrl(); ?>/student/file?lessonId=<?php echo $this->lessonInfo['id']; ?>&fileId=<?php echo $this->currentFile['id']; ?>">
+                                    <form method="post" action="">
                                         <textarea cols="60" name="report_content" rows="5" placeholder="理由" style="border-style: solid; border-width: medium; border-radius: 3px;"></textarea>
                                         <input type="submit" onclick="hideReport();" value="賛成" class="showlogfromm" style="width: 80px; height: 30px; margin-left: 180px;">
                                         <input id="btn_sen_report" onclick="hideReportForm();" type="button" value="キャンセル" class="register-cus" style="width: 80px; height: 30px;">
