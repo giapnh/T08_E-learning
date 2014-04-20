@@ -334,7 +334,7 @@ class StudentController extends IController {
         if ($this->_request->isPost()) {
             $lesson_id = $this->_request->getParam('lesson_id');
             $lessonModel = new Default_Model_Lesson();
-            $lessonModel->getAdapter()->query("UPDATE  `elearning`.`lesson` SET  `like` =  `like` +1  WHERE  `lesson`.`id` = " . $lesson_id);
+            $lessonModel->getAdapter()->query("UPDATE  `elearning`.`lesson` SET  `num_like` =  `num_like` +1  WHERE  `lesson`.`id` = " . $lesson_id);
             $likeModel = new Default_Model_Like();
             $likeModel->insert(array("user_id" => $u["id"], "lesson_id" => $lesson_id));
             $this->_redirect($_SERVER['HTTP_REFERER']);
@@ -348,7 +348,7 @@ class StudentController extends IController {
         if ($this->_request->isPost()) {
             $lesson_id = $this->_request->getParam('lesson_id');
             $lessonModel = new Default_Model_Lesson();
-            $lessonModel->getAdapter()->query("UPDATE  `elearning`.`lesson` SET  `like` =  `like` -1  WHERE  `lesson`.`id` = " . $lesson_id);
+            $lessonModel->getAdapter()->query("UPDATE  `elearning`.`lesson` SET  `num_like` =  `num_like` -1  WHERE  `lesson`.`id` = " . $lesson_id);
             $likeModel = new Default_Model_Like();
             $likeModel->delete(array("user_id" => $u["id"], "lesson_id" => $lesson_id));
             $this->_redirect($_SERVER['HTTP_REFERER']);
