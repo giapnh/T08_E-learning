@@ -123,10 +123,12 @@
         float: left;
     }
     .file-name {
-        width: 300px;
+        width: 500px;
         float: left;
     }
-    
+    .lock-status-text {
+        color: red;
+    }
 </style>
 
 <script type="text/javascript">
@@ -169,6 +171,63 @@
             $("iframe").contents().find("html").attr("oncontextmenu","return false")
                     .attr("onselect", "return false");
         });
+        
+        var lockStatus = <?php echo $this->currentFile['status']; ?>;
+        if (lockStatus == 2) {
+            $(".file-lock-btn").hide();
+            $(".file-unlock-btn").show();
+            $(".lock-status-text").text("ファイルはロックされている");
+        } else {
+            $(".file-lock-btn").show();
+            $(".file-unlock-btn").hide();
+            $(".lock-status-text").text("");
+        }
+        $(".file-lock-btn").click(function(){
+            var fileId = <?php echo $this->currentFile['id']; ?>;
+            $.ajax({
+                type: "POST",
+                url: "<?php echo $this->baseUrl(); ?>/api/lock-file",
+                data: { 'file_id': fileId }
+            }).done(function( data ) {
+                if (data == 'success') {
+                    $(".file-lock-btn").hide();
+                    $(".file-unlock-btn").show();
+                    $(".lock-status-text").text("ファイルはロックされている");
+                } else {
+                    alert("ロック失敗しました");
+                }
+            });
+        });
+        $(".file-unlock-btn").click(function(){
+            var fileId = <?php echo $this->currentFile['id']; ?>;
+            $.ajax({
+                type: "POST",
+                url: "<?php echo $this->baseUrl(); ?>/api/unlock-file",
+                data: { 'file_id': fileId }
+            }).done(function( data ) {
+                if (data == 'success') {
+                    $(".file-lock-btn").show();
+                    $(".file-unlock-btn").hide();
+                    $(".lock-status-text").text("");
+                } else {
+                    alert("アンロック失敗しました");
+                }
+            });
+        });
+        $(".file-delete-btn").click(function(){
+            var fileId = <?php echo $this->currentFile['id']; ?>;
+            $.ajax({
+                type: "POST",
+                url: "<?php echo $this->baseUrl(); ?>/api/delete-file",
+                data: { 'file_id': fileId }
+            }).done(function( data ) {
+                if (data == 'success') {
+                    window.top.location = "<?php echo $this->baseUrl()."/admin/lesson/file?lesson_id=".$this->lessonInfo['id']; ?>";
+                } else {
+                    alert("削除失敗しました");
+                }
+            });
+        })
     });
 </script>
 
@@ -266,20 +325,24 @@
             <div class="file-info">
                 <div class="file-name">
                     <?php echo $this->currentFile['filename']; ?>
+                    <div class="lock-status-text"></div>
                 </div>
                 <div class="file-action">
+                    <?php // if ($this->currentFile['status'] == 2) {  ?>
                     <button class="normal-button file-unlock-btn">
                         <div class="btn-img">
                             <img src="<?php echo $this->baseUrl(); ?>/public/images/unlock.png" width="30" height="30">
                         </div>
-                        <div class="btn-text">ロック</div>
+                        <div class="btn-text">アンロック</div>
                     </button>
+                    <?php // } else { ?>
                     <button class="normal-button file-lock-btn">
                         <div class="btn-img">
                             <img src="<?php echo $this->baseUrl(); ?>/public/images/locked.png" width="30" height="30">
                         </div>
                         <div class="btn-text">ロック</div>
                     </button>
+                    <?php // } // End check lock status ?>
                     <button class="normal-button file-delete-btn">
                         <div class="btn-img">
                             <img src="<?php echo $this->baseUrl(); ?>/public/images/delete.png" width="30" height="30">

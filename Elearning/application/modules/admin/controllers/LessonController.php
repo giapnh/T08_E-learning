@@ -105,9 +105,6 @@ class Admin_LessonController extends IController {
         $studentsNum = $learnModel->countStudenJoinLesson($lessonId);
         $lessonInfo['students_num'] = $studentsNum;
         $files = $lessonFileModel->getFileByLesson($lessonId);
-        $reports = $reportModel->getReport($currentFileId);
-        $comments = $filecommentModel->getAllCommentOfFile($currentFileId);
-        
         if ($currentFile == NULL) {
             if (count($files) > 0) {
                 $currentFile = $files[0];
@@ -115,6 +112,10 @@ class Admin_LessonController extends IController {
                 $this->view->fileError = "ファイルがない";
             }
         }
+        $reports = $reportModel->getReport($currentFile['id']);
+        $comments = $filecommentModel->getAllCommentOfFile($currentFile['id']);
+        
+        
         
         // ファイルはこの授業のファイルかをチェック
         if ($currentFile) {

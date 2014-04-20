@@ -465,9 +465,14 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
      * @return array
      */
     public function findFileById($fileId) {
-        $result = $this->fetchRow("id='$fileId'")->toArray();
-        $result['is_reported'] = $this->isReported($result);
-        return $result;
+        $result = $this->fetchRow("id='$fileId'");
+        if ($result) {
+            $result = $result->toArray();
+            $result['is_reported'] = $this->isReported($result);
+            return $result;
+        } else {
+            return null;
+        }
     }
     
     /**
@@ -569,5 +574,67 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
         }
     }
     
+    /**
+     * ファイルをロック処理
+     * 
+     * @param int $fileId
+     * @return boolean
+     */
+    public function lockFile($fileId) {
+        $file = $this->findFileById($fileId);
+        if (!$file) {
+            return false;
+        }
+        if ($file['status'] == 2) {
+            return true;
+        }
+        $result = $this->update(array('status'=>'2'), "id=".$fileId);
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    /**
+     * ファイルをアンロック処理
+     * 
+     * @param int $fileId
+     * @return boolean
+     */
+    public function unlockFile($fileId) {
+        $file = $this->findFileById($fileId);
+        if (!$file) {
+            return false;
+        }
+        if ($file['status'] == 1) {
+            return true;
+        }
+        $result = $this->update(array('status'=>'1'), "id=".$fileId);
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    /**
+     * ファイルを削除処理
+     * 
+     * @param int $fileId
+     * @return boolean
+     */
+    public function deleteFile($fileId) {
+        $file = $this->findFileById($fileId);
+        if (!$file) {
+            return false;
+        }
+        $result = $this->delete("id=".$fileId);
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
 ?>
