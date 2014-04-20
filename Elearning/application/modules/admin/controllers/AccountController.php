@@ -167,7 +167,17 @@ class Admin_AccountController extends IController {
         
         $this->redirect("admin/account");
     }
-
+    public function changeIpAction() {
+    	if($this->_request->isPost()){
+    	$ipId = $this->getParam('id');
+    	$ip = $this->getParam('ip');
+    	$ipModel = new Admin_Model_AdminIp();
+    
+    	$ipModel->update(array("ip" => $ip), "id = ".$ipId );
+    	
+    	}
+    	exit();
+    }
     /**
      * パースワード更新画面
      */
