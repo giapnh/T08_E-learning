@@ -113,10 +113,36 @@
                                 <tr>
                                     <td colspan="2" style="padding: 10px;">
                                         <div style="margin: 0px auto; width: 100%;">
-                                            <a href="<?php echo $this->baseUrl(); ?>/student/registerLesson?do=view&lessonId=<?php echo $this->lessonInfo['id']; ?>">
-                                                <button class="showlogfromm">登録</button>
-                                            </a>
-                                            <button class="register-cus" onclick="javascript:history.go(-1);">キャンセル</button>
+                                             <script type="text/javascript">
+                                    function showReportForm(){
+                                    $("#report_form").show();
+                                    $("#btn_report").hide();
+                                    }
+
+                                    function hideReportForm() {
+                                    $("#report_form").hide();
+                                    $("#btn_report").show();
+                                    }
+
+                                    function hideReport() {
+                                    $("#report_form").hide();
+                                    $("#btn_report").hide();
+                                    }
+
+                                </script>
+                                <div id="report_form" style="display: none; width: 60%; margin-left: 100px; border: none; border-radius: 4px;">
+                                    <form method="post" action="<?php echo $this->baseUrl(); ?>/student/file?lessonId=<?php echo $this->lessonInfo['id']; ?>&fileId=<?php echo $this->currentFile['id']; ?>">
+                                        <textarea cols="60" name="report_content" rows="5" placeholder="理由" style="border-style: solid; border-width: medium; border-radius: 3px;"></textarea>
+                                        <input type="submit" onclick="hideReport();" value="賛成" class="showlogfromm" style="width: 80px; height: 30px; margin-left: 180px;">
+                                        <input id="btn_sen_report" onclick="hideReportForm();" type="button" value="キャンセル" class="register-cus" style="width: 80px; height: 30px;">
+                                    </form>
+                                </div>
+
+
+                                <!--Report button-->
+                                <div class="float-right" style="margin: 0px auto;" id="btn_report">
+                                    <button id="btn_report" onclick="showReportForm();" style="border: none; border-radius: 4px; padding: 5px; margin-right: 20px; background: #007F9F;  color: white;">違犯レポート</button>
+                                </div>
                                         </div>
                                     </td>
                                 </tr>

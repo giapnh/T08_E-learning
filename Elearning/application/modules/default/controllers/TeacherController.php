@@ -115,9 +115,10 @@ class TeacherController extends IController {
         $teacherId = $this->_request->getParam('teacherId');
         $this->view->tagId = $tagId;
         $this->view->teacherId = $teacherId;
-        if ($get_type == null || $get_type == 1) {
-            $tags = new Default_Model_Tag();
-            $this->view->tags = $tags->listAllOfTeacher($uInfo['id']);
+        $tags = new Default_Model_Tag();
+        $this->view->tags = $tags->listAllOfTeacher($uInfo['id']);
+        if ($tagId) {
+            
             $this->view->type = 1;
             $paginator = Zend_Paginator::factory($lessons->listWithTagByTeacher($tagId, $uInfo['id']));
             $paginator->setItemCountPerPage(6);
