@@ -98,7 +98,7 @@
                                                     <tr>
                                                         <td style="width: 5%;"><?php echo $count; ?></td>
                                                         <td style="width: 30%;">
-                                                            <a href="#" style="text-decoration: underline; font-style: italic; color: #069;">
+                                                            <a href="<?php echo $this->baseUrl()."/student/file?lessonId=".$this->lessonInfo['id']."&fileId=".$file['id']; ?>" style="text-decoration: underline; font-style: italic; color: #069;">
                                                                 <?php echo $file['filename']; ?>
                                                             </a>
                                                         </td>

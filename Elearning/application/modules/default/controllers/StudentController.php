@@ -411,48 +411,77 @@ class StudentController extends IController {
         }
     }
 
+    /**
+     * ファイル見る処理
+     */
     public function fileAction() {
+        //
         $this->initial();
         $lessonModel = new Default_Model_Lesson();
-        $lessonFileModel = new Default_Model_LessonFile();
+        $lessonFileModel = new Default_Model_File();
         $filecommentModel = new Default_Model_FileComment();
         $repordModel = new Default_Model_CopyrightReport();
+        $learnModel = new Default_Model_Learn();
+        $masterModel = new Default_Model_Master();
+        
+        //
         $lessonId = $this->_request->getParam('lessonId');
         $currentFileId = $this->_request->getParam('fileId');
-        $files = $lessonFileModel->listFileOfLesson($lessonId);
+        
+        // ファイル情報を取る
+        $files = $lessonFileModel->getFileByLesson($lessonId);
         if (!$currentFileId) {
-            $currentFile = $files[0];
-            $currentFileId = $currentFile["id"];
-        } else
-            $currentFile = $lessonFileModel->findFileById($currentFileId);
+            if (count($files) > 0) {
+                $currentFile = $files[0];
+                $currentFileId = $currentFile["id"];
+            } else {
+                $currentFileId = -1; // なし
+            }
+        }
+        $currentFile = $lessonFileModel->findFileById($currentFileId);
+        
+        if ($currentFile != null) {
+            // ファイルがこの授業のかをチェック
+            if ($currentFile['lesson_id'] != $lessonId) {
+                $currentFile = null;
+                $this->view->errorMsg = "ファイルが無効";
+            }
+
+            // ファイルが削除されたかをチェック
+            if ($currentFile['status'] == 3) {
+                $this->view->errorMsg = "ファイルが無効";
+            }
+            
+        } else {
+            $this->view->errorMsg = "ファイルがない";
+        }
+        
+        
+        // 授業情報を取る
         $lessonInfo = $lessonModel->findLessonById($lessonId);
-
+        $studentsNum = $learnModel->countStudenJoinLesson($lessonId);
+        $lessonInfo['students_num'] = $studentsNum;
+        
+        // 授業が見えるかをチェック
+        $lessonDeadline = $masterModel->getMasterValue(Default_Model_Master::$KEY_LESSON_DEADLINE);
+        $isLearn = $learnModel->isStudentLearn($this->currentUser['id'], $lessonId, $lessonDeadline);
+        if ($isLearn == 1) {
+            $this->redirect('student/lessonDetail?lessonId='.$lessonId);
+        }
+        
+        //
         $this->view->lessonInfo = $lessonInfo;
-
+        $this->view->currentFile = $currentFile;
         $this->view->files = $files;
         $this->view->controller = $this;
 
-        if ($currentFile == NULL) {
-            $this->view->currentFile = $files[0];
-        } else {
-            $this->view->currentFile = $currentFile;
-        }
-        if ($currentFileId == NULL) {
-            if ($files != NULL) {
-                $currentFileId = $files[0]['id'];
-            }
-        }
+        // Report
         if ($this->_request->isPost()) {
             $u = Zend_Auth::getInstance()->getStorage()->read();
             $report = $this->_request->getParam('report_content');
             if ($report != NULL) {
                 $repordModel->addReport($u['id'], $currentFileId, $report);
                 $this->view->reportNotify = Message::$M047;
-            }
-            $comment = $this->_request->getParam('comment');
-            if ($comment != NULL) {
-
-                $filecommentModel->addComment($currentFileId, $u['id'], $comment);
             }
         }
         $this->view->comments = $filecommentModel->getAllCommentOfFile($currentFileId);
@@ -554,7 +583,7 @@ class StudentController extends IController {
             $file = $lessonFileModel->findFileById($fileId);
             $path = $lessonFileModel->getFileFolder() . $file["location"];
             $currentFileExt = explode(".", $file['filename']);
-            $currentFileExt = $currentFileExt[1];
+            $currentFileExt = $currentFileExt[count($currentFileExt)-1];
             $arrayType = array(
                 "pdf" => "application/pdf",
                 "mp3" => "audio/mpeg",

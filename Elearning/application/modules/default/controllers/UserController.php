@@ -78,8 +78,8 @@ class UserController extends IController {
                                 $curr_ip = "127.0.0.1";
                             }
                             if ($authAdapter->checkIpValid($uname, $curr_ip)) {
+                                $data = $authAdapter->getUserInfo($uname);
                                 $authAdapter->updateLastLoginIp($uname, $curr_ip);
-                                $authAdapter->updateLastLoginTime($uname);
                                 $data = $authAdapter->getUserInfo($uname);
                                 //Update last login time
                                 $authAdapter->updateLastLoginTime($uname);

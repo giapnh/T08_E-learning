@@ -1,27 +1,162 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <script type="text/javascript">
-      $(function() {
-          $("iframe").load(function(){
-			$("iframe").contents().find("html").attr("oncontextmenu","return false")
-				.attr("onselect", "return false");
-          });
-          });
+    $(function() {
+        $("iframe").load(function(){
+            $("iframe").contents().find("html").attr("oncontextmenu","return false")
+                .attr("onselect", "return false");
+        });
+        
+        function renderComment(data) {
+            var role;
+            if (data.role == 1) {
+                role = "学生";
+            } else if (data.role == 2) {
+                role = "先生";
+            }
+            var commentHtml = "" +
+            "<div class='comment-container new-comment'>" +
+                "<div class='full-width comment-role'>" +
+                    role + ":" + data.name +
+                "</div>" +
+                "<div class='full-width comment-time'>" +
+                    data.time +
+                "</div>" +
+                "<div class='full-width comment-content'>" +
+                    data.comment +
+                "</div>" +
+            "</div>";
+            $(".comment-form").before(commentHtml);
+            $(".new-comment").hide();
+            $(".new-comment").show('slow');
+            $(".new-comment").removeClass('new-comment');
+            $(".comment-input").val("");
+        }
+        
+        $(".comment-btn").click(function(){
+            var comment = $(".comment-input").val();
+            var fileId = <?php echo $this->currentFile['id']; ?>;
+            $.ajax({
+                type: "POST",
+                url: "<?php echo $this->baseUrl(); ?>/api/file-comment",
+                data: { 
+                    'comment' : comment,
+                    'file_id' : fileId
+                }
+            }).done(function( data ) {
+                renderComment(data);
+            });
+            return false;
+        });
+        
+    });
 </script>
 <style type="text/css" media="print">
-        @page 
-        {
-            size: auto;   /* auto is the current printer page size */
-            margin: 0mm;  /* this affects the margin in the printer settings */
-        }
+    @page 
+    {
+        size: auto;   /* auto is the current printer page size */
+        margin: 0mm;  /* this affects the margin in the printer settings */
+    }
 
-        body 
-        {
-    		display:none;
-            background-color:#FFFFFF; 
-            border: solid 1px black ;
-            margin: 0px;  /* the margin on the content before printing */
-       }
-    </style>
+    body 
+    {
+        display:none;
+        background-color:#FFFFFF; 
+        border: solid 1px black ;
+        margin: 0px;  /* the margin on the content before printing */
+    }
+</style>
+
+<style type="text/css">
+    .file-title {
+        font-weight: bolder; 
+        color: white; 
+        padding-top: 3px;
+        font-size: 16px; 
+        background: #51A007; 
+        width: 100%;
+        min-height: 23px;
+    }
+    .file-title a {
+        color: white;
+    }
+    .files-list {
+        background: yellowgreen; 
+        border-radius: 4px; 
+        color: white; 
+        margin-top: 3px;
+        padding-top: 5px;
+        height: 500px;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+    .file-container {
+        width: 100%;
+        height: 600px;
+    }
+    .lesson-teacher {
+        font-style: italic;
+        padding: 5px;
+    }
+    .lesson-created {
+        color: gray;
+        padding: 5px;
+    }
+    .file-name {
+        font-weight: bolder; 
+        color: white; 
+        padding-top: 3px; 
+        padding-bottom: 3px; 
+        font-size: 16px; 
+        background: #51A007;
+    }
+    .comment-container {
+        width: 70%;
+        text-align: left;
+        background: #DFF2F8; 
+        margin-left: 100px; 
+        margin-top: 5px; 
+        margin-bottom: 5px;
+        box-shadow: 2px 2px 2px; 
+        border-style: solid; 
+        border-width: thin; 
+        border-radius: 1px;
+    }
+    .comment-role {
+        padding-left: 20px;
+        padding-top: 10px; 
+        font-weight: bolder; 
+        font-size: 16px; 
+        color: #7E3500
+    }
+    .comment-time {
+        padding-left: 50px; 
+        font-size: 12px; 
+        color: #A66322; 
+        font-style: italic;
+    }
+    .comment-content {
+        padding-left: 50px; 
+        font-size: 14px;
+    }
+    .comment-form {
+        width: 70%;
+        text-align: left;
+        background: #DFF2F8; 
+        margin-left: 100px; 
+        margin-top: 5px; 
+        margin-bottom: 5px;
+        box-shadow: 2px 2px 2px; 
+        border-style: solid; 
+        border-width: thin; 
+        border-radius: 1px;
+    }
+    .error-msg {
+        color: red;
+        padding: 5px;
+        font-size: 16px;
+        font-weight: bold;
+    }
+</style>
 <center>
     <div class="content" style="background: #F0F0F0;">
         <div class="top_content clear banner">
@@ -55,101 +190,94 @@
         <div class="row-show float-left">
             <div class="lesson_register_content" style="width: 98%;">
                 <div class="full-width" style="color: green; font-size: 20px; font-weight: bolder;">
-                    <?php echo $this->lessonInfo['title']; ?>
+                    <a href="<?php echo $this->baseUrl()."/student/myLessonDetail?lessonId=".$this->lessonInfo['id']; ?>">
+                        <?php echo $this->lessonInfo['title']; ?>
+                    </a>
                 </div>
                 <table cellpadding='1' cellspacing='0' border='0' style="width: 100%;border-width: thin;border-style: solid;">
                     <tbody>
                         <tr valign="top">
                             <!--Left content-->
                             <td style="width: 22%;">
-                                <div class="full-width" style="font-weight: bolder; color: white; padding-top: 3px;font-size: 16px; background: #51A007; width: 100%;">
-                                    ファイル一覧
+                                <div class="full-width file-title">
+                                    <a href="<?php echo $this->baseUrl()."/student/myLessonDetail?lessonId=".$this->lessonInfo['id']; ?>">
+                                        <?php echo $this->lessonInfo['title']; ?>
+                                    </a>
                                 </div>
-                                <div class="full-width" style="background: yellowgreen; border-radius: 4px; color: white; height: 40px; margin-top: 3px;">
+                                <div class="lesson-teacher">作成者：<?php echo $this->lessonInfo['name'];?></div>
+                                <div class="lesson-created"><?php echo $this->lessonInfo['create_time'];?></div>
+                                <div class="like" style="width: 100%; margin: 10px 0px;">
+                                    <span>
+                                        <img src="<?php echo $this->baseUrl(); ?>/public/images/num-like.png" width="15" height="15">
+                                        <span><?php echo $this->lessonInfo['like'] ?></span>
+                                    </span>
+                                    <span>
+                                        <img src="<?php echo $this->baseUrl(); ?>/public/images/num-view.png" width="15" height="15">
+                                        <span><?php echo $this->lessonInfo['view'] ?></span>
+                                    </span>
+                                    <span>
+                                        <img src="<?php echo $this->baseUrl(); ?>/public/images/student.png" width="15" height="15">
+                                        <span><?php echo $this->lessonInfo['students_num'] ?></span>
+                                    </span>
+                                </div>
+                                <div style="line-height: 0px;">&nbsp;</div>
+                                <!--ファイルリスト-->
+                                <div class="full-width files-list">
                                     <?php
                                     $count = 0;
-                                    if ($this->files != null)
+                                    if ($this->files != null) {
                                         foreach ($this->files as $file) {
                                             $count++;
-                                            $fileType = explode(".", $file['filename']);
-                                            $fileType = strtolower($fileType[1]);
+                                            $fileTypes = explode(".", $file['filename']);
+                                            
+                                            $fileType = strtolower($fileTypes[count($fileTypes)-1]);
                                             if ($fileType == 'pdf') {
-                                                ?>
-                                                <a href="<?php echo $this->baseUrl(); ?>/student/file?lessonId=<?php echo $this->lessonInfo['id']; ?>&fileId=<?php echo $file['id']; ?>">
-                                                    <div class="full-width" style="font-size: 16px; font-weight: bold; margin: 5px;">
-                                                        <font style="color: white">
-                                                        <?php echo $count . '.'; ?>
-                                                        </font>
-                                                        <?php echo $file['filename']; ?>
-                                                        <img src="<?php echo $this->baseUrl(); ?>/public/images/pdf.png" width="20" height="20">
-                                                    </div>
-                                                </a>           
-                                                <?php
-                                            } else if ($fileType == 'mp3') {
-                                                ?>
-                                                <a href="<?php echo $this->baseUrl(); ?>/student/file?lessonId=<?php echo $this->lessonInfo['id']; ?>&fileId=<?php echo $file['id']; ?>">
-                                                    <div class="full-width" style="font-size: 16px;  font-weight: bold; margin: 5px;">
-                                                        <font style="color: white">
-                                                        <?php echo $count . '.'; ?>
-                                                        </font>
-                                                        <?php echo $file['filename']; ?>
-                                                        <img src="<?php echo $this->baseUrl(); ?>/public/images/audio.png" width="20" height="20">
-                                                    </div>
-                                                </a>              
-                                                <?php
+                                                $icon = $this->baseUrl()."/public/images/pdf.png";
+                                            } else if ($fileType == 'jpg' || $fileType == 'png' || $fileType == 'gif') {
+                                                $icon = $this->baseUrl()."/public/images/image.png";
+                                            } else if ($fileType == 'mp3' || $fileType == 'wav') {
+                                                $icon = $this->baseUrl()."/public/images/audio.png";
                                             } else if ($fileType == 'mp4') {
-                                                ?>
-                                                <a href="<?php echo $this->baseUrl(); ?>/student/file?lessonId=<?php echo $this->lessonInfo['id']; ?>&fileId=<?php echo $file['id']; ?>">
-                                                    <div class="full-width" style="font-size: 16px;  font-weight: bold; margin: 5px;">
-                                                        <font style="color: white">
-                                                        <?php echo $count . '.'; ?>
-                                                        </font>
-                                                        <?php echo $file['filename']; ?>
-                                                        <img src="<?php echo $this->baseUrl(); ?>/public/images/mp4.png" width="20" height="20">
-                                                    </div>
-                                                </a>       
-                                                <?php
-                                            } else if ($fileType == 'png' || $fileType == 'jpg' || $fileType == 'jpeg') {
-                                                ?>
-                                                <a href="<?php echo $this->baseUrl(); ?>/student/file?lessonId=<?php echo $this->lessonInfo['id']; ?>&fileId=<?php echo $file['id']; ?>">
-                                                    <div class="full-width" style="font-size: 16px;  font-weight: bold; margin: 5px;">
-                                                        <font style="color: white">
-                                                        <?php echo $count . '.'; ?>
-                                                        </font>
-                                                        <?php echo $file['filename']; ?>
-                                                        <img src="<?php echo $this->baseUrl(); ?>/public/images/image.png" width="20" height="20">
-                                                    </div>
-                                                </a> 
-                                                <?php
+                                                $icon = $this->baseUrl()."/public/images/mp4.png";
                                             } else if ($fileType == 'tsv') {
-                                                ?>
-                                                <a href="<?php echo $this->baseUrl(); ?>/student/file?lessonId=<?php echo $this->lessonInfo['id']; ?>&fileId=<?php echo $file['id']; ?>">
-                                                    <div class="full-width" style="font-size: 16px;  font-weight: bold; margin: 5px;">
+                                                $icon = $this->baseUrl()."/public/images/test.png";
+                                            }
+                                            
+                                            ?>
+                                            <a href="<?php echo $this->baseUrl(); ?>/student/file?lessonId=<?php echo $this->lessonInfo['id']; ?>&fileId=<?php echo $file['id']; ?>">
+                                                <div class="full-width" style="font-weight: bold; margin: 5px;">
+                                                    <img style="float:left; margin-right: 5px;" src="<?php echo $icon; ?>" width="30" height="30">
+                                                    <div>
                                                         <font style="color: white">
                                                         <?php echo $count . '.'; ?>
                                                         </font>
                                                         <?php echo $file['filename']; ?>
-                                                        <img src="<?php echo $this->baseUrl(); ?>/public/images/test.png" width="32" height="32">
                                                     </div>
-                                                </a> 
-                                                <?php
-                                            }
-                                            }
+                                                </div>
+                                            </a>
+                                            <hr>
+                                            <?php
+                                        }
+                                    }
                                     ?>
-                                </div>
+                                    <div>&nbsp;</div>
+                                </div> <!-- End files-list -->
                             </td>
-                            <!--View-->
+                            
+                            <!-- ファイル内容 -->
                             <td>
-                                <div class="full-width" style="font-weight: bolder; color: white; padding-top: 3px; padding-bottom: 3px; font-size: 16px; background: #51A007;">
-                                    ファイル内容
+                                <div class="full-width file-name">
+                                    <?php echo $this->currentFile['filename']; ?>
                                 </div>
                                 <div style="margin: 10px; width: 95%;max-height: 800px;
                                      border-color: #007F9F; border-style: solid; border-width: thin;">
 
-                                    <!--Content here-->
                                     <?php
-                                    if ($this->files == null) {
-                                        echo "ファイルがない";
+                                    if ($this->currentFile == null) { // ファイルがあるかをチェック
+                                        echo "<div class='error-msg'>".$this->errorMsg."</div>";
+                                    } else if ($this->currentFile['status'] == 2) { // ファイルがロックされているかをチェック
+                                        echo "<img src='".$this->baseUrl()."/public/images/locked.png' width='30' height='30'>";
+                                        echo "<span class='error-msg'>ファイルがロックされている<span>";
                                     } else {
                                         $currentFiles = explode(".", $this->currentFile['filename']);
                                         $currentFile = strtolower($currentFiles[count($currentFiles)-1]);
@@ -162,11 +290,12 @@
                                                 $currentFile == "jpg"
                                             ) {
                                     ?>
-                                       <iframe src="<?php echo $this->baseUrl()?>/student/stream/id/<?php echo $this->currentFile["id"]?>#toolbar=0&navpanes=0&scrollbar=0" width="100%" height="500"></iframe>
+                                       <iframe class="file-container" src="<?php echo $this->baseUrl()?>/student/stream/id/<?php echo $this->currentFile["id"]?>#toolbar=0&navpanes=0&scrollbar=0"></iframe>
                                            
                                     <?php
                                     } else if ($currentFile == 'tsv') {
                                         ?>
+                                       <div class="file-container">
                                         <div>
                                             <a href="<?php echo $this->baseUrl()."/student/test-result?file_id=".$this->currentFile['id']."&lessonId=".$this->lessonInfo['id']; ?>">
                                                 <button class="normal-button">前回の結果を見る</button>
@@ -184,12 +313,22 @@
                                                     <input id="submit_test" name="submit" type="submit" value="答えチェック" class="showlogfromm" style="height: 28px; margin-left: 10px;">
                                                 </div>
                                             </form>
+                                       </div>
                                             <?php
                                         }
                                     }
                                     ?>
                                 </div>
 
+                                
+                                <!-- レポート -->
+                                <?php 
+                                    if ($this->currentFile == null) { // ファイルがあるかをチェック
+                                        
+                                    } else if ($this->currentFile['status'] == 2) { // ファイルがロックされているかをチェック
+                                        
+                                    } else {
+                                ?>
                                 <script type="text/javascript">
                                     function showReportForm(){
                                     $("#report_form").show();
@@ -220,11 +359,21 @@
                                 <div class="float-right" style="margin: 0px auto;" id="btn_report">
                                     <button id="btn_report" onclick="showReportForm();" style="border: none; border-radius: 4px; padding: 5px; margin-right: 20px; background: #007F9F;  color: white;">違犯レポート</button>
                                 </div>
-
-
-
+                                <?php
+                                    } // End if
+                                ?>
+                                
                             </td>
                         </tr>
+                        
+                        <!-- コメント -->
+                        <?php 
+                            if ($this->currentFile == null) { // ファイルがあるかをチェック
+                                
+                            } else if ($this->currentFile['status'] == 2) { // ファイルがロックされているかをチェック
+
+                            } else {
+                        ?>
                         <tr>
                             <td></td>
                             <td style="text-align: center; margin: 0px auto;">
@@ -232,8 +381,8 @@
                                 if (isset($this->comments)) {
                                     foreach ($this->comments as $comment) {
                                         ?>
-                                        <div style="width: 70%;text-align: left;background: #DFF2F8; margin-left: 100px; margin-top: 5px; margin-bottom: 5px;box-shadow: 2px 2px 2px; border-style: solid; border-width: thin; border-radius: 1px;">
-                                            <div class="full-width" style="padding-left: 20px;padding-top: 10px; font-weight: bolder; font-size: 16px; color: #7E3500">
+                                        <div class="comment-container">
+                                            <div class="full-width comment-role" style="">
                                                 <?php
                                                 if ($comment['role'] == 1) {
                                                     echo "学生:";
@@ -243,16 +392,17 @@
                                                 echo $comment['name'];
                                                 ?>
                                             </div>
-                                            <div class="full-width" style="padding-left: 50px; font-size: 12px; color: #A66322; font-style: italic;">
+                                            <div class="full-width comment-time">
                                                 <?php
                                                 $raw = $comment['time'];
-                                                $arr = explode(" ", $raw);
-                                                $ymd = explode("-", $arr[0]);
-                                                $hsm = explode(":", $arr[1]);
-                                                echo $ymd[0] . "年" . $ymd[1] . "月" . $ymd[2] . "日" . "-" . $hsm[0] . "時" . $hsm[1] . "分";
+//                                                $arr = explode(" ", $raw);
+//                                                $ymd = explode("-", $arr[0]);
+//                                                $hsm = explode(":", $arr[1]);
+//                                                echo $ymd[0] . "年" . $ymd[1] . "月" . $ymd[2] . "日" . "-" . $hsm[0] . "時" . $hsm[1] . "分";
+                                                echo $comment['time'];
                                                 ?>
                                             </div>
-                                            <div class="full-width" style="padding-left: 50px; font-size: 14px;">
+                                            <div class="full-width comment-content">
                                             <?php
                                                 echo $comment['comment'];
                                                 ?>
@@ -263,16 +413,19 @@
                                     }
                                 }
                                 ?>
-                                <div style="width: 70%;text-align: left;background: #DFF2F8; margin-left: 100px; margin-top: 5px; margin-bottom: 5px;box-shadow: 2px 2px 2px; border-style: solid; border-width: thin; border-radius: 1px;">
-                                    <form action="" method="post">
+                                <div class="comment-form">
+                                    <!--<form action="" method="post">-->
                                         <div  style="width: 70%;padding-left: 20px;padding-top: 10px; font-weight: bolder; font-size: 16px; color: #7E3500">
-                                            <textarea cols="60" name="comment" placeholder="コメント内容" rows="5"　style="border-radius: 2px;text-align: left; border-style: solid; border-color: #A66322;"></textarea>
-                                            <button type="submit" value="コメント" class="showlogfromm" style="height: 30px; margin-bottom: 10px;">コメント</button>
+                                            <textarea class="comment-input" cols="60" name="comment" placeholder="コメント内容" rows="5"　style="border-radius: 2px;text-align: left; border-style: solid; border-color: #A66322;"></textarea>
+                                            <button type="submit" value="コメント" class="showlogfromm comment-btn" style="height: 30px; margin-bottom: 10px;">コメント</button>
                                         </div>
-                                    </form>
+                                    <!--</form>-->
                                 </div>
                             </td>
                         </tr>
+                        <?php
+                            } // End if
+                        ?>
                     </tbody>
                 </table>
             </div>

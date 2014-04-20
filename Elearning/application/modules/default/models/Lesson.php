@@ -173,10 +173,9 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
             var_dump($nameWhere);
             die;
             $select->orWhere($nameWhere);
-
             $select->orWhere("tag_name  LIKE '%" . trim($keyword) . "%'")
-                    ->orWhere("title LIKE '%$keyword%'")
-                    ->orWhere("description LIKE '%$keyword%'")
+                    ->orWhere("title LIKE '%" . trim($keyword) . "%'")
+                    ->orWhere("description LIKE '%" . trim($keyword) . "%'")
                     ->group('lesson.id');
             $asc_str = "";
             if ($asc == 0) {

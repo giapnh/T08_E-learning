@@ -489,7 +489,7 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
     public function getFileByLesson($lessonId) {
         $select = $this->getAdapter()->select();
         $select->from($this->_name, "*")
-                ->where('lesson_id=?', $lessonId);
+                ->where('lesson_id='.$lessonId." AND status!=3");
         $result = $this->getAdapter()->fetchAll($select);
         foreach ($result as $index => $file) {
             $result[$index]['is_reported'] = $this->isReported($file);
