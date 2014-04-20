@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.0.4
+-- version 4.0.4.1
 -- http://www.phpmyadmin.net
 --
--- Host: localhost
--- Generation Time: Apr 20, 2014 at 04:37 AM
--- Server version: 5.6.12-log
--- PHP Version: 5.4.12
+-- Host: 127.0.0.1
+-- Generation Time: Apr 20, 2014 at 10:02 AM
+-- Server version: 5.5.32
+-- PHP Version: 5.4.16
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 --
 -- Database: `elearning`
 --
-CREATE DATABASE IF NOT EXISTS `elearning` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+CREATE DATABASE IF NOT EXISTS `elearning` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 USE `elearning`;
 
 -- --------------------------------------------------------
@@ -179,10 +179,10 @@ INSERT INTO `learn` (`id`, `student_id`, `lesson_id`, `register_time`, `status`)
 CREATE TABLE IF NOT EXISTS `lesson` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `teacher_id` int(11) NOT NULL,
-  `title` varchar(50) NOT NULL,
-  `description` varchar(512) NOT NULL,
+  `title` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `description` varchar(512) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `view` int(11) NOT NULL DEFAULT '0',
-  `like` int(11) DEFAULT '0',
+  `num_like` int(11) DEFAULT '0',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `status` int(11) NOT NULL DEFAULT '0' COMMENT '1: Active; 0: inactive',
   PRIMARY KEY (`id`)
@@ -192,7 +192,7 @@ CREATE TABLE IF NOT EXISTS `lesson` (
 -- Dumping data for table `lesson`
 --
 
-INSERT INTO `lesson` (`id`, `teacher_id`, `title`, `description`, `view`, `like`, `create_time`, `status`) VALUES
+INSERT INTO `lesson` (`id`, `teacher_id`, `title`, `description`, `view`, `num_like`, `create_time`, `status`) VALUES
 (43, 18, 'IT 日本語第5週', 'IT 日本語', 2, 0, '2014-04-16 07:29:20', 0),
 (44, 18, 'IT 日本語第6週', 'IT 日本語', 0, 0, '2014-04-11 07:20:48', 1),
 (45, 18, 'IT 日本語第7週', 'IT 日本語', 0, 0, '2014-04-11 07:21:13', 1),
@@ -216,7 +216,6 @@ CREATE TABLE IF NOT EXISTS `lesson_file` (
   `title` varchar(200) DEFAULT NULL,
   `subtitle` varchar(200) DEFAULT NULL,
   `location` varchar(255) NOT NULL,
-  `status` int(11) NOT NULL COMMENT '1: Available; 2: locked; 3: deleted',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=95 ;
 
@@ -224,36 +223,36 @@ CREATE TABLE IF NOT EXISTS `lesson_file` (
 -- Dumping data for table `lesson_file`
 --
 
-INSERT INTO `lesson_file` (`id`, `lesson_id`, `filename`, `description`, `title`, `subtitle`, `location`, `status`) VALUES
-(65, 43, '05W-01-内部設計についての所感.pdf', '', '', '', '\\43\\13972007920.pdf', 0),
-(66, 43, '05W-02-プログラミングについて.pdf', '', '', '', '\\43\\13972007921.pdf', 0),
-(67, 43, '05W-03-第２回プロジェクト報告会について.pdf', '', '', '', '\\43\\13972007922.pdf', 0),
-(68, 44, '06W-01-反省について.pdf', '', '', '', '\\44\\13972008480.pdf', 0),
-(69, 45, '07W-01-第２回プロジェクト報告会についての所感.pdf', '', '', '', '\\45\\13972008730.pdf', 0),
-(70, 45, '07W-02-今後のスケジュールについて.pdf', '', '', '', '\\45\\13972008820.pdf', 0),
-(71, 45, '07W-04-結合試験仕様書について.pdf', '', '', '', '\\45\\13972008890.pdf', 0),
-(72, 46, '08W-01-試験工程について.pdf', '', '', '', '\\46\\13972009340.pdf', 0),
-(73, 46, '08W-02-第３回プロジェクト報告会について.pdf', '', '', '', '\\46\\13972009341.pdf', 0),
-(74, 47, 'database.png', 'イメージファイル', '', '', '\\47\\13974597830.png', 0),
-(75, 47, 'Andrea Bocelli & Hayley Westenra -- Vivo Per Lei.mp4', 'ビデオファイル', '', '', '\\47\\13974597831.mp4', 0),
-(76, 47, 'test3.tsv', 'テスト', '2006年度2級文字・語彙', '次の56から60の言葉の使い方として最も適当なものを、1、2、3、4から一つ選びなさい。', '\\47\\13974597832.html', 0),
-(77, 48, 'test2.tsv', 'テストファイル', '2006年度2級', '文字・語彙', '\\48\\13974614030.html', 0),
-(78, 49, 'Avril Lavigne - What The Hell.mp4', 'ビデオファイル１', '', '', '\\49\\13974616800.mp4', 0),
-(79, 49, 'Eminem - Love The Way You Lie ft. Rihanna.mp4', 'Rihana', '', '', '\\49\\13974616811.mp4', 0),
-(80, 50, 'Tricoloring.png', '', '', '', '\\50\\13978066710.png', 0),
-(81, 50, '1280px-Vector_Field.gif', '', '', '', '\\50\\13978066711.gif', 0),
-(82, 50, 'Christmas-Gifs_02.gif', '', '', '', '\\50\\13978066712.gif', 0),
-(83, 50, 'Enternal Flame - Atomic Kitten.mp3', '', '', '', '\\50\\13978066713.mp3', 0),
-(84, 50, 'guitar-fire.jpg', '', '', '', '\\50\\13978066714.jpg', 0),
-(85, 50, 'Avril Lavigne - What The Hell.mp4', '', '', '', '\\50\\13978066715.mp4', 0),
-(86, 50, 'M2M_2004_Many-to-Many Communication_A New Approach for Collaboration in MANET.pdf', '', '', '', '\\50\\13978066716.pdf', 0),
-(87, 50, 'Tricoloring.png', '', '', '', '\\50\\13978066717.png', 0),
-(88, 50, 'test3.tsv', '', '2006年度2級文字・語彙', '次の56から60の言葉の使い方として最も適当なものを、1、2、3、4から一つ選びなさい。', '\\50\\13978066718.html', 0),
-(89, 50, 'Justin Bieber - -As Long As You Love Me ft. Big Sean- (Cover by Tiffany Alvord).wav', '', '', '', '\\50\\13978066719.wav', 0),
-(91, 43, 'mario.png', 'asdf', '', '', '\\43\\13978776580.png', 0),
-(92, 43, 'Andrea Bocelli & Hayley Westenra -- Vivo Per Lei.mp4', '', '', '', '\\43\\13978788710.mp4', 0),
-(93, 43, 'Avril Lavigne - Wish You Were Here.mp4', 'asf', '', '', '\\43\\13978815440.mp4', 0),
-(94, 43, 'Avril Lavigne - What The Hell.mp4', 'asdf', '', '', '\\43\\13978816000.mp4', 0);
+INSERT INTO `lesson_file` (`id`, `lesson_id`, `filename`, `description`, `title`, `subtitle`, `location`) VALUES
+(65, 43, '05W-01-内部設計についての所感.pdf', '', '', '', '\\43\\13972007920.pdf'),
+(66, 43, '05W-02-プログラミングについて.pdf', '', '', '', '\\43\\13972007921.pdf'),
+(67, 43, '05W-03-第２回プロジェクト報告会について.pdf', '', '', '', '\\43\\13972007922.pdf'),
+(68, 44, '06W-01-反省について.pdf', '', '', '', '\\44\\13972008480.pdf'),
+(69, 45, '07W-01-第２回プロジェクト報告会についての所感.pdf', '', '', '', '\\45\\13972008730.pdf'),
+(70, 45, '07W-02-今後のスケジュールについて.pdf', '', '', '', '\\45\\13972008820.pdf'),
+(71, 45, '07W-04-結合試験仕様書について.pdf', '', '', '', '\\45\\13972008890.pdf'),
+(72, 46, '08W-01-試験工程について.pdf', '', '', '', '\\46\\13972009340.pdf'),
+(73, 46, '08W-02-第３回プロジェクト報告会について.pdf', '', '', '', '\\46\\13972009341.pdf'),
+(74, 47, 'database.png', 'イメージファイル', '', '', '\\47\\13974597830.png'),
+(75, 47, 'Andrea Bocelli & Hayley Westenra -- Vivo Per Lei.mp4', 'ビデオファイル', '', '', '\\47\\13974597831.mp4'),
+(76, 47, 'test3.tsv', 'テスト', '2006年度2級文字・語彙', '次の56から60の言葉の使い方として最も適当なものを、1、2、3、4から一つ選びなさい。', '\\47\\13974597832.html'),
+(77, 48, 'test2.tsv', 'テストファイル', '2006年度2級', '文字・語彙', '\\48\\13974614030.html'),
+(78, 49, 'Avril Lavigne - What The Hell.mp4', 'ビデオファイル１', '', '', '\\49\\13974616800.mp4'),
+(79, 49, 'Eminem - Love The Way You Lie ft. Rihanna.mp4', 'Rihana', '', '', '\\49\\13974616811.mp4'),
+(80, 50, 'Tricoloring.png', '', '', '', '\\50\\13978066710.png'),
+(81, 50, '1280px-Vector_Field.gif', '', '', '', '\\50\\13978066711.gif'),
+(82, 50, 'Christmas-Gifs_02.gif', '', '', '', '\\50\\13978066712.gif'),
+(83, 50, 'Enternal Flame - Atomic Kitten.mp3', '', '', '', '\\50\\13978066713.mp3'),
+(84, 50, 'guitar-fire.jpg', '', '', '', '\\50\\13978066714.jpg'),
+(85, 50, 'Avril Lavigne - What The Hell.mp4', '', '', '', '\\50\\13978066715.mp4'),
+(86, 50, 'M2M_2004_Many-to-Many Communication_A New Approach for Collaboration in MANET.pdf', '', '', '', '\\50\\13978066716.pdf'),
+(87, 50, 'Tricoloring.png', '', '', '', '\\50\\13978066717.png'),
+(88, 50, 'test3.tsv', '', '2006年度2級文字・語彙', '次の56から60の言葉の使い方として最も適当なものを、1、2、3、4から一つ選びなさい。', '\\50\\13978066718.html'),
+(89, 50, 'Justin Bieber - -As Long As You Love Me ft. Big Sean- (Cover by Tiffany Alvord).wav', '', '', '', '\\50\\13978066719.wav'),
+(91, 43, 'mario.png', 'asdf', '', '', '\\43\\13978776580.png'),
+(92, 43, 'Andrea Bocelli & Hayley Westenra -- Vivo Per Lei.mp4', '', '', '', '\\43\\13978788710.mp4'),
+(93, 43, 'Avril Lavigne - Wish You Were Here.mp4', 'asf', '', '', '\\43\\13978815440.mp4'),
+(94, 43, 'Avril Lavigne - What The Hell.mp4', 'asdf', '', '', '\\43\\13978816000.mp4');
 
 -- --------------------------------------------------------
 
@@ -446,13 +445,13 @@ CREATE TABLE IF NOT EXISTS `test_result` (
 
 CREATE TABLE IF NOT EXISTS `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `username` varchar(255) NOT NULL,
-  `first_password` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `name` varchar(255) NOT NULL,
+  `username` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `first_password` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `password` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `sex` int(1) NOT NULL DEFAULT '0' COMMENT '0: boy, 1:girl',
-  `email` varchar(100) DEFAULT NULL,
-  `birthday` varchar(100) NOT NULL,
+  `email` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `birthday` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `address` varchar(255) NOT NULL,
   `phone` varchar(20) NOT NULL,
   `bank_account` varchar(30) NOT NULL,
@@ -473,12 +472,12 @@ CREATE TABLE IF NOT EXISTS `user` (
 --
 
 INSERT INTO `user` (`id`, `username`, `first_password`, `password`, `name`, `sex`, `email`, `birthday`, `address`, `phone`, `bank_account`, `first_secret_question`, `first_secret_answer`, `secret_question`, `secret_answer`, `role`, `status`, `last_login_ip`, `fail_login_count`, `last_login_time`) VALUES
-(18, 'thayminh', '87683ef352817ffc68a1bcddf45f4e18930a617f', '87683ef352817ffc68a1bcddf45f4e18930a617f', 'Minh Tran', 0, 'tminhhp@gmail.com', '13-10-2001', '45 Trần Đại Nghĩa', '0987654321', '711A12334534', 'nick gg', 'hnimnart', 'nick gg', 'hnimnart', 2, 1, '127.0.0.1', 2, 1397968481),
-(19, 'minhtq', '976450ee760f6dace9a481bdf6406728019ce7ca', '976450ee760f6dace9a481bdf6406728019ce7ca', 'Trần Quang Minh', 0, 'tminh_1234@yahoo.com', '17-6-2001', '42 Lê Thanh Nghị', '0987654321', '711A12334534', 'nick gg', 'hnimnart', 'nick gg', 'hnimnart', 1, 1, '127.0.0.1', 0, 1397968383),
+(18, 'thayminh', '87683ef352817ffc68a1bcddf45f4e18930a617f', '87683ef352817ffc68a1bcddf45f4e18930a617f', 'Minh Tran', 0, 'tminhhp@gmail.com', '13-10-2001', '45 Trần Đại Nghĩa', '0987654321', '711A12334534', 'nick gg', 'hnimnart', 'nick gg', 'hnimnart', 2, 1, '127.0.0.1', 1, 0),
+(19, 'minhtq', '976450ee760f6dace9a481bdf6406728019ce7ca', '976450ee760f6dace9a481bdf6406728019ce7ca', 'Trần Quang Minh', 0, 'tminh_1234@yahoo.com', '17-6-2001', '42 Lê Thanh Nghị', '0987654321', '711A12334534', 'nick gg', 'hnimnart', 'nick gg', 'hnimnart', 1, 1, '127.0.0.1', 4, 0),
 (22, 'thayminh2', '11ed51e5fbac4770f5db86f67db563c4273cb747', '11ed51e5fbac4770f5db86f67db563c4273cb747', 'Giao Su Minh', 0, 'tminh.hp@hotmail.com', '17-9-2006', '69 Trần Đại Nghĩa', '0987654321', '711A12334534', 'nick gg', 'c978ce09940e3c299827392480c655cd596b32ee', 'nick gg', 'c978ce09940e3c299827392480c655cd596b32ee', 2, 1, '127.0.0.1', 0, 0),
 (23, 'thayminh3', '8d3ae284cd69f79feb06b861297b3db631f60e92', '8d3ae284cd69f79feb06b861297b3db631f60e92', 'Tiến Sĩ Minh', 0, 'minhtq@rikkei.com', '15-7-2002', '45 Trần Đại Nghĩa', '0987654321', '711A12334534', 'nick gg', 'c978ce09940e3c299827392480c655cd596b32ee', 'nick gg', 'c978ce09940e3c299827392480c655cd596b32ee', 2, 1, '127.0.0.1', 0, 0),
-(24, 'giapnh', '4b85e82bcd41747e0a2ee60b8f7ef26fc6bb2ce7', '4b85e82bcd41747e0a2ee60b8f7ef26fc6bb2ce7', 'Nguyễn Hữu Giáp', 0, '', '2-2-2011', '151 Nguyễn Đức Cảnh', '01664643234', '711A948594898', '', '', '', '', 1, 3, NULL, 3, 1397928434),
-(25, 'thaygiap', 'ff118180fdde6ac7127376143342336f59e81091', 'ff118180fdde6ac7127376143342336f59e81091', 'Nguyễn Hữu Giáp', 0, 'hgbk.it@gmail.com', '16-3-1996', '151 Nguyễn Đức Cảnh', '01664643234', '711A948594898', '1', '0937afa17f4dc08f3c0e5dc908158370ce64df86', '1', '0937afa17f4dc08f3c0e5dc908158370ce64df86', 2, 1, '127.0.0.1', 0, 1397928787);
+(24, 'giapnh', '4b85e82bcd41747e0a2ee60b8f7ef26fc6bb2ce7', '4b85e82bcd41747e0a2ee60b8f7ef26fc6bb2ce7', 'Nguyễn Hữu Giáp', 0, '', '2-2-2011', '151 Nguyễn Đức Cảnh', '01664643234', '711A948594898', '', '', '', '', 1, 1, NULL, 0, 1397979091),
+(25, 'thaygiap', 'ff118180fdde6ac7127376143342336f59e81091', 'ff118180fdde6ac7127376143342336f59e81091', 'Nguyễn Hữu Giáp', 0, 'hgbk.it@gmail.com', '16-3-1996', '151 Nguyễn Đức Cảnh', '01664643234', '711A948594898', '1', '0937afa17f4dc08f3c0e5dc908158370ce64df86', '1', '0937afa17f4dc08f3c0e5dc908158370ce64df86', 2, 1, '127.0.0.1', 0, 1397978533);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
