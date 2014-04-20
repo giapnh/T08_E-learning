@@ -147,7 +147,16 @@ class StudentController extends IController {
             $this->_redirect('student/profile');
         }
     }
-
+    public function deleteAccountAction(){
+    	$this->initial();
+    	if($this->user){
+    		$modelUser = new Default_Model_Account();
+    		$modelUser->deleteStudent($this->user["id"]);
+    		$auth = Zend_Auth::getInstance();
+    		$auth->clearIdentity();
+    	}
+    	$this->_redirect("user/login");
+    }
     /**
      * パスワードが変更機能アクション
      */

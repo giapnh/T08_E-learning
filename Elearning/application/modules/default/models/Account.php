@@ -34,6 +34,11 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
     	$this->db->query($query);
     			
     }
+    public function deleteStudent($userId){
+    	$query = "DELETE FROM user
+    			WHERE user.id = ". $userId;
+    	$this->db->query($query);
+    }
     public function isExits($username) {
         $query = $this->select()
                 ->from($this->_name, array('username'))
