@@ -391,6 +391,31 @@ class TeacherController extends IController {
         $this->view->messages = $this->_helper->FlashMessenger->getMessages('addFileSuccess');
     }
 
+    public function lessondetailAction() {
+        $this->initial();
+        $lesson_id = $this->_request->getParam('lesson_id');
+        $lessonModel = new Default_Model_Lesson();
+        $tagModel = new Default_Model_Tag();
+        $learnModel = new Default_Model_Learn();
+        $commentModel = new Default_Model_Comment();
+        $lfileModel = new Default_Model_LessonFile();
+        $master = new Default_Model_Master();
+        $lessonDeadline = $master->getMasterValue(Default_Model_Master::$KEY_LESSON_DEADLINE);
+        if ($this->_request->isGet()) {
+            $lessonModel->incrementView($lesson_id);
+            $info = $lessonModel->findLessonById($lesson_id);
+            $this->view->numComment = $commentModel->countCommentOnLesson($lesson_id);
+            $this->view->comments = $commentModel->getAllCommentOfLesson($lesson_id);
+            // Number of student join to this course
+            $tagInfo = $tagModel->getAllTagOfLesson($lesson_id);
+            $this->view->lessonInfo = $info;
+            $this->view->tagsInfo = $tagInfo;
+            $num = $learnModel->countStudenJoinLesson($lesson_id);
+            $this->view->numStudent = $num[0];
+            $this->view->filesInfo = $lfileModel->listFileOfLesson($lesson_id);
+        }
+    }
+
     /**
      * ファイル追加処理
      * 
