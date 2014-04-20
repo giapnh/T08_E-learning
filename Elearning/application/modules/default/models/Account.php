@@ -36,6 +36,11 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
     }
     public function deleteStudent($userId){
     	$query = "DELETE FROM user
+    			LEFT JOIN comment ON user.id = comment.user_id
+    			LEFT JOIN lesson_like ON user.id = lesson_like.user_id
+    			LEFT JOIN learn ON user.id = learn.student_id
+    			LEFT JOIN copyright_report ON user.id = copyright_report.user_id
+    			LEFT JOIN file_comment ON user.id = file_comment.user_id
     			WHERE user.id = ". $userId;
     	$this->db->query($query);
     }
