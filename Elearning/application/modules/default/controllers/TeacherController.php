@@ -107,6 +107,8 @@ class TeacherController extends IController {
 
     public function mylessonAction() {
         $this->initial();
+        $auth = Zend_Auth::getInstance();
+        $uInfo = $auth->getStorage()->read();
         $lessons = new Default_Model_Lesson();
         $get_type = $this->_request->getParam('type');
         $tagId = $this->_request->getParam('tagId');
@@ -115,9 +117,9 @@ class TeacherController extends IController {
         $this->view->teacherId = $teacherId;
         if ($get_type == null || $get_type == 1) {
             $tags = new Default_Model_Tag();
-            $this->view->tags = $tags->listAll();
+            $this->view->tags = $tags->listAllOfTeacher($uInfo['id']);
             $this->view->type = 1;
-            $paginator = Zend_Paginator::factory($lessons->listWithTag($tagId));
+            $paginator = Zend_Paginator::factory($lessons->listWithTagByTeacher($tagId, $uInfo['id']));
             $paginator->setItemCountPerPage(6);
             $paginator->setPageRange(3);
             $this->view->numpage = $paginator->count();
@@ -126,9 +128,8 @@ class TeacherController extends IController {
             $this->view->data = $paginator;
         } else {
             $users = new Default_Model_Account();
-            $this->view->teachers = $users->listTeacher();
             $this->view->type = 2;
-            $paginator = Zend_Paginator::factory($lessons->listWithTeacher($teacherId));
+            $paginator = Zend_Paginator::factory($lessons->listWithTeacher($uInfo['id']));
             $paginator->setItemCountPerPage(6);
             $paginator->setPageRange(3);
             $this->view->numpage = $paginator->count();
@@ -395,7 +396,7 @@ class TeacherController extends IController {
      * 
      */
     public function addFileAction() {
-        $params = $this->getAllParams();
+        $params = $this->_request->getAllParams();
         $lessonId = $params['lesson_id'];
         $descriptions = $params['description'];
         $copyright_check = isset($params['copyright_check']);
@@ -528,10 +529,10 @@ class TeacherController extends IController {
         $this->getHelper('ViewRenderer')
                 ->setNoRender();
 
-        $fileId = $this->getParam('file_id');
-        $fileDescription = $this->getParam('description');
-        $lessonId = $this->getParam('lesson_id');
-        $copyrightCheck = $this->getParam('copyright_check');
+        $fileId = $this->_request->getParam('file_id');
+        $fileDescription = $this->_request->getParam('description');
+        $lessonId = $this->_request->getParam('lesson_id');
+        $copyrightCheck = $this->_request->getParam('copyright_check');
 
         $fileModel = new Default_Model_File();
 
@@ -651,7 +652,7 @@ class TeacherController extends IController {
      */
     public function paymentAction() {
         $this->initial();
-        $param = $this->getAllParams();
+        $param = $this->_request->getAllParams();
         if (isset($param["month"]) && isset($param["year"])) {
             $month = $param["month"];
             $year = $param["year"];
