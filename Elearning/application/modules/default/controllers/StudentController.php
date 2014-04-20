@@ -1,4 +1,5 @@
 <?php
+
 require_once 'IController.php';
 
 //require 'RegisterController.php';
@@ -87,13 +88,17 @@ class StudentController extends IController {
 
         if ($this->_request->isPost()) {
             $keyword = $this->_request->getParam('keyword');
-            $paginator = Zend_Paginator::factory($lessons->findByKeyword($keyword));
+            $type = $this->_request->getParam('sort_type');
+            $asc = $this->_request->getParam('sort_asc');
+            $paginator = Zend_Paginator::factory($lessons->findByKeyword($keyword, $type, $asc));
             $paginator->setItemCountPerPage(6);
             $paginator->setPageRange(3);
-            $this->view->numpage = $paginator->count();
+            $this->view->numpage = 1;
             $currentPage = $this->_request->getParam('page', 1);
             $paginator->setCurrentPageNumber($currentPage);
             $this->view->data = $paginator;
+            $this->view->sortType = $type;
+            $this->view->asc = $asc;
         }
     }
 
@@ -541,7 +546,7 @@ class StudentController extends IController {
     }
 
     public function streamAction() {
-    	set_time_limit(0);
+        set_time_limit(0);
         $this->initial();
         $fileId = $this->_request->getParam("id");
         $lessonFileModel = new Default_Model_File();
@@ -554,7 +559,7 @@ class StudentController extends IController {
                 "pdf" => "application/pdf",
                 "mp3" => "audio/mpeg",
                 "mp4" => "video/mp4",
-            	"MP4" => "video/mp4",
+                "MP4" => "video/mp4",
                 "jpg" => "image/jpeg",
                 "png" => "image/jpeg",
                 "gif" => "image/jpeg",
@@ -563,9 +568,9 @@ class StudentController extends IController {
             //echo $path;
             if (is_readable($path)) {
                 if ($currentFileExt == "pdf") {
-                    echo    $link = $this->view->serverUrl() . $this->view->baseUrl() . "/public/viewpdf/web/viewer.html?file=" 
-                        . $this->view->serverUrl() . $this->view->baseUrl() . "/" . $lessonFileModel->getFileFolderName() . $file["location"];
-                header("Location: " . $link);
+                    echo $link = $this->view->serverUrl() . $this->view->baseUrl() . "/public/viewpdf/web/viewer.html?file="
+                    . $this->view->serverUrl() . $this->view->baseUrl() . "/" . $lessonFileModel->getFileFolderName() . $file["location"];
+                    header("Location: " . $link);
                 } else {
                     header('Content-type: ' . $arrayType[$currentFileExt]);
                     header("Content-Length: " . filesize($path));

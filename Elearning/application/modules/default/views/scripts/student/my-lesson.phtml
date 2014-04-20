@@ -33,12 +33,30 @@
                 <button style="margin-left: 10px; margin-top: 10px;" name="btn_teacher" class="register-cus float-left">
                     先生</button>
             </a>
-            <div  style="margin-top: 10px;" class="float-right">
-                <form action="#" style="height: 30px;" method="post">
+            <form action="#" style="height: 30px;" method="post">
+                <div  style="margin-top: 10px;" class="float-right">
                     <input type="text" name="keyword" class="input_search" placeholder="検索内容"/>
-                    <input  name="sa" type="button" class="button-search" value="検索">
-                </form>
-            </div>
+                    <input  name="sa" type="submit" class="button-search" value="検索">
+                </div>
+
+                <div style="margin-top: 10px; float: right;" id="sort_layout">
+                    <div style="float: right; margin-left: 5px;">
+                        <select name="sort_asc" style="height: 30px;width: 70px;" onselect="javascript:onSortAscOrDescSelect();">;
+                            <option value="1">昇順</option>
+                            <option value="2">降順</option>
+                        </select>
+                    </div>
+                    <div style="float: right;">
+                        <span style="color: black;">フィルタの種類:</span>
+                        <select name="sort_type" style="height: 30px;width: 90px;" onselect="javascript:onSortSelect();">;
+                            <option value="0">タイトル</option>
+                            <option value="1">時間</option>
+                            <option value="2">ビュー数</option>
+                            <option value="3">ライク数</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
         </div>
         <!--Chekck if no data avaiable-->
         <?php if (count($this->data) > 0) {
@@ -238,7 +256,7 @@
             </div>
         <?php }else {
             ?>
-            <div class="row-show float-left"　style="color: black; font-size: 20px; font-weight: bolder;">
+            <div class="row-show float-left"　style="color: black; font-size: 30px; font-weight: bolder;">
                 あなたは登録した授業がない！
             </div>
             <?php

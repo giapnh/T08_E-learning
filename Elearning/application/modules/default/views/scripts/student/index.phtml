@@ -33,12 +33,38 @@
                 <button style="margin-left: 10px; margin-top: 10px;" name="btn_teacher" class="register-cus float-left">
                     先生</button>
             </a>
-            <div  style="margin-top: 10px;" class="float-right">
-                <form action="" style="height: 30px;" method="post">
+            <form action="#" style="height: 30px;" method="post">
+                <div  style="margin-top: 10px;" class="float-right">
                     <input type="text" name="keyword" class="input_search" placeholder="検索内容"/>
-                    <input name="sa" type="submit" class="button-search" value="検索">
-                </form>
-            </div>
+                    <input  name="sa" type="submit" class="button-search" value="検索">
+
+                </div>
+                <div style="margin-top: 10px; float: right;" id="sort_layout">
+                    <div style="float: right; margin-left: 5px;">
+                        <select name="sort_asc" style="height: 30px;width: 70px;">;
+                            <option value="0" selected="<?php
+                            if ($this->asc == 0) {
+                                echo "selected";
+                            }
+                            ?>">昇順</option>
+                            <option value="1" selected="<?php
+                            if ($this->asc == 1) {
+                                echo "selected";
+                            }
+                            ?>">降順</option>
+                        </select>
+                    </div>
+                    <div style="float: right;">
+                        <span style="color: black;">フィルタの種類:</span>
+                        <select name="sort_type" style="height: 30px;width: 90px;">;
+                            <option value="0" <?php if ($this->sortType == 0) { ?> selected <?php } ?>>タイトル</option>
+                            <option value="1" <?php if ($this->sortType == 1) { ?> selected <?php } ?>>時間</option>
+                            <option value="2" <?php if ($this->sortType == 2) { ?> selected <?php } ?>>ビュー数</option>
+                            <option value="3"  <?php if ($this->sortType == 3) { ?> selected <?php } ?>>ライク数</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
         </div>
         <!--Content tab bar-->
         <div class="containt_center_cen clear" style="min-height: 600px;">

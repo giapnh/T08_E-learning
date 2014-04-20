@@ -1,65 +1,71 @@
 <?php echo $this->doctype() ?>
 <html oncontextmenu="return false">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0" />
-<meta http-equiv="Pragma" content="no-cache" />
-<meta http-equiv="Expires" content="-1" />
-<meta http-equiv="Vary" content="*" />
-<?php echo $this->headTitle() ?>
-<?php echo $this->headMeta() ?>
-<?php echo $this->headLink() ?>
-<?php echo $this->headScript() ?>
-<script language="JavaScript">
-onload=function(){
-var e=document.getElementById("refreshed");
-if(e.value=="no")e.value="yes";
-else{e.value="no";location.reload();}
-}
-//////////F12 disable code////////////////////////
-    document.onkeypress = function (event) {
-        event = (event || window.event);
-        if (event.keyCode == 123) {
-           //alert('No F-12');
-            return false;
-        }
-    }
-    document.onmousedown = function (event) {
-        event = (event || window.event);
-        if (event.keyCode == 123) {
-            //alert('No F-keys');
-            return false;
-        }
-    }
-document.onkeydown = function (event) {
-        event = (event || window.event);
-        if (event.keyCode == 123) {
-            //alert('No F-keys');
-            return false;
-        }
-    }
-/////////////////////end///////////////////////
-//$(document).bind('keydown keypress', 'ctrl+s', function(){
-  //return false;
-//});
-</script>
-</head>
-<body oncontextmenu="return false" ondragstart="return false"
-	onselectstart="return false">
-	<input type="hidden" id="refreshed" value="no">
-	<div>
-	
-		<?php
-		echo $this->layout()->content;
-		?>
-	</div>
-	<center>
-		<div class="footer" style="text-align: center;">
-			<font
-				style="color: whitesmoke; font-size: 30px; font-weight: bolder; text-align: left;">Elearning
-				システム</font>
-		</div>
-	</center>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0" />
+        <meta http-equiv="Pragma" content="no-cache" />
+        <meta http-equiv="Expires" content="-1" />
+        <meta http-equiv="Vary" content="*" />
+        <?php echo $this->headTitle() ?>
+        <?php echo $this->headMeta() ?>
+        <?php echo $this->headLink() ?>
+        <?php echo $this->headScript() ?>
+        <script language="JavaScript">
+            onload = function() {
+                var e = document.getElementById("refreshed");
+                if (e.value == "no")
+                    e.value = "yes";
+                else {
+                    e.value = "no";
+                    location.reload();
+                }
+            }
+            //////////F12 disable code////////////////////////
+            document.onkeypress = function(event) {
+                event = (event || window.event);
+                if (event.keyCode == 123) {
+                    //alert('No F-12');
+                    return false;
+                }
+            }
+            document.onmousedown = function(event) {
+                event = (event || window.event);
+                if (event.keyCode == 123) {
+                    //alert('No F-keys');
+                    return false;
+                }
+            }
+            document.onkeydown = function(event) {
+                event = (event || window.event);
+                if (event.keyCode == 123) {
+                    //alert('No F-keys');
+                    return false;
+                }
+            }
+            /////////////////////end///////////////////////
+            //$(document).bind('keydown keypress', 'ctrl+s', function(){
+            //return false;
+            //});
+        </script>
+    </head>
+    <body oncontextmenu="return false" ondragstart="return false"
+          onselectstart="return false">
+        <input type="hidden" id="refreshed" value="no">
+        <div>
+
+            <?php
+            echo $this->layout()->content;
+            ?>
+        </div>
+    <center>
+        <div class="footer" style="text-align: center;color: whitesmoke; height: 100px;">
+            <div style="margin-top: 30px;">
+                <font
+                    style="font-size: 40px; font-weight: bolder; text-align: center;">Elearning
+                システム</font>
+            </div>
+        </div>
+    </center>
 </body>
 </html>
 

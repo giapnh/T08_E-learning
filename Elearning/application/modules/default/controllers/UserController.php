@@ -17,14 +17,6 @@ class UserController extends IController {
     public function loginAction() {
         $master = new Default_Model_Master();
         $authAdapter = new Default_Model_Account();
-//        $frontendOptions = array(
-//            'lifetime' => $master->getMasterValue(Default_Model_Master::$KEY_LOGIN_FAIL_LOCK_TIME),
-//            'automatic_serialization' => true
-//        );
-//        $backendOptions = array(
-//            'cache_dir' => 'C:/' // Directory where to put the cache files
-//        );
-//        $cache = Zend_Cache::factory('Core', 'File', $frontendOptions, $backendOptions);
         $form = new Default_Form_Login ();
         $this->view->form = $form;
         if ($this->_request->isPost()) {
@@ -77,10 +69,10 @@ class UserController extends IController {
                 }
                 $flag = false;
                 if ($status == 1) {// User active
-// Check valid
+                    // Check valid
                     if ($authAdapter->isValid($uname, $paswd, $role)) {
                         if ($role == 2) {
-//Check IP
+                            //Check IP
                             $curr_ip = $_SERVER['REMOTE_ADDR'];
                             if ($curr_ip === "::1") {
                                 $curr_ip = "127.0.0.1";
@@ -88,12 +80,17 @@ class UserController extends IController {
                             if ($authAdapter->checkIpValid($uname, $curr_ip)) {
                                 $authAdapter->updateLastLoginIp($uname, $curr_ip);
                                 $authAdapter->updateLastLoginTime($uname);
+                                $data = $authAdapter->getUserInfo($uname);
+                                //Update last login time
+                                $authAdapter->updateLastLoginTime($uname);
+                                // Save
+                                $auth->getStorage()->write($data);
                                 $this->_redirect('teacher/index');
                             } else {
                                 $data = $authAdapter->getUserInfo($uname);
-//Update last login time
+                                //Update last login time
                                 $authAdapter->updateLastLoginTime($uname);
-// Save
+                                // Save
                                 $auth->getStorage()->write($data);
                                 $this->_redirect('user/loginVerifyConfirm');
                                 $flag = false;
@@ -101,9 +98,9 @@ class UserController extends IController {
                             }
                         } else {
                             $data = $authAdapter->getUserInfo($uname);
-//Update last login time
+                            //Update last login time
                             $authAdapter->updateLastLoginTime($uname);
-// Save
+                            // Save
                             $auth->getStorage()->write($data);
                             $this->_redirect('student/index');
                         }
@@ -155,7 +152,7 @@ class UserController extends IController {
             if ($user->isValidSecretQA($infoUser['username'], $question, $anwser) == 1) {
 // 現在IPを更新します
                 $user->updateLastLoginIp($infoUser['username'], $curr_ip);
-                $this->_redirect('teacher/index');
+                $this->_redirect('user/login');
             } else {
                 $this->view->
                         errorMessage = "秘密質問と秘密答えが会っていない！";
@@ -179,9 +176,12 @@ class UserController extends IController {
                 $this->view->errorMessage = Message::$M006;
                 return;
             } else {
-                if (!preg_match(Code::$REGEX_USERNAME, $data['username'])) {
-                    $this->view->errorMessage = Message::$M006;
-                    return;
+//                if (!preg_match(Code::$REGEX_USERNAME, $data['username'])) {
+//                    $this->view->errorMessage = Message::$M006;
+//                    return;
+//                }
+                if (strlen(trim($data['username'])) < 5) {
+                    
                 }
             }
             if (trim($data['password']) == '') {
