@@ -36,7 +36,7 @@ class StudentController extends IController {
             $infoUser = $auth->getStorage()->read();
             if ($infoUser['role'] != 1) {
                 //学生チェックする
-                $auth->clearIdentity();
+                //$auth->clearIdentity();
                 $this->_redirect('user/login');
             }
         }
