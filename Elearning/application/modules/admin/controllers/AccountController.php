@@ -165,9 +165,19 @@ class Admin_AccountController extends IController {
         $ipModel->deleteIp($ipId);
         $this->_helper->FlashMessenger->addMessage(Message::$M4021, 'updateInfoSuccess');
         
-        $this->redirect("admin/account");
+        $this->redirect($_SERVER['HTTP_REFERER']);
     }
-
+    public function changeIpAction() {
+    	if($this->_request->isPost()){
+    	$ipId = $this->getParam('id');
+    	$ip = $this->getParam('ip');
+    	$ipModel = new Admin_Model_AdminIp();
+    
+    	$ipModel->update(array("ip" => $ip), "id = ".$ipId );
+    	
+    	}
+    	exit();
+    }
     /**
      * パースワード更新画面
      */

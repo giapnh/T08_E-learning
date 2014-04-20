@@ -222,13 +222,22 @@ class Admin_UserController extends IController {
             $this->view->allowedIp = $adminModel->getAllowedIp($adminInfo['id']);
         }
         $this->view->adminInfo = $adminInfo;
-        
+        $this->view->adminId = $userId;
         $messages = $this->_helper->FlashMessenger->getMessages('updateInfoSuccess');
         $this->view->messages = $messages;
         $errorMessages = $this->_helper->FlashMessenger->getMessages('updateInfoError');
         $this->view->errorMessages = $errorMessages;
     }
-    
+   	public function changeAdminAction(){
+   		$userId = $this->_request->getParam('user_id');
+   		$adminModel = new Admin_Model_Admin();
+   		$adminInfo = $adminModel->getAdminById($userId);
+   		$this->view->admin = $adminInfo;
+   		if($this->_request->isPost()){
+   			$adminModel->update(array("username" => $this->_request->getParam("username")), "id=".$userId );
+   			$this->_redirect("admin/user/admin-info?user_id=".$userId);
+   		}
+   	}
     /**
      * 管理者を削除処理
      * 

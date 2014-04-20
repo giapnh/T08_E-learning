@@ -4,7 +4,15 @@
 <?php $this->headLink()->appendStylesheet($this->baseUrl() . "/public/css/ta123_style2.css"); ?>
 <?php $this->headScript()->appendFile($this->baseUrl('/public/js/jquery.min.js')); ?>
 <?php echo $this->render('admin-layout.phtml') ?>
+<style>
+<!--
 
+-->
+td .normal-button{
+ width: 80px;
+ margin-right: 5px;
+}
+</style>
 <script type="text/javascript">
     $(document).ready(function(){
         $(".btn-delete").click(function(){
@@ -45,6 +53,7 @@
                 </tr>
             </table>
             <button class="normal-button btn-delete">削除</button>
+            <a href="<?php echo $this->baseUrl()?>/admin/user/change-admin?user_id=<?php echo $this->adminId?>"><button class="normal-button ">変更</button></a>
             <?php } ?>
         </div>
 
@@ -61,7 +70,9 @@
                         foreach ($this->allowedIp as $ip) { 
                 ?>
                 <tr>
-                    <td><?php echo $ip['ip'] ?></td>
+                    <td width="120"><span class="ip"><?php echo $ip['ip'] ?></span></td>
+                    <td><button ip_id = "<?php echo $ip["id"] ?>" class = "okChange normal-button" style ="display: none">同意</button><button ip_id = "<?php echo $ip["id"] ?>" class = "changeIp normal-button">変更</button><button class="cancel normal-button" style = "display : none " >キャンセル</button></td>
+                	<td><a href="<?php echo $this->baseUrl()."/admin/account/delete-ip?id=".$ip['id']; ?>" style="color: red;" onclick ="return confirm('そのIPアドレスを削除する？')">X</a></td>
                 </tr>
                 <?php   }
                     } else {
@@ -80,3 +91,53 @@
     
     <?php echo $this->render("right-banner.phtml") ?>
 </div>
+<script>
+
+   $(".changeIp").click(function(){
+		var ipSpan = $(this).parent().parent().find(".ip").get(0);
+		var ip = $(ipSpan).text();
+		$(ipSpan).replaceWith("<input type = 'text' value='" + ip + "' style = 'width : 120px' ip ='"+ ip+"' >");
+		$(this).parent().find(".cancel").show();
+		$(this).hide();
+		$(this).parent().find(".okChange").show();
+	});
+   $(".cancel").click(function(){
+	   	var input = $(this).parent().parent().find("input").get(0);
+		var ip = $(input).attr("ip");
+		$(input).replaceWith("<span class='ip' >"+ ip +"</span>");
+		$(this).hide();
+		$(this).parent().find(".okChange").hide();
+		$(this).parent().find(".changeIp").show();
+	});
+   $(".okChange").click(function(){
+	   var $this = $(this);
+	   	var input = $(this).parent().parent().find("input").get(0);
+		var ip = $.trim($(input).val());
+		var oldIp = $(input).attr("ip");
+		if(ip ==""){
+				alert("IPアドレスを入力してください");
+				return false;
+		}
+		var id = $(this).attr("ip_id");
+		$.ajax({
+			url:"<?php echo $this->baseUrl() ?>/admin/account/change-ip/id/"+id,
+			type : "post",
+			data : {'ip' : ip},
+			success: function(){
+				$(input).replaceWith("<span class='ip' >"+ ip +"</span>");
+				$this.parent().find(".cancel").hide();
+				$this.hide();
+				$this.parent().find(".changeIp").show();
+			},
+			error: function(){
+				alert("エラーがあります");
+				$(input).replaceWith("<span class='ip' >"+ oldIp +"</span>");
+				$this.parent().find(".cancel").hide();
+				$this.hide();
+				$this.parent().find(".changeIp").show();
+			}
+			});
+		
+		
+	});
+</script>
