@@ -62,7 +62,7 @@ class Admin_LessonController extends IController {
            $lessonTagModel = new Default_Model_LessonTag();
            $commentModel = new Default_Model_Comment();
            $learnModel = new Default_Model_Learn();
-
+           $reportModel = new Default_Model_CopyrightReport();
            $comment = $this->getParam('comment');
            if (isset($comment) && $comment != '') {
                    $commentModel->addComment($lessonId, $this->currentTeacherId, $comment);
@@ -82,6 +82,7 @@ class Admin_LessonController extends IController {
            $this->view->comments = $comments;
            $this->view->errorMessages = $this->_helper->FlashMessenger->getMessages('addFileFailed');
            $this->view->messages = $this->_helper->FlashMessenger->getMessages('addFileSuccess');
+           $this->view->reports = $reportModel->getReportLesson($lessonId);
     }
     
     /**

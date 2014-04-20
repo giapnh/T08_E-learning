@@ -244,7 +244,41 @@
                 }
             ?>
         </div>
+        <hr class="clear">
+        <?php if (!empty($this->reports)): ?>
+	<script type="text/javascript">
+         function showReportForm() {
+             $("#report_form").toggle("slow");
+         }
+
+     </script>
+	<div id="report_form"
+		style="display: none; width: 60%; margin-left: 100px; border: none; border-radius: 4px;">
+		<?php foreach ($this->reports as $report): ?>
+		<div>
+			<p>
+				<span style="color: blue"><?php echo $report["username"] ?> </span>
+				:
+				<?php echo $report["reason"] ?>
+			</p>
+		</div>
+		<?php endforeach; ?>
+	</div>
+
+	
+	<!--Report button-->
+	<div  style="margin: 0px auto; float: right;" id="btn_report">
+		<button id="btn_report" onclick="showReportForm();"
+			style="border: none; border-radius: 4px; padding: 5px; margin-right: 20px; background: #007F9F; color: red;">
+			違犯レポート(
+			<?php echo count($this->reports) ?>
+			)
+		</button>
+	</div>
+	<?php endif; ?>
+	<div class="clear"></div>
     </div>
+    
     <form method="post" id="comment_container">
         <?php
             foreach ($this->comments as $comment) {
