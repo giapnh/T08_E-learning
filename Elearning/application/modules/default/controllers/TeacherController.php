@@ -652,7 +652,7 @@ class TeacherController extends IController {
      */
     public function paymentAction() {
         $this->initial();
-        $param = $this->_request->getAllParams();
+        $param = $this->getAllParams();
         if (isset($param["month"]) && isset($param["year"])) {
             $month = $param["month"];
             $year = $param["year"];

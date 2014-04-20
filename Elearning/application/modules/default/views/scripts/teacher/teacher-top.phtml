@@ -7,7 +7,7 @@ $username = $vars['username'];
         <a href="<?php echo $this->baseUrl(); ?>/user/logout"><font style="color: #7E3500; font-weight: bold; text-decoration: underline;">ログアウト</font>
         </a>
     </div>
-    <div  class="topbar-username"><big>ようこそ!</bigF><?php echo $username; ?></div>
+    <div  class="topbar-username"><big>ようこそ!</bigF><?php echo $this->user_info['name']; ?></div>
 </div>
 <big>
 

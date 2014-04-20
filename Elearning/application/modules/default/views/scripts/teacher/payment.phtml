@@ -1,46 +1,70 @@
 <div class="content" style="background: #F0F0F0;">
     <center>
-        <?php 
-            echo $this->partial("teacher/teacher-top.phtml", array('username'=>$this->user_info['name']));
-        ?>
+        <div class="top_content clear banner">
+            <div style="position: absolute; top: 120px; right: 70px; ">
+                <a href="<?php echo $this->baseUrl(); ?>/user/logout"><font style="color: #7E3500; font-weight: bold; text-decoration: underline;">ログアウト</font>
+                </a>
+            </div>
+            <div  class="topbar-username"><big>ようこそ!</bigF><?php echo $this->user_info['name']; ?></div>
+        </div>
+        <big>
+
+            <!--Menu Tab Bar-->
+            <div class="menus clear">
+                <div class="mn">
+                    <a class="home" href="<?php echo $this->baseUrl(); ?>/teacher/index">
+                        <font style="color: white;">ホーム</font>
+                    </a>
+                </div>
+                <div title="" class="mn"><a href="<?php echo $this->baseUrl(); ?>/teacher/myLesson"><font style="color: white;">マイレッスン</font></a>
+                </div>
+                <div title="" class="mn first_mn"><a href="<?php echo $this->baseUrl(); ?>/teacher/payment">
+                        <font style="color: white;">支払い</font></a><font style="color: white;">
+                    </font>
+                </div>
+                <font style="color: white;">
+                <div title="" class="mn "><a href="<?php echo $this->baseUrl(); ?>/teacher/profile"><font style="color: white;">プロファイル</font></a>
+                </div>
+                </font>
+            </div>
     </center>
     <div style="clear: both;"></div>
     <div style="margin-top: 20px;">
-    	<table>
-                <tr>
-                    <td>時間</td>
-                    <td>: <?php echo $this->year ?>年 <?php echo $this->month?>月</td>
-                </tr>
-                <tr>
-                    <td>全部</td>
-                    <td>: <?php echo $this->totalPayment ?></td>
-                </tr>
-            </table>
-          <div class="res_step_t_r" style="margin-bottom: 20px;width: 960px"></div>
-            <table width="960" border="1" bordercolor="#d5d5d5" style="border-collapse:collapse" cellpadding="4" cellspacing="4">
-                <tr align="left" class="title_table" bordercolor="4f4f4f" style="background-color: rgb(251, 251, 251); background-position: initial initial; background-repeat: initial initial;">
-                    <td>授業</td>
-                    <td>学生数</td>
-                    <td>支払い（VND）</td>
-                </tr>
-                <?php if(!empty($this->paymentInfos)) : ?>
-                <?php foreach ($this->paymentInfos as $info):?>
-                <tr align="left">
-                    <td class="orange"><?php echo $info["title"]?></td>
-                    <td><?php echo $info["total"]?></td>
-                    <td><?php echo $info["total"] * $this->price *$this->rate/100?></td>
-                </tr>
-                <?php endforeach;?>
-                <?php else : echo "<tr><td colspan ='3'>でーたがありません</td></tr>"?>
-                <?php endif;?>
-            </table>
-            <div class="" style="margin-bottom: 20px;width: 960px"></div>
-            <div style="font-size: 70%; text-align: center;">
-            	<u><a href = "<?php echo $this->baseUrl()?>/teacher/payment?year=<?php echo $this->preYear?>&month=<?php echo $this->preMonth?>">前月
-            	</a></u>
-            	&nbsp;
-            	<u><a href = "<?php echo $this->baseUrl()?>/teacher/payment?year=<?php echo $this->nextYear?>&month=<?php echo $this->nextMonth?>">次月
-            	</a></u>
-            </div>
+        <table>
+            <tr>
+                <td>時間</td>
+                <td>: <?php echo $this->year ?>年 <?php echo $this->month ?>月</td>
+            </tr>
+            <tr>
+                <td>全部</td>
+                <td>: <?php echo $this->totalPayment ?></td>
+            </tr>
+        </table>
+        <div class="res_step_t_r" style="margin-bottom: 20px;width: 960px"></div>
+        <table width="960" border="1" bordercolor="#d5d5d5" style="border-collapse:collapse" cellpadding="4" cellspacing="4">
+            <tr align="left" class="title_table" bordercolor="4f4f4f" style="background-color: rgb(251, 251, 251); background-position: initial initial; background-repeat: initial initial;">
+                <td>授業</td>
+                <td>学生数</td>
+                <td>支払い（VND）</td>
+            </tr>
+            <?php if (!empty($this->paymentInfos)) : ?>
+                <?php foreach ($this->paymentInfos as $info): ?>
+                    <tr align="left">
+                        <td class="orange"><?php echo $info["title"] ?></td>
+                        <td><?php echo $info["total"] ?></td>
+                        <td><?php echo $info["total"] * $this->price * $this->rate / 100 ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            <?php else : echo "<tr><td colspan ='3'>でーたがありません</td></tr>" ?>
+            <?php endif; ?>
+        </table>
+        <div class="" style="margin-bottom: 20px;width: 960px"></div>
+        <div style="font-size: 70%; text-align: center;">
+            <u><a href = "<?php echo $this->baseUrl() ?>/teacher/payment?year=<?php echo $this->preYear ?>&month=<?php echo $this->preMonth ?>">前月
+                </a></u>
+            &nbsp;
+            <u><a href = "<?php echo $this->baseUrl() ?>/teacher/payment?year=<?php echo $this->nextYear ?>&month=<?php echo $this->nextMonth ?>">次月
+                </a></u>
+        </div>
     </div>
 </div>

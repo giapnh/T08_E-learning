@@ -150,59 +150,83 @@
     }
 </style>
 <script type="text/javascript">
-    $(document).ready(function(){
-        
-        $(".btn-add-file").click(function(){
+    $(document).ready(function() {
+
+        $(".btn-add-file").click(function() {
             $(this).hide();
             $('form').show();
         });
-        
-        $(".btn-delete").click(function(){
+
+        $(".btn-delete").click(function() {
             if (confirm("ファイルを本当に削除したいですか？")) {
                 return true;
             } else {
                 return false;
             }
         });
-        
-        $(".btn-comment").click(function(){
+
+        $(".btn-comment").click(function() {
             var comment = $(".comment-input").val();
             if (comment !== '') {
                 $.ajax({
                     type: "POST",
                     url: "<?php echo $this->baseUrl(); ?>/api/lesson-comment",
-                    data: { comment: comment, lesson_id: <?php echo $this->lessonId; ?> }
+                    data: {comment: comment, lesson_id: <?php echo $this->lessonId; ?>}
                 })
-                .done(function( data ) {
-                    console.log( data );
-                    $(".comment-input").before(
-                        "<div class='comment_slot'>"+
-                            "<div class='comment_owner'>"+data.name+"</div>"+
-                            "<div class='comment_content'>"+data.comment+"</div>"+
-                            "<div class='created_time'>"+data.time+"</div>"+
-                        "</div>");
-                    $(".comment-input").val("");
-                });
+                        .done(function(data) {
+                            console.log(data);
+                            $(".comment-input").before(
+                                    "<div class='comment_slot'>" +
+                                    "<div class='comment_owner'>" + data.name + "</div>" +
+                                    "<div class='comment_content'>" + data.comment + "</div>" +
+                                    "<div class='created_time'>" + data.time + "</div>" +
+                                    "</div>");
+                            $(".comment-input").val("");
+                        });
             }
             return false;
         });
-        
+
     });
 </script>
 
 <div class="content" style="background: #F0F0F0;">
     <center>
-        <?php 
-            echo $this->partial("teacher/teacher-top.phtml", array('username'=>$this->user_info['name']));
-        ?>
+        <div class="top_content clear banner">
+            <div style="position: absolute; top: 120px; right: 70px; ">
+                <a href="<?php echo $this->baseUrl(); ?>/user/logout"><font style="color: #7E3500; font-weight: bold; text-decoration: underline;">ログアウト</font>
+                </a>
+            </div>
+            <div  class="topbar-username"><big>ようこそ!</bigF><?php echo $this->user_info['name']; ?></div>
+        </div>
+        <big>
+
+            <!--Menu Tab Bar-->
+            <div class="menus clear">
+                <div class="mn first_mn">
+                    <a class="home" href="<?php echo $this->baseUrl(); ?>/teacher/index">
+                        <font style="color: white;">ホーム</font>
+                    </a>
+                </div>
+                <div title="" class="mn"><a href="<?php echo $this->baseUrl(); ?>/teacher/myLesson"><font style="color: white;">マイレッスン</font></a>
+                </div>
+                <div title="" class="mn "><a href="<?php echo $this->baseUrl(); ?>/teacher/payment">
+                        <font style="color: white;">支払い</font></a><font style="color: white;">
+                    </font>
+                </div>
+                <font style="color: white;">
+                <div title="" class="mn "><a href="<?php echo $this->baseUrl(); ?>/teacher/profile"><font style="color: white;">プロファイル</font></a>
+                </div>
+                </font>
+            </div>
     </center>
     <div id="lesson_container">
         <div class="message">
             <?php foreach ($this->messages as $message) { ?>
-            <div style="color: green; padding-bottom: 10px;"><?php echo $message; ?></div>
+                <div style="color: green; padding-bottom: 10px;"><?php echo $message; ?></div>
             <?php } ?>
             <?php foreach ($this->errorMessages as $errorMessage) { ?>
-            <div style="color: red; padding-bottom: 10px;"><?php echo $errorMessage; ?></div>
+                <div style="color: red; padding-bottom: 10px;"><?php echo $errorMessage; ?></div>
             <?php } ?>
         </div>
         <div class="description">
@@ -211,21 +235,22 @@
         <div style="height: 200px;">
             <div class="tag_label">タグ:　</div>
             <div class="tags">
-                <?php foreach ($this->tags as $tag) {
-                    echo "<div style='margin: 15px;'><span>".$tag['tag_name']."</span></div>";
+                <?php
+                foreach ($this->tags as $tag) {
+                    echo "<div style='margin: 15px;'><span>" . $tag['tag_name'] . "</span></div>";
                 }
                 ?>
             </div>
             <div class="created_date">
                 <?php
-                    $time = $this->lessonInfo['create_time'];
-                    $correct = explode(" ", $time);
-                    $correct = $correct[0];
-                    $arr = explode("-", $correct);
-                    $year = $arr[0];
-                    $mon = $arr[1];
-                    $day = $arr[2];
-                    echo $year . "年" . $mon . "月" . $day . "日";
+                $time = $this->lessonInfo['create_time'];
+                $correct = explode(" ", $time);
+                $correct = $correct[0];
+                $arr = explode("-", $correct);
+                $year = $arr[0];
+                $mon = $arr[1];
+                $day = $arr[2];
+                echo $year . "年" . $mon . "月" . $day . "日";
                 ?>
             </div>
             <div class="like" style="width: 100%; margin: 10px 0px;">
@@ -241,7 +266,7 @@
                     <img src="<?php echo $this->baseUrl(); ?>/public/images/student.png" width="15" height="15">
                     <span><?php echo $this->lessonInfo['students_num'] ?></span>
                 </span>
-                <a style="font-size: 14px; margin-top: -3px;text-decoration: underline;padding-left: 30px" href="<?php echo $this->baseUrl(); ?>/teacher/students?lesson_id=<?php echo $this->lessonId?>">学生リスト見る</a>
+                <a style="font-size: 14px; margin-top: -3px;text-decoration: underline;padding-left: 30px" href="<?php echo $this->baseUrl(); ?>/teacher/students?lesson_id=<?php echo $this->lessonId ?>">学生リスト見る</a>
             </div>
         </div>
         <div>
@@ -249,47 +274,47 @@
                 <div class="file_name_label">ファイル名</div>
                 <div class="file_description_label">説明</div>
             </div>
-            <?php 
-                foreach ($this->files as $file) {
-                    $fileTypes = explode(".", $file['filename']);
-                                            
-                    $fileType = strtolower($fileTypes[count($fileTypes)-1]);
-                    if ($fileType == 'pdf') {
-                        $icon = $this->baseUrl()."/public/images/pdf.png";
-                    } else if ($fileType == 'jpg' || $fileType == 'png' || $fileType == 'gif') {
-                        $icon = $this->baseUrl()."/public/images/image.png";
-                    } else if ($fileType == 'mp3' || $fileType == 'wav') {
-                        $icon = $this->baseUrl()."/public/images/audio.png";
-                    } else if ($fileType == 'mp4') {
-                        $icon = $this->baseUrl()."/public/images/mp4.png";
-                    } else if ($fileType == 'tsv') {
-                        $icon = $this->baseUrl()."/public/images/test.png";
-                    }
-            ?>
-            <div class="file_container">
-                <a href="<?php echo $this->baseUrl()."/teacher/file?file_id=".$file['id']."&lesson_id=" . $this->lessonId; ?>">
-                    <div class="file_type"><img src="<?php echo $icon ?>"></div>
-                    <div class="file_name"><?php echo $file['filename']; ?></div>
-                    <div class="file_description"><?php echo $file['description'] ?></div>
-                    <div class="file_report">
-                        <?php if ($file['is_reported']) { ?>
-                        <img src="<?php echo $this->baseUrl(); ?>/public/images/copyright_report.png">
-                        <?php } ?>
-                    </div>
-                    <div class="file_lock">
-                        <?php if ($file['status'] == 2) { ?>
-                        <img src="<?php echo $this->baseUrl(); ?>/public/images/locked.png">
-                        <?php } ?>
-                    </div>
-                </a>
-                <a href="<?php echo $this->baseUrl()."/teacher/delete-file?file_id=".$file['id']; ?>" class="btn-delete">X</a>
-            </div>
             <?php
+            foreach ($this->files as $file) {
+                $fileTypes = explode(".", $file['filename']);
+
+                $fileType = strtolower($fileTypes[count($fileTypes) - 1]);
+                if ($fileType == 'pdf') {
+                    $icon = $this->baseUrl() . "/public/images/pdf.png";
+                } else if ($fileType == 'jpg' || $fileType == 'png' || $fileType == 'gif') {
+                    $icon = $this->baseUrl() . "/public/images/image.png";
+                } else if ($fileType == 'mp3' || $fileType == 'wav') {
+                    $icon = $this->baseUrl() . "/public/images/audio.png";
+                } else if ($fileType == 'mp4') {
+                    $icon = $this->baseUrl() . "/public/images/mp4.png";
+                } else if ($fileType == 'tsv') {
+                    $icon = $this->baseUrl() . "/public/images/test.png";
                 }
+                ?>
+                <div class="file_container">
+                    <a href="<?php echo $this->baseUrl() . "/teacher/file?file_id=" . $file['id'] . "&lesson_id=" . $this->lessonId; ?>">
+                        <div class="file_type"><img src="<?php echo $icon ?>"></div>
+                        <div class="file_name"><?php echo $file['filename']; ?></div>
+                        <div class="file_description"><?php echo $file['description'] ?></div>
+                        <div class="file_report">
+                            <?php if ($file['is_reported']) { ?>
+                                <img src="<?php echo $this->baseUrl(); ?>/public/images/copyright_report.png">
+    <?php } ?>
+                        </div>
+                        <div class="file_lock">
+                            <?php if ($file['status'] == 2) { ?>
+                                <img src="<?php echo $this->baseUrl(); ?>/public/images/locked.png">
+    <?php } ?>
+                        </div>
+                    </a>
+                    <a href="<?php echo $this->baseUrl() . "/teacher/delete-file?file_id=" . $file['id']; ?>" class="btn-delete">X</a>
+                </div>
+                <?php
+            }
             ?>
             <div class="file_container">
                 <center>
-                    <form action="<?php echo $this->baseUrl()."/teacher/add-file"; ?>" method="post"  enctype="multipart/form-data" style="display: none">
+                    <form action="<?php echo $this->baseUrl() . "/teacher/add-file"; ?>" method="post"  enctype="multipart/form-data" style="display: none">
                         <input type="hidden" name="lesson_id" value="<?php echo $this->lessonInfo['id']; ?>">
                         <input name="file[0]" type="file"></br>
                         <div style="font-size: 14px;">ファイルの説明：</div>
@@ -304,15 +329,15 @@
     </div>
     <form method="post" id="comment_container">
         <?php
-            foreach ($this->comments as $comment) {
-        ?>
-        <div class="comment_slot">
-            <div class="comment_owner"><?php echo $comment['name']; ?></div>
-            <div class="comment_content"><?php echo $comment['comment']; ?></div>
-            <div class="created_time"><?php echo $comment['time']; ?></div>
-        </div>
-        <?php
-            }
+        foreach ($this->comments as $comment) {
+            ?>
+            <div class="comment_slot">
+                <div class="comment_owner"><?php echo $comment['name']; ?></div>
+                <div class="comment_content"><?php echo $comment['comment']; ?></div>
+                <div class="created_time"><?php echo $comment['time']; ?></div>
+            </div>
+            <?php
+        }
         ?>
         <div class="comment_input" >
             <textarea name="comment" class="comment-input"></textarea>
