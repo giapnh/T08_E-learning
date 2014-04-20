@@ -14,6 +14,7 @@
 <style type="text/css">
     .file-nav{
         padding: 10px;
+        min-height: 100px;
     }
     .file-update-btn .btn-text {
         margin: 5px;
@@ -21,6 +22,26 @@
     }
     .file-upload-msg {
         color: red;
+    }
+    .file-report {
+        width: 300px;
+        float: right;
+    }
+    .file-report img {
+        width: 40px;
+        height: 40px;
+        float: right;
+    }
+    .detail-title {
+        width: 260px;
+        height: 40px;
+        text-align: right;
+        float: left;
+        line-height: 40px;
+        color: red;
+    }
+    .lesson-title a {
+        color: white;
     }
 </style>
 <center>
@@ -31,16 +52,20 @@
 
         <div class="row-show float-left">
             <div class="lesson_register_content" style="width: 98%;">
-                <div class="full-width lesson-big-title">
-                    <?php echo $this->lessonInfo['title']; ?>
+                <div class="full-width lesson-title lesson-big-title">
+                    <a href="<?php echo $this->baseUrl()."/teacher/lesson?lesson_id=".$this->lessonInfo['id']; ?>">
+                        <?php echo $this->lessonInfo['title']; ?>
+                    </a>
                 </div>
                 <table cellpadding='1' cellspacing='0' border='0' style="width: 100%;border-width: thin;border-style: solid;">
                     <tbody>
                         <tr valign="top">
                             <!--Left content-->
                             <td style="width: 22%;">
-                                <div class="full-width" style="font-weight: bolder; color: white; padding-top: 3px;font-size: 16px; background: #51A007; width: 100%;">
-                                    <?php echo $this->lessonInfo['title']; ?>
+                                <div class="full-width lesson-title" style="font-weight: bolder; color: white; padding-top: 3px;font-size: 16px; background: #51A007; width: 100%;">
+                                    <a href="<?php echo $this->baseUrl()."/teacher/lesson?lesson_id=".$this->lessonInfo['id']; ?>">
+                                        <?php echo $this->lessonInfo['title']; ?>
+                                    </a>
                                 </div>
                                 <div class="full-width" style="background: wheat; padding-top: 3px;">
                                     作成者：<?php echo $this->lessonInfo['name']; ?>
@@ -63,69 +88,37 @@
                                     </div>
                                     <?php
                                     $count = 0;
-                                    foreach ($this->files as $file) {
-                                        $count++;
-                                        $fileType = explode(".", $file['filename']);
-                                        $fileType =$fileType[1];
-                                        if ($fileType == 'pdf') {
+                                    if ($this->files != null) {
+                                        foreach ($this->files as $file) {
+                                            $count++;
+                                            $fileTypes = explode(".", $file['filename']);
+                                            
+                                            $fileType = strtolower($fileTypes[count($fileTypes)-1]);
+                                            if ($fileType == 'pdf') {
+                                                $icon = $this->baseUrl()."/public/images/pdf.png";
+                                            } else if ($fileType == 'jpg' || $fileType == 'png' || $fileType == 'gif') {
+                                                $icon = $this->baseUrl()."/public/images/image.png";
+                                            } else if ($fileType == 'mp3' || $fileType == 'wav') {
+                                                $icon = $this->baseUrl()."/public/images/audio.png";
+                                            } else if ($fileType == 'mp4') {
+                                                $icon = $this->baseUrl()."/public/images/mp4.png";
+                                            } else if ($fileType == 'tsv') {
+                                                $icon = $this->baseUrl()."/public/images/test.png";
+                                            }
+                                            
                                             ?>
                                             <a href="<?php echo $this->baseUrl(); ?>/teacher/file?lesson_id=<?php echo $this->lessonInfo['id']; ?>&file_id=<?php echo $file['id']; ?>">
-                                                <div class="full-width" style="font-size: 16px; font-weight: bold; margin: 5px;">
-                                                    <font style="color: #7E3500">
-                                                    <?php echo $count . '.'; ?>
-                                                    </font>
-                                                    <?php echo $file['filename']; ?>
-                                                    <img src="<?php echo $this->baseUrl(); ?>/public/images/pdf.png" width="16" height="16">
+                                                <div class="full-width" style="font-weight: bold; margin: 5px;">
+                                                    <img style="float:left; margin-right: 5px;" src="<?php echo $icon; ?>" width="30" height="30">
+                                                    <div>
+                                                        <font style="color: white">
+                                                        <?php echo $count . '.'; ?>
+                                                        </font>
+                                                        <?php echo $file['filename']; ?>
+                                                    </div>
                                                 </div>
-                                            </a>           
-                                            <?php
-                                        } else if ($fileType == 'mp3') {
-                                            ?>
-                                            <a href="<?php echo $this->baseUrl(); ?>/teacher/file?lesson_id=<?php echo $this->lessonInfo['id']; ?>&file_id=<?php echo $file['id']; ?>">
-                                                <div class="full-width" style="font-size: 16px;  font-weight: bold; margin: 5px;">
-                                                    <font style="color: #7E3500">
-                                                    <?php echo $count . '.'; ?>
-                                                    </font>
-                                                    <?php echo $file['filename']; ?>
-                                                    <img src="<?php echo $this->baseUrl(); ?>/public/images/audio.png" width="16" height="16">
-                                                </div>
-                                            </a>              
-                                            <?php
-                                        } else if ($fileType = 'mp4') {
-                                            ?>
-                                            <a href="<?php echo $this->baseUrl(); ?>/teacher/file?lesson_id=<?php echo $this->lessonInfo['id']; ?>&file_id=<?php echo $file['id']; ?>">
-                                                <div class="full-width" style="font-size: 16px;  font-weight: bold; margin: 5px;">
-                                                    <font style="color: #7E3500">
-                                                    <?php echo $count . '.'; ?>
-                                                    </font>
-                                                    <?php echo $file['filename']; ?>
-                                                    <img src="<?php echo $this->baseUrl(); ?>/public/images/mp4.png" width="16" height="16">
-                                                </div>
-                                            </a>       
-                                            <?php
-                                        } else if ($fileType = 'png' || $fileType == 'jpg' || $fileType == 'jpeg') {
-                                            ?>
-                                            <a href="<?php echo $this->baseUrl(); ?>/teacher/file?lesson_id=<?php echo $this->lessonInfo['id']; ?>&file_id=<?php echo $file['id']; ?>">
-                                                <div class="full-width" style="font-size: 16px;  font-weight: bold; margin: 5px;">
-                                                    <font style="color: #7E3500">
-                                                    <?php echo $count . '.'; ?>
-                                                    </font>
-                                                    <?php echo $file['filename']; ?>
-                                                    <img src="<?php echo $this->baseUrl(); ?>/public/images/image.png" width="16" height="16">
-                                                </div>
-                                            </a> 
-                                            <?php
-                                        } else if ($fileType == 'tsv') {
-                                            ?>
-                                            <a href="<?php echo $this->baseUrl(); ?>/teacher/file?lesson_id=<?php echo $this->lessonInfo['id']; ?>&file_id=<?php echo $file['filename']; ?>">
-                                                <div class="full-width" style="font-size: 16px;  font-weight: bold; margin: 5px;">
-                                                    <font style="color: #7E3500">
-                                                    <?php echo $count . '.'; ?>
-                                                    </font>
-                                                    <?php echo $file['filename']; ?>
-                                                    <img src="<?php echo $this->baseUrl(); ?>/public/images/test.png" width="16" height="16">
-                                                </div>
-                                            </a> 
+                                            </a>
+                                            <hr>
                                             <?php
                                         }
                                     }
@@ -139,6 +132,20 @@
                                 </div>
                                 <div class="file-nav">
                                     <div class="file-discription">説明：<?php echo $this->currentFile['description']; ?></div>
+                                    <div class="file-report">
+                                        <?php if ($this->currentFile['is_reported']) { ?>
+                                        <div class="report-detail">
+                                            <div class="detail-title">ファイルはレポートされた</div>
+                                            <img src="<?php echo $this->baseUrl(); ?>/public/images/copyright_report.png">
+                                        </div>
+                                        <?php } ?>
+                                        <?php if ($this->currentFile['status'] == 2) { ?>
+                                        <div class="lock-detail">
+                                            <div class="detail-title">ファイルはロックされている</div>
+                                            <img src="<?php echo $this->baseUrl(); ?>/public/images/locked.png">
+                                        </div>
+                                        <?php } ?>
+                                    </div>
                                     <div>
                                         <button class="normal-button file-update-btn">
                                             <div class="btn-img" style="float: left">

@@ -465,7 +465,9 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
      * @return array
      */
     public function findFileById($fileId) {
-        return $this->fetchRow("id='$fileId'");
+        $result = $this->fetchRow("id='$fileId'")->toArray();
+        $result['is_reported'] = $this->isReported($result);
+        return $result;
     }
     
     /**
@@ -503,7 +505,7 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
      * @param array $file
      * @return boolean
      */
-    private function isReported($file) {
+    public function isReported($file) {
         $select = $this->getAdapter()->select();
         $select->from('copyright_report', "*")
                 ->where("file_id=".$file['id']." and status=1");

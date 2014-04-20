@@ -404,14 +404,14 @@ class TeacherController extends IController {
     public function fileAction() {
         $this->initial();
         $lessonModel = new Default_Model_Lesson();
-        $lessonFileModel = new Default_Model_LessonFile();
+        $lessonFileModel = new Default_Model_File();
         $filecommentModel = new Default_Model_FileComment();
         $reportModel = new Default_Model_CopyrightReport();
 
-        if ($this->_request->isGet()) {
+//        if ($this->_request->isGet()) {
             $lessonId = $this->_request->getParam('lesson_id');
             $currentFileId = $this->_request->getParam('file_id');
-        }
+//        }
         if ($this->_request->isPost()) {
             $u = Zend_Auth::getInstance()->getStorage()->read();
             $lessonId = $this->_request->getParam('lesson_id');
@@ -432,7 +432,7 @@ class TeacherController extends IController {
         $currentFile = $lessonFileModel->findFileById($currentFileId);
         $lessonInfo = $lessonModel->findLessonById($lessonId);
         $this->view->lessonInfo = $lessonInfo;
-        $files = $lessonFileModel->listFileOfLesson($lessonId);
+        $files = $lessonFileModel->getFileByLesson($lessonId);
         $this->view->files = $files;
         if ($currentFile == NULL) {
             $this->view->currentFile = $files[0];
