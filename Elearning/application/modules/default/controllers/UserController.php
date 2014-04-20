@@ -182,7 +182,7 @@ class UserController extends IController {
 //                    return;
 //                }
                 if (strlen(trim($data['username'])) < 5) {
-                    
+                    $this->view->errorMessage = Message::$M006;
                 }
             }
             if (trim($data['password']) == '') {

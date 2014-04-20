@@ -91,7 +91,7 @@ class StudentController extends IController {
             $type = $this->_request->getParam('sort_type');
             $asc = $this->_request->getParam('sort_asc');
             $paginator = Zend_Paginator::factory($lessons->findByKeyword($keyword, $type, $asc));
-            $paginator->setItemCountPerPage(6);
+            $paginator->setItemCountPerPage(12);
             $paginator->setPageRange(3);
             $this->view->numpage = 1;
             $currentPage = $this->_request->getParam('page', 1);
@@ -423,11 +423,11 @@ class StudentController extends IController {
         $repordModel = new Default_Model_CopyrightReport();
         $learnModel = new Default_Model_Learn();
         $masterModel = new Default_Model_Master();
-        
+
         //
         $lessonId = $this->_request->getParam('lessonId');
         $currentFileId = $this->_request->getParam('fileId');
-        
+
         // ファイル情報を取る
         $files = $lessonFileModel->getFileByLesson($lessonId);
         if (!$currentFileId) {
@@ -439,7 +439,7 @@ class StudentController extends IController {
             }
         }
         $currentFile = $lessonFileModel->findFileById($currentFileId);
-        
+
         if ($currentFile != null) {
             // ファイルがこの授業のかをチェック
             if ($currentFile['lesson_id'] != $lessonId) {
@@ -451,24 +451,23 @@ class StudentController extends IController {
             if ($currentFile['status'] == 3) {
                 $this->view->errorMsg = "ファイルが無効";
             }
-            
         } else {
             $this->view->errorMsg = "ファイルがない";
         }
-        
-        
+
+
         // 授業情報を取る
         $lessonInfo = $lessonModel->findLessonById($lessonId);
         $studentsNum = $learnModel->countStudenJoinLesson($lessonId);
         $lessonInfo['students_num'] = $studentsNum;
-        
+
         // 授業が見えるかをチェック
         $lessonDeadline = $masterModel->getMasterValue(Default_Model_Master::$KEY_LESSON_DEADLINE);
         $isLearn = $learnModel->isStudentLearn($this->currentUser['id'], $lessonId, $lessonDeadline);
         if ($isLearn == 1) {
-            $this->redirect('student/lessonDetail?lessonId='.$lessonId);
+            $this->redirect('student/lessonDetail?lessonId=' . $lessonId);
         }
-        
+
         //
         $this->view->lessonInfo = $lessonInfo;
         $this->view->currentFile = $currentFile;
@@ -583,7 +582,7 @@ class StudentController extends IController {
             $file = $lessonFileModel->findFileById($fileId);
             $path = $lessonFileModel->getFileFolder() . $file["location"];
             $currentFileExt = explode(".", $file['filename']);
-            $currentFileExt = $currentFileExt[count($currentFileExt)-1];
+            $currentFileExt = $currentFileExt[count($currentFileExt) - 1];
             $arrayType = array(
                 "pdf" => "application/pdf",
                 "mp3" => "audio/mpeg",
