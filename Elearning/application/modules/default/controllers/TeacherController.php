@@ -436,7 +436,7 @@ class TeacherController extends IController {
      * 
      */
     public function addFileAction() {
-        $params = $this->_request->getAllParams();
+        $params = $this->getAllParams();
         $lessonId = $params['lesson_id'];
         $descriptions = $params['description'];
         $copyright_check = isset($params['copyright_check']);
