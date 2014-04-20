@@ -138,11 +138,11 @@
 </style>
 <script type="text/javascript">
     $(document).ready(function(){
-        $(".unlock-btn").click(function(){
-            if (confirm("この授業を本当にアンロックしたいですか？")) {
-                window.top.location = "<?php echo $this->baseUrl()."/admin/lesson/unlock?lesson_id=".$this->lessonInfo['id']; ?>";
-            }
-        });
+//        $(".unlock-btn").click(function(){
+//            if (confirm("この授業を本当にアンロックしたいですか？")) {
+//                window.top.location = "<?php echo $this->baseUrl()."/admin/lesson/unlock?lesson_id=".$this->lessonInfo['id']; ?>";
+//            }
+//        });
     });
 </script>
 <?php echo $this->render('admin-layout.phtml') ?>
@@ -182,7 +182,7 @@
             <div class="like" style="width: 100%; margin: 10px 0px;">
                 <span>
                     <img src="<?php echo $this->baseUrl(); ?>/public/images/num-like.png" width="15" height="15">
-                    <span><?php echo $this->lessonInfo['like'] ?></span>
+                    <span><?php echo $this->lessonInfo['num_like'] ?></span>
                 </span>
                 <span>
                     <img src="<?php echo $this->baseUrl(); ?>/public/images/num-view.png" width="15" height="15">
@@ -197,7 +197,8 @@
                     <img src="<?php echo $this->baseUrl(); ?>/public/images/copyright_report.png" width="20" height="20">
                 </span>
                 <?php } ?>
-                <?php if ($this->lessonInfo['status'] == 0) { ?>
+                <?php // if ($this->lessonInfo['status'] == 0) { ?>
+                <?php if (FALSE) { ?>
                     <div style="float:right;">
                         <img src="<?php echo $this->baseUrl(); ?>/public/images/locked.png" width="20" height="20">
                         <span style="color: red">この授業はロックされている</span>
@@ -213,24 +214,24 @@
             </div>
             <?php 
                 foreach ($this->files as $file) {
-                    $fileLocation = $file['location'];
-                    $ext = explode('.', $fileLocation);
-                    $ext = $ext[1];
-                    if ($ext == 'pdf') {
-                        $icon = "pdf.png";
-                    } else if ($ext == 'jpg' || $ext == 'jpge' || $ext == 'png') {
-                        $icon = "img_file.png";
-                    } else if ($ext == 'mp3') {
-                        $icon = "mp3.png";
-                    } else if ($ext == 'mp4') {
-                        $icon = "video.png";
-                    } else if ($ext == 'html') {
-                        $icon = "test.png";
+                    $fileTypes = explode(".", $file['filename']);
+                                            
+                    $fileType = strtolower($fileTypes[count($fileTypes)-1]);
+                    if ($fileType == 'pdf') {
+                        $icon = $this->baseUrl()."/public/images/pdf.png";
+                    } else if ($fileType == 'jpg' || $fileType == 'png' || $fileType == 'gif') {
+                        $icon = $this->baseUrl()."/public/images/image.png";
+                    } else if ($fileType == 'mp3' || $fileType == 'wav') {
+                        $icon = $this->baseUrl()."/public/images/audio.png";
+                    } else if ($fileType == 'mp4') {
+                        $icon = $this->baseUrl()."/public/images/mp4.png";
+                    } else if ($fileType == 'tsv') {
+                        $icon = $this->baseUrl()."/public/images/test.png";
                     }
             ?>
             <div class="file_container">
                 <a href="<?php echo $this->baseUrl()."/admin/lesson/file?file_id=".$file['id']."&lesson_id=" . $this->lessonId; ?>">
-                    <div class="file_type"><img src="<?php echo $this->baseUrl()."/public/images/".$icon ?>"></div>
+                    <div class="file_type"><img src="<?php echo $icon ?>"></div>
                     <div class="file_name"><?php echo $file['filename']; ?></div>
                     <div class="file_description"><?php echo $file['description'] ?></div>
                     <?php if ($file['is_reported']) { ?>

@@ -134,8 +134,12 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
                 ->where('lesson.id = ?', $lessonId)
                 ->joinInner('user', 'lesson.teacher_id = user.id', array('name'));
         $result = $this->getAdapter()->fetchRow($select);
-        $result['is_reported'] = $this->isReported($result);
-        return $result;
+        if ($result) {
+            $result['is_reported'] = $this->isReported($result);
+            return $result;
+        } else {
+            return null;
+        }
     }
 
     public function incrementView($lessonId) {
@@ -270,6 +274,9 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
      * @return boolean
      */
     public function isReported($lesson) {
+        if (!$lesson) {
+            return false;
+        }
         $select = $this->getAdapter()->select();
         $select->from(array('f' => 'lesson_file'))
                 ->joinInner(array('c' => 'copyright_report'), 'f.id = c.file_id')

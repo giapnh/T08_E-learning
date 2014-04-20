@@ -127,151 +127,154 @@
                             </td>
                             <!--View-->
                             <td>
-                                <div class="full-width" style="font-weight: bolder; color: white; padding-top: 3px; padding-bottom: 3px; font-size: 16px; background: #51A007;">
-                                    <?php echo $this->currentFile['filename']; ?>
-                                </div>
-                                <div class="file-nav">
-                                    <div class="file-discription">説明：<?php echo $this->currentFile['description']; ?></div>
-                                    <div class="file-report">
-                                        <?php if ($this->currentFile['is_reported']) { ?>
-                                        <div class="report-detail">
-                                            <div class="detail-title">ファイルはレポートされた</div>
-                                            <img src="<?php echo $this->baseUrl(); ?>/public/images/copyright_report.png">
-                                        </div>
-                                        <?php } ?>
-                                        <?php if ($this->currentFile['status'] == 2) { ?>
-                                        <div class="lock-detail">
-                                            <div class="detail-title">ファイルはロックされている</div>
-                                            <img src="<?php echo $this->baseUrl(); ?>/public/images/locked.png">
-                                        </div>
-                                        <?php } ?>
+                                <?php if ($this->currentFile != NULL) { ?>
+                                    <div class="full-width" style="font-weight: bolder; color: white; padding-top: 3px; padding-bottom: 3px; font-size: 16px; background: #51A007;">
+                                        <?php echo $this->currentFile['filename']; ?>
                                     </div>
-                                    <div>
-                                        <button class="normal-button file-update-btn">
-                                            <div class="btn-img" style="float: left">
-                                                <img src="<?php echo $this->baseUrl(); ?>/public/images/upload.png" width="30" height="30">
+                                    <div class="file-nav">
+                                        <div class="file-discription">説明：<?php echo $this->currentFile['description']; ?></div>
+                                        <div class="file-report">
+                                            <?php if ($this->currentFile['is_reported']) { ?>
+                                            <div class="report-detail">
+                                                <div class="detail-title">ファイルはレポートされた</div>
+                                                <img src="<?php echo $this->baseUrl(); ?>/public/images/copyright_report.png">
                                             </div>
-                                            <div class="btn-text">更新</div>
-                                        </button>
+                                            <?php } ?>
+                                            <?php if ($this->currentFile['status'] == 2) { ?>
+                                            <div class="lock-detail">
+                                                <div class="detail-title">ファイルはロックされている</div>
+                                                <img src="<?php echo $this->baseUrl(); ?>/public/images/locked.png">
+                                            </div>
+                                            <?php } ?>
+                                        </div>
+                                        <div>
+                                            <button class="normal-button file-update-btn">
+                                                <div class="btn-img" style="float: left">
+                                                    <img src="<?php echo $this->baseUrl(); ?>/public/images/upload.png" width="30" height="30">
+                                                </div>
+                                                <div class="btn-text">更新</div>
+                                            </button>
+                                        </div>
+                                        <div class="file-upload">
+                                            <form action="<?php echo $this->baseUrl()."/teacher/edit-file"; ?>" method="post"  enctype="multipart/form-data">
+                                                <input type="hidden" name="lesson_id" value="<?php echo $this->lessonInfo['id']; ?>">
+                                                <input type="hidden" name="file_id" value="<?php echo $this->currentFile['id']; ?>">
+                                                <input name="file" type="file"></br>
+                                                <div style="font-size: 14px;">ファイルの説明：</div>
+                                                <textarea style="width: 350px;height: 80px" name="description"></textarea></br>
+                                                <input type="checkbox" name="copyright_check" value="">著作権規則と同意する
+                                                <input type="submit" value="アップロード" class="normal-button">
+                                            </form>
+                                        </div>
+                                        <div class="file-upload-msg">
+                                            <?php 
+                                                if (isset($this->fileUploadError)) {
+                                                    echo $this->fileUploadError;
+                                                } 
+                                            ?>
+                                        </div>
                                     </div>
-                                    <div class="file-upload">
-                                        <form action="<?php echo $this->baseUrl()."/teacher/edit-file"; ?>" method="post"  enctype="multipart/form-data">
-                                            <input type="hidden" name="lesson_id" value="<?php echo $this->lessonInfo['id']; ?>">
-                                            <input type="hidden" name="file_id" value="<?php echo $this->currentFile['id']; ?>">
-                                            <input name="file" type="file"></br>
-                                            <div style="font-size: 14px;">ファイルの説明：</div>
-                                            <textarea style="width: 350px;height: 80px" name="description"></textarea></br>
-                                            <input type="checkbox" name="copyright_check" value="">著作権規則と同意する
-                                            <input type="submit" value="アップロード" class="normal-button">
+                                    <div style="margin: 10px; width: 95%;min-height: 500px;max-height: 800px; border-color: #007F9F; border-style: solid; border-width: thin;">
+                                        <!--Content here-->
+                                        <?php
+                                        $currentFiles = explode(".", $this->currentFile['filename']);
+                                        $currentFile = strtolower( $currentFiles[count($currentFiles)-1]);
+                                        if (    $currentFile == 'pdf' || 
+                                                $currentFile == "mp3" || 
+                                                $currentFile == "mp4" ||
+                                                $currentFile == "png" ||
+                                                $currentFile == "gif" ||
+                                                $currentFile == "wav" ||
+                                                $currentFile == "jpg"
+                                                ) {
+                                        ?>
+                                            <iframe src="<?php echo $this->baseUrl()?>/teacher/stream/id/<?php echo $this->currentFile["id"]?>#toolbar=0&navpanes=0&scrollbar=0" width="100%" height="500"></iframe>
+
+                                         <?php } else if ($currentFile == 'tsv') { // テストファイル
+                                            ?>
+                                            <!--フォームスタット-->
+                                            <?php
+                                            $controller = $this->controller;
+                                            echo $controller->getTestHtml($this->currentFile['id']);
+                                            ?>
+    <!--                                        <a href="<?php echo $this->baseUrl()."/teacher/students?learn_id=".$this->lessonId."&file_id=".$this->currentFile['id']; ?>">
+                                                <button class="normal-button">学生リスト</button>
+                                            </a>-->
+                                        <?php
+                                        }
+                                        ?>
+                                    </div>
+                                    <?php if(!empty($this->reports)):?>
+                                    <script type="text/javascript">
+                                        function showReportForm(){
+                                        $("#report_form").toggle("slow");
+                                        }
+
+                                    </script>
+                                    <div id="report_form" style="display: none; width: 60%; margin-left: 100px; border: none; border-radius: 4px;">
+                                        <?php foreach ($this->reports as $report): ?>
+                                            <div>
+                                                    <p>
+                                                    <span style="color: blue"><?php echo $report["username"]?></span> : 
+                                                    <?php echo $report["reason"]?>
+                                                    </p>
+                                            </div>
+                                        <?php endforeach;?>
+                                    </div>
+
+
+                                    <!--Report button-->
+                                    <div class="float-right" style="margin: 0px auto;" id="btn_report">
+                                        <button id="btn_report" onclick="showReportForm();" style="border: none; border-radius: 4px; padding: 5px; margin-right: 20px; background: #007F9F;  color: red;">違犯レポート(<?php echo count($this->reports)?>)</button>
+                                    </div>
+                                    <?php endif;?>
+                                    <hr class = "clear">
+                                    <!--Comment file-->
+                                    <div style="width: 70%; margin-left: 100px;">
+                                        <?php if (isset($this->comments)) {
+                                        foreach ($this->comments as $comment) {
+                                            ?>
+                                            <div style="width: 70%;text-align: left;background: #DFF2F8; margin-left: 100px; margin-top: 5px; margin-bottom: 5px;box-shadow: 2px 2px 2px; border-style: solid; border-width: thin; border-radius: 1px;">
+                                                <div class="full-width" style="padding-left: 20px;padding-top: 10px; font-weight: bolder; font-size: 16px; color: #7E3500">
+                                                    <?php
+                                                    if ($comment['role'] == 1) {
+                                                        echo "学生:";
+                                                    } else {
+                                                        echo "先生:";
+                                                    }
+                                                    echo $comment['name'];
+                                                    ?>
+                                                </div>
+                                                <div class="full-width" style="padding-left: 50px; font-size: 12px; color: #A66322; font-style: italic;">
+                                                    <?php
+                                                    $raw = $comment['time'];
+                                                    $arr = explode(" ", $raw);
+                                                    $ymd = explode("-", $arr[0]);
+                                                    $hsm = explode(":", $arr[1]);
+                                                    echo $ymd[0] . "年" . $ymd[1] . "月" . $ymd[2] . "日" . "-" . $hsm[0] . "時" . $hsm[1] . "分";
+                                                    ?>
+                                                </div>
+                                                <div class="full-width" style="padding-left: 50px; font-size: 14px;"><?php
+                                                    echo $comment['comment'];
+                                                    ?>
+                                                </div>
+
+                                            </div>
+                                            <?php
+                                        }
+                                    }
+                                    ?>
+                                    </div>
+                                    <div style="width: 70%;text-align: left;background: #DFF2F8; margin-left: 100px; margin-top: 5px; margin-bottom: 5px;box-shadow: 2px 2px 2px; border-style: solid; border-width: thin; border-radius: 1px;">
+                                        <form action="" method="post">
+                                            <div  style="width: 70%;padding-left: 20px;padding-top: 10px; font-weight: bolder; font-size: 16px; color: #7E3500">
+                                                <textarea cols="60" name="comment" placeholder="コメント内容" rows="5"　style="border-radius: 2px;text-align: left; border-style: solid; border-color: #A66322;"></textarea>
+                                                <button type="submit" value="コメント" class="showlogfromm" style="height: 30px; margin-bottom: 10px;">コメント</button>
+                                            </div>
                                         </form>
-                                    </div>
-                                    <div class="file-upload-msg">
-                                        <?php 
-                                            if (isset($this->fileUploadError)) {
-                                                echo $this->fileUploadError;
-                                            } 
-                                        ?>
-                                    </div>
-                                </div>
-                                <div style="margin: 10px; width: 95%;min-height: 500px;max-height: 800px; border-color: #007F9F; border-style: solid; border-width: thin;">
-                                    <!--Content here-->
-                                    <?php
-                                    $currentFiles = explode(".", $this->currentFile['filename']);
-                                    $currentFile = strtolower( $currentFiles[count($currentFiles)-1]);
-                                    if (    $currentFile == 'pdf' || 
-                                            $currentFile == "mp3" || 
-                                            $currentFile == "mp4" ||
-                                            $currentFile == "png" ||
-                                            $currentFile == "gif" ||
-                                            $currentFile == "wav" ||
-                                            $currentFile == "jpg"
-                                            ) {
-                                    ?>
-                                        <iframe src="<?php echo $this->baseUrl()?>/teacher/stream/id/<?php echo $this->currentFile["id"]?>#toolbar=0&navpanes=0&scrollbar=0" width="100%" height="500"></iframe>
-                                               
-                                     <?php } else if ($currentFile == 'tsv') { // テストファイル
-                                        ?>
-                                        <!--フォームスタット-->
-                                        <?php
-                                        $controller = $this->controller;
-                                        echo $controller->getTestHtml($this->currentFile['id']);
-                                        ?>
-<!--                                        <a href="<?php echo $this->baseUrl()."/teacher/students?learn_id=".$this->lessonId."&file_id=".$this->currentFile['id']; ?>">
-                                            <button class="normal-button">学生リスト</button>
-                                        </a>-->
-                                    <?php
-                                    }
-                                    ?>
-                                </div>
-                                <?php if(!empty($this->reports)):?>
-                                <script type="text/javascript">
-                                    function showReportForm(){
-                                    $("#report_form").toggle("slow");
-                                    }
-
-                                </script>
-                                <div id="report_form" style="display: none; width: 60%; margin-left: 100px; border: none; border-radius: 4px;">
-                                    <?php foreach ($this->reports as $report): ?>
-                                    	<div>
-                                    		<p>
-                                    		<span style="color: blue"><?php echo $report["username"]?></span> : 
-                                    		<?php echo $report["reason"]?>
-                                    		</p>
-                                    	</div>
-                                    <?php endforeach;?>
-                                </div>
-
-
-                                <!--Report button-->
-                                <div class="float-right" style="margin: 0px auto;" id="btn_report">
-                                    <button id="btn_report" onclick="showReportForm();" style="border: none; border-radius: 4px; padding: 5px; margin-right: 20px; background: #007F9F;  color: red;">違犯レポート(<?php echo count($this->reports)?>)</button>
-                                </div>
-                                <?php endif;?>
-                                <hr class = "clear">
-                                <!--Comment file-->
-                                <div style="width: 70%; margin-left: 100px;">
-                                    <?php if (isset($this->comments)) {
-                                    foreach ($this->comments as $comment) {
-                                        ?>
-                                        <div style="width: 70%;text-align: left;background: #DFF2F8; margin-left: 100px; margin-top: 5px; margin-bottom: 5px;box-shadow: 2px 2px 2px; border-style: solid; border-width: thin; border-radius: 1px;">
-                                            <div class="full-width" style="padding-left: 20px;padding-top: 10px; font-weight: bolder; font-size: 16px; color: #7E3500">
-                                                <?php
-                                                if ($comment['role'] == 1) {
-                                                    echo "学生:";
-                                                } else {
-                                                    echo "先生:";
-                                                }
-                                                echo $comment['name'];
-                                                ?>
-                                            </div>
-                                            <div class="full-width" style="padding-left: 50px; font-size: 12px; color: #A66322; font-style: italic;">
-                                                <?php
-                                                $raw = $comment['time'];
-                                                $arr = explode(" ", $raw);
-                                                $ymd = explode("-", $arr[0]);
-                                                $hsm = explode(":", $arr[1]);
-                                                echo $ymd[0] . "年" . $ymd[1] . "月" . $ymd[2] . "日" . "-" . $hsm[0] . "時" . $hsm[1] . "分";
-                                                ?>
-                                            </div>
-                                            <div class="full-width" style="padding-left: 50px; font-size: 14px;"><?php
-                                                echo $comment['comment'];
-                                                ?>
-                                            </div>
-
-                                        </div>
-                                        <?php
-                                    }
-                                }
-                                ?>
-                                </div>
-                                <div style="width: 70%;text-align: left;background: #DFF2F8; margin-left: 100px; margin-top: 5px; margin-bottom: 5px;box-shadow: 2px 2px 2px; border-style: solid; border-width: thin; border-radius: 1px;">
-                                    <form action="" method="post">
-                                        <div  style="width: 70%;padding-left: 20px;padding-top: 10px; font-weight: bolder; font-size: 16px; color: #7E3500">
-                                            <textarea cols="60" name="comment" placeholder="コメント内容" rows="5"　style="border-radius: 2px;text-align: left; border-style: solid; border-color: #A66322;"></textarea>
-                                            <button type="submit" value="コメント" class="showlogfromm" style="height: 30px; margin-bottom: 10px;">コメント</button>
-                                        </div>
-                                    </form>
-                                </div>                            </td>
+                                    </div>         
+                                <?php } else { echo $this->fileError; } // End file null check ?>
+                            </td>
                         </tr>
                     </tbody>
                 </table>

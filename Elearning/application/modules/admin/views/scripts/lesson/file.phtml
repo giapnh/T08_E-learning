@@ -191,7 +191,7 @@
             <div class="like" style="width: 100%; margin: 10px 0px;">
                 <span>
                     <img src="<?php echo $this->baseUrl(); ?>/public/images/num-like.png" width="15" height="15">
-                    <span><?php echo $this->lessonInfo['like'] ?></span>
+                    <span><?php echo $this->lessonInfo['num_like'] ?></span>
                 </span>
                 <span>
                     <img src="<?php echo $this->baseUrl(); ?>/public/images/num-view.png" width="15" height="15">
@@ -202,7 +202,10 @@
                     <span><?php echo $this->lessonInfo['students_num'] ?></span>
                 </span>
             </div>
-            <?php if ($this->lessonInfo['status'] == 0) { ?>
+            <?php 
+                // if ($this->lessonInfo['status'] == 0) { 
+                if (FALSE) {
+            ?>
                 <div>
                     <img src="<?php echo $this->baseUrl(); ?>/public/images/locked.png" width="20" height="20">
                     <span style="color: red">この授業はロックされている</span>
@@ -210,7 +213,7 @@
                 <div>
                     <button class="normal-button unlock-btn">アンロック</button>
                 </div>
-            <?php } else { ?>
+            <?php // } else { ?>
             <a href="<?php echo $this->baseUrl(); ?>/admin/lesson/lock?lesson_id=<?php echo $this->lessonInfo['id']; ?>">
                 <button class="normal-button lock-btn">ロック</button>
             </a>
@@ -222,25 +225,26 @@
         $count = 0;
         foreach ($this->files as $file) {
             $count++;
-            $fileType = explode(".", $file['filename']);
-            $fileType = $fileType[count($fileType)-1];
+            $fileTypes = explode(".", $file['filename']);
+                                            
+            $fileType = strtolower($fileTypes[count($fileTypes)-1]);
             if ($fileType == 'pdf') {
-                $icon = "pdf.png";
-            } else if ($fileType == 'jpg' || $fileType == 'jpge' || $fileType == 'png') {
-                $icon = "img_file.png";
-            } else if ($fileType == 'mp3') {
-                $icon = "mp3.png";
+                $icon = $this->baseUrl()."/public/images/pdf.png";
+            } else if ($fileType == 'jpg' || $fileType == 'png' || $fileType == 'gif') {
+                $icon = $this->baseUrl()."/public/images/image.png";
+            } else if ($fileType == 'mp3' || $fileType == 'wav') {
+                $icon = $this->baseUrl()."/public/images/audio.png";
             } else if ($fileType == 'mp4') {
-                $icon = "video.png";
-            } else if ($fileType == 'html') {
-                $icon = "test.png";
+                $icon = $this->baseUrl()."/public/images/mp4.png";
+            } else if ($fileType == 'tsv') {
+                $icon = $this->baseUrl()."/public/images/test.png";
             }
         ?>
             <div class="file-link">
                 <a href="<?php echo $this->baseUrl(); ?>/admin/lesson/file?lesson_id=<?php echo $this->lessonInfo['id']; ?>&file_id=<?php echo $file['id']; ?>">
                     <div>
                     <?php echo $count . '.'; ?>
-                    <img src="<?php echo $this->baseUrl()."/public/images/".$icon; ?>" width="16" height="16">
+                    <img src="<?php echo $icon; ?>" width="16" height="16">
                     <?php echo $file['filename']; ?>
                     </div>
                     <?php if ($file['is_reported']) { ?>
@@ -257,6 +261,7 @@
     </div>
     
     <div class="right-content">
+        <?php if ($this->currentFile) { ?>
         <div class="file-content">
             <div class="file-info">
                 <div class="file-name">
@@ -346,7 +351,7 @@
             </div>
             
         </div>
-
+        <?php } // End if check file null ?>
         <div class="comment">
             <div class="comment-center">
                 <?php foreach ($this->comments as $comment) { ?>

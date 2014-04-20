@@ -251,24 +251,24 @@
             </div>
             <?php 
                 foreach ($this->files as $file) {
-                    $fileLocation = $file['location'];
-                    $ext = explode('.', $fileLocation);
-                    $ext = $ext[1];
-                    if ($ext == 'pdf') {
-                        $icon = "pdf.png";
-                    } else if ($ext == 'jpg' ||$ext == 'jpge' || $ext == 'png') {
-                        $icon = "img_file.png";
-                    } else if ($ext == 'mp3') {
-                        $icon = "mp3.png";
-                    } else if ($ext == 'mp4') {
-                        $icon = "video.png";
-                    } else if ($ext == 'html') {
-                        $icon = "test.png";
+                    $fileTypes = explode(".", $file['filename']);
+                                            
+                    $fileType = strtolower($fileTypes[count($fileTypes)-1]);
+                    if ($fileType == 'pdf') {
+                        $icon = $this->baseUrl()."/public/images/pdf.png";
+                    } else if ($fileType == 'jpg' || $fileType == 'png' || $fileType == 'gif') {
+                        $icon = $this->baseUrl()."/public/images/image.png";
+                    } else if ($fileType == 'mp3' || $fileType == 'wav') {
+                        $icon = $this->baseUrl()."/public/images/audio.png";
+                    } else if ($fileType == 'mp4') {
+                        $icon = $this->baseUrl()."/public/images/mp4.png";
+                    } else if ($fileType == 'tsv') {
+                        $icon = $this->baseUrl()."/public/images/test.png";
                     }
             ?>
             <div class="file_container">
                 <a href="<?php echo $this->baseUrl()."/teacher/file?file_id=".$file['id']."&lesson_id=" . $this->lessonId; ?>">
-                    <div class="file_type"><img src="<?php echo $this->baseUrl()."/public/images/".$icon ?>"></div>
+                    <div class="file_type"><img src="<?php echo $icon ?>"></div>
                     <div class="file_name"><?php echo $file['filename']; ?></div>
                     <div class="file_description"><?php echo $file['description'] ?></div>
                     <div class="file_report">

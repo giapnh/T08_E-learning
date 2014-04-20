@@ -7,7 +7,7 @@ class TeacherController extends IController {
 
     protected $user;
     protected $currentTeacherId;
-
+    
     public function preDispatch() {
         $auth = Zend_Auth::getInstance();
         $master = new Default_Model_Master();
@@ -46,6 +46,7 @@ class TeacherController extends IController {
     public function initial() {
         $auth = Zend_Auth::getInstance();
         $infoUser = $auth->getStorage()->read();
+        $this->user = $infoUser;
         $this->view->user_info = $infoUser;
         $this->currentTeacherId = $infoUser['id'];
         $baseurl = $this->_request->getbaseurl();
@@ -303,6 +304,13 @@ class TeacherController extends IController {
         }
 
         $lesson = $lessonModel->findLessonById($lessonId);
+        if (!$lesson) {
+            $this->redirect('teacher/index');
+        }
+        if ($lesson['teacher_id'] != $this->user['id']) {
+            $this->redirect('teacher/index');
+        }
+        
         $files = $fileModel->getFileByLesson($lessonId);
         $tags = $lessonTagModel->getTagsByLesson($lessonId);
         $comments = $commentModel->getAllCommentOfLesson($lessonId);
@@ -315,16 +323,6 @@ class TeacherController extends IController {
         $this->view->comments = $comments;
         $this->view->errorMessages = $this->_helper->FlashMessenger->getMessages('addFileFailed');
         $this->view->messages = $this->_helper->FlashMessenger->getMessages('addFileSuccess');
-    }
-
-    public function lessonCommentAction() {
-        echo json_encode(array(
-            "comment" => "Hello",
-            "user" => "Minh Tran",
-            "time" => "2014-4-7 1:20:00"
-        ));
-
-        return;
     }
 
     /**
@@ -408,41 +406,52 @@ class TeacherController extends IController {
         $filecommentModel = new Default_Model_FileComment();
         $reportModel = new Default_Model_CopyrightReport();
 
-//        if ($this->_request->isGet()) {
-            $lessonId = $this->_request->getParam('lesson_id');
-            $currentFileId = $this->_request->getParam('file_id');
-//        }
+        $lessonId = $this->_request->getParam('lesson_id');
+        $currentFileId = $this->_request->getParam('file_id');
+        
         if ($this->_request->isPost()) {
             $u = Zend_Auth::getInstance()->getStorage()->read();
             $lessonId = $this->_request->getParam('lesson_id');
             $currentFileId = $this->_request->getParam('file_id');
-// 			$report = $this->_request->getParam('report_content');
-// 			if ($report != NULL) {
-// 				$repordModel->addReport($this->currentTeacherId, $currentFileId, $report);
-// 				$this->view->reportNotify = Message::$M047;
-// 			}
             $comment = $this->_request->getParam('comment');
             if ($comment != NULL) {
-
                 $filecommentModel->addComment($currentFileId, $u['id'], $comment);
             }
         }
-        $this->view->reports = $reportModel->getReport($currentFileId);
-        $this->view->comments = $filecommentModel->getAllCommentOfFile($currentFileId);
+        
         $currentFile = $lessonFileModel->findFileById($currentFileId);
         $lessonInfo = $lessonModel->findLessonById($lessonId);
-        $this->view->lessonInfo = $lessonInfo;
+        
         $files = $lessonFileModel->getFileByLesson($lessonId);
         $this->view->files = $files;
         if ($currentFile == NULL) {
-            $this->view->currentFile = $files[0];
-        } else {
-            $this->view->currentFile = $currentFile;
+            if (count($files) > 0) {
+                $currentFile = $files[0];
+            } else {
+                $this->view->fileError = "ファイルがない";
+            }
+        }
+        
+        // 授業はこのユーザの授業かをチェック
+        if ($lessonInfo['teacher_id'] != $this->user['id']) {
+            $this->redirect('teacher/index');
+        }
+        
+        // ファイルは授業のファイルかをチェック
+        if ($currentFile != NULL) {
+            if ($currentFile['lesson_id'] != $lessonInfo['id']) {
+                $currentFile = NULL;
+                $this->view->fileError = "ファイルが無効";
+            }
         }
 
+        $this->view->currentFile = $currentFile;
+        $this->view->lessonInfo = $lessonInfo;
         $this->view->fileModel = new Default_Model_File();
         $this->view->controller = $this;
         $this->view->lessonId = $lessonId;
+        $this->view->reports = $reportModel->getReport($currentFileId);
+        $this->view->comments = $filecommentModel->getAllCommentOfFile($currentFileId);
         
         $uploadErrors = $this->_helper->FlashMessenger->getMessages('uploadError');
         if (count($uploadErrors) >= 1) {

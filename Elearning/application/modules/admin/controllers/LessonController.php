@@ -88,16 +88,18 @@ class Admin_LessonController extends IController {
      * ファイルを見る画面
      */
     public function fileAction() {
-        
+        //
         $lessonModel = new Default_Model_Lesson();
         $lessonFileModel = new Default_Model_File();
         $filecommentModel = new Default_Model_FileComment();
         $reportModel = new Default_Model_CopyrightReport();
         $learnModel = new Default_Model_Learn();
 
+        //
         $lessonId = $this->_request->getParam('lesson_id');
         $currentFileId = $this->_request->getParam('file_id');
         
+        //
         $currentFile = $lessonFileModel->findFileById($currentFileId);
         $lessonInfo = $lessonModel->findLessonById($lessonId);
         $studentsNum = $learnModel->countStudenJoinLesson($lessonId);
@@ -106,16 +108,29 @@ class Admin_LessonController extends IController {
         $reports = $reportModel->getReport($currentFileId);
         $comments = $filecommentModel->getAllCommentOfFile($currentFileId);
         
+        if ($currentFile == NULL) {
+            if (count($files) > 0) {
+                $currentFile = $files[0];
+            } else {
+                $this->view->fileError = "ファイルがない";
+            }
+        }
+        
+        // ファイルはこの授業のファイルかをチェック
+        if ($currentFile) {
+            if ($currentFile['lesson_id'] != $lessonInfo['id']) {
+                $currentFile = NULL;
+                $this->view->fileError = "ファイルが無効";
+            }
+        }
+        
         //
+        $this->view->currentFile = $currentFile;
         $this->view->lessonInfo = $lessonInfo;
         $this->view->files = $files;
         $this->view->reports = $reports;
         $this->view->comments = $comments;
-        if ($currentFile == NULL) {
-            $this->view->currentFile = $files[0];
-        } else {
-            $this->view->currentFile = $currentFile;
-        }
+        
 
         $this->view->fileModel = new Default_Model_File();
         $this->view->controller = $this;
