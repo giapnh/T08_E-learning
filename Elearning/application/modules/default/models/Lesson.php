@@ -158,7 +158,6 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
         if (strpos($keyword, '+')) {
             $subKey = explode('+', $keyword);
             $select = $this->getAdapter()->select();
-            //$keyword = utf8_encode($keyword);
             $select->from('lesson')
                     ->joinInner('user', 'lesson.teacher_id=user.id', array('name'))
                     ->joinInner('lesson_tag', 'lesson.id=lesson_tag.lesson_id')
@@ -170,8 +169,6 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
                     $nameWhere = $nameWhere . " AND ";
                 }
             }
-            var_dump($nameWhere);
-            die;
             $select->orWhere($nameWhere);
             $select->orWhere("tag_name  LIKE '%" . trim($keyword) . "%'")
                     ->orWhere("title LIKE '%" . trim($keyword) . "%'")
@@ -190,18 +187,20 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
             } else if ($type == 2) {
                 $select->order('lesson.view' . ' ' . $asc_str);
             } else if ($type == 3) {
-                $select->order('lesson.like' . ' ' . $asc_str);
+                $select->order('lesson.num_like' . ' ' . $asc_str);
             }
             return $this->getAdapter()->fetchAll($select);
         } else if (strpos($keyword, "-")) {
+            $subKey = explode("-", $keyword);
             $select = $this->getAdapter()->select();
-            //$keyword = utf8_encode($keyword);
             $select->from('lesson')
                     ->joinInner('user', 'lesson.teacher_id=user.id', array('name'))
                     ->joinInner('lesson_tag', 'lesson.id=lesson_tag.lesson_id')
-                    ->joinInner('tag', 'lesson_tag.tag_id=tag.id', array('tag_name'))
-                    ->where("name LIKE '%$keyword%'")
-                    ->orWhere("tag_name  LIKE '%$keyword%'")
+                    ->joinInner('tag', 'lesson_tag.tag_id=tag.id', array('tag_name'));
+            for ($i = 0; $i < count($subKey); $i++) {
+                $select->orWhere("name LIKE '%$subKey[$i]%'");
+            }
+            $select->orWhere("tag_name  LIKE '%$keyword%'")
                     ->orWhere("title LIKE '%$keyword%'")
                     ->orWhere("description LIKE '%$keyword%'")
                     ->group('lesson.id');
@@ -218,7 +217,7 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
             } else if ($type == 2) {
                 $select->order('lesson.view' . ' ' . $asc_str);
             } else if ($type == 3) {
-                $select->order('lesson.like' . ' ' . $asc_str);
+                $select->order('lesson.num_like' . ' ' . $asc_str);
             }
             return $this->getAdapter()->fetchAll($select);
         } else {
@@ -246,7 +245,7 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
             } else if ($type == 2) {
                 $select->order('lesson.view' . ' ' . $asc_str);
             } else if ($type == 3) {
-                $select->order('lesson.like' . ' ' . $asc_str);
+                $select->order('lesson.num_like' . ' ' . $asc_str);
             }
             return $this->getAdapter()->fetchAll($select);
         }
