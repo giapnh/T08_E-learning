@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.0.4.1
+-- version 4.0.4
 -- http://www.phpmyadmin.net
 --
--- Host: 127.0.0.1
--- Generation Time: Apr 20, 2014 at 10:02 AM
--- Server version: 5.5.32
--- PHP Version: 5.4.16
+-- Host: localhost
+-- Generation Time: Apr 20, 2014 at 08:09 AM
+-- Server version: 5.6.12-log
+-- PHP Version: 5.4.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 --
 -- Database: `elearning`
 --
-CREATE DATABASE IF NOT EXISTS `elearning` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+CREATE DATABASE IF NOT EXISTS `elearning` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE `elearning`;
 
 -- --------------------------------------------------------
@@ -216,6 +216,7 @@ CREATE TABLE IF NOT EXISTS `lesson_file` (
   `title` varchar(200) DEFAULT NULL,
   `subtitle` varchar(200) DEFAULT NULL,
   `location` varchar(255) NOT NULL,
+  `status` int(11) NOT NULL DEFAULT '1' COMMENT '1: available; 2: locked; 3: deleted',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=95 ;
 
@@ -223,36 +224,36 @@ CREATE TABLE IF NOT EXISTS `lesson_file` (
 -- Dumping data for table `lesson_file`
 --
 
-INSERT INTO `lesson_file` (`id`, `lesson_id`, `filename`, `description`, `title`, `subtitle`, `location`) VALUES
-(65, 43, '05W-01-内部設計についての所感.pdf', '', '', '', '\\43\\13972007920.pdf'),
-(66, 43, '05W-02-プログラミングについて.pdf', '', '', '', '\\43\\13972007921.pdf'),
-(67, 43, '05W-03-第２回プロジェクト報告会について.pdf', '', '', '', '\\43\\13972007922.pdf'),
-(68, 44, '06W-01-反省について.pdf', '', '', '', '\\44\\13972008480.pdf'),
-(69, 45, '07W-01-第２回プロジェクト報告会についての所感.pdf', '', '', '', '\\45\\13972008730.pdf'),
-(70, 45, '07W-02-今後のスケジュールについて.pdf', '', '', '', '\\45\\13972008820.pdf'),
-(71, 45, '07W-04-結合試験仕様書について.pdf', '', '', '', '\\45\\13972008890.pdf'),
-(72, 46, '08W-01-試験工程について.pdf', '', '', '', '\\46\\13972009340.pdf'),
-(73, 46, '08W-02-第３回プロジェクト報告会について.pdf', '', '', '', '\\46\\13972009341.pdf'),
-(74, 47, 'database.png', 'イメージファイル', '', '', '\\47\\13974597830.png'),
-(75, 47, 'Andrea Bocelli & Hayley Westenra -- Vivo Per Lei.mp4', 'ビデオファイル', '', '', '\\47\\13974597831.mp4'),
-(76, 47, 'test3.tsv', 'テスト', '2006年度2級文字・語彙', '次の56から60の言葉の使い方として最も適当なものを、1、2、3、4から一つ選びなさい。', '\\47\\13974597832.html'),
-(77, 48, 'test2.tsv', 'テストファイル', '2006年度2級', '文字・語彙', '\\48\\13974614030.html'),
-(78, 49, 'Avril Lavigne - What The Hell.mp4', 'ビデオファイル１', '', '', '\\49\\13974616800.mp4'),
-(79, 49, 'Eminem - Love The Way You Lie ft. Rihanna.mp4', 'Rihana', '', '', '\\49\\13974616811.mp4'),
-(80, 50, 'Tricoloring.png', '', '', '', '\\50\\13978066710.png'),
-(81, 50, '1280px-Vector_Field.gif', '', '', '', '\\50\\13978066711.gif'),
-(82, 50, 'Christmas-Gifs_02.gif', '', '', '', '\\50\\13978066712.gif'),
-(83, 50, 'Enternal Flame - Atomic Kitten.mp3', '', '', '', '\\50\\13978066713.mp3'),
-(84, 50, 'guitar-fire.jpg', '', '', '', '\\50\\13978066714.jpg'),
-(85, 50, 'Avril Lavigne - What The Hell.mp4', '', '', '', '\\50\\13978066715.mp4'),
-(86, 50, 'M2M_2004_Many-to-Many Communication_A New Approach for Collaboration in MANET.pdf', '', '', '', '\\50\\13978066716.pdf'),
-(87, 50, 'Tricoloring.png', '', '', '', '\\50\\13978066717.png'),
-(88, 50, 'test3.tsv', '', '2006年度2級文字・語彙', '次の56から60の言葉の使い方として最も適当なものを、1、2、3、4から一つ選びなさい。', '\\50\\13978066718.html'),
-(89, 50, 'Justin Bieber - -As Long As You Love Me ft. Big Sean- (Cover by Tiffany Alvord).wav', '', '', '', '\\50\\13978066719.wav'),
-(91, 43, 'mario.png', 'asdf', '', '', '\\43\\13978776580.png'),
-(92, 43, 'Andrea Bocelli & Hayley Westenra -- Vivo Per Lei.mp4', '', '', '', '\\43\\13978788710.mp4'),
-(93, 43, 'Avril Lavigne - Wish You Were Here.mp4', 'asf', '', '', '\\43\\13978815440.mp4'),
-(94, 43, 'Avril Lavigne - What The Hell.mp4', 'asdf', '', '', '\\43\\13978816000.mp4');
+INSERT INTO `lesson_file` (`id`, `lesson_id`, `filename`, `description`, `title`, `subtitle`, `location`, `status`) VALUES
+(65, 43, '05W-01-内部設計についての所感.pdf', '', '', '', '\\43\\13972007920.pdf', 1),
+(66, 43, '05W-02-プログラミングについて.pdf', '', '', '', '\\43\\13972007921.pdf', 1),
+(67, 43, '05W-03-第２回プロジェクト報告会について.pdf', '', '', '', '\\43\\13972007922.pdf', 1),
+(68, 44, '06W-01-反省について.pdf', '', '', '', '\\44\\13972008480.pdf', 1),
+(69, 45, '07W-01-第２回プロジェクト報告会についての所感.pdf', '', '', '', '\\45\\13972008730.pdf', 1),
+(70, 45, '07W-02-今後のスケジュールについて.pdf', '', '', '', '\\45\\13972008820.pdf', 1),
+(71, 45, '07W-04-結合試験仕様書について.pdf', '', '', '', '\\45\\13972008890.pdf', 1),
+(72, 46, '08W-01-試験工程について.pdf', '', '', '', '\\46\\13972009340.pdf', 1),
+(73, 46, '08W-02-第３回プロジェクト報告会について.pdf', '', '', '', '\\46\\13972009341.pdf', 1),
+(74, 47, 'database.png', 'イメージファイル', '', '', '\\47\\13974597830.png', 1),
+(75, 47, 'Andrea Bocelli & Hayley Westenra -- Vivo Per Lei.mp4', 'ビデオファイル', '', '', '\\47\\13974597831.mp4', 1),
+(76, 47, 'test3.tsv', 'テスト', '2006年度2級文字・語彙', '次の56から60の言葉の使い方として最も適当なものを、1、2、3、4から一つ選びなさい。', '\\47\\13974597832.html', 1),
+(77, 48, 'test2.tsv', 'テストファイル', '2006年度2級', '文字・語彙', '\\48\\13974614030.html', 1),
+(78, 49, 'Avril Lavigne - What The Hell.mp4', 'ビデオファイル１', '', '', '\\49\\13974616800.mp4', 1),
+(79, 49, 'Eminem - Love The Way You Lie ft. Rihanna.mp4', 'Rihana', '', '', '\\49\\13974616811.mp4', 1),
+(80, 50, 'Tricoloring.png', '', '', '', '\\50\\13978066710.png', 1),
+(81, 50, '1280px-Vector_Field.gif', '', '', '', '\\50\\13978066711.gif', 1),
+(82, 50, 'Christmas-Gifs_02.gif', '', '', '', '\\50\\13978066712.gif', 1),
+(83, 50, 'Enternal Flame - Atomic Kitten.mp3', '', '', '', '\\50\\13978066713.mp3', 1),
+(84, 50, 'guitar-fire.jpg', '', '', '', '\\50\\13978066714.jpg', 1),
+(85, 50, 'Avril Lavigne - What The Hell.mp4', '', '', '', '\\50\\13978066715.mp4', 1),
+(86, 50, 'M2M_2004_Many-to-Many Communication_A New Approach for Collaboration in MANET.pdf', '', '', '', '\\50\\13978066716.pdf', 1),
+(87, 50, 'Tricoloring.png', '', '', '', '\\50\\13978066717.png', 1),
+(88, 50, 'test3.tsv', '', '2006年度2級文字・語彙', '次の56から60の言葉の使い方として最も適当なものを、1、2、3、4から一つ選びなさい。', '\\50\\13978066718.html', 1),
+(89, 50, 'Justin Bieber - -As Long As You Love Me ft. Big Sean- (Cover by Tiffany Alvord).wav', '', '', '', '\\50\\13978066719.wav', 1),
+(91, 43, 'mario.png', 'asdf', '', '', '\\43\\13978776580.png', 1),
+(92, 43, 'Andrea Bocelli & Hayley Westenra -- Vivo Per Lei.mp4', '', '', '', '\\43\\13978788710.mp4', 1),
+(93, 43, 'Avril Lavigne - Wish You Were Here.mp4', 'asf', '', '', '\\43\\13978815440.mp4', 1),
+(94, 43, 'Avril Lavigne - What The Hell.mp4', 'asdf', '', '', '\\43\\13978816000.mp4', 1);
 
 -- --------------------------------------------------------
 
