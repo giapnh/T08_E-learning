@@ -33,9 +33,10 @@ class UserController extends IController {
                 return;
             } else {
 //Update last login time
-                $status = $authAdapter->getUserInfo($uname)['status'];
+                $uInfo = $authAdapter->getUserInfo($uname);
+                $status = $uInfo['status'];
                 if ($status == 3) {// Check if user is activing
-                    $last_time = $authAdapter->getUserInfo($uname)['last_login_time'];
+                    $last_time = $uInfo['last_login_time'];
                     $offset = time() - $last_time;
                     //Unlock
                     if ($offset >= $master->getMasterValue(Default_Model_Master::$KEY_LOGIN_FAIL_LOCK_TIME)) {
