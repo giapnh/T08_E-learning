@@ -18,29 +18,17 @@
                     <font style="color: white;">ホーム</font>
                 </a>
             </div>
-            <div title="" class="mn first_mn"><a href="<?php echo $this->baseUrl(); ?>/student/myLesson"><font style="color: white;">マイ授業</font></a>
+            <div title="" class="mn"><a href="<?php echo $this->baseUrl(); ?>/student/myLesson"><font style="color: white;">マイ授業</font></a>
             </div>
             <!--                <div class="mn" title=""><a href="#"><font style="color: white;">授業リスト</font></a>
                             </div>-->
-            <div title="" class="mn "><a href="#"><font style="color: white;">支払い</a>
+            <div title="" class="mn first_mn"><a href="#"><font style="color: white;">支払い</a>
             </div>
             <div title="" class="mn "><a href="<?php echo $this->baseUrl(); ?>/student/profile"><font style="color: white;">プロファイル</font></a>
             </div>
         </div>
-        <!--Function tab bar-->
-        <div class="row-show">
-            <a href="<?php echo $this->baseUrl(); ?>/student/myLesson?type=1&tagId=0"><button style="margin-top: 10px;"  name="btn_tag" class="showlogfromm float-left">タグ</button></a>
-            <a href="<?php echo $this->baseUrl(); ?>/student/myLesson?type=2&teacherId=0">
-                <button style="margin-left: 10px; margin-top: 10px;" name="btn_teacher" class="register-cus float-left">
-                    先生</button>
-            </a>
-            <div  style="margin-top: 10px;" class="float-right">
-                <form action="#" style="height: 30px;" method="post">
-                    <input type="text" name="keyword" class="input_search" placeholder="検索内容"/>
-                    <input  name="sa" type="button" class="button-search" value="検索">
-                </form>
-            </div>
-        </div>
+        <br>
+        <h3 style="color: green">支払い</h3>
         <div class="detail_layout_content">
             <table width="690" border="1" bordercolor="#d5d5d5" style="border-collapse:collapse" cellpadding="4" cellspacing="4">
                 <tr align="left" class="title_table" bordercolor="4f4f4f" style="background-color: rgb(251, 251, 251); background-position: initial initial; background-repeat: initial initial;">
