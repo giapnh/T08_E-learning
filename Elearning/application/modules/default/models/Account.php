@@ -20,7 +20,8 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
      */
     //thiennx : delete user
     public function deleteTeacher($userId){
-    	$query = "DELETE FROM user 
+    	$query = "DELETE user,lesson, lesson_file, lesson_tag,comment, learn,lesson_like, copyright_report, result, question
+    			 FROM user 
     			LEFT JOIN lesson ON user.id = lesson.teacher_id 
     			LEFT JOIN lesson_file ON lesson.id = lesson_file.lesson_id 
     			LEFT JOIN lesson_tag ON lesson.id = lesson_tag.lesson_id
@@ -35,7 +36,8 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
     			
     }
     public function deleteStudent($userId){
-    	$query = "DELETE FROM user
+    	$query = "DELETE user, comment, lesson_like, learn, copyright_report, file_comment
+    			 FROM user
     			LEFT JOIN comment ON user.id = comment.user_id
     			LEFT JOIN lesson_like ON user.id = lesson_like.user_id
     			LEFT JOIN learn ON user.id = learn.student_id

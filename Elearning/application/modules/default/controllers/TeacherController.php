@@ -61,11 +61,11 @@ class TeacherController extends IController {
         $this->initial();
         $lessons = new Default_Model_Lesson();
         $get_type = $this->_request->getParam('type');
-        $tagId = $this->_request->getParam('tagId');
+        $tagId = $this->_request->getParam('tag_id');
         $teacherId = $this->_request->getParam('teacherId');
         $this->view->tagId = $tagId;
         $this->view->teacherId = $teacherId;
-        if ($get_type == null || $get_type == 1) {
+        if ($tagId) {
             $tags = new Default_Model_Tag();
             $this->view->tags = $tags->listAll();
             $this->view->type = 1;
@@ -77,6 +77,8 @@ class TeacherController extends IController {
             $paginator->setCurrentPageNumber($currentPage);
             $this->view->data = $paginator;
         } else {
+        	$tags = new Default_Model_Tag();
+            $this->view->tags = $tags->listAll();
             $users = new Default_Model_Account();
             $this->view->teachers = $users->listTeacher();
             $this->view->type = 2;
@@ -436,7 +438,7 @@ class TeacherController extends IController {
      * 
      */
     public function addFileAction() {
-        $params = $this->_request->getAllParams();
+        $params = $this->getAllParams();
         $lessonId = $params['lesson_id'];
         $descriptions = $params['description'];
         $copyright_check = isset($params['copyright_check']);
