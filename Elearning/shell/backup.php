@@ -176,8 +176,7 @@ class Model_DB {
 }
 
 $dbModel = new Model_DB();
-echo "a";
 $result = $dbModel->backup_tables();
 //echo $result;
-echo "thien";
+echo "Back up success";
 ?>
