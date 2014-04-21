@@ -362,31 +362,33 @@ class TeacherController extends IController {
      */
     public function lessonAction() {
         $this->initial();
+        
+        //
         $lessonId = $this->_request->getParam('lesson_id');
+        
+        //
         $lessonModel = new Default_Model_Lesson();
         $fileModel = new Default_Model_File();
         $lessonTagModel = new Default_Model_LessonTag();
         $commentModel = new Default_Model_Comment();
         $learnModel = new Default_Model_Learn();
         $reportModel = new Default_Model_CopyrightReport();
-        $comment = $this->_request->getParam('comment');
-        if (isset($comment) && $comment != '') {
-            $commentModel->addComment($lessonId, $this->currentTeacherId, $comment);
-        }
 
+        //
         $lesson = $lessonModel->findLessonById($lessonId);
-        if (!$lesson) {
-            $this->redirect('teacher/index');
-        }
-        if ($lesson['teacher_id'] != $this->user['id']) {
-            $this->redirect('teacher/index');
-        }
-
         $files = $fileModel->getFileByLesson($lessonId);
         $tags = $lessonTagModel->getTagsByLesson($lessonId);
         $comments = $commentModel->getAllCommentOfLesson($lessonId);
         $studentsNum = $learnModel->countStudenJoinLesson($lessonId);
-        $lesson['students_num'] = $studentsNum;
+        if ($lesson) {
+            $lesson['students_num'] = $studentsNum;
+            if ($lesson['teacher_id'] != $this->user['id']) {
+                $lesson['is_mine'] = false;
+            } else {
+                $lesson['is_mine'] = true;
+            }
+        }
+        
         $this->view->lessonId = $lessonId;
         $this->view->lessonInfo = $lesson;
         $this->view->files = $files;
@@ -394,7 +396,8 @@ class TeacherController extends IController {
         $this->view->comments = $comments;
         $this->view->errorMessages = $this->_helper->FlashMessenger->getMessages('addFileFailed');
         $this->view->messages = $this->_helper->FlashMessenger->getMessages('addFileSuccess');
-        $this->view->reports = $reportModel->getReportLesson($lessonId);
+//        $this->view->reports = $reportModel->getReportLesson($lessonId);
+        $this->view->reports = null;
     }
 
     public function lessondetailAction() {

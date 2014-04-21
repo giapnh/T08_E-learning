@@ -33,6 +33,7 @@ class Default_Model_CopyrightReport extends Zend_Db_Table_Abstract {
                     ->where("file_id = ?", $fileId);
             return $this->getAdapter()->fetchAll($select);
     }
+    
     public function getReportLesson($lessonId){
     	$select = $this->getAdapter()->select()
     	->from($this->_name)
@@ -41,6 +42,7 @@ class Default_Model_CopyrightReport extends Zend_Db_Table_Abstract {
     	->where("lesson_id = ?", $lessonId);
     	return $this->getAdapter()->fetchAll($select);
     }
+    
     /**
      * 「Copyright」レポートを数える
      *  

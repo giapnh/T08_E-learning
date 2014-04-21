@@ -82,7 +82,8 @@ class Admin_LessonController extends IController {
            $this->view->comments = $comments;
            $this->view->errorMessages = $this->_helper->FlashMessenger->getMessages('addFileFailed');
            $this->view->messages = $this->_helper->FlashMessenger->getMessages('addFileSuccess');
-           $this->view->reports = $reportModel->getReportLesson($lessonId);
+//           $this->view->reports = $reportModel->getReportLesson($lessonId);
+//           $this->view->reports = null;
     }
     
     /**
