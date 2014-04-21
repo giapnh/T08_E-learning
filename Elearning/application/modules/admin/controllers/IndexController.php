@@ -167,19 +167,19 @@ class Admin_IndexController extends IController {
                 $this->view->errorMessage = Message::$M4126;
                 return;
             }
-//            if (!$this->isNumber($backupTimeHour) || $backupTimeHour > 1000000000) {
-//                $this->view->errorMessage = Message::$M4127;
-//                return;
-//            }
-//            if (!$this->isNumber($backupTimeMinute) || $backupTimeMinute > 59) {
-//                $this->view->errorMessage = Message::$M4127;
-//                return;
-//            }
-//            if (!$this->isNumber($backupTimeSecond) || $backupTimeSecond > 59) {
-//                $this->view->errorMessage = Message::$M4127;
-//                return;
-//            }
-            // file location チェック
+            if (!$this->isNumber($backupTimeHour) || $backupTimeHour > 1000000000) {
+                $this->view->errorMessage = Message::$M4127;
+                return;
+            }
+            if (!$this->isNumber($backupTimeMinute) || $backupTimeMinute > 59) {
+                $this->view->errorMessage = Message::$M4127;
+                return;
+            }
+            if (!$this->isNumber($backupTimeSecond) || $backupTimeSecond > 59) {
+                $this->view->errorMessage = Message::$M4127;
+                return;
+            }
+//             file location チェック
 //            if ($fileLocation != $masterModel->getMasterValue([Admin_Model_Master::$KEY_FILE_LOCATION])) {
 //                if (!$fileModel->setFileLocation($fileLocation)) {
 //                    $this->view->errorMessage = Message::$M4123;
