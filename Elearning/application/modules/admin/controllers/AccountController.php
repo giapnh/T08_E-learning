@@ -66,6 +66,10 @@ class Admin_AccountController extends IController {
      * @param Boolean remember 存在するか
      */
     public function loginAction() {
+        if($this->currentUser){
+            $this->_redirect ("admin/user");
+        }
+            
         $form = new Admin_Form_Login ();
         $this->view->form = $form;
         

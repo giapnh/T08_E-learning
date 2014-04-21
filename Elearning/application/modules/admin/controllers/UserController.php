@@ -277,10 +277,13 @@ class Admin_UserController extends IController {
                 $this->view->errorMessage = Message::$M002;
                 return;
             }
-            if (!preg_match(Code::$REGEX_USERNAME, $username)) {
-                $this->view->errorMessage = Message::$M006;
-                return;
-            }
+//            if (!preg_match(Code::$REGEX_USERNAME, $username)) {
+//                $this->view->errorMessage = Message::$M006;
+//                return;
+//            }
+//            if (!isset($username)) {
+//                
+//            }
             if (!preg_match(Code::$REGEX_PASSWORD, $password)) {
                 $this->view->errorMessage = Message::$M007;
                 return;

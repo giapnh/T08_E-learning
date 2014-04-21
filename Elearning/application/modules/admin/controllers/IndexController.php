@@ -27,7 +27,8 @@ class Admin_IndexController extends IController {
 //            $muser=new Default_Model_Account;
 //            $data=$muser->listAll();
 //            print_r($data);
-        echo 'Account Controller, index action';
+//        echo 'Account Controller, index action';
+        $this->redirect('admin/user');
     }
     
     /**
