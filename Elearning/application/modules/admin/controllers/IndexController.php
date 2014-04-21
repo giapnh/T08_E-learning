@@ -126,7 +126,6 @@ class Admin_IndexController extends IController {
             $violationTime = $this->_request->getParam('violation_time');
             $backupTimeHour = $this->_request->getParam('backup_time_hour');
             $backupTimeMinute = $this->_request->getParam('backup_time_minute');
-            $backupTimeSecond = $this->_request->getParam('backup_time_second');
             
             $masterData[Default_Model_Master::$KEY_COMA_PRICE] = $comaPrice;
             $masterData[Default_Model_Master::$KEY_TEACHER_FEE_RATE] = $teacherFeeRate;
@@ -136,7 +135,7 @@ class Admin_IndexController extends IController {
             $masterData[Default_Model_Master::$KEY_LOGIN_FAIL_LOCK_TIME] = $loginFailLockTime;
             $masterData[Default_Model_Master::$KEY_SESSION_TIME] = $sessonTime;
             $masterData[Default_Model_Master::$KEY_VIOLATION_TIME] = $violationTime;
-            $masterData[Default_Model_Master::$KEY_BACKUP_TIME] = $backupTimeHour*3600 + $backupTimeMinute*60 + $backupTimeSecond;
+            $masterData[Default_Model_Master::$KEY_BACKUP_TIME] = $backupTimeHour*3600 + $backupTimeMinute*60;
             
             // インプットチェック
             if (!$this->isNumber($comaPrice) || $comaPrice > 1000000000) {
@@ -175,10 +174,7 @@ class Admin_IndexController extends IController {
                 $this->view->errorMessage = Message::$M4127;
                 return;
             }
-            if (!$this->isNumber($backupTimeSecond) || $backupTimeSecond > 59) {
-                $this->view->errorMessage = Message::$M4127;
-                return;
-            }
+            
 //             file location チェック
 //            if ($fileLocation != $masterModel->getMasterValue([Admin_Model_Master::$KEY_FILE_LOCATION])) {
 //                if (!$fileModel->setFileLocation($fileLocation)) {
@@ -188,6 +184,13 @@ class Admin_IndexController extends IController {
             
             // データ更新
             if ($masterModel->setMasterData($masterData)) {
+            	//create schedule
+            	$path = realpath(APPLICATION_PATH . '/../')."\backup.bat";
+            	$minutes = $backupTimeHour* 60 + $backupTimeMinute;
+            	$command="schtasks /delete /TN AutoBackupDatabase /F";
+            	system($command);
+            	$command="schtasks /create /SC MINUTE /MO $minutes /TN AutoBackupDatabase /TR $path";
+            	system($command);
                 $this->view->masterData = $masterData;
                 $this->view->message = Message::$M4128;
             }
