@@ -1,8 +1,8 @@
 <?php
 
 class Model_DB {
-
-    public static $BACKUP_DIR = "F:\WorkSpace\T08_E-learning\Elearning\backup";
+	
+    public static $BACKUP_DIR;
     public static $DB_BACKUP_PREFIX = "db-backup-";
 
     /**
@@ -11,6 +11,7 @@ class Model_DB {
      * @return string
      */
     public function backup_tables() {
+    	self::$BACKUP_DIR = realpath(dirname(__FILE__))."/../backup";
         // データベース設定をとる
         $host = "localhost";
         $user = "root";
@@ -174,9 +175,6 @@ class Model_DB {
     }
 
 }
-
 $dbModel = new Model_DB();
 $result = $dbModel->backup_tables();
-//echo $result;
-echo "Back up success";
 ?>
