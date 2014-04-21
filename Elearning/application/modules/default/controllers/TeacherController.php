@@ -36,6 +36,8 @@ class TeacherController extends IController {
             if ($infoUser['role'] != 2) {
                 //$auth->clearIdentity();
                 $this->_redirect('user/login');
+            }else{
+            	$this->view->user_info = $infoUser;
             }
         }
     }
