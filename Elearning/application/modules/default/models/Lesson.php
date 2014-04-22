@@ -174,7 +174,7 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
      * @param type $keyword
      * @return type
      */
-    public function findByKeyword($keyword, $type, $asc) {
+    public function findByKeyword($keyword, $type, $asc, $userId = null) {
         // Check if have "+" or "-" charecter
         if (strpos($keyword, '+')) {
             $subKey = explode('+', $keyword);
@@ -210,7 +210,6 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
             } else if ($type == 3) {
                 $select->order('lesson.num_like' . ' ' . $asc_str);
             }
-            return $this->getAdapter()->fetchAll($select);
         } else if (strpos($keyword, "-")) {
             $subKey = explode("-", $keyword);
             $select = $this->getAdapter()->select();
@@ -240,7 +239,6 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
             } else if ($type == 3) {
                 $select->order('lesson.num_like' . ' ' . $asc_str);
             }
-            return $this->getAdapter()->fetchAll($select);
         } else {
             $select = $this->getAdapter()->select();
             //$keyword = utf8_encode($keyword);
@@ -268,8 +266,11 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
             } else if ($type == 3) {
                 $select->order('lesson.num_like' . ' ' . $asc_str);
             }
-            return $this->getAdapter()->fetchAll($select);
+            
         }
+        if($userId)
+        	$select->having("lesson.teacher_id = $userId");
+        return $this->getAdapter()->fetchAll($select);
     }
 
     /**

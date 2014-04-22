@@ -63,11 +63,11 @@ class TeacherController extends IController {
         $this->initial();
         $lessons = new Default_Model_Lesson();
         $get_type = $this->_request->getParam('type');
-        $tagId = $this->_request->getParam('tag_id');
+        $tagId = $this->_request->getParam('tagId');
         $teacherId = $this->_request->getParam('teacherId');
         $this->view->tagId = $tagId;
         $this->view->teacherId = $teacherId;
-        if ($tagId) {
+        if ($get_type == null || $get_type == 1|| $tagId) {
             $tags = new Default_Model_Tag();
             $this->view->tags = $tags->listAll();
             $this->view->type = 1;
@@ -79,8 +79,6 @@ class TeacherController extends IController {
             $paginator->setCurrentPageNumber($currentPage);
             $this->view->data = $paginator;
         } else {
-        	$tags = new Default_Model_Tag();
-            $this->view->tags = $tags->listAll();
             $users = new Default_Model_Account();
             $this->view->teachers = $users->listTeacher();
             $this->view->type = 2;
@@ -115,15 +113,11 @@ class TeacherController extends IController {
         $uInfo = $auth->getStorage()->read();
         $lessons = new Default_Model_Lesson();
         $get_type = $this->_request->getParam('type');
-        $tagId = $this->_request->getParam('tagId');
-        $teacherId = $this->_request->getParam('teacherId');
+        $tagId = $this->_request->getParam('tag_id');
         $this->view->tagId = $tagId;
-        $this->view->teacherId = $teacherId;
         $tags = new Default_Model_Tag();
         $this->view->tags = $tags->listAllOfTeacher($uInfo['id']);
         if ($tagId) {
-            
-            $this->view->type = 1;
             $paginator = Zend_Paginator::factory($lessons->listWithTagByTeacher($tagId, $uInfo['id']));
             $paginator->setItemCountPerPage(6);
             $paginator->setPageRange(3);
@@ -132,8 +126,6 @@ class TeacherController extends IController {
             $paginator->setCurrentPageNumber($currentPage);
             $this->view->data = $paginator;
         } else {
-            $users = new Default_Model_Account();
-            $this->view->type = 2;
             $paginator = Zend_Paginator::factory($lessons->listWithTeacher($uInfo['id']));
             $paginator->setItemCountPerPage(6);
             $paginator->setPageRange(3);
@@ -147,7 +139,7 @@ class TeacherController extends IController {
             $keyword = $this->_request->getParam('keyword');
             $type = $this->_request->getParam('sort_type');
             $asc = $this->_request->getParam('sort_asc');
-            $paginator = Zend_Paginator::factory($lessons->findByKeyword($keyword, $type, $asc));
+            $paginator = Zend_Paginator::factory($lessons->findByKeyword($keyword, $type, $asc,$uInfo["id"]));
             $paginator->setItemCountPerPage(12);
             $paginator->setPageRange(3);
             $this->view->numpage = 1;

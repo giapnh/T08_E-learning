@@ -181,12 +181,15 @@ class Admin_IndexController extends IController {
 //                    $this->view->errorMessage = Message::$M4123;
 //                }
 //            }
-            
+            $minutes = $backupTimeHour* 60 + $backupTimeMinute;
+            if($minutes<=0){
+            	$this->view->errorMessage = "バックアップ時間が１分以上";
+            	return;
+            }
             // データ更新
             if ($masterModel->setMasterData($masterData)) {
             	//create schedule
             	$path = realpath(APPLICATION_PATH . '/../')."\backup.bat";
-            	$minutes = $backupTimeHour* 60 + $backupTimeMinute;
             	$command="schtasks /delete /TN AutoBackupDatabase /F";
             	system($command);
             	$command="schtasks /create /SC MINUTE /MO $minutes /TN AutoBackupDatabase /TR $path";
