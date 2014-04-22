@@ -34,6 +34,11 @@
             <font style="color: white;">
             <!--Function tab bar-->
             <div class="row-show">
+            <a href="<?php echo $this->baseUrl(); ?>/teacher/index?type=1&tagId=0"><button style="margin-top: 10px;"  name="btn_tag" class="showlogfromm float-left">タグ</button></a>
+            <a href="<?php echo $this->baseUrl(); ?>/teacher/index?type=2&teacherId=0">
+                <button style="margin-left: 10px; margin-top: 10px;" name="btn_teacher" class="register-cus float-left">
+                   	 先生</button>
+            </a>
                 <a href="<?php echo $this->baseUrl() . "/teacher/create-lesson" ?>">
                     <button style="margin-left: 10px; margin-top: 10px;" name="btn_teacher" class="register-cus float-right">
                         <img class="float-left" src="<?php echo $this->baseUrl() . "/public/images/create.png" ?>" />
@@ -80,7 +85,12 @@
                         <td valign="top" class="containt_center_cen_left" style="margin-top: 14px;">
                             <div style="width: 100%; height: 20px;" class="lession-title">タグリスト</div>
                             <div style="width: 100%;"></div>
-                            <a href="<?php echo $this->baseUrl(); ?>/teacher/index">
+                            <?php
+                            /* タグが表現の倍は */
+                            $type = $this->type;
+                            if ($type == 1) {
+                                ?>
+                            <a href="<?php echo $this->baseUrl(); ?>/teacher/indextype=1&tagId=0">
                                 <button class="<?php
                                 if ($this->tagId == 0) {
                                     echo "teacher-item"; // If selected
@@ -92,9 +102,27 @@
                                 </button>
                             </a>
                             <?php
+                            } else {
+                                ?>
+                                <a href="<?php echo $this->baseUrl(); ?>/teacher/index?type=2&teacherId=0">
+                                    <button class="
+                                    <?php
+                                    if ($this->teacherId == 0) {
+                                        echo "tag-item"; // If selected
+                                    } else {
+                                        echo "teacher-item";
+                                    }
+                                    ?>">
+                                        全部
+                                    </button>
+                                </a>
+                                <?php
+                            }
+                            if ($type == 1) {
+                            if (isset($this->tags)) {
                             for ($i = 0; $i < count($this->tags); $i++) {
                                 ?>
-                                <a href="<?php echo $this->baseUrl(); ?>/teacher/index?tag_id=<?php echo $this->tags[$i]['id'] ?>">
+                                <a href="<?php echo $this->baseUrl(); ?>/teacher/index?tagId=<?php echo $this->tags[$i]['id'] ?>">
                                     <button class="<?php
                                     if ($this->tagId == $this->tags[$i]['id']) {
                                         echo "teacher-item"; // If selected
@@ -108,6 +136,35 @@
                                     </button>
                                 </a>
                                 <?php
+                            }
+                            } else {
+                            	echo "タグがない";
+                            }
+                            } else if ($type == 2) {
+                            	/* 先生表現の倍は */
+                            	if (isset($this->teachers)) {
+                            for ($i = 0; $i < count($this->teachers); $i++) {
+	?>
+                                        <a href="<?php echo $this->baseUrl(); ?>/teacher/index?type=2&teacherId=<?php echo $this->teachers[$i]['id']; ?>"> 
+                                            <button class="
+                                            <?php
+                                            if ($this->teacherId == $this->teachers[$i]['id']) {
+                                                echo "tag-item"; // If selected
+                                            } else {
+                                                echo "teacher-item";
+                                            }
+                                            ?>
+                                                    ">
+                                                        <?php
+                                                        echo $this->teachers[$i]['name'];
+                                                        ?>
+                                            </button>
+                                        </a>
+                                        <?php
+                                    }
+                                } else {
+                                    echo "先生がいない";
+                                }
                             }
                             ?>
                         </td>
