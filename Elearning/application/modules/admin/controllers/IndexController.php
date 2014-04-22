@@ -15,6 +15,7 @@ class Admin_IndexController extends IController {
                     $this->_redirect('user/login');
             } else {
                 $this->view->currentUser = $data;
+                $this->view->currentUser = $data;
             }
         } elseif ($this->_request->getActionName() != 'login') {
             $this->_redirect('admin/account/login');

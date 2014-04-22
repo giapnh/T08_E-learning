@@ -16,6 +16,7 @@ class Admin_LessonController extends IController {
                $this->_redirect('user/login');
             } else {
                 $this->currentUser = $data;
+                $this->view->currentUser = $data;
             }
         } elseif ($this->_request->getActionName() != 'login') {
             $this->_redirect('admin/account/login');
