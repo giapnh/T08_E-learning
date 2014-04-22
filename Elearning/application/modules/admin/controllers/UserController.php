@@ -19,9 +19,7 @@ class Admin_UserController extends IController {
         if ($auth->hasIdentity()) {
             $data = $auth->getIdentity();
             if ($data['role'] != Admin_AccountController::$ADMIN_ROLE) {
-                if ($this->_request->getActionName() != 'login') {
-                    $this->_redirect('admin/account/login');
-                }
+               $this->_redirect('user/login');
             } else {
                 $this->currentUser = $data;
             }
@@ -232,9 +230,38 @@ class Admin_UserController extends IController {
    		$userId = $this->_request->getParam('user_id');
    		$adminModel = new Admin_Model_Admin();
    		$adminInfo = $adminModel->getAdminById($userId);
+   		$master = new Default_Model_Master();
+   		$passwordConst = $master->getMasterValue(Default_Model_Master::$KEY_PASSWORD_CONST);
    		$this->view->admin = $adminInfo;
    		if($this->_request->isPost()){
-   			$adminModel->update(array("username" => $this->_request->getParam("username")), "id=".$userId );
+   			$params = $this->_request->getParams();
+   			$username = $params["username"];
+   			$password = $params["password"];
+   			$passwordConfirm = $params["password_confirm"];
+   			if (!(isset($username)) || $username == "") {
+   				$this->view->errorMessage = Message::$M001;
+   				return;
+   			}
+   			if (!(isset($password)) || $password == "") {
+   				$this->view->errorMessage = Message::$M002;
+   				return;
+   			}
+   			//            if (!preg_match(Code::$REGEX_USERNAME, $username)) {
+   			//                $this->view->errorMessage = Message::$M006;
+   			//                return;
+   			//            }
+   			//            if (!isset($username)) {
+   			//
+   			//            }
+   			if (!preg_match(Code::$REGEX_PASSWORD, $password)) {
+   			$this->view->errorMessage = Message::$M007;
+   			return;
+   			}
+   			if ($passwordConfirm != $password) {
+   			$this->view->errorMessage = Message::$M008;
+   			return;
+   			}
+   			$adminModel->update(array("username" => $username, "password" => sha1(md5($username . '+' . $password . '+' . $passwordConst))), "id=".$userId );
    			$this->_redirect("admin/user/admin-info?user_id=".$userId);
    		}
    	}
