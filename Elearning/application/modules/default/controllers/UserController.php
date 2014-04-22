@@ -72,11 +72,14 @@ class UserController extends IController {
                     $offset = time() - $last_time;
                     //Unlock
                     if ($offset >= $master->getMasterValue(Default_Model_Master::$KEY_LOGIN_FAIL_LOCK_TIME)) {
-                        if ($role == 1) {
+                        if ($role == 1 && $uInfo['role'] == 1) {
                             $authAdapter->unlock($uname);
                             $status = 1;
-                        } else {
+                        } else if ($role == 2 && $uInfo['role'] == 2) {
                             $this->_redirect('user/loginVerifyConfirm?uname=' . $uname);
+                            return;
+                        } else {
+                            $this->view->errorMessage = Message::$M003;
                             return;
                         }
                     } else {
@@ -155,6 +158,12 @@ class UserController extends IController {
 
     public function loginverifyconfirmAction() {
         $uname = $this->getParam('uname');
+        $acc = new Default_Model_Account();
+        $uInfo = $acc->getUserInfo($uname);
+        if ($uInfo['status'] != 3) {
+            $this->redirect('user/login');
+            return;
+        }
         $data = $this->_request->getParams();
         if ($this->_request->isPost()) {
             $question = trim($data['secret_question']);
