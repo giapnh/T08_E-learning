@@ -86,7 +86,7 @@ class StudentController extends IController {
             $this->view->data = $paginator;
         }
 
-        if ($this->_request->isPost()) {
+        if (isset($_GET["sa"])) {
             $keyword = $this->_request->getParam('keyword');
             $type = $this->_request->getParam('sort_type');
             $asc = $this->_request->getParam('sort_asc');
@@ -408,9 +408,11 @@ class StudentController extends IController {
             $this->view->data = $paginator;
         }
 
-        if ($this->_request->isPost()) {
+        if (isset($_GET["sa"])) {
             $keyword = $this->_request->getParam('keyword');
-            $paginator = Zend_Paginator::factory($lessons->findByKeyword($keyword));
+            $type = $this->_request->getParam('sort_type');
+            $asc = $this->_request->getParam('sort_asc');
+            $paginator = Zend_Paginator::factory($lessons->findByKeyword($keyword,$type, $asc, null,$infoUser['id']));
             $paginator->setItemCountPerPage(6);
             $paginator->setPageRange(3);
             $this->view->numpage = $paginator->count();

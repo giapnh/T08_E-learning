@@ -5,7 +5,7 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
     protected $_name = "lesson";
     protected $_primary = "id";
     protected $db;
-    protected $lessonDeadline;
+    protected $_lessonDeadline;
 
     public function __construct() {
         parent::__construct();
@@ -174,14 +174,14 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
      * @param type $keyword
      * @return type
      */
-    public function findByKeyword($keyword, $type, $asc, $userId = null) {
+    public function findByKeyword($keyword, $type, $asc, $userId = null,$studentId = null) {
         // Check if have "+" or "-" charecter
         if (strpos($keyword, '+')) {
             $subKey = explode('+', $keyword);
             $select = $this->getAdapter()->select();
             $select->from('lesson')
                     ->joinInner('user', 'lesson.teacher_id=user.id', array('name'))
-                    ->joinInner('lesson_tag', 'lesson.id=lesson_tag.lesson_id')
+                    ->joinInner('lesson_tag', 'lesson.id=lesson_tag.lesson_id', array())
                     ->joinInner('tag', 'lesson_tag.tag_id=tag.id', array('tag_name'));
             $nameWhere = "";
             for ($i = 0; $i < count($subKey); $i++) {
@@ -215,7 +215,7 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
             $select = $this->getAdapter()->select();
             $select->from('lesson')
                     ->joinInner('user', 'lesson.teacher_id=user.id', array('name'))
-                    ->joinInner('lesson_tag', 'lesson.id=lesson_tag.lesson_id')
+                    ->joinInner('lesson_tag', 'lesson.id=lesson_tag.lesson_id', array())
                     ->joinInner('tag', 'lesson_tag.tag_id=tag.id', array('tag_name'));
             for ($i = 0; $i < count($subKey); $i++) {
                 $select->orWhere("name LIKE '%" . trim($subKey[$i]) . "%'");
@@ -244,7 +244,7 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
             //$keyword = utf8_encode($keyword);
             $select->from('lesson')
                     ->joinInner('user', 'lesson.teacher_id=user.id', array('name'))
-                    ->joinInner('lesson_tag', 'lesson.id=lesson_tag.lesson_id')
+                    ->joinInner('lesson_tag', 'lesson.id=lesson_tag.lesson_id', array())
                     ->joinInner('tag', 'lesson_tag.tag_id=tag.id', array('tag_name'))
                     ->where("name LIKE '%$keyword%'")
                     ->orWhere("tag_name  LIKE '%$keyword%'")
@@ -270,7 +270,16 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
         }
         if($userId)
         	$select->having("lesson.teacher_id = $userId");
-        return $this->getAdapter()->fetchAll($select);
+        
+        $result =  $this->getAdapter()->fetchAll($select);  
+        if($studentId){
+        	$modelLearn = new Default_Model_Learn();
+        	foreach ($result as $k => $r){
+        		if( $modelLearn->isStudentLearn($studentId, $r["id"]))
+        			unset($result[$k]);
+        	}
+        }
+       	return $result;
     }
 
     /**

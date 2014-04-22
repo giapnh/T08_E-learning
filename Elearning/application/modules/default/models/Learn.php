@@ -5,10 +5,12 @@ class Default_Model_Learn extends Zend_Db_Table_Abstract {
     protected $_name = "learn";
     protected $_primary = "id";
     protected $db;
-
+	protected $_lessonDeadline;
     public function __construct() {
         parent::__construct();
         $this->db = Zend_Registry::get('connectDB');
+        $master = new Default_Model_Master();
+        $this->_lessonDeadline = $master->getMasterValue(Default_Model_Master::$KEY_LESSON_DEADLINE);
     }
 
     public function listAll() {
@@ -21,12 +23,12 @@ class Default_Model_Learn extends Zend_Db_Table_Abstract {
      * @param type $lesson
      * @return int
      */
-    public function isStudentLearn($studentId, $lesson, $time) {
+    public function isStudentLearn($studentId, $lesson, $time =null) {
         $select = $this->getAdapter()->select();
         $select->from(array('l' => 'learn'), "*")
                 ->where("student_id=?", $studentId)
                 ->where("lesson_id=?", $lesson)
-                ->where('NOW() - INTERVAL '.$time.' DAY < register_time');
+                ->where('NOW() - INTERVAL '.$this->_lessonDeadline.' DAY < register_time');
         if ($this->getAdapter()->fetchRow($select) != NULL) {
             return 0; //Unsuccesful
         } else {
