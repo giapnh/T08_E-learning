@@ -373,6 +373,7 @@ class TeacherController extends IController {
         $commentModel = new Default_Model_Comment();
         $learnModel = new Default_Model_Learn();
         $reportModel = new Default_Model_CopyrightReport();
+        $lessonReportModel = new Default_Model_LessonReport();
 
         //
         $lesson = $lessonModel->findLessonById($lessonId);
@@ -380,8 +381,10 @@ class TeacherController extends IController {
         $tags = $lessonTagModel->getTagsByLesson($lessonId);
         $comments = $commentModel->getAllCommentOfLesson($lessonId);
         $studentsNum = $learnModel->countStudenJoinLesson($lessonId);
+        $adminReports = $lessonReportModel->getAdminReports($lessonId);
         if ($lesson) {
             $lesson['students_num'] = $studentsNum;
+            $lesson['reports_num'] = count($lessonReportModel->getReports($lesson['id']));
             if ($lesson['teacher_id'] != $this->user['id']) {
                 $lesson['is_mine'] = false;
             } else {
@@ -394,6 +397,7 @@ class TeacherController extends IController {
         $this->view->files = $files;
         $this->view->tags = $tags;
         $this->view->comments = $comments;
+        $this->view->adminReports = $adminReports;
         $this->view->errorMessages = $this->_helper->FlashMessenger->getMessages('addFileFailed');
         $this->view->messages = $this->_helper->FlashMessenger->getMessages('addFileSuccess');
 //        $this->view->reports = $reportModel->getReportLesson($lessonId);
