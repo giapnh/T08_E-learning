@@ -24,9 +24,11 @@
         border-radius: 5px;
         background-color: green;
         color: white;
+        font-size: 14px;
     }
     #lesson_container .created_date {
-        margin-top: 20px;
+        margin-top: 5px;
+        margin-bottom: 5px;
         font-size: 14px;
         color: gray;
     }
@@ -55,19 +57,24 @@
         float: left;
     }
     .file_name_label {
-        width: 250px;
+        width: 240px;
         float: left;
         font-size: 14px;
         font-weight: bold;
         color: gray;
-        margin-left: 8px;
         margin-bottom: 5px;
+        padding: 10px 5px;
+        background-color: lightgray;
     }
     .file_description_label {
+        width: 540px;
+        float: left;
+        padding: 10px 5px;
         font-size: 14px;
         font-weight: bold;
         color: gray;
         margin-bottom: 5px;
+        background-color: lightgray;
     }
     .file_type img {
         width: 40px;
@@ -122,7 +129,7 @@
     .btn-delete:hover {
         color: white;
     }
-    #comment_container {
+    .comment_container {
         width: 600px;
         margin: 0px auto;
         padding: 10px;
@@ -153,6 +160,64 @@
     }
     .btn-inactive:hover {
         color: gray;
+    }
+    .report {
+        font-size: 14px;
+        float: left;
+        width: 100%;
+        margin: 10px 0px;
+    }
+    .report-form {
+        width: 600px;
+        /*margin: 0px auto;*/
+        /*padding-bottom: 20px;*/
+        /*float: right;*/
+    }
+    .report-form {
+        display: none;
+    }
+    .report-icon img {
+        width: 30px;
+        height: 30px;
+    }
+    .report-icon {
+        width: 40px;
+        float: left;
+    }
+    .report-button {
+        font-weight: bold;
+        text-decoration: underline;
+        cursor: pointer;
+        /*margin-bottom: 5px*/
+    }
+    .report-form textarea {
+        width: 100%;
+        height: 80px;
+        margin-bottom: 5px;
+        margin-top: 5px;
+    }
+    .lesson_title {
+        margin-bottom: 10px;
+        background-color: green;
+        color: white;
+        padding: 5px;
+        margin-top: -10px;
+        margin-left: -10px;
+        width: 810px;
+        border-radius: 3px 3px 0px 0px;
+    }
+    .like-container {
+        background-color: lightgray;
+        margin: 10px 0px;
+        padding: 5px 0px;
+        float: left;
+        border-top: 1px solid yellowgreen;
+        border-bottom: 1px solid yellowgreen;
+    }
+    .like-container img {
+        width: 20px;
+        height: 20px;
+        padding-left: 8px;
     }
 </style>
 <script type="text/javascript">
@@ -195,6 +260,36 @@
             return false;
         });
 
+        $(".report-button").click(function(){
+            $(".report-form").toggle('slow');
+        });
+        
+        $(".report-send-btn").click(function(){
+            var reason = $(".report-input").val();
+            if (reason == "") {
+                alert("レポートの理由を入力してください");
+                return;
+            }
+            $.ajax({
+                type: "POST",
+                url: "<?php echo $this->baseUrl(); ?>/api/report-lesson",
+                data: {'reason': reason, lesson_id: <?php echo $this->lessonId; ?>}
+            }).done(function(data) {
+                if (data.error != undefined) {
+                    alert("レポート失敗しました");
+                } else {
+                    $(".report-input").val("");
+                    $(".report-form").hide('slow');
+                    alert("レポートが管理者に送られました");
+                    $(".report-status").show();
+                    $(".report-num").text(data);
+                }
+            });
+        });
+        
+        <?php if ($this->lessonInfo['reports_num'] == 0) { ?>
+        $(".report-status").hide();
+        <?php } ?>
     });
 </script>
 
@@ -231,6 +326,9 @@
     
     <?php if ($this->lessonInfo) { // Check lesson NULL ?>
     <div id="lesson_container">
+        <div class="lesson_title">
+            <?php echo $this->lessonInfo['title']; ?>
+        </div>
         <div class="message">
             <?php foreach ($this->messages as $message) { ?>
                 <div style="color: green; padding-bottom: 10px;"><?php echo $message; ?></div>
@@ -246,14 +344,6 @@
             <div class="teacher_name">
                 先生：<?php echo $this->lessonInfo['name']; ?>
             </div>
-            <div class="tag_label">タグ:　</div>
-            <div class="tags">
-                <?php
-                foreach ($this->tags as $tag) {
-                    echo "<div style='margin: 15px;'><span>" . $tag['tag_name'] . "</span></div>";
-                }
-                ?>
-            </div>
             <div class="created_date">
                 <?php
                 $time = $this->lessonInfo['create_time'];
@@ -266,31 +356,72 @@
                 echo $year . "年" . $mon . "月" . $day . "日";
                 ?>
             </div>
-            <div class="like" style="width: 100%; margin: 10px 0px;">
+            <div class="tag_label">タグ:　</div>
+            <div class="tags">
+                <?php
+                foreach ($this->tags as $tag) {
+                    echo "<div style='margin: 15px;'><span>" . $tag['tag_name'] . "</span></div>";
+                }
+                ?>
+            </div>
+            
+            <!--関連情報-->
+            <div class="like-container" style="width: 100%; margin: 10px 0px;">
                 <span>
-                    <img src="<?php echo $this->baseUrl(); ?>/public/images/num-like.png" width="15" height="15">
+                    <img src="<?php echo $this->baseUrl(); ?>/public/images/num-like.png">
                     <span><?php echo $this->lessonInfo['num_like'] ?></span>
                 </span>
                 <span>
-                    <img src="<?php echo $this->baseUrl(); ?>/public/images/num-view.png" width="15" height="15">
+                    <img src="<?php echo $this->baseUrl(); ?>/public/images/num-view.png">
                     <span><?php echo $this->lessonInfo['view'] ?></span>
                 </span>
                 <span>
-                    <img src="<?php echo $this->baseUrl(); ?>/public/images/student.png" width="15" height="15">
+                    <img src="<?php echo $this->baseUrl(); ?>/public/images/student.png">
                     <span><?php echo $this->lessonInfo['students_num'] ?></span>
                 </span>
-                <?php if ($this->lessonInfo['is_mine']) { ?>
-                <a style="font-size: 14px; margin-top: -3px;text-decoration: underline;padding-left: 30px" href="<?php echo $this->baseUrl(); ?>/teacher/students?lesson_id=<?php echo $this->lessonId ?>">
-                    学生リスト見る
-                </a>
+                <span class="report-status">
+                    <img src="<?php echo $this->baseUrl()."/public/images/lesson_report.png"; ?>">
+                    <span class="report-num"><?php
+                        echo $this->lessonInfo['reports_num']; 
+                    ?></span>
+                </span>
+                <?php if ($this->lessonInfo['status'] == 0) { ?>
+                <span>
+                    <img src="<?php echo $this->baseUrl()."/public/images/locked.png"; ?>">
+                    この授業はロックされている
+                </span>
                 <?php } // End if ?>
             </div>
+            
+            <?php if ($this->lessonInfo['is_mine']) { ?>
+            <div>
+                <a style="text-decoration: underline;" href="<?php echo $this->baseUrl(); ?>/teacher/students?lesson_id=<?php echo $this->lessonId ?>">
+                    学生リスト見る
+                </a>
+            </div>
+            <?php } // End if ?>
+            
+            <!--レポート-->
+            <div class="report">
+                <?php if(!$this->lessonInfo['is_mine']) { ?>
+                <span>
+                    <a class="report-button">レポートする</a>
+                </span>
+                <?php } ?>
+                <div class="report-form">
+                    <div>レポートの理由を入力してください：</div>
+                    <div><textarea class="report-input"></textarea></div>
+                    <div class="normal-button report-send-btn">レポート</div>
+                </div>
+            </div>
+            
         </div>
         <div>
             <div>
                 <div class="file_name_label">ファイル名</div>
                 <div class="file_description_label">説明</div>
             </div>
+            <div style="width: 100%; line-height: 3px;">&nbsp;</div>
             <?php
             // ファイルリスト
             foreach ($this->files as $file) {
@@ -366,10 +497,26 @@
     <?php } ?>
     
     <hr class="clear">
-        
+    
+    <!--管理者からのレポート-->
+    <?php if($this->lessonInfo['is_mine'] && $this->adminReports) { ?>
+    <div class="comment_container">
+        <div>
+            管理者からのメッセージ：
+        </div>
+        <?php foreach ($this->adminReports as $report) { ?>
+        <div class="comment_slot">
+            <div class="comment_owner"><?php echo $report['username']; ?></div>
+            <div class="comment_content"><?php echo $report['reason']; ?></div>
+        </div>
+        <?php } // End foreach admin reports ?>
+    </div>
+    <hr class="clear">
+    <?php } // End if ?>
+    
     <!--コメント-->
-    <?php if ($this->lesson) { // Check lesson null ?>
-    <form method="post" id="comment_container">
+    <?php if ($this->lessonInfo) { // Check lesson null ?>
+    <form method="post" class="comment_container">
         <?php
         foreach ($this->comments as $comment) {
             ?>

@@ -8,6 +8,13 @@ class ApiController extends Zend_Controller_Action {
     protected $ERROR_COMMENT_EMPTY = 2;
     protected $ERROR_ACTION_FAILED = 3;
 
+    // モデル
+    private $lessonCommentModel;
+    private $fileCommentModel;
+    private $copyrightModel;
+    private $fileModel;
+    private $lessonReportModel;
+
     /**
      * 初期処理
      */
@@ -36,8 +43,19 @@ class ApiController extends Zend_Controller_Action {
                 $this->userInfo = $auth->getStorage()->read();
             }
         }
+        
+        $this->initModels();
     }
     
+    private function initModels() {
+        $this->lessonCommentModel = new Default_Model_Comment();
+        $this->fileCommentModel = new Default_Model_FileComment();
+        $this->copyrightModel = new Default_Model_CopyrightReport();
+        $this->fileModel = new Default_Model_File();
+        $this->lessonReportModel = new Default_Model_LessonReport();
+    }
+
+
     /**
      * エラー処理
      */
@@ -73,10 +91,8 @@ class ApiController extends Zend_Controller_Action {
         $comment = $this->getParam('comment');
         $lessonId = $this->getParam('lesson_id');
         
-        $commentModel = new Default_Model_Comment();
-        
         if (isset($comment) && $comment != '') {
-            $commentInfo = $commentModel->addComment($lessonId, $this->userInfo['id'], $comment);
+            $commentInfo = $this->lessonCommentModel->addComment($lessonId, $this->userInfo['id'], $comment);
             echo json_encode($commentInfo);
         } else {
             $this->redirect('api/error?code='.$this->ERROR_COMMENT_EMPTY);
@@ -93,7 +109,7 @@ class ApiController extends Zend_Controller_Action {
         $commentModel = new Default_Model_FileComment();
         
         if (isset($comment) && $comment != '') {
-            $commentInfo = $commentModel->addComment($fileId, $this->userInfo['id'], $comment);
+            $commentInfo = $this->fileCommentModel->addComment($fileId, $this->userInfo['id'], $comment);
             echo json_encode($commentInfo);
         } else {
             $this->redirect('api/error?code='.$this->ERROR_COMMENT_EMPTY);
@@ -106,8 +122,7 @@ class ApiController extends Zend_Controller_Action {
     public function deleteReportAction() {
         $reportId = $this->getParam('report-id');
         
-        $copyrightModel = new Default_Model_CopyrightReport();
-        $copyrightModel->deleteReport($reportId);
+        $this->copyrightModel->deleteReport($reportId);
         echo json_encode("Success");
     }
     
@@ -120,8 +135,7 @@ class ApiController extends Zend_Controller_Action {
             $this->redirect('api/error?code='.$this->$ERROR_AUTHENTICAL);
             return;
         }
-        $fileModel = new Default_Model_File();
-        if ($fileModel->lockFile($fileId)) {
+        if ($this->fileModel->lockFile($fileId)) {
             echo json_encode('success');
         } else {
             $this->redirect('api/error?code='.$this->ERROR_ACTION_FAILED);
@@ -137,8 +151,7 @@ class ApiController extends Zend_Controller_Action {
             $this->redirect('api/error?code='.$this->$ERROR_AUTHENTICAL);
             return;
         }
-        $fileModel = new Default_Model_File();
-        if ($fileModel->unlockFile($fileId)) {
+        if ($this->fileModel->unlockFile($fileId)) {
             echo json_encode('success');
         } else {
             $this->redirect('api/error?code='.$this->ERROR_ACTION_FAILED);
@@ -150,15 +163,28 @@ class ApiController extends Zend_Controller_Action {
      */
     public function deleteFileAction() {
         $fileId = $this->getParam('file_id');
-        if ($this->userInfo['role'] !=3 ) {
+        if ($this->userInfo['role'] != 3 ) {
             $this->redirect('api/error?code='.$this->$ERROR_AUTHENTICAL);
             return;
         }
-        $fileModel = new Default_Model_File();
-        if ($fileModel->deleteFile($fileId)) {
+        
+        if ($this->fileModel->deleteFile($fileId)) {
             echo json_encode('success');
         } else {
             $this->redirect('api/error?code='.$this->ERROR_ACTION_FAILED);
         }
     }
+    
+    /**
+     * 授業をレポート処理
+     */
+    public function reportLessonAction() {
+        $lessonId = $this->getParam('lesson_id');
+        $reason = $this->getParam('reason');
+        
+        $this->lessonReportModel->addReport($this->userInfo['id'], $lessonId, $reason);
+        $reports = $this->lessonReportModel->getReports($lessonId);
+        echo json_encode(count($reports));
+    }
+    
 }
