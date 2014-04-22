@@ -269,6 +269,9 @@
                                 <div class="full-width file-name">
                                     <?php echo $this->currentFile['filename']; ?>
                                 </div>
+                                
+                                <?php if ($this->lessonInfo['status'] == 1) { ?>
+                                
                                 <div style="margin: 10px; width: 95%;max-height: 800px;
                                      border-color: #007F9F; border-style: solid; border-width: thin;">
 
@@ -363,6 +366,10 @@
                                     } // End if
                                 ?>
                                 
+                                <?php } else { // Endif lesson locked(status = 0) ?>
+                                <div class="error-msg">この授業はロックされている</div>
+                                <?php } ?>
+                                
                             </td>
                         </tr>
                         
@@ -372,6 +379,8 @@
                                 
                             } else if ($this->currentFile['status'] == 2) { // ファイルがロックされているかをチェック
 
+                            } else if ($this->lessonInfo['status'] == 0) { // 授業はロックされている
+                            
                             } else {
                         ?>
                         <tr>
@@ -424,7 +433,7 @@
                             </td>
                         </tr>
                         <?php
-                            } // End if
+                            } // End if check file null
                         ?>
                     </tbody>
                 </table>
