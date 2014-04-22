@@ -3,15 +3,16 @@ require_once 'IController.php';
 class Admin_LessonController extends IController {
     
     public static $LESSON_PER_PAGE = 3;
+    private $currentUser;
 
     /**
      * 授業リスト画面
      */
-	public function preDispatch() {
+    public function preDispatch() {
         $auth = Zend_Auth::getInstance();
         if ($auth->hasIdentity()) {
             $data = $auth->getIdentity();
-            if ($data['role'] != Admin_AccountController::$ADMIN_ROLE) {
+            if ($data['role'] != 3) {
                $this->_redirect('user/login');
             } else {
                 $this->currentUser = $data;
@@ -20,6 +21,10 @@ class Admin_LessonController extends IController {
             $this->_redirect('admin/account/login');
         }
     }
+    
+    /**
+     * 授業リスト処理
+     */
     public function indexAction() {
         
         //
@@ -100,9 +105,22 @@ class Admin_LessonController extends IController {
            $this->view->reports = $reports;
            $this->view->errorMessages = $this->_helper->FlashMessenger->getMessages('addFileFailed');
            $this->view->messages = $this->_helper->FlashMessenger->getMessages('addFileSuccess');
+           $this->view->currentUser = $this->currentUser;
 //           $this->view->currentUser = $this->
 //           $this->view->reports = $reportModel->getReportLesson($lessonId);
 //           $this->view->reports = null;
+    }
+    
+    public function deleteReportAction() {
+        $this->getHelper('ViewRenderer')
+             ->setNoRender();
+        
+        $lessonReportModel = new Default_Model_LessonReport();
+        
+        $reportId = $this->getParam('report_id');
+        $lessonId = $this->getParam('lesson_id');
+        $lessonReportModel->deleteReport($reportId);
+        $this->redirect('admin/lesson/lesson?lesson_id='.$lessonId);
     }
     
     /**

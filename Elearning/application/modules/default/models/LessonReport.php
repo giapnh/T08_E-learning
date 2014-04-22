@@ -47,7 +47,7 @@ class Default_Model_LessonReport extends Zend_Db_Table_Abstract {
             'status' => 1,
             'role' => 3
         );
-        $this->insert($ins);
+        return $this->insert($ins);
     }
     
     /**
@@ -66,6 +66,33 @@ class Default_Model_LessonReport extends Zend_Db_Table_Abstract {
     	return $this->getAdapter()->fetchAll($select);
     }
     
+    /**
+     * レポートを取る
+     * 
+     * @param int $reportId
+     */
+    public function getReportById($reportId) {
+        $userModel = new Default_Model_Account();
+        $adminModel = new Admin_Model_Admin();
+        $select = $this->getAdapter()->select()
+    	->from($this->_name)
+        ->where("id = ".$reportId);
+        $result = $this->getAdapter()->fetchRow($select);
+        if ($result) {
+            if ($result['role'] != 3) {
+                $user = $userModel->getUserById($result['user_id']);
+                $result['username'] = $user['username'];
+            } else {
+                $user = $adminModel->getAdminById($result['user_id']);
+                $result['username'] = $user['username'];
+            }
+            return $result;
+        } else {
+            return NULL;
+        }
+    }
+
+
     /**
      * 授業のレポートリストを取る
      * 
@@ -128,6 +155,6 @@ class Default_Model_LessonReport extends Zend_Db_Table_Abstract {
      * @param type $reportId
      */
     public function deleteReport($reportId) {
-//        $this->update(array("status"=>0), "id=".$reportId);
+        $this->update(array("status"=>0), "id=".$reportId);
     }
 }

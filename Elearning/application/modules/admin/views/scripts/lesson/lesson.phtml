@@ -147,6 +147,10 @@
         font-size: 16px;
         color: #2793e6;
     }
+    .report-input {
+        width: 100%;
+        height: 80px;
+    }
     .comment_input textarea {
         width: 100%;
         height: 80px;
@@ -228,8 +232,18 @@
         width: 20px;
         height: 20px;
     }
+    .comment_container a{
+        cursor: pointer;
+        text-decoration: underline;
+    }
 </style>
 <script type="text/javascript">
+    function deleteReport(reportId) {
+        var lessonId = <?php echo $this->lessonInfo['id']; ?>;
+        if (confirm("本当にこのレポートを削除したいですか？")) {
+            window.top.location = "<?php echo $this->baseUrl(); ?>/admin/lesson/delete-report?report_id="+reportId+"&lesson_id="+lessonId;
+        }
+    }
     $(document).ready(function(){
         $(".unlock-btn").click(function(){
             if (confirm("この授業を本当にアンロックしたいですか？")) {
@@ -243,8 +257,19 @@
         });
         $(".btn-report").click(function(){
         
-            function renderReport(reason, username) {
-                
+            function renderReport(id, username, reason) {
+                var reportHtml =    "<div class='comment_slot report-tmp'>" +
+                                        "<div class='comment_owner'>"+username+"</div>" +
+                                        "<div class='comment_content'>"+reason+"</div>" +
+                                        "<div class='delete-report-btn'>" +
+                                            "<a onclick='deleteReport("+id+")'>削除</a>" +
+                                        "</div>" +
+                                    "</div>";
+                $(".report-input-div").before(reportHtml);
+                $(".report-tmp").hide();
+                $(".report-tmp").show('slow', function(){
+                    $(this).removeClass(".report-tmp");
+                });
             }
             
             var reason = $(".report-input").val();
@@ -264,10 +289,9 @@
                     if (data.error != undefined) {
                         alert("レポート失敗しました");
                     } else {
-                        var username = <?php echo ""; ?>;
-                        renderReport($(".report-input").val());
+                        $(".report-num").text(data.reports_num+"レポート");
                         $(".report-input").val("");
-                        $(".report-num").text(data);
+                        renderReport(data.id, data.username, data.reason);
                     }
                 });
             }
@@ -387,7 +411,7 @@
         <hr class="clear">
         <div class="report-status">
             <img src="<?php echo $this->baseUrl()."/public/images/lesson_report.png"; ?>">
-            <span class="report-num"><?php
+            <span class="report-num" style='color: red;'><?php
                 echo count($this->reports);
             ?>レポート</span>
         </div>
@@ -398,12 +422,12 @@
             <div class="comment_owner"><?php echo $report['username']; ?></div>
             <div class="comment_content"><?php echo $report['reason']; ?></div>
             <div class="delete-report-btn">
-                <a href="#">削除</a>
+                <a onclick='deleteReport(<?php echo $report['id']; ?>)'>削除</a>
             </div>
         </div>
         <?php } ?>
         
-        <div class="comment_input" >
+        <div class="report-input-div" >
             <textarea name="comment" class="report-input"></textarea>
         </div>
         <input type="submit" value="違犯勧告を送る" class="normal-button btn-report">
