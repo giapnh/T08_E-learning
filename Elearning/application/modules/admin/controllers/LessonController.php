@@ -7,6 +7,19 @@ class Admin_LessonController extends IController {
     /**
      * 授業リスト画面
      */
+	public function preDispatch() {
+        $auth = Zend_Auth::getInstance();
+        if ($auth->hasIdentity()) {
+            $data = $auth->getIdentity();
+            if ($data['role'] != Admin_AccountController::$ADMIN_ROLE) {
+               $this->_redirect('user/login');
+            } else {
+                $this->currentUser = $data;
+            }
+        } elseif ($this->_request->getActionName() != 'login') {
+            $this->_redirect('admin/account/login');
+        }
+    }
     public function indexAction() {
         
         //

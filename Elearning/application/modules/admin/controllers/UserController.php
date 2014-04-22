@@ -19,9 +19,7 @@ class Admin_UserController extends IController {
         if ($auth->hasIdentity()) {
             $data = $auth->getIdentity();
             if ($data['role'] != Admin_AccountController::$ADMIN_ROLE) {
-                if ($this->_request->getActionName() != 'login') {
-                    $this->_redirect('admin/account/login');
-                }
+               $this->_redirect('user/login');
             } else {
                 $this->currentUser = $data;
             }
