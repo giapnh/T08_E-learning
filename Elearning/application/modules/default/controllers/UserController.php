@@ -14,7 +14,6 @@ class UserController extends IController {
                 $this->_redirect('user/login');
             }
         } else {
-            var_dump("Here");
             $infoUser = $auth->getStorage()->read();
             if ($infoUser['role'] == 1) {
                 //学生チェックする
@@ -73,16 +72,11 @@ class UserController extends IController {
                     $offset = time() - $last_time;
                     //Unlock
                     if ($offset >= $master->getMasterValue(Default_Model_Master::$KEY_LOGIN_FAIL_LOCK_TIME)) {
-                        $authAdapter->unlock($uname);
                         if ($role == 1) {
+                            $authAdapter->unlock($uname);
                             $status = 1;
                         } else {
-                            $data = $authAdapter->getUserInfo($uname);
-//Update last login time
-                            $authAdapter->updateLastLoginTime($uname);
-// Save
-                            $auth->getStorage()->write($data);
-                            $this->_redirect('user/loginVerifyConfirm');
+                            $this->_redirect('user/loginVerifyConfirm?uname=' . $uname);
                             return;
                         }
                     } else {
@@ -94,14 +88,12 @@ class UserController extends IController {
                         $message = str_replace("{%s}", $hour . "時" . $min . "分" . $sec . "秒", $message);
                         $this->view->errorMessage = $message;
                     }
-                    return;
                 }
 
                 if ($status == 2) {// If not confirm yet
                     $this->view->errorMessage = Message::$M0032;
                     return;
                 }
-                $flag = false;
                 if ($status == 1) {// User active
                     // Check valid
                     if ($authAdapter->isValid($uname, $paswd, $role)) {
@@ -127,7 +119,6 @@ class UserController extends IController {
                                 // Save
                                 $auth->getStorage()->write($data);
                                 $this->_redirect('user/loginVerifyConfirm');
-                                $flag = false;
                                 return;
                             }
                         } else {
@@ -137,6 +128,7 @@ class UserController extends IController {
                             // Save
                             $auth->getStorage()->write($data);
                             $this->_redirect('student/index');
+                            return;
                         }
                     } else {
                         $authAdapter->incLoginFailure($uname);
@@ -162,8 +154,9 @@ class UserController extends IController {
     }
 
     public function loginverifyconfirmAction() {
+        $uname = $this->getParam('uname');
+        $data = $this->_request->getParams();
         if ($this->_request->isPost()) {
-            $data = $this->_request->getParams();
             $question = trim($data['secret_question']);
             $anwser = trim($data['secret_answer']);
             if ($question == '') {
@@ -177,15 +170,15 @@ class UserController extends IController {
             }
 
             $auth = Zend_Auth::getInstance();
-            $infoUser = $auth->getStorage()->read();
             $user = new Default_Model_Account();
             $curr_ip = $_SERVER['REMOTE_ADDR'];
             if ($curr_ip === "::1") {
                 $curr_ip = "127.0.0.1";
             }
-            if ($user->isValidSecretQA($infoUser['username'], $question, $anwser) == 1) {
-// 現在IPを更新します
-                $user->updateLastLoginIp($infoUser['username'], $curr_ip);
+            if ($user->isValidSecretQA($uname, $question, $anwser) == 1) {
+                $authAdapter = new Default_Model_Account();
+                $authAdapter->unlock($uname);
+                // 現在IPを更新します
                 $this->_redirect('user/login');
             } else {
                 $this->view->
