@@ -33,6 +33,24 @@ class Default_Model_LessonReport extends Zend_Db_Table_Abstract {
     }
     
     /**
+     * 授業にレポートを追加する処理
+     * 
+     * @param type $userId
+     * @param type $lessonId
+     * @param type $report
+     */
+    public function addAdminReport($userId, $lessonId, $report) {
+        $ins = array(
+            'user_id' => $userId,
+            'lesson_id' => $lessonId,
+            'reason' => $report,
+            'status' => 1,
+            'role' => 3
+        );
+        $this->insert($ins);
+    }
+    
+    /**
      * 授業のレポートリストを取る
      * 
      * @param int $lessonId
@@ -46,6 +64,34 @@ class Default_Model_LessonReport extends Zend_Db_Table_Abstract {
         ->where($this->_name.".role = 2")
     	->where("lesson_id = ?", $lessonId);
     	return $this->getAdapter()->fetchAll($select);
+    }
+    
+    /**
+     * 授業のレポートリストを取る
+     * 
+     * @param int $lessonId
+     * @return array
+     */
+    public function getReportsFull($lessonId){
+        $userModel = new Default_Model_Account();
+        $adminModel = new Admin_Model_Admin();
+        
+    	$select = $this->getAdapter()->select()
+    	->from($this->_name)
+    	->where($this->_name.".status = 1")
+    	->where("lesson_id = ?", $lessonId);
+        
+        $results = $this->getAdapter()->fetchAll($select);
+        foreach ($results as $index => $result) {
+            if ($result['role'] != 3) {
+                $user = $userModel->getUserById($result['user_id']);
+                $results[$index]['username'] = $user['username'];
+            } else {
+                $user = $adminModel->getAdminById($result['user_id']);
+                $results[$index]['username'] = $user['username'];
+            }
+        }
+        return $results;
     }
     
     /**

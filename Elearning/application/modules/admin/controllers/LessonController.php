@@ -62,10 +62,11 @@ class Admin_LessonController extends IController {
            $lessonTagModel = new Default_Model_LessonTag();
            $commentModel = new Default_Model_Comment();
            $learnModel = new Default_Model_Learn();
-           $reportModel = new Default_Model_CopyrightReport();
+           $lessonReportModel = new Default_Model_LessonReport();
+           
            $comment = $this->getParam('comment');
            if (isset($comment) && $comment != '') {
-                   $commentModel->addComment($lessonId, $this->currentTeacherId, $comment);
+                $commentModel->addComment($lessonId, $this->currentTeacherId, $comment);
            }
 
            $lesson = $lessonModel->findLessonById($lessonId);
@@ -74,14 +75,19 @@ class Admin_LessonController extends IController {
            $tags = $lessonTagModel->getTagsByLesson($lessonId);
            $comments = $commentModel->getAllCommentOfLesson($lessonId);
            $studentsNum = $learnModel->countStudenJoinLesson($lessonId);
+           $reports = $lessonReportModel->getReportsFull($lessonId);
+           
            $lesson['students_num'] = $studentsNum;
+           
            $this->view->lessonId = $lessonId;
            $this->view->lessonInfo = $lesson;
            $this->view->files = $files;
            $this->view->tags = $tags;
            $this->view->comments = $comments;
+           $this->view->reports = $reports;
            $this->view->errorMessages = $this->_helper->FlashMessenger->getMessages('addFileFailed');
            $this->view->messages = $this->_helper->FlashMessenger->getMessages('addFileSuccess');
+//           $this->view->currentUser = $this->
 //           $this->view->reports = $reportModel->getReportLesson($lessonId);
 //           $this->view->reports = null;
     }
