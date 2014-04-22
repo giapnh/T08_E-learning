@@ -463,13 +463,12 @@ class StudentController extends IController {
         } else {
             $this->view->errorMsg = "ファイルがない";
         }
-
-
+        
         // 授業情報を取る
         $lessonInfo = $lessonModel->findLessonById($lessonId);
         $studentsNum = $learnModel->countStudenJoinLesson($lessonId);
         $lessonInfo['students_num'] = $studentsNum;
-
+        
         // 授業が見えるかをチェック
         $lessonDeadline = $masterModel->getMasterValue(Default_Model_Master::$KEY_LESSON_DEADLINE);
         $isLearn = $learnModel->isStudentLearn($this->currentUser['id'], $lessonId, $lessonDeadline);
