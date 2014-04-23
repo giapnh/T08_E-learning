@@ -365,6 +365,7 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
      * @return boolean
      */
     public function isReported($lesson) {
+        $lessonReportModel = new Default_Model_LessonReport();
         if (!$lesson) {
             return false;
         }
@@ -375,6 +376,9 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
         $result = $this->getAdapter()->fetchAll($select);
         if ($result) {
             return true;
+        }
+        if ($lessonReportModel->isReported($lesson['id'])) {
+            return TRUE;
         }
         return false;
     }

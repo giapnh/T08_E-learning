@@ -33,6 +33,7 @@ class Admin_LessonController extends IController {
         $copyrightModel = new Default_Model_CopyrightReport();
         $tagModel = new Default_Model_Tag();
         $userModel = new Default_Model_Account();
+        $lessonReportModel = new Default_Model_LessonReport();
         
         //
         $tagId = $this->_request->getParam('tagId');
@@ -48,6 +49,8 @@ class Admin_LessonController extends IController {
         if (!isset($asc)) {
             $asc = 0;
         }
+        $fileReportsNum = $copyrightModel->countAllReport();
+        $lessonReportsNum = $lessonReportModel->countAllReport();
         
         //
         $this->view->tagId = $tagId;
@@ -58,7 +61,7 @@ class Admin_LessonController extends IController {
         $this->view->asc = $asc;
         $this->view->tags = $tagModel->listAll();
         $this->view->teachers = $userModel->listTeacher();
-        $this->view->reportsNum = $copyrightModel->countAllReport();
+        $this->view->reportsNum = $fileReportsNum + $lessonReportsNum;
         
         //
         if (isset($tagId)) {
