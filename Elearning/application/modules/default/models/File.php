@@ -261,27 +261,21 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
      */
     protected function fileToLines() {
         $firstLine = $this->tmp[0];
-        $encodeStr = substr($firstLine, 0, 3);
-        if ($encodeStr == "Tes") {
-//            echo 'none encoded';
-        } else {
-            $this->tmp[0] = substr($firstLine, 3);
-//            echo 'encoded';
-        }
         
         $this->lines = array();
         
         foreach ($this->tmp as $lineNum => $line) {
-            if ($line[0] != '#') {
-                $words = preg_split("/[\t\n\r]/", $line);
-                foreach ($words as $index => $word) {
-                    if (strlen($word) == 0) {
-                        unset($words[$index]);
-                    }
+            $lineC = explode("#", $line);
+            $line = $lineC[0];
+
+            $words = preg_split("/[\t\n\r]/", $line);
+            foreach ($words as $index => $word) {
+                if (strlen($word) == 0) {
+                    unset($words[$index]);
                 }
-                if (count($words) != 0) {
-                    $this->lines[] = $words;
-                }
+            }
+            if (count($words) != 0) {
+                $this->lines[] = $words;
             }
         }
     }
