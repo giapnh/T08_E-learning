@@ -148,16 +148,18 @@ class StudentController extends IController {
             $this->_redirect('student/profile');
         }
     }
-    public function deleteAccountAction(){
-    	$this->initial();
-    	if($this->user){
-    		$modelUser = new Default_Model_Account();
-    		$modelUser->deleteStudent($this->user["id"]);
-    		$auth = Zend_Auth::getInstance();
-    		$auth->clearIdentity();
-    	}
-    	$this->_redirect("user/login");
+
+    public function deleteAccountAction() {
+        $this->initial();
+        if ($this->user) {
+            $modelUser = new Default_Model_Account();
+            $modelUser->deleteStudent($this->user["id"]);
+            $auth = Zend_Auth::getInstance();
+            $auth->clearIdentity();
+        }
+        $this->_redirect("user/login");
     }
+
     /**
      * パスワードが変更機能アクション
      */
@@ -313,6 +315,19 @@ class StudentController extends IController {
         $learnModel = new Default_Model_Learn();
         $commentModel = new Default_Model_Comment();
         $lfileModel = new Default_Model_LessonFile();
+
+//        $auth = Zend_Auth::getInstance();
+//        $infoUser = $auth->getStorage()->read();
+//        $studentId = $infoUser['id'];
+//        $lessonId = $this->_request->getParam('lessonId');
+//        if ($lessonId == null) {
+//            $this->redirect('student/index');
+//            return;
+//        }
+//        if ($learnModel->isStudentLearn($studentId, $lessonId) == 0) {
+//            $this->redirect('student/index');
+//            return;
+//        }
         if ($this->_request->isGet()) {
             $lesson_id = $this->_request->getParam('lessonId');
         }
@@ -413,7 +428,7 @@ class StudentController extends IController {
             $keyword = $this->_request->getParam('keyword');
             $type = $this->_request->getParam('sort_type');
             $asc = $this->_request->getParam('sort_asc');
-            $paginator = Zend_Paginator::factory($lessons->findByKeyword($keyword,$type, $asc, null,$infoUser['id']));
+            $paginator = Zend_Paginator::factory($lessons->findByKeyword($keyword, $type, $asc, null, $infoUser['id']));
             $paginator->setItemCountPerPage(6);
             $paginator->setPageRange(3);
             $this->view->numpage = $paginator->count();
@@ -427,7 +442,6 @@ class StudentController extends IController {
      * ファイル見る処理
      */
     public function fileAction() {
-        //
         $this->initial();
         $lessonModel = new Default_Model_Lesson();
         $lessonFileModel = new Default_Model_File();
@@ -436,10 +450,20 @@ class StudentController extends IController {
         $learnModel = new Default_Model_Learn();
         $masterModel = new Default_Model_Master();
 
-        //
+        $auth = Zend_Auth::getInstance();
+        $infoUser = $auth->getStorage()->read();
+        $studentId = $infoUser['id'];
         $lessonId = $this->_request->getParam('lessonId');
         $currentFileId = $this->_request->getParam('fileId');
-
+        if ($lessonId == null) {
+            $this->redirect('student/index');
+            return;
+        }
+        if ($learnModel->isStudentLearn($studentId, $lessonId) == 0) {
+            $this->redirect('student/index');
+            return;
+        }
+        //ロックチェックする
         // ファイル情報を取る
         $files = $lessonFileModel->getFileByLesson($lessonId);
         if (!$currentFileId) {
@@ -466,12 +490,12 @@ class StudentController extends IController {
         } else {
             $this->view->errorMsg = "ファイルがない";
         }
-        
+
         // 授業情報を取る
         $lessonInfo = $lessonModel->findLessonById($lessonId);
         $studentsNum = $learnModel->countStudenJoinLesson($lessonId);
         $lessonInfo['students_num'] = $studentsNum;
-        
+
         // 授業が見えるかをチェック
         $lessonDeadline = $masterModel->getMasterValue(Default_Model_Master::$KEY_LESSON_DEADLINE);
         $isLearn = $learnModel->isStudentLearn($this->currentUser['id'], $lessonId, $lessonDeadline);
