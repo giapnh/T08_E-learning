@@ -459,10 +459,12 @@ class StudentController extends IController {
             $this->redirect('student/index');
             return;
         }
+        
         if ($learnModel->isStudentBeLocked($studentId, $lessonId) == 0) {
             $this->redirect('student/index');
             return;
         }
+        
         //ロックチェックする
         // ファイル情報を取る
         $files = $lessonFileModel->getFileByLesson($lessonId);
