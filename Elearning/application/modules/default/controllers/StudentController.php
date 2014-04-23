@@ -557,10 +557,12 @@ class StudentController extends IController {
         $learn = $learnModel->findByLessonAndStudent($lesson['id'], $studentId);
 
         // Update result
+        $questions = $questionModel->findQuestionByFile($fileId);
         $answers = $this->_request->getParam('Q');
-        foreach ($answers as $index => $answer) {
-            $question = 'Q' . $index;
-            $selected = 'S' . $answer;
+        foreach ($questions as $i => $q) {
+        	$index = (int)substr($q["title"], 1);
+            $question = $q["title"];
+            $selected = isset($answers[$index]) ? 'S' . $answers[$index] : "X" ;
             $question = $questionModel->findQuestionByTitleAndFile($question, $fileId);
             $resultModel->updateResult($learn['id'], $question['id'], $selected);
         }
