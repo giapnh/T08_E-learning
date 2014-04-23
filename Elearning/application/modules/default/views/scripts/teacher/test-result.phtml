@@ -1,0 +1,172 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<center>
+    <div class="content" style="background: #F0F0F0;">
+        <div class="top_content clear banner">
+            <!--                <div class="logo" style="float: left;">
+                                <a href="#"> <img width="230" height="58" src="#" alt="Logo">
+                                </a>
+                            </div>-->
+            <div style="position: absolute; top: 120px; right: 70px; ">
+                <a href="<?php echo $this->baseUrl(); ?>/user/logout"><font style="color: #7E3500; font-weight: bold; text-decoration: underline;">ログアウト</font>
+                </a>
+            </div>
+            <div  class="topbar-username"><big>ようこそ!</bigF><?php echo $this->user_info['name']; ?></div>
+        </div>
+        <!--Menu Tab Bar-->
+        <div class="menus clear">
+            <div class="mn">
+                <a class="home" href="<?php echo $this->baseUrl() ?>/teacher/index">
+                    <font style="color: white;">ホーム</font>
+                </a>
+            </div>
+            <div title="" class="mn first_mn"><a href="<?php echo $this->baseUrl(); ?>/teacher/myLesson"><font style="color: white;">マイ授業</font></a>
+            </div>
+            <!--                <div class="mn" title=""><a href="#"><font style="color: white;">授業リスト</font></a>
+                            </div>-->
+            <div title="" class="mn "><a href="<?php echo $this->baseUrl(); ?>/teacher/payment"><font style="color: white;">支払い</a>
+            </div>
+            <div title="" class="mn "><a href="<?php echo $this->baseUrl(); ?>/teacher/profile"><font style="color: white;">プロファイル</font></a>
+            </div>
+        </div>
+
+        <div class="row-show float-left">
+            <div class="lesson_register_content" style="width: 98%;">
+                <div class="full-width" style="color: green; font-size: 20px; font-weight: bolder;">
+                    <?php echo $this->lessonInfo['title']; ?>
+                </div>
+                <table cellpadding='1' cellspacing='0' border='0' style="width: 100%;border-width: thin;border-style: solid;">
+                    <tbody>
+                        <tr valign="top">
+                            <!--Left content-->
+                            <td style="width: 22%;">
+                                <div class="full-width" style="font-weight: bolder; color: white; padding-top: 3px;font-size: 16px; background: #51A007; width: 100%;">
+                                    ファイル一覧
+                                </div>
+                                <div class="full-width" style="background: yellowgreen; border-radius: 4px; color: white; height: 40px; margin-top: 3px;">
+                                    <?php
+                                    $count = 0;
+                                    foreach ($this->files as $file) {
+                                        $count++;
+                                        $fileType = explode(".", $file['filename']);
+                                        $fileType = $fileType[1];
+                                        if ($fileType == 'pdf') {
+                                            ?>
+                                            <a href="<?php echo $this->baseUrl(); ?>/teacher/file?lesson_id=<?php echo $this->lessonInfo['id']; ?>&file_id=<?php echo $file['id']; ?>">
+                                                <div class="full-width" style="font-size: 16px; font-weight: bold; margin: 5px;">
+                                                    <font style="color: white">
+                                                    <?php echo $count . '.'; ?>
+                                                    </font>
+                                                    <?php echo $file['filename']; ?>
+                                                    <img src="<?php echo $this->baseUrl(); ?>/public/images/pdf.png" width="20" height="20">
+                                                </div>
+                                            </a>           
+                                            <?php
+                                        } else if ($fileType == 'mp3') {
+                                            ?>
+                                            <a href="<?php echo $this->baseUrl(); ?>/teacher/file?lesson_id=<?php echo $this->lessonInfo['id']; ?>&file_id=<?php echo $file['id']; ?>">
+                                                <div class="full-width" style="font-size: 16px;  font-weight: bold; margin: 5px;">
+                                                    <font style="color: white">
+                                                    <?php echo $count . '.'; ?>
+                                                    </font>
+                                                    <?php echo $file['filename']; ?>
+                                                    <img src="<?php echo $this->baseUrl(); ?>/public/images/audio.png" width="20" height="20">
+                                                </div>
+                                            </a>              
+                                            <?php
+                                        } else if ($fileType == 'mp4') {
+                                            ?>
+                                            <a href="<?php echo $this->baseUrl(); ?>/teacher/file?lesson_id=<?php echo $this->lessonInfo['id']; ?>&file_id=<?php echo $file['id']; ?>">
+                                                <div class="full-width" style="font-size: 16px;  font-weight: bold; margin: 5px;">
+                                                    <font style="color: white">
+                                                    <?php echo $count . '.'; ?>
+                                                    </font>
+                                                    <?php echo $file['filename']; ?>
+                                                    <img src="<?php echo $this->baseUrl(); ?>/public/images/mp4.png" width="20" height="20">
+                                                </div>
+                                            </a>       
+                                            <?php
+                                        } else if ($fileType == 'png' || $fileType == 'jpg' || $fileType == 'jpeg') {
+                                            ?>
+                                            <a href="<?php echo $this->baseUrl(); ?>/teacher/file?lesson_id=<?php echo $this->lessonInfo['id']; ?>&file_id=<?php echo $file['id']; ?>">
+                                                <div class="full-width" style="font-size: 16px;  font-weight: bold; margin: 5px;">
+                                                    <font style="color: white">
+                                                    <?php echo $count . '.'; ?>
+                                                    </font>
+                                                    <?php echo $file['filename']; ?>
+                                                    <img src="<?php echo $this->baseUrl(); ?>/public/images/image.png" width="20" height="20">
+                                                </div>
+                                            </a> 
+                                            <?php
+                                        } else if ($fileType == 'tsv') {
+                                            ?>
+                                            <a href="<?php echo $this->baseUrl(); ?>/teacher/file?lesson_id=<?php echo $this->lessonInfo['id']; ?>&file_id=<?php echo $file['id']; ?>">
+                                                <div class="full-width" style="font-size: 16px;  font-weight: bold; margin: 5px;">
+                                                    <font style="color: white">
+                                                    <?php echo $count . '.'; ?>
+                                                    </font>
+                                                    <?php echo $file['filename']; ?>
+                                                    <img src="<?php echo $this->baseUrl(); ?>/public/images/test.png" width="32" height="32">
+                                                </div>
+                                            </a> 
+                                            <?php
+                                        }
+                                    }
+                                    ?>
+                                </div>
+                            </td>
+                            <!--View-->
+                            <td>
+                                <div class="full-width" style="font-weight: bolder; color: white; padding-top: 3px; padding-bottom: 3px; font-size: 16px; background: #51A007;">
+                                    ファイル内容
+                                </div>
+                                <div style="margin: 10px; width: 95%;min-height: 400px;
+                                     border-color: #007F9F; border-style: solid; border-width: thin;">
+                                    <div class="summary"><h3>結果：<?php echo $this->score."/".$this->total; ?></h3></div>
+                                    <div class="detail_result" style="width: 300px;">
+                                        <div style="padding: 5px; float: left; width: 100px">質問</div>
+                                        <div style="padding: 5px; float: left; width: 70px" class="selected">選択した</div>
+                                        <div style="padding: 5px; float: left; width: 100px" class="is_true">
+                                            <span>正しい？</span>
+                                        </div>
+                                        <?php 
+                                        foreach ($this->questions as $question) {
+                                            ?>
+                                        <div class="question">
+                                            <div style="padding: 5px; float: left; width: 100px"><?php echo $question['title']; ?></div>
+                                            <div style="padding: 5px; float: left; width: 70px" class="selected">
+                                                <?php echo $question['result']['selected']; ?>
+                                            </div>
+                                            <div style="padding: 5px; float: left; width: 100px" class="is_true">
+                                                <?php
+                                                if ($question['is_true']) {
+                                                    echo "<span style='color:blue'>正しい</span>";
+                                                } else {
+                                                    echo "<span style='color:red'>正しくない</span>";
+                                                }
+                                                ?>
+                                            </div>
+                                        </div>
+                                        <?php
+                                        } 
+                                        ?>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</center>
+<?php
+if (isset($this->reportNotify)) {
+    ?>
+    <script type="text/javascript">
+        alert("<?php echo $this->reportNotify; ?>");
+        hideReport();
+    </script>
+    <?php
+    unset($this->reportNotify);
+}
+?>
