@@ -1,9 +1,33 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <center>
     <div class="content" style="background: #F0F0F0;">
-        <?php 
-            echo $this->partial("teacher/teacher-top.phtml", array('username'=>$this->user_info['name']));
-        ?>
+        <div class="top_content clear banner">
+                    <div style="position: absolute; top: 120px; right: 70px; ">
+                        <a href="<?php echo $this->baseUrl(); ?>/user/logout"><font style="color: #7E3500; font-weight: bold; text-decoration: underline;">ログアウト</font>
+                        </a>
+                    </div>
+                    <div  class="topbar-username"><big>ようこそ!</bigF><?php echo $this->user_info['name']; ?></div>
+                </div>
+                <big>
+
+                    <!--Menu Tab Bar-->
+                    <div class="menus clear">
+                        <div class="mn">
+                            <a class="home" href="<?php echo $this->baseUrl(); ?>/teacher/index">
+                                <font style="color: white;">ホーム</font>
+                            </a>
+                        </div>
+                        <div title="" class="mn first_mn"><a href="<?php echo $this->baseUrl(); ?>/teacher/myLesson"><font style="color: white;">マイレッスン</font></a>
+                        </div>
+                        <div title="" class="mn "><a href="<?php echo $this->baseUrl(); ?>/teacher/payment">
+                                <font style="color: white;">支払い</font></a><font style="color: white;">
+                            </font>
+                        </div>
+                        <font style="color: white;">
+                        <div title="" class="mn"><a href="<?php echo $this->baseUrl(); ?>/teacher/profile"><font style="color: white;">プロファイル</font></a>
+                        </div>
+                        </font>
+                    </div>
         <?php if(!empty($this->results)) :?>
         <div>
         	<?php $pre = -1;
@@ -26,6 +50,7 @@
         	<?php endforeach;?>
         	</table>
         </div>
-        <?php endif;?>
+        <?php else : echo "データがない" ; endif;?>
+        
 	</div>
 </center>
