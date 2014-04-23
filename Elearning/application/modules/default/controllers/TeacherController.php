@@ -649,8 +649,6 @@ class TeacherController extends IController {
     	$questions = $questionModel->findQuestionByFile($fileId);
     	$score = 0;
     	$total = 0;
-    	
-    	Zend_Debug::dump($answers);
     	foreach ($questions as $i => $question) {
     		$index = (int)substr($question["title"],1);
     		if (isset($answers[$index])) {
