@@ -20,7 +20,7 @@ class UserController extends IController {
                 $this->_redirect('student/index');
             } else if ($infoUser['role'] == 2) {
                 $this->_redirect('teacher/index');
-            }else if ($infoUser['role'] == 3) {
+            } else if ($infoUser['role'] == 3) {
                 $this->_redirect('admin/user');
             }
         }
@@ -257,6 +257,11 @@ class UserController extends IController {
             if (trim($data['phone']) == '') {
                 $this->view->errorMessage = Message::$M012;
                 return;
+            } else {
+                if (!preg_match(Code::$REGEX_PASSWORD, $data['phone'])) {
+                    $this->view->errorMessage = Message::$M012;
+                    return;
+                }
             }
 
             //銀行アカウント
