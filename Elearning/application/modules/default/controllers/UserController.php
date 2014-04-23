@@ -20,7 +20,7 @@ class UserController extends IController {
                 $this->_redirect('student/index');
             } else if ($infoUser['role'] == 2) {
                 $this->_redirect('teacher/index');
-            }else if ($infoUser['role'] == 3) {
+            } else if ($infoUser['role'] == 3) {
                 $this->_redirect('admin/user');
             }
         }
@@ -204,6 +204,23 @@ class UserController extends IController {
      * @param type $name Description
      */
     public function registerAction() {
+        $auth = Zend_Auth::getInstance();
+        if (!$auth->hasIdentity()) {
+            if ($this->_request->getActionName() != 'register') {
+                $this->_redirect('user/register');
+            }
+        } else {
+            $infoUser = $auth->getStorage()->read();
+            if ($infoUser['role'] == 1) {
+                //学生チェックする
+                $this->_redirect('student/index');
+            } else if ($infoUser['role'] == 2) {
+                $this->_redirect('teacher/index');
+            } else if ($infoUser['role'] == 3) {
+                $this->_redirect('admin/user');
+            }
+        }
+
         $user = new Default_Model_Account();
         $form = new Default_Form_Register ();
         $this->view->form = $form;
@@ -257,6 +274,11 @@ class UserController extends IController {
             if (trim($data['phone']) == '') {
                 $this->view->errorMessage = Message::$M012;
                 return;
+            } else {
+                if (!preg_match(Code::$REGEX_PASSWORD, $data['phone'])) {
+                    $this->view->errorMessage = Message::$M012;
+                    return;
+                }
             }
 
             //銀行アカウント
@@ -279,6 +301,7 @@ class UserController extends IController {
 // なぜユーザは先生です、秘密質問がチェックする
             if ($data['role'] == 2) {
                 if (trim($data['secret_question']) == '') {
+
                     $this->view->errorMessage = Message::$M014;
                     return;
                 }
