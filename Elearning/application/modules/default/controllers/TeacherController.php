@@ -567,7 +567,6 @@ class TeacherController extends IController {
             $this->view->fileUploadError = $uploadErrors[0];
         }
     }
-
     public function editFileAction() {
         $this->getHelper('ViewRenderer')
                 ->setNoRender();
@@ -623,6 +622,55 @@ class TeacherController extends IController {
     public function getTestHtml($testId) {
         $fileModel = new Default_Model_File();
         return $fileModel->getTestHtml($testId);
+    }
+    public function testResultAction(){
+    	$this->initial();
+    	$lessonId = $this->_request->getParam('lessonId');
+    	$lessonModel = new Default_Model_Lesson();
+    	$fileModel = new Default_Model_File();
+    	$questionModel = new Default_Model_Question();
+    	$resultModel = new Default_Model_Result();
+    	
+    	$fileId = $this->_request->getParam('file_id');
+    	$file = $fileModel->findFileById($fileId);
+    	
+    	// Update result
+    	$answers = $this->_request->getParam('Q');
+    	$lessonFileModel = new Default_Model_LessonFile();
+    	$questionModel = new Default_Model_Question();
+    	
+    	$lessonInfo = $lessonModel->findLessonById($lessonId);
+    	
+    	
+    	$this->view->lessonInfo = $lessonInfo;
+    	$files = $lessonFileModel->listFileOfLesson($lessonId);
+    	$this->view->files = $files;
+    	
+    	$questions = $questionModel->findQuestionByFile($fileId);
+    	$score = 0;
+    	$total = 0;
+    	foreach ($questions as $i => $question) {
+    		$index = (int)substr($question["title"],1);
+    		if (isset($answers[$index])) {
+    			$questions[$i]["result"]["selected"] = "S".$answers[$index];
+    			if ("S".$answers[$index] == $questions[$i]['answer']) {
+    				$score += $questions[$i]['point'];
+    				$questions[$i]['is_true'] = true;
+    				
+    			} else {
+    				$questions[$i]['is_true'] = false;
+    			}
+    		}else{
+    			$questions[$i]['is_true'] = false;
+    			$questions[$i]["result"]["selected"] = "X";
+    		}
+    		$total += $questions[$i]['point'];
+    	}
+    	$this->view->score = $score;
+    	$this->view->total = $total;
+    	$this->view->questions = $questions;
+    	 
+    	 
     }
 
     /**
