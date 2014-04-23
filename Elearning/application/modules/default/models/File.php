@@ -214,13 +214,13 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
         
         $title = $this->readTestTitle();
         if ($title == null) {
-            die("title");
+//            die("title");
             return false;
         }
         
         $subtitle = $this->readTestSubtitle();
         if ($subtitle == null) {
-            die("sub title");
+//            die("sub title");
             return false;
         }
         
@@ -231,7 +231,7 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
             $question = $this->readQuestion($questionIndex);
             
             if ($question == null) {
-                die($questionIndex.": Question read error");
+//                die($questionIndex.": Question read error");
                 return false;
             }
             if ($question["question"]!=null) {
@@ -326,12 +326,13 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
      */
     protected function readQuestion($questionIndex) {
         $nextLine = $this->nextLine();
+        
+        // Check finished
         if ($nextLine[0] == self::$TSV_KEY_END) {
             return array("question" => null);
         }
         
         if (!isset($nextLine[1]) || !isset($nextLine[2])) {
-//            die("Format errro");
             return null;
         }
         
@@ -339,6 +340,8 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
         $question["index"] = $questionIndex;
         if ($nextLine[0] == "Q(".$questionIndex.")" && $nextLine[1] = "QS") {
             $question["question"] = $nextLine[2];
+        } else {
+            return null;
         }
         
         $question["answers"] = array();
@@ -346,7 +349,6 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
         do {
             $nextLine = $this->nextLine();
             if (!isset($nextLine[1]) || !isset($nextLine[2])) {
-//                die("Answer error");
                 return null;
             }
             if ($nextLine[0] == "Q(".$questionIndex.")" && $nextLine[1] == "S(".$answerCount.")") {
@@ -355,8 +357,10 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
             $answerCount++;
         } while($nextLine[1]=="S(".($answerCount-1).")");
         
+        if (!isset($nextLine[1]) || !isset($nextLine[2]) || !isset($nextLine[3])) {
+            return null;
+        }
         if ($nextLine[1] != "KS") {
-//            die("Ks error");
             return null;
         }
         $p = preg_split("/[()]/", $nextLine[2]);

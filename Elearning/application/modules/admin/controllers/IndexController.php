@@ -190,9 +190,12 @@ class Admin_IndexController extends IController {
             	//create schedule
             	$path = realpath(APPLICATION_PATH . '/../')."\backup.bat";
             	$command="schtasks /delete /TN AutoBackupDatabase /F";
-            	system($command);
+            	exec($command);
             	$command="schtasks /create /SC MINUTE /MO $minutes /TN AutoBackupDatabase /TR $path";
-            	system($command);
+//            	echo $command;
+//                echo "<div style='display: none;'>";
+                exec($command);
+//                echo "</div>";
                 $this->view->masterData = $masterData;
                 $this->view->message = Message::$M4128;
             }
