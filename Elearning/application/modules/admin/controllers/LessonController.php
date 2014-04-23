@@ -3,9 +3,28 @@ require_once 'IController.php';
 class Admin_LessonController extends IController {
     
     public static $LESSON_PER_PAGE = 3;
+    private $currentUser;
 
     /**
      * 授業リスト画面
+     */
+    public function preDispatch() {
+        $auth = Zend_Auth::getInstance();
+        if ($auth->hasIdentity()) {
+            $data = $auth->getIdentity();
+            if ($data['role'] != 3) {
+               $this->_redirect('user/login');
+            } else {
+                $this->currentUser = $data;
+                $this->view->currentUser = $data;
+            }
+        } elseif ($this->_request->getActionName() != 'login') {
+            $this->_redirect('admin/account/login');
+        }
+    }
+    
+    /**
+     * 授業リスト処理
      */
     public function indexAction() {
         
@@ -14,34 +33,47 @@ class Admin_LessonController extends IController {
         $copyrightModel = new Default_Model_CopyrightReport();
         $tagModel = new Default_Model_Tag();
         $userModel = new Default_Model_Account();
+        $lessonReportModel = new Default_Model_LessonReport();
         
         //
         $tagId = $this->_request->getParam('tagId');
         $teacherId = $this->_request->getParam('teacherId');
-        $searchText = $this->_request->getParam('text');
+        $searchText = $this->_request->getParam('searchText');
         $currentPage = $this->_request->getParam('page', 1);
         $copyright = $this->_request->getParam('copyright');
+        $sortType = $this->getParam('sort_type');
+        $asc = $this->getParam('sort_asc');
+        if (!isset($sortType)) {
+            $sortType = 0;
+        }
+        if (!isset($asc)) {
+            $asc = 0;
+        }
+        $fileReportsNum = $copyrightModel->countAllReport();
+        $lessonReportsNum = $lessonReportModel->countAllReport();
         
         //
         $this->view->tagId = $tagId;
         $this->view->teacherId = $teacherId;
         $this->view->searchText = $searchText;
         $this->view->copyright = $copyright;
+        $this->view->sortType = $sortType;
+        $this->view->asc = $asc;
         $this->view->tags = $tagModel->listAll();
         $this->view->teachers = $userModel->listTeacher();
-        $this->view->reportsNum = $copyrightModel->countAllReport();
+        $this->view->reportsNum = $fileReportsNum + $lessonReportsNum;
         
         //
         if (isset($tagId)) {
-            $paginator = Zend_Paginator::factory($lessonModel->listWithTag($tagId));
+            $paginator = Zend_Paginator::factory($lessonModel->listWithTag($tagId,$sortType,$asc));
         } else if (isset($teacherId)) {
-            $paginator = Zend_Paginator::factory($lessonModel->listWithTeacher($teacherId));
+            $paginator = Zend_Paginator::factory($lessonModel->listWithTeacher($teacherId,$sortType,$asc));
         } else if (isset($searchText)) {
-            $paginator = Zend_Paginator::factory($lessonModel->findByKeyword($searchText));
+            $paginator = Zend_Paginator::factory($lessonModel->findByKeyword($searchText, $sortType, $asc));
         } else if (isset($copyright)) {
-            $paginator = Zend_Paginator::factory($lessonModel->listCopyrightFalse());
+            $paginator = Zend_Paginator::factory($lessonModel->listCopyrightFalse($sortType,$asc));
         } else {
-            $paginator = Zend_Paginator::factory($lessonModel->listAll());
+            $paginator = Zend_Paginator::factory($lessonModel->listAll($sortType,$asc));
         }
         
         //
@@ -62,10 +94,11 @@ class Admin_LessonController extends IController {
            $lessonTagModel = new Default_Model_LessonTag();
            $commentModel = new Default_Model_Comment();
            $learnModel = new Default_Model_Learn();
-           $reportModel = new Default_Model_CopyrightReport();
+           $lessonReportModel = new Default_Model_LessonReport();
+           
            $comment = $this->getParam('comment');
            if (isset($comment) && $comment != '') {
-                   $commentModel->addComment($lessonId, $this->currentTeacherId, $comment);
+                $commentModel->addComment($lessonId, $this->currentTeacherId, $comment);
            }
 
            $lesson = $lessonModel->findLessonById($lessonId);
@@ -74,16 +107,34 @@ class Admin_LessonController extends IController {
            $tags = $lessonTagModel->getTagsByLesson($lessonId);
            $comments = $commentModel->getAllCommentOfLesson($lessonId);
            $studentsNum = $learnModel->countStudenJoinLesson($lessonId);
+           $reports = $lessonReportModel->getReportsFull($lessonId);
+           
            $lesson['students_num'] = $studentsNum;
+           
            $this->view->lessonId = $lessonId;
            $this->view->lessonInfo = $lesson;
            $this->view->files = $files;
            $this->view->tags = $tags;
            $this->view->comments = $comments;
+           $this->view->reports = $reports;
            $this->view->errorMessages = $this->_helper->FlashMessenger->getMessages('addFileFailed');
            $this->view->messages = $this->_helper->FlashMessenger->getMessages('addFileSuccess');
+           $this->view->currentUser = $this->currentUser;
+//           $this->view->currentUser = $this->
 //           $this->view->reports = $reportModel->getReportLesson($lessonId);
 //           $this->view->reports = null;
+    }
+    
+    public function deleteReportAction() {
+        $this->getHelper('ViewRenderer')
+             ->setNoRender();
+        
+        $lessonReportModel = new Default_Model_LessonReport();
+        
+        $reportId = $this->getParam('report_id');
+        $lessonId = $this->getParam('lesson_id');
+        $lessonReportModel->deleteReport($reportId);
+        $this->redirect('admin/lesson/lesson?lesson_id='.$lessonId);
     }
     
     /**

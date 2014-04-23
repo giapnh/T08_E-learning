@@ -1,11 +1,21 @@
+<style type="text/css">
+    .paging-item-curr {
+        font-weight: bold;
+        color: green;
+        font-size: 16px;
+        text-decoration: none;
+    }
+</style>
 <?php if ($this->pageCount): ?>
     <?php
     $params = array();
+    $params['sort_type'] = $this->sortType;
+    $params['sort_asc'] = $this->asc;
     if (isset($this->tagId)) {
         $params['tagId'] = $this->tagId;
     }
-    if (isset($this->lessonId)) {
-        $params['lessonId'] = $this->lessonId;
+    if (isset($this->teacherId)) {
+        $params['teacherId'] = $this->teacherId;
     }
     if (isset($this->searchText)) {
         $params['searchText'] = $this->searchText;

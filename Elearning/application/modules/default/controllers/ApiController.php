@@ -187,4 +187,17 @@ class ApiController extends Zend_Controller_Action {
         echo json_encode(count($reports));
     }
     
+    /**
+     * 授業をレポート処理
+     */
+    public function adminReportLessonAction() {
+        $lessonId = $this->getParam('lesson_id');
+        $reason = $this->getParam('reason');
+        
+        $reportId = $this->lessonReportModel->addAdminReport($this->userInfo['id'], $lessonId, $reason);
+        $reports = $this->lessonReportModel->getReportsFull($lessonId);
+        $report = $this->lessonReportModel->getReportById($reportId);
+        $report['reports_num'] = count($reports);
+        echo json_encode($report);
+    }
 }

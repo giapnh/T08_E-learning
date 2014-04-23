@@ -13,6 +13,7 @@
         margin: 0px auto;
         margin-top: 10px;
         margin-bottom: 10px;
+        background-color: whitesmoke;
         box-shadow: 0px 0px 5px 1px gray;
     }
     .left-content {
@@ -127,7 +128,7 @@
         padding: 3px;
     }
     .report-num {
-        padding-right: 430px;
+        padding-right: 20px;
         color: red;
         font-weight: bold;
         text-decoration: underline;
@@ -166,17 +167,73 @@
             $('.filter-list-tag').hide();
             $('.filter-list-teacher').show();
         }
+        
+        $(".sort_asc").change(function(){
+            var link = "<?php echo $this->baseUrl(); ?>/admin/lesson/index";
+            link += "?sort_asc="+$(this).val();
+            link += "&sort_type=<?php echo $this->sortType; ?>";
+            <?php if (isset($this->tagId)) { ?>
+                link += "&tagId=<?php echo $this->tagId; ?>";
+            <?php } else if (isset($this->teacherId)) { ?>
+                link += "&teacherId=<?php echo $this->teacherId; ?>";
+            <?php } else if (isset($this->searchText)) { ?>
+                link += "&text=<?php echo $this->searchText; ?>";
+            <?php } else if (isset($this->copyright)) { ?>
+                link += "&copyright=<?php echo $this->copyright; ?>";
+            <?php } ?>
+            window.top.location = link;
+        });
+        
+        $(".sort_type").change(function(){
+            var link = "<?php echo $this->baseUrl(); ?>/admin/lesson/index";
+            link += "?sort_type="+$(this).val();
+            link += "&sort_asc=<?php echo $this->asc; ?>";
+            <?php if (isset($this->tagId)) { ?>
+                link += "&tagId=<?php echo $this->tagId; ?>";
+            <?php } else if (isset($this->teacherId)) { ?>
+                link += "&teacherId=<?php echo $this->teacherId; ?>";
+            <?php } else if (isset($this->searchText)) { ?>
+                link += "&text=<?php echo $this->searchText; ?>";
+            <?php } else if (isset($this->copyright)) { ?>
+                link += "&copyright=<?php echo $this->copyright; ?>";
+            <?php } ?>
+            window.top.location = link;
+        });
     });
 </script>
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <?php echo $this->render('admin-layout.phtml') ?>
 <div class="content">
+    
     <div class="top-content">
-        <a href="<?php echo $this->baseUrl(); ?>/admin/lesson/index?copyright=false"><span class="report-num"><?php echo $this->reportsNum; ?>レポート</span></a>
-        <input class="search-text" type="text" placeholder="検索テキスト">
-        <button class="normal-button search-btn">検索</button>
+        <form method="get" action='<?php echo $this->baseUrl(); ?>/admin/lesson/index'>
+            <a href="<?php echo $this->baseUrl(); ?>/admin/lesson/index?copyright=false">
+                <span class="report-num"><?php echo $this->reportsNum; ?>レポート</span>
+            </a>
+            <?php if ($this->searchText) { ?>
+            <span>
+                <span>検索</span>
+                <span>"<?php echo $this->searchText; ?>"</span>
+                <span>：<?php echo $this->data->getTotalItemCount(); ?>結果</span>
+            </span>
+            <?php } ?>
+            <select class="sort_asc" name="sort_asc" style="height: 26px;width: 70px;">
+                <option value="0" <?php if ($this->asc == 0) { echo "selected"; } ?>>昇順</option>
+                <option value="1" <?php if ($this->asc == 1) { echo "selected"; } ?>>降順</option>
+            </select>
+            <select class="sort_type" name="sort_type" style="height: 26px;width: 90px;">;
+                <option value="0" <?php if ($this->sortType == 0) { ?> selected <?php } ?>>タイトル</option>
+                <option value="1" <?php if ($this->sortType == 1) { ?> selected <?php } ?>>時間</option>
+                <option value="2" <?php if ($this->sortType == 2) { ?> selected <?php } ?>>ビュー数</option>
+                <option value="3"  <?php if ($this->sortType == 3) { ?> selected <?php } ?>>ライク数</option>
+            </select>
+            <input class="search-text" name="searchText" type="text" placeholder="検索テキスト" 
+                <?php if ($this->searchText) echo "value='".$this->searchText."'"; ?>>
+            <input type="submit" class="normal-button search-btn" value="検索">
+        </form>
     </div>
+    
     <div class="left-content">
         <div class="left-title <?php 
             if($this->tagId) echo "title-active";
@@ -262,9 +319,11 @@
                                 'pageinator.phtml', 
                                 array(
                                     "tagId" => $this->tagId,
-                                    "lessonId" => $this->lessonId,
+                                    "teacherId" => $this->teacherId,
                                     "searchText" => $this->searchText,
-                                    "copyright" => $this->copyright
+                                    "copyright" => $this->copyright,
+                                    "sortType" => $this->sortType,
+                                    "asc" => $this->asc
                                 )
                             );
                 }

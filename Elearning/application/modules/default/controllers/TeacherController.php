@@ -91,7 +91,7 @@ class TeacherController extends IController {
             $this->view->data = $paginator;
         }
 
-        if ($this->_request->isPost()) {
+        if (isset($_GET["sa"])) {
             $keyword = $this->_request->getParam('keyword');
             $type = $this->_request->getParam('sort_type');
             $asc = $this->_request->getParam('sort_asc');
@@ -135,7 +135,7 @@ class TeacherController extends IController {
             $this->view->data = $paginator;
         }
 
-        if ($this->_request->isPost()) {
+        if (isset($_GET["sa"])) {
             $keyword = $this->_request->getParam('keyword');
             $type = $this->_request->getParam('sort_type');
             $asc = $this->_request->getParam('sort_asc');

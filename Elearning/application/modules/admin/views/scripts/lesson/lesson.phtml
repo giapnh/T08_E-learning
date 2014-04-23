@@ -9,7 +9,7 @@
     #lesson_container {
         width: 800px;
         margin: 20px auto;
-        margin-top:  0px;
+        margin-top: 0px;
         padding: 10px;
         border: 1px solid yellowgreen;
         border-radius: 5px;
@@ -27,9 +27,11 @@
         border-radius: 5px;
         background-color: green;
         color: white;
+        font-size: 14px;
     }
     #lesson_container .created_date {
-        margin-top: 20px;
+        margin-top: 5px;
+        margin-bottom: 5px;
         font-size: 14px;
         color: gray;
     }
@@ -58,19 +60,24 @@
         float: left;
     }
     .file_name_label {
-        width: 250px;
+        width: 240px;
         float: left;
         font-size: 14px;
         font-weight: bold;
         color: gray;
-        margin-left: 8px;
         margin-bottom: 5px;
+        padding: 10px 5px;
+        background-color: lightgray;
     }
     .file_description_label {
+        width: 540px;
+        float: left;
+        padding: 10px 5px;
         font-size: 14px;
         font-weight: bold;
         color: gray;
         margin-bottom: 5px;
+        background-color: lightgray;
     }
     .file_type img {
         width: 40px;
@@ -87,17 +94,33 @@
     .file_description {
         line-height: 50px;
         overflow: hidden;
-        width: 470px;
+        width: 440px;
         height: 50px;
         float: left;
     }
-    .copyright {
-        padding: 5px;
-        float: left;
-    }
-    .copyright img {
-        width: 40px;
+    .file_report {
+        line-height: 50px;
+        overflow: hidden;
+        width: 30px;
         height: 40px;
+        float: left;
+        padding-top: 10px;
+    }
+    .file_report img {
+        width: 30px;
+        height: 30px;
+    }
+    .file_lock {
+        line-height: 50px;
+        overflow: hidden;
+        width: 50px;
+        height: 40px;
+        float: left;
+        padding-top: 10px;
+    }
+    .file_lock img {
+        width: 30px;
+        height: 30px;
     }
     .btn-delete {
         line-height: 50px;
@@ -109,18 +132,24 @@
     .btn-delete:hover {
         color: white;
     }
-    #comment_container {
+    .comment_container {
         width: 600px;
         margin: 0px auto;
         padding: 10px;
     }
     .comment_slot {
         margin: 10px 0px;
+        padding: 5px;
+        border: 1px solid yellowgreen;
     }
     .comment_owner {
         font-weight: bold;
         font-size: 16px;
         color: #2793e6;
+    }
+    .report-input {
+        width: 100%;
+        height: 80px;
     }
     .comment_input textarea {
         width: 100%;
@@ -135,14 +164,146 @@
     .comment_content {
         margin-left: 30px;
     }
+    .btn-inactive {
+        color: gray;
+    }
+    .btn-inactive:hover {
+        color: gray;
+    }
+    .report {
+        font-size: 14px;
+        float: left;
+        width: 100%;
+        margin: 10px 0px;
+    }
+    .report-form {
+        width: 600px;
+        /*margin: 0px auto;*/
+        /*padding-bottom: 20px;*/
+        /*float: right;*/
+    }
+    .report-form {
+        display: none;
+    }
+    .report-icon img {
+        width: 30px;
+        height: 30px;
+    }
+    .report-icon {
+        width: 40px;
+        float: left;
+    }
+    .report-button {
+        font-weight: bold;
+        text-decoration: underline;
+        cursor: pointer;
+        /*margin-bottom: 5px*/
+    }
+    .report-form textarea {
+        width: 100%;
+        height: 80px;
+        margin-bottom: 5px;
+        margin-top: 5px;
+    }
+    .lesson_title {
+        margin-bottom: 10px;
+        background-color: green;
+        color: white;
+        padding: 5px;
+        margin-top: -10px;
+        margin-left: -10px;
+        width: 810px;
+        border-radius: 3px 3px 0px 0px;
+    }
+    .like-container {
+        background-color: lightgray;
+        margin: 10px 0px;
+        padding: 5px 0px;
+        float: left;
+        border-top: 1px solid yellowgreen;
+        border-bottom: 1px solid yellowgreen;
+    }
+    .like-container img {
+        width: 20px;
+        height: 20px;
+        padding-left: 8px;
+    }
+    .report-status img {
+        width: 20px;
+        height: 20px;
+    }
+    .comment_container a{
+        cursor: pointer;
+        text-decoration: underline;
+    }
+    .copyright {
+        padding: 5px;
+        float: left;
+    }
+    .copyright img {
+        width: 40px;
+        height: 40px;
+    }
 </style>
 <script type="text/javascript">
+    function deleteReport(reportId) {
+        var lessonId = <?php echo $this->lessonInfo['id']; ?>;
+        if (confirm("本当にこのレポートを削除したいですか？")) {
+            window.top.location = "<?php echo $this->baseUrl(); ?>/admin/lesson/delete-report?report_id="+reportId+"&lesson_id="+lessonId;
+        }
+    }
     $(document).ready(function(){
-//        $(".unlock-btn").click(function(){
-//            if (confirm("この授業を本当にアンロックしたいですか？")) {
-//                window.top.location = "<?php echo $this->baseUrl()."/admin/lesson/unlock?lesson_id=".$this->lessonInfo['id']; ?>";
-//            }
-//        });
+        $(".unlock-btn").click(function(){
+            if (confirm("この授業を本当にアンロックしたいですか？")) {
+                window.top.location = "<?php echo $this->baseUrl()."/admin/lesson/unlock?lesson_id=".$this->lessonInfo['id']; ?>";
+            }
+        });
+        $(".lock-btn").click(function(){
+            if (confirm("この授業を本当にロックしたいですか？")) {
+                window.top.location = "<?php echo $this->baseUrl()."/admin/lesson/lock?lesson_id=".$this->lessonInfo['id']; ?>";
+            }
+        });
+        $(".btn-report").click(function(){
+        
+            function renderReport(id, username, reason) {
+                var reportHtml =    "<div class='comment_slot report-tmp'>" +
+                                        "<div class='comment_owner'>"+username+"</div>" +
+                                        "<div class='comment_content'>"+reason+"</div>" +
+                                        "<div class='delete-report-btn'>" +
+                                            "<a onclick='deleteReport("+id+")'>削除</a>" +
+                                        "</div>" +
+                                    "</div>";
+                $(".report-input-div").before(reportHtml);
+                $(".report-tmp").hide();
+                $(".report-tmp").show('slow', function(){
+                    $(this).removeClass(".report-tmp");
+                });
+            }
+            
+            var reason = $(".report-input").val();
+            
+            if (reason == "") {
+                alert("違犯勧告を入力してください");
+            } else {
+                $.ajax({
+                    type: "POST",
+                    url: "<?php echo $this->baseUrl(); ?>/api/admin-report-lesson",
+                    data: {
+                        'reason': reason, 
+                        'lesson_id': <?php echo $this->lessonId; ?>
+                    }
+                }).done(function(data) {
+                    console.log(data);
+                    if (data.error != undefined) {
+                        alert("レポート失敗しました");
+                    } else {
+                        $(".report-num").text(data.reports_num+"レポート");
+                        $(".report-input").val("");
+                        renderReport(data.id, data.username, data.reason);
+                    }
+                });
+            }
+        });
     });
 </script>
 <?php echo $this->render('admin-layout.phtml') ?>
@@ -197,12 +358,17 @@
                     <img src="<?php echo $this->baseUrl(); ?>/public/images/copyright_report.png" width="20" height="20">
                 </span>
                 <?php } ?>
-                <?php // if ($this->lessonInfo['status'] == 0) { ?>
-                <?php if (FALSE) { ?>
+                <?php if ($this->lessonInfo['status'] == 0) { ?>
+                <?php // if (FALSE) { ?>
                     <div style="float:right;">
                         <img src="<?php echo $this->baseUrl(); ?>/public/images/locked.png" width="20" height="20">
                         <span style="color: red">この授業はロックされている</span>
                         <button class="normal-button unlock-btn">アンロック</button>
+                    </div>
+                <?php } else { ?>
+                    <div style="float:right;">
+                        <img src="<?php echo $this->baseUrl(); ?>/public/images/unlock.png" width="20" height="20">
+                        <button class="normal-button lock-btn">ロック</button>
                     </div>
                 <?php } ?>
             </div>
@@ -212,6 +378,7 @@
                 <div class="file_name_label">ファイル名</div>
                 <div class="file_description_label">説明</div>
             </div>
+            <div style="width: 100%; line-height: 3px;">&nbsp;</div>
             <?php 
                 foreach ($this->files as $file) {
                     $fileTypes = explode(".", $file['filename']);
@@ -245,41 +412,39 @@
             ?>
         </div>
         <hr class="clear">
-        <?php if (FALSE && !empty($this->reports)): ?>
-	<script type="text/javascript">
-         function showReportForm() {
-             $("#report_form").toggle("slow");
-         }
-
-     </script>
-	<div id="report_form"
-		style="display: none; width: 60%; margin-left: 100px; border: none; border-radius: 4px;">
-		<?php foreach ($this->reports as $report): ?>
-		<div>
-			<p>
-				<span style="color: blue"><?php echo $report["username"] ?> </span>
-				:
-				<?php echo $report["reason"] ?>
-			</p>
-		</div>
-		<?php endforeach; ?>
-	</div>
-
-	
-	<!--Report button-->
-	<div  style="margin: 0px auto; float: right;" id="btn_report">
-		<button id="btn_report" onclick="showReportForm();"
-			style="border: none; border-radius: 4px; padding: 5px; margin-right: 20px; background: #007F9F; color: red;">
-			違犯レポート(
-			<?php echo count($this->reports) ?>
-			)
-		</button>
-	</div>
-	<?php endif; ?>
-	<div class="clear"></div>
     </div>
     
-    <form method="post" id="comment_container">
+    <!--レポート-->
+    <div class="comment_container">
+        <hr class="clear">
+        <div class="report-status">
+            <img src="<?php echo $this->baseUrl()."/public/images/lesson_report.png"; ?>">
+            <span class="report-num" style='color: red;'><?php
+                echo count($this->reports);
+            ?>レポート</span>
+        </div>
+        <?php
+            foreach ($this->reports as $report) {
+        ?>
+        <div class="comment_slot">
+            <div class="comment_owner"><?php echo $report['username']; ?></div>
+            <div class="comment_content"><?php echo $report['reason']; ?></div>
+            <div class="delete-report-btn">
+                <a onclick='deleteReport(<?php echo $report['id']; ?>)'>削除</a>
+            </div>
+        </div>
+        <?php } ?>
+        
+        <div class="report-input-div" >
+            <textarea name="comment" class="report-input"></textarea>
+        </div>
+        <input type="submit" value="違犯勧告を送る" class="normal-button btn-report">
+    </div>
+    
+    <!--コメント-->
+    <form method="post" class="comment_container">
+        <hr class="clear">
+        <div>コメント:</div>
         <?php
             foreach ($this->comments as $comment) {
         ?>

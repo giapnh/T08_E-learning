@@ -12,10 +12,9 @@ class Admin_IndexController extends IController {
         if ($auth->hasIdentity()) {
             $data = $auth->getIdentity();
             if ($data['role'] != Admin_AccountController::$ADMIN_ROLE) {
-                if ($this->_request->getActionName() != 'login') {
-                    $this->_redirect('admin/account/login');
-                }
+                    $this->_redirect('user/login');
             } else {
+                $this->view->currentUser = $data;
                 $this->view->currentUser = $data;
             }
         } elseif ($this->_request->getActionName() != 'login') {

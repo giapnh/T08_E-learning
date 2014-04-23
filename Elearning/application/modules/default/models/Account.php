@@ -142,6 +142,24 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
             return NULL;
         }
     }
+    
+    /**
+     * ユーザの情報が取る
+     * 
+     * @param int $username
+     * @return array
+     */
+    public function getUserById($userId) {
+        $query = $this->select()
+                ->from($this->_name, "*")
+                ->where('id=?', $userId);
+        $result = $this->getAdapter()->fetchRow($query);
+        if ($result) {
+            return $result;
+        } else {
+            return NULL;
+        }
+    }
 
     public function isValidSecretQA($username, $question, $anwser) {
         $query = $this->select()->

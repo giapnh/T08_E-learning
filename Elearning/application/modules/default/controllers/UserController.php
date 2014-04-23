@@ -20,6 +20,8 @@ class UserController extends IController {
                 $this->_redirect('student/index');
             } else if ($infoUser['role'] == 2) {
                 $this->_redirect('teacher/index');
+            }else if ($infoUser['role'] == 3) {
+                $this->_redirect('admin/user');
             }
         }
     }
