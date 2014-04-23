@@ -459,7 +459,7 @@ class StudentController extends IController {
             $this->redirect('student/index');
             return;
         }
-        if ($learnModel->isStudentLearn($studentId, $lessonId) == 0) {
+        if ($learnModel->isStudentBeLocked($studentId, $lessonId) == 0) {
             $this->redirect('student/index');
             return;
         }
