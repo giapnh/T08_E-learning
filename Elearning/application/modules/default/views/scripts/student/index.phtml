@@ -231,14 +231,21 @@
                     </tr>
                 </tbody>
             </table>
-            <div class="paging">
-                <div class="paging-center">
-                    <?php
-                    if ($this->numpage > 1)
-                        echo $this->paginationControl($this->data, 'Sliding', 'pageinator.phtml');
+            <?php
+            if (count($this->data) == 0) {
+                ?>
+                <span style="color: cadetblue; font-size: 50px;">授業がない！<span>
+                        <?php
+                    }
                     ?>
-                </div>
-            </div>
-        </div>
-    </div>
-</center>
+                    <div class="paging">
+                        <div class="paging-center">
+                            <?php
+                            if ($this->numpage > 1)
+                                echo $this->paginationControl($this->data, 'Sliding', 'pageinator.phtml');
+                            ?>
+                        </div>
+                    </div>
+                    </div>
+                    </div>
+                    </center>

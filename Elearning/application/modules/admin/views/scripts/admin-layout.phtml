@@ -8,6 +8,11 @@
                 </a>
             </div>
             <div align="right" style="float: right; margin-top: 20px;">
+                <div style="margin-bottom: 10px;">
+                    <a href="<?php echo $this->baseUrl("admin/account") ?>">
+                        管理者：<?php echo $this->currentUser['username']; ?>
+                    </a>
+                </div>
                 <a href="<?php echo $this->baseUrl("admin/account/logout") ?>"><button class="register-cus">ログアウト</button>
                 </a>
             </div>

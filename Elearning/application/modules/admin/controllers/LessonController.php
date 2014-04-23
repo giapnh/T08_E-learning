@@ -16,6 +16,7 @@ class Admin_LessonController extends IController {
                $this->_redirect('user/login');
             } else {
                 $this->currentUser = $data;
+                $this->view->currentUser = $data;
             }
         } elseif ($this->_request->getActionName() != 'login') {
             $this->_redirect('admin/account/login');
@@ -32,34 +33,47 @@ class Admin_LessonController extends IController {
         $copyrightModel = new Default_Model_CopyrightReport();
         $tagModel = new Default_Model_Tag();
         $userModel = new Default_Model_Account();
+        $lessonReportModel = new Default_Model_LessonReport();
         
         //
         $tagId = $this->_request->getParam('tagId');
         $teacherId = $this->_request->getParam('teacherId');
-        $searchText = $this->_request->getParam('text');
+        $searchText = $this->_request->getParam('searchText');
         $currentPage = $this->_request->getParam('page', 1);
         $copyright = $this->_request->getParam('copyright');
+        $sortType = $this->getParam('sort_type');
+        $asc = $this->getParam('sort_asc');
+        if (!isset($sortType)) {
+            $sortType = 0;
+        }
+        if (!isset($asc)) {
+            $asc = 0;
+        }
+        $fileReportsNum = $copyrightModel->countAllReport();
+        $lessonReportsNum = $lessonReportModel->countAllReport();
         
         //
         $this->view->tagId = $tagId;
         $this->view->teacherId = $teacherId;
         $this->view->searchText = $searchText;
         $this->view->copyright = $copyright;
+        $this->view->sortType = $sortType;
+        $this->view->asc = $asc;
         $this->view->tags = $tagModel->listAll();
         $this->view->teachers = $userModel->listTeacher();
-        $this->view->reportsNum = $copyrightModel->countAllReport();
+        $this->view->reportsNum = $fileReportsNum + $lessonReportsNum;
         
         //
         if (isset($tagId)) {
-            $paginator = Zend_Paginator::factory($lessonModel->listWithTag($tagId));
+            $paginator = Zend_Paginator::factory($lessonModel->listWithTag($tagId,$sortType,$asc));
         } else if (isset($teacherId)) {
-            $paginator = Zend_Paginator::factory($lessonModel->listWithTeacher($teacherId));
+            $paginator = Zend_Paginator::factory($lessonModel->listWithTeacher($teacherId,$sortType,$asc));
         } else if (isset($searchText)) {
-            $paginator = Zend_Paginator::factory($lessonModel->findByKeyword($searchText));
+            $paginator = Zend_Paginator::factory($lessonModel->findByKeyword($searchText, $sortType, $asc));
         } else if (isset($copyright)) {
-            $paginator = Zend_Paginator::factory($lessonModel->listCopyrightFalse());
+            $paginator = Zend_Paginator::factory($lessonModel->listCopyrightFalse($sortType,$asc));
         } else {
-            $paginator = Zend_Paginator::factory($lessonModel->listAll());
+            $paginator = Zend_Paginator::factory($lessonModel->listAll($sortType,$asc));
         }
         
         //

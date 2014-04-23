@@ -138,15 +138,33 @@ class Default_Model_LessonReport extends Zend_Db_Table_Abstract {
     }
     
     /**
+     * 授業がレポートがあるかどうかをチェック
+     * 
+     * @param int $lessonId
+     * @return boolean
+     */
+    public function isReported($lessonId) {
+        $select = $this->getAdapter()->select()
+                ->from($this->_name)
+                ->where('lesson_id='.$lessonId." AND status=1");
+        if ($this->getAdapter()->fetchAll($select)) {
+            return true;
+        } else {
+            return FALSE;
+        }
+    }
+
+
+    /**
      * 「Copyright」レポートを数える
      *  
      * @return int
      */
     public function countAllReport() {
-//        $select = $this->getAdapter()->select()
-//                    ->from($this->_name)
-//                    ->where("copyright_report.status = 1");
-//        return count($this->getAdapter()->fetchAll($select));
+        $select = $this->getAdapter()->select()
+                    ->from($this->_name)
+                    ->where("status = 1");
+        return count($this->getAdapter()->fetchAll($select));
     }
     
     /**
