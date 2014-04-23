@@ -48,60 +48,68 @@
         </div>
         <div class="detail_layout_content">
             <?php if ($this->message) { ?>
-            <div style="color: blue"><?php echo $this->message; ?></div>
+                <div style="color: blue"><?php echo $this->message; ?></div>
             <?php } ?>
             <?php if ($this->errorMessage) { ?>
-            <div style="color: red"><?php echo $this->errorMessage; ?></div>
+                <div style="color: red"><?php echo $this->errorMessage; ?></div>
             <?php } ?>
             <form method="post" action>
                 <table width="690">
                     <tr>
                         <td width="80">１回の受講料</td>
-                        <td width="120"><input type="text" name="coma_price" value="<?php 
-                            echo $this->masterData[Admin_Model_Master::$KEY_COMA_PRICE] ?>"/></td>
+                        <td width="120"><input type="text" name="coma_price" value="<?php echo $this->masterData[Admin_Model_Master::$KEY_COMA_PRICE] ?>"/>
+                            <b>ドン</b>
+                        </td>
+
                     </tr>
                     <tr>
                         <td width="80">報酬％</td>
-                        <td width="120"><input type="text" name="teacher_fee_rate" value="<?php 
-                            echo $this->masterData[Admin_Model_Master::$KEY_TEACHER_FEE_RATE] ?>" /></td>
+                        <td width="120"><input type="text" name="teacher_fee_rate" value="<?php echo $this->masterData[Admin_Model_Master::$KEY_TEACHER_FEE_RATE] ?>" />
+                            <b>%</b>
+                        </td>
                     </tr>
 <!--                    <tr>
                         <td>授業のファイルを格納フォールダ</td>
-                        <td width="120"><input type="text" name="file_location" value="<?php 
-                            echo $this->masterData[Admin_Model_Master::$KEY_FILE_LOCATION] ?>" /></td>
+                        <td width="120"><input type="text" name="file_location" value="<?php echo $this->masterData[Admin_Model_Master::$KEY_FILE_LOCATION] ?>" /></td>
                     </tr>-->
                     <tr>
                         <td>受講可能時間</td>
-                        <td width="120"><input type="text" name="lesson_deadline" value="<?php 
-                            echo $this->masterData[Admin_Model_Master::$KEY_LESSON_DEADLINE] ?>" /></td>
+                        <td width="120">
+                            <input type="text" name="lesson_deadline" value="<?php echo $this->masterData[Admin_Model_Master::$KEY_LESSON_DEADLINE] ?>" />
+                            <b>日</b>
+                        </td>
                     </tr>
                     <tr>
                         <td>ログイン誤り回</td>
-                        <td width="120"><input type="text" name="lock_count" value="<?php 
-                            echo $this->masterData[Admin_Model_Master::$KEY_LOCK_COUNT] ?>" /></td>
+                        <td width="120"><input type="text" name="lock_count" value="<?php echo $this->masterData[Admin_Model_Master::$KEY_LOCK_COUNT] ?>" />
+                            <b>回</b>
+                        </td>
                     </tr>
                     <tr>
                         <td>ロック時間</td>
-                        <td width="120"><input type="text" name="login_fail_lock_time" value="<?php 
-                            echo $this->masterData[Admin_Model_Master::$KEY_LOGIN_FAIL_LOCK_TIME] ?>" /></td>
+                        <td width="120"><input type="text" name="login_fail_lock_time" value="<?php echo $this->masterData[Admin_Model_Master::$KEY_LOGIN_FAIL_LOCK_TIME] ?>" />
+                            <b>秒</b>
+                        </td>
                     </tr>
                     <tr>
                         <td>自動セション終了時間</td>
-                        <td width="120"><input type="text" name="session_time" value="<?php 
-                            echo $this->masterData[Admin_Model_Master::$KEY_SESSION_TIME] ?>" /></td>
+                        <td width="120"><input type="text" name="session_time" value="<?php echo $this->masterData[Admin_Model_Master::$KEY_SESSION_TIME] ?>" />
+                            <b>秒</b>
+                        </td>
                     </tr>
                     <tr>
                         <td>違犯できる回数</td>
-                        <td width="120"><input type="text" name="violation_time" value="<?php 
-                            echo $this->masterData[Admin_Model_Master::$KEY_VIOLATION_TIME] ?>" /></td>
+                        <td width="120"><input type="text" name="violation_time" value="<?php echo $this->masterData[Admin_Model_Master::$KEY_VIOLATION_TIME] ?>" />
+                            <b>回</b>
+                        </td>
                     </tr>
                     <tr>
                         <td>自動バックアップ時刻</td>
-                        <?php 
-                            $backupTime = $this->masterData[Admin_Model_Master::$KEY_BACKUP_TIME];
-                            $backupHour = floor($backupTime/3600);
-                            $backupMinute = floor(($backupTime - $backupHour*3600)/60);
-                            $backupSecond = $backupTime - $backupHour*3600 - $backupMinute*60;
+                        <?php
+                        $backupTime = $this->masterData[Admin_Model_Master::$KEY_BACKUP_TIME];
+                        $backupHour = floor($backupTime / 3600);
+                        $backupMinute = floor(($backupTime - $backupHour * 3600) / 60);
+                        $backupSecond = $backupTime - $backupHour * 3600 - $backupMinute * 60;
                         ?>
                         <td width="120" class="backup-input">
                             <div>
@@ -121,49 +129,49 @@
                     <button class="normal-button" style="width: 200px">システムをバックアップする</button>
                 </a>
             </div>
-<!--            <div class="auto-backup">
-                <div class="status">
-                    <span>
-                        自動バックアップステータス:
-                    </span>
-                    <?php if ($this->autoBackup) { ?>
-                    <span class="on">
-                        <span>オン</span>
-                        <a href="<?php echo $this->baseUrl() ?>/admin/index/auto-backup?turn=off">
-                            <button class="normal-button">オフにする</button>
-                        </a>
-                    </span>
-                    <?php } else { ?>
-                    <span class="off">
-                        <span>オフ</span>
-                        <a href="<?php echo $this->baseUrl() ?>/admin/index/auto-backup?turn=on">
-                            <button class="normal-button">オンにする</button>
-                        </a>
-                    </span>
-                    <?php } ?>
-                </div>
-            </div>-->
+            <!--            <div class="auto-backup">
+                            <div class="status">
+                                <span>
+                                    自動バックアップステータス:
+                                </span>
+            <?php if ($this->autoBackup) { ?>
+                                                                                        <span class="on">
+                                                                                            <span>オン</span>
+                                                                                            <a href="<?php echo $this->baseUrl() ?>/admin/index/auto-backup?turn=off">
+                                                                                                <button class="normal-button">オフにする</button>
+                                                                                            </a>
+                                                                                        </span>
+            <?php } else { ?>
+                                                                                        <span class="off">
+                                                                                            <span>オフ</span>
+                                                                                            <a href="<?php echo $this->baseUrl() ?>/admin/index/auto-backup?turn=on">
+                                                                                                <button class="normal-button">オンにする</button>
+                                                                                            </a>
+                                                                                        </span>
+            <?php } ?>
+                            </div>
+                        </div>-->
             <div>
-                <?php foreach($this->backupList['data'] as $file) { ?>
-                <div class="backup-file">
-                    <div class="file-name"><?php echo $file; ?></div>
-                    <a href="<?php echo $this->baseUrl()."/admin/index/restore?file=".$file; ?>">
-                        <button class="normal-button restore-btn">回復する</button>
-                    </a>
-                </div>
-                <?php } // End foreach backup list ?>
-                <?php 
-                    if ($this->backupList['next']) {
-                        $nextLink = $this->baseUrl()."/admin/index/maintain?page=".($this->backupList['currentPage']+1);
-                    } else {
-                        $nextLink = "";
-                    }
-                    if ($this->backupList['pre']) {
-                        $preLink = $this->baseUrl()."/admin/index/maintain?page=".($this->backupList['currentPage']-1);
-                    } else {
-                        $preLink = "";
-                    }
-                    echo $this->partial("pager.phtml", array('page'=>$this->backupList['currentPage'], 'total'=>$this->backupList['total'], 'next'=>$nextLink, 'pre'=>$preLink)) 
+                <?php foreach ($this->backupList['data'] as $file) { ?>
+                    <div class="backup-file">
+                        <div class="file-name"><?php echo $file; ?></div>
+                        <a href="<?php echo $this->baseUrl() . "/admin/index/restore?file=" . $file; ?>">
+                            <button class="normal-button restore-btn">回復する</button>
+                        </a>
+                    </div>
+                <?php } // End foreach backup list  ?>
+                <?php
+                if ($this->backupList['next']) {
+                    $nextLink = $this->baseUrl() . "/admin/index/maintain?page=" . ($this->backupList['currentPage'] + 1);
+                } else {
+                    $nextLink = "";
+                }
+                if ($this->backupList['pre']) {
+                    $preLink = $this->baseUrl() . "/admin/index/maintain?page=" . ($this->backupList['currentPage'] - 1);
+                } else {
+                    $preLink = "";
+                }
+                echo $this->partial("pager.phtml", array('page' => $this->backupList['currentPage'], 'total' => $this->backupList['total'], 'next' => $nextLink, 'pre' => $preLink))
                 ?>
             </div>
         </div>
