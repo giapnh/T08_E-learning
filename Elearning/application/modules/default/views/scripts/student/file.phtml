@@ -307,7 +307,7 @@
                                             <h3><?php echo $this->currentFile['title'] ?></h3>
                                             <h4><?php echo $this->currentFile['subtitle'] ?></h4>
                                             <form action="<?php echo $this->baseUrl() . "/student/update-result?file_id=" . $this->currentFile['id']; ?>" method="post">
-                                                <div style="width: 100%;  min-height: 300px; max-height: 500px;">
+                                                <div style="width: 100%;  min-height: 300px; max-height: 500px; overflow: auto;">
                                                     <?php
                                                     echo $this->controller->getTestHtml($this->currentFile['id']);
                                                     ?>

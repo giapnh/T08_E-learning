@@ -218,8 +218,22 @@
                                                 <!--フォームスタット-->
                                                 <?php
                                                 $controller = $this->controller;
-                                                echo $controller->getTestHtml($this->currentFile['id']);
+                                                //echo $controller->getTestHtml($this->currentFile['id']);
                                                 ?>
+                                                <h3><?php echo $this->currentFile['title'] ?></h3>
+                                            <h4><?php echo $this->currentFile['subtitle'] ?></h4>
+                                            <form action="<?php echo $this->baseUrl() . "/teacher/test-result?file_id=" . $this->currentFile['id']; ?>&lessonId=<?php echo $this->lessonId?>" method="post">
+                                                <div style="width: 100%;  min-height: 300px; max-height: 500px; overflow: auto;">
+                                                    <?php
+                                                    echo $this->controller->getTestHtml($this->currentFile['id']);
+                                                    ?>
+                                                    <div class="float-left">
+                                                    <input id="submit_test" name="submit" type="submit" value="答えチェック" class="showlogfromm" style="height: 28px; margin-left: 10px;">
+                                                </div>
+                                                </div>
+                                                
+                                            </form>
+ 
         <!--                                        <a href="<?php echo $this->baseUrl() . "/teacher/students?learn_id=" . $this->lessonId . "&file_id=" . $this->currentFile['id']; ?>">
                                                     <button class="normal-button">学生リスト</button>
                                                 </a>-->
