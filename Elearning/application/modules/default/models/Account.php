@@ -19,8 +19,8 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
      * @return boolean
      */
     //thiennx : delete user
-    public function deleteTeacher($userId){
-    	$query = "DELETE user,lesson, lesson_file, lesson_tag,comment, learn,lesson_like, copyright_report, result, question
+    public function deleteTeacher($userId) {
+        $query = "DELETE user,lesson, lesson_file, lesson_tag,comment, learn,lesson_like, copyright_report, result, question
     			 FROM user 
     			LEFT JOIN lesson ON user.id = lesson.teacher_id 
     			LEFT JOIN lesson_file ON lesson.id = lesson_file.lesson_id 
@@ -31,21 +31,22 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
     			LEFT JOIN copyright_report ON lesson_file.id = copyright_report.file_id 
     			LEFT JOIN result ON result.learn_id = learn.id
     			LEFT JOIN question ON question.file_id = lesson_file.id
-    			WHERE user.id = ". $userId;
-    	$this->db->query($query);
-    			
+    			WHERE user.id = " . $userId;
+        $this->db->query($query);
     }
-    public function deleteStudent($userId){
-    	$query = "DELETE user, comment, lesson_like, learn, copyright_report, file_comment
+
+    public function deleteStudent($userId) {
+        $query = "DELETE user, comment, lesson_like, learn, copyright_report, file_comment
     			 FROM user
     			LEFT JOIN comment ON user.id = comment.user_id
     			LEFT JOIN lesson_like ON user.id = lesson_like.user_id
     			LEFT JOIN learn ON user.id = learn.student_id
     			LEFT JOIN copyright_report ON user.id = copyright_report.user_id
     			LEFT JOIN file_comment ON user.id = file_comment.user_id
-    			WHERE user.id = ". $userId;
-    	$this->db->query($query);
+    			WHERE user.id = " . $userId;
+        $this->db->query($query);
     }
+
     public function isExits($username) {
         $query = $this->select()
                 ->from($this->_name, array('username'))
@@ -146,7 +147,7 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
         $query = $this->select()->
                 from($this->_name, "*")
                 ->where('username=?', $username)
-                ->where('secret_question=?', $question)
+                ->where('secret_question=?', sha1(md5($question)))
                 ->where('secret_answer=?', sha1(md5($anwser)));
         $result = $this->getAdapter()->fetchRow($query);
         if ($result) {
@@ -250,8 +251,8 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
                 'email' => $data['email'],
                 'phone' => $data['phone'],
                 'bank_account' => $data['bank_acc'],
-                'first_secret_question' => $data['secret_question'],
-                'secret_question' => $data['secret_question'],
+                'first_secret_question' => sha1(md5($data['secret_question'])),
+                'secret_question' => sha1(md5($data['secret_question'])),
                 'first_secret_answer' => sha1(md5($data['secret_answer'])),
                 'secret_answer' => sha1(md5($data['secret_answer'])),
                 'role' => $data['role'],
@@ -306,7 +307,7 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
      */
     public function updateSecretQA($data) {
         $update_data = array(
-            'secret_question' => $data['secret_question'],
+            'secret_question' => sha1(md5($data['secret_question'])),
             'secret_answer' => sha1(md5($data['secret_answer']))
         );
         $username = $data['username'];
