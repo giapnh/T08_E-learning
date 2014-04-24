@@ -277,6 +277,7 @@ class StudentController extends IController {
         $lfileModel = new Default_Model_LessonFile();
         $master = new Default_Model_Master();
         $lessonDeadline = $master->getMasterValue(Default_Model_Master::$KEY_LESSON_DEADLINE);
+        $this->view->lessonCost = $master->getMasterValue(Default_Model_Master::$KEY_COMA_PRICE);
         if ($this->_request->isGet()) {
             $do = $this->_request->getParam('do');
             $this->view->do = $do;

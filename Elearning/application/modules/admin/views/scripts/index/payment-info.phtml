@@ -24,7 +24,7 @@
                 <tr align="left">
                     <td class="orange"><a href="<?php echo $this->baseUrl()?>/admin/index/month-payment-info?year=<?php echo $info["year"]?>&month=<?php echo $info["month"]?>"><?php echo $info["time"] ?></a></td>
                     <td><a href="#"><?php echo $info["total"]* $this->price; ?></a></td>
-                    <td> <?php echo $info["total"]* $this->price * 0.4; ?></td>
+                    <td> <?php echo $info["total"]* $this->price * (100-$this->rate)/100; ?></td>
                 </tr>
                 <?php endforeach; ?>
                

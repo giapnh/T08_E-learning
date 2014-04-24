@@ -47,7 +47,7 @@ class Default_Model_Learn extends Zend_Db_Table_Abstract {
         $select = $this->getAdapter()->select();
         $select->from(array('l' => 'learn'), "*")
                 ->where("student_id=?", $studentId)
-                ->where("lesson_id=?", $lesson);
+                ->where("lesson_id=?", $lessonId);
         $res = $this->getAdapter()->fetchRow($select);
         if ($res == NULL) {
             return 0; //Unsuccesful

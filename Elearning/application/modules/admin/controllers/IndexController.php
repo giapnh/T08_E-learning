@@ -42,6 +42,7 @@ class Admin_IndexController extends IController {
         $modelMaster = new Default_Model_Master();
         $master = $modelMaster->getMasterData();
         $this->view->price = $master[Default_Model_Master::$KEY_COMA_PRICE];
+        $this->view->rate = $master[Default_Model_Master::$KEY_TEACHER_FEE_RATE];
         
     }
     
@@ -67,6 +68,7 @@ class Admin_IndexController extends IController {
     	$modelMaster = new Default_Model_Master();
     	$master = $modelMaster->getMasterData();
     	$this->view->price = $master[Admin_Model_Master::$KEY_COMA_PRICE];
+    	$this->view->rate = $master[Default_Model_Master::$KEY_TEACHER_FEE_RATE];
     	if(isset($param["download"])){
     		// create TSV file
     	$filename = "/public/TSV/file-".date("Y-m-d-H-i-s", time()).".tsv";
