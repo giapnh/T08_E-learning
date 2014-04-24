@@ -322,6 +322,7 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
      * @param type $data
      */
     public function updatePassword($data) {
+    	$master = new Default_Model_Master();
         $update_data = array(
             'password' => sha1(md5($data['username'] . '+' . $data['new_password'] . '+' . $master->getMasterValue(Default_Model_Master::$KEY_PASSWORD_CONST))));
         $username = $data['username'];

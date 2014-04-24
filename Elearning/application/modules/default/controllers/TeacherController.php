@@ -243,7 +243,7 @@ class TeacherController extends IController {
                 return;
             }
 
-            if (!$user->isValid($data['username'], $data['password'], '1')) {
+            if (!$user->isValid($data['username'], $data['password'], '2')) {
                 $this->view->errorMessage = Message::$M0031;
                 return;
             }
