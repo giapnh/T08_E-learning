@@ -161,11 +161,10 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
         }
     }
 
-    public function isValidSecretQA($username, $question, $anwser) {
+    public function isValidSecretQA($username, $anwser) {
         $query = $this->select()->
                 from($this->_name, "*")
                 ->where('username=?', $username)
-                ->where('secret_question=?', sha1(md5($question)))
                 ->where('secret_answer=?', sha1(md5($anwser)));
         $result = $this->getAdapter()->fetchRow($query);
         if ($result) {
@@ -269,8 +268,8 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
                 'email' => $data['email'],
                 'phone' => $data['phone'],
                 'bank_account' => $data['bank_acc'],
-                'first_secret_question' => sha1(md5($data['secret_question'])),
-                'secret_question' => sha1(md5($data['secret_question'])),
+                'first_secret_question' => $data['secret_question'],
+                'secret_question' => $data['secret_question'],
                 'first_secret_answer' => sha1(md5($data['secret_answer'])),
                 'secret_answer' => sha1(md5($data['secret_answer'])),
                 'role' => $data['role'],
