@@ -71,8 +71,8 @@ class StudentController extends IController {
             $tags = new Default_Model_Tag();
             $this->view->tags = $tags->listAll();
             $this->view->type = 1;
-            $paginator = Zend_Paginator::factory($lessons->listWithTag($tagId, $type, $asc));
-            $paginator->setItemCountPerPage(4);
+            $paginator = Zend_Paginator::factory($lessons->listWithTag($tagId));
+            $paginator->setItemCountPerPage(8);
             $paginator->setPageRange(3);
             $this->view->numpage = $paginator->count();
             $currentPage = $this->_request->getParam('page', 1);
@@ -82,8 +82,8 @@ class StudentController extends IController {
             $users = new Default_Model_Account();
             $this->view->teachers = $users->listTeacher();
             $this->view->type = 2;
-            $paginator = Zend_Paginator::factory($lessons->listWithTeacher($teacherId, $type, $asc));
-            $paginator->setItemCountPerPage(4);
+            $paginator = Zend_Paginator::factory($lessons->listWithTeacher($teacherId));
+            $paginator->setItemCountPerPage(8);
             $paginator->setPageRange(3);
             $this->view->numpage = $paginator->count();
             $currentPage = $this->_request->getParam('page', 1);
@@ -94,7 +94,7 @@ class StudentController extends IController {
         if (isset($_GET["sa"])) {
             $paginator = Zend_Paginator::factory($lessons->findByKeyword($keyword, $type, $asc));
 //            $paginator->setItemCountPerPage(12);
-            $paginator->setItemCountPerPage(4);
+            $paginator->setItemCountPerPage(8);
             $paginator->setPageRange(3);
             $this->view->numpage = 1;
             $currentPage = $this->_request->getParam('page', 1);
@@ -279,6 +279,7 @@ class StudentController extends IController {
         $lfileModel = new Default_Model_LessonFile();
         $master = new Default_Model_Master();
         $lessonDeadline = $master->getMasterValue(Default_Model_Master::$KEY_LESSON_DEADLINE);
+        $this->view->lessonCost = $master->getMasterValue(Default_Model_Master::$KEY_COMA_PRICE);
         if ($this->_request->isGet()) {
             $do = $this->_request->getParam('do');
             $this->view->do = $do;
@@ -402,7 +403,7 @@ class StudentController extends IController {
             } else {
                 $paginator = Zend_Paginator::factory($lessons->findLessonWithTagByStudent($tagId, $infoUser['id']));
             }
-            $paginator->setItemCountPerPage(6);
+            $paginator->setItemCountPerPage(8);
             $paginator->setPageRange(3);
             $this->view->numpage = $paginator->count();
             $currentPage = $this->_request->getParam('page', 1);
@@ -418,7 +419,7 @@ class StudentController extends IController {
             } else {
                 $paginator = Zend_Paginator::factory($lessons->findLessonWithTeacherByStudent($teacherId, $infoUser['id']));
             }
-            $paginator->setItemCountPerPage(6);
+            $paginator->setItemCountPerPage(8);
             $paginator->setPageRange(3);
             $this->view->numpage = $paginator->count();
             $currentPage = $this->_request->getParam('page', 1);
@@ -431,7 +432,7 @@ class StudentController extends IController {
             $type = $this->_request->getParam('sort_type');
             $asc = $this->_request->getParam('sort_asc');
             $paginator = Zend_Paginator::factory($lessons->findByKeyword($keyword, $type, $asc, null, $infoUser['id']));
-            $paginator->setItemCountPerPage(6);
+            $paginator->setItemCountPerPage(8);
             $paginator->setPageRange(3);
             $this->view->numpage = $paginator->count();
             $currentPage = $this->_request->getParam('page', 1);
@@ -461,10 +462,12 @@ class StudentController extends IController {
             $this->redirect('student/index');
             return;
         }
+        
         if ($learnModel->isStudentBeLocked($studentId, $lessonId) == 0) {
             $this->redirect('student/index');
             return;
         }
+        
         //ロックチェックする
         // ファイル情報を取る
         $files = $lessonFileModel->getFileByLesson($lessonId);

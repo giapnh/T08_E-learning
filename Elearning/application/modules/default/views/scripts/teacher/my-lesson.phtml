@@ -120,7 +120,7 @@
                                                     <tr>
                                                         <td style="width: 100%;overflow: hidden; height: 15px;line-height: 20px;" colspan="1" class="lession-title">
                                                             <div style="width: 90%;float: left;"><?php echo $item['title']; ?></div>
-                                                            <a href="<?php echo $this->baseUrl() . "/teacher/delete-lesson?lesson_id=" . $item['id']; ?>" style="text-align: center; color: orange; width: 10%;float: left;">X</a>
+                                                            <a href="<?php echo $this->baseUrl() . "/teacher/delete-lesson?lesson_id=" . $item['id']; ?>" style="text-align: center; color: orange; width: 10%;float: left;" onclick = "return confirm('この授業を削除する？');">X</a>
                                                         </td>
                                                     </tr>
                                                     <tr><td><hr></td></tr>

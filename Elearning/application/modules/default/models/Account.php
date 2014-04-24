@@ -161,11 +161,10 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
         }
     }
 
-    public function isValidSecretQA($username, $question, $anwser) {
+    public function isValidSecretQA($username, $anwser) {
         $query = $this->select()->
                 from($this->_name, "*")
                 ->where('username=?', $username)
-                ->where('secret_question=?', sha1(md5($question)))
                 ->where('secret_answer=?', sha1(md5($anwser)));
         $result = $this->getAdapter()->fetchRow($query);
         if ($result) {
@@ -239,6 +238,17 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
      * 新しいユーザが追加機能
      * @param type $data ユーザの情報
      */
+    public static function encryptIt( $q ) {
+    	$cryptKey  = 'qJB0rGtIn5UB1xG03efyCp';
+    	$qEncoded      = base64_encode( mcrypt_encrypt( MCRYPT_RIJNDAEL_256, md5( $cryptKey ), $q, MCRYPT_MODE_CBC, md5( md5( $cryptKey ) ) ) );
+    	return( $qEncoded );
+    }
+    
+     public static function decryptIt( $q ) {
+    	$cryptKey  = 'qJB0rGtIn5UB1xG03efyCp';
+    	$qDecoded      = rtrim( mcrypt_decrypt( MCRYPT_RIJNDAEL_256, md5( $cryptKey ), base64_decode( $q ), MCRYPT_MODE_CBC, md5( md5( $cryptKey ) ) ), "\0");
+    	return( $qDecoded );
+    }
     public function insertNew($data) {
         $master = new Default_Model_Master();
         $role = $data['role'];
@@ -269,8 +279,8 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
                 'email' => $data['email'],
                 'phone' => $data['phone'],
                 'bank_account' => $data['bank_acc'],
-                'first_secret_question' => sha1(md5($data['secret_question'])),
-                'secret_question' => sha1(md5($data['secret_question'])),
+                'first_secret_question' => Default_Model_Account::encryptIt($data['secret_question']),
+                'secret_question' => Default_Model_Account::encryptIt($data['secret_question']),
                 'first_secret_answer' => sha1(md5($data['secret_answer'])),
                 'secret_answer' => sha1(md5($data['secret_answer'])),
                 'role' => $data['role'],
@@ -312,6 +322,7 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
      * @param type $data
      */
     public function updatePassword($data) {
+    	$master = new Default_Model_Master();
         $update_data = array(
             'password' => sha1(md5($data['username'] . '+' . $data['new_password'] . '+' . $master->getMasterValue(Default_Model_Master::$KEY_PASSWORD_CONST))));
         $username = $data['username'];
@@ -325,7 +336,7 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
      */
     public function updateSecretQA($data) {
         $update_data = array(
-            'secret_question' => sha1(md5($data['secret_question'])),
+            'secret_question' => Default_Model_Account::encryptIt($data['secret_question']),
             'secret_answer' => sha1(md5($data['secret_answer']))
         );
         $username = $data['username'];

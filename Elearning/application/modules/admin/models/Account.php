@@ -1,4 +1,5 @@
 <?php
+
 require_once '/../../default/controllers/code.php';
 
 class Admin_Model_Account extends Zend_Db_Table_Abstract {
@@ -6,7 +7,6 @@ class Admin_Model_Account extends Zend_Db_Table_Abstract {
     protected $_name = "admin";
     protected $_primary = "id";
     protected $db;
-    
     public static $username = "username";
     public static $password = "password";
     public static $id = "id";
@@ -48,6 +48,7 @@ class Admin_Model_Account extends Zend_Db_Table_Abstract {
                 ->from($this->_name, array('username', 'password'))
                 ->where('username=?', $username)
                 ->where('password=?', sha1(md5($username . '+' . $password . '+' . $passwordConst)));
+//        var_dump(sha1(md5($username . '+' . $password . '+' . $passwordConst)));
         $result = $this->getAdapter()->fetchAll($query);
         if ($result) {
             return true;
@@ -65,24 +66,24 @@ class Admin_Model_Account extends Zend_Db_Table_Abstract {
      */
     public function isAllowedIp($username, $ip) {
         $query = $this->select()
-                ->from(array('a'=>$this->_name))
-                ->join(array('b'=>'admin_ip'), 'a.id = b.admin_id')
+                ->from(array('a' => $this->_name))
+                ->join(array('b' => 'admin_ip'), 'a.id = b.admin_id')
                 ->where('username=?', $username)
                 ->where('ip=?', $ip);
-        
+
         $sql = "SELECT * FROM admin, admin_ip WHERE "
-                . "admin.username='".$username."' AND "
+                . "admin.username='" . $username . "' AND "
                 . "admin.id=admin_ip.admin_id AND "
-                . "ip='".$ip."'";
+                . "ip='" . $ip . "'";
         $result = $this->db->query($sql)->fetchALl();
-        
+
         if ($result) {
             return true;
         } else {
             return false;
         }
     }
-    
+
     /**
      * 
      * @param type $username
@@ -98,7 +99,7 @@ class Admin_Model_Account extends Zend_Db_Table_Abstract {
             return NULL;
         }
     }
-    
+
     /**
      * 管理者リストを取る
      * 
@@ -109,7 +110,7 @@ class Admin_Model_Account extends Zend_Db_Table_Abstract {
         $sql = "SELECT admin.id, admin.username, admin2.username as created
                 FROM admin, (SELECT id, username FROM admin) AS admin2
                 WHERE admin.create_admin = admin2.id
-                AND admin.username != '".$username."'";
+                AND admin.username != '" . $username . "'";
         $result = $this->db->query($sql);
         if ($result) {
             $admins = $result->fetchAll();
@@ -118,7 +119,7 @@ class Admin_Model_Account extends Zend_Db_Table_Abstract {
             return NULL;
         }
     }
-    
+
     /**
      * パースワードを更新する
      * 
@@ -133,8 +134,5 @@ class Admin_Model_Account extends Zend_Db_Table_Abstract {
         $where = "username='$username'";
         $this->update($update_data, $where);
     }
-    
-    
+
 }
-
-

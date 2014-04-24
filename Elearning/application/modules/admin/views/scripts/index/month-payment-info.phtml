@@ -70,7 +70,7 @@
                 <tr align="left">
                     <td class="orange"><?php echo $info["username"]?></td>
                     <td><?php echo $info["name"]?></td>
-                    <td><?php echo $info["total"] * $this->price * 0.6 ?></td>
+                    <td><?php echo $info["total"] * $this->price * $this->rate/100 ?></td>
                     <td><?php echo $info["address"]?></td>
                     <td><?php echo $info["phone"]?></td>
                     <td>54</td>

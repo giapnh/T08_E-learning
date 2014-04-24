@@ -105,9 +105,9 @@
                     <td><?php echo $user[Admin_Model_User::$NAME] ?></td>
                     <td><?php
                         if ($user[Admin_Model_User::$ROLE] == '1') {
-                            echo "先生";
-                        } elseif ($user[Admin_Model_User::$ROLE] == '2') {
                             echo "学生";
+                        } elseif ($user[Admin_Model_User::$ROLE] == '2') {
+                            echo "先生";
                         } else {
                             echo "エラー";
                         }

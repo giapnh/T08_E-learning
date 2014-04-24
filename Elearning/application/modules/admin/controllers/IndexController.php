@@ -42,6 +42,7 @@ class Admin_IndexController extends IController {
         $modelMaster = new Default_Model_Master();
         $master = $modelMaster->getMasterData();
         $this->view->price = $master[Default_Model_Master::$KEY_COMA_PRICE];
+        $this->view->rate = $master[Default_Model_Master::$KEY_TEACHER_FEE_RATE];
         
     }
     
@@ -67,6 +68,7 @@ class Admin_IndexController extends IController {
     	$modelMaster = new Default_Model_Master();
     	$master = $modelMaster->getMasterData();
     	$this->view->price = $master[Admin_Model_Master::$KEY_COMA_PRICE];
+    	$this->view->rate = $master[Default_Model_Master::$KEY_TEACHER_FEE_RATE];
     	if(isset($param["download"])){
     		// create TSV file
     	$filename = "/public/TSV/file-".date("Y-m-d-H-i-s", time()).".tsv";
@@ -189,13 +191,14 @@ class Admin_IndexController extends IController {
             if ($masterModel->setMasterData($masterData)) {
             	//create schedule
             	$path = realpath(APPLICATION_PATH . '/../')."\backup.bat";
+            	echo "<div style='display: none;'>";
             	$command="schtasks /delete /TN AutoBackupDatabase /F";
             	exec($command);
             	$command="schtasks /create /SC MINUTE /MO $minutes /TN AutoBackupDatabase /TR $path";
 //            	echo $command;
 //                echo "<div style='display: none;'>";
                 exec($command);
-//                echo "</div>";
+               echo "</div>";
                 $this->view->masterData = $masterData;
                 $this->view->message = Message::$M4128;
             }

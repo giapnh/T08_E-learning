@@ -166,27 +166,21 @@ class UserController extends IController {
             $this->redirect('user/login');
             return;
         }
+        $this->view->uInfo = $uInfo;
         $data = $this->_request->getParams();
         if ($this->_request->isPost()) {
-            $question = trim($data['secret_question']);
             $anwser = trim($data['secret_answer']);
-            if ($question == '') {
-                $this->view->errorMessage = Message::$M014;
-                return;
-            }
-
             if ($anwser == '') {
                 $this->view->errorMessage = Message::$M015;
                 return;
             }
-
             $auth = Zend_Auth::getInstance();
             $user = new Default_Model_Account();
             $curr_ip = $_SERVER['REMOTE_ADDR'];
             if ($curr_ip === "::1") {
                 $curr_ip = "127.0.0.1";
             }
-            if ($user->isValidSecretQA($uname, $question, $anwser) == 1) {
+            if ($user->isValidSecretQA($uname, $anwser) == 1) {
                 $authAdapter = new Default_Model_Account();
                 $authAdapter->unlock($uname);
                 // 現在IPを更新します
