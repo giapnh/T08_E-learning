@@ -53,6 +53,9 @@ class StudentController extends IController {
         $this->currentUser = $infoUser;
     }
 
+    /**
+     * 授業リスト処理
+     */
     public function indexAction() {
         // Check login
         $this->initial();

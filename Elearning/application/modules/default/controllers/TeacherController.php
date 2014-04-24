@@ -324,7 +324,7 @@ class TeacherController extends IController {
             // Save file
             $fileModel = new Default_Model_File();
             if (!$fileModel->exercuteFiles($param["file_dec"])) {
-                $this->view->errorMessage = Message::$M2062;
+                $this->view->errorMessage = Message::$M2062."<br>".$fileModel->getLastError();
                 return;
             }
 
@@ -454,7 +454,8 @@ class TeacherController extends IController {
 
         if (!$fileModel->exercuteFiles($descriptions)) {
             // Send flash error message
-            $this->_helper->FlashMessenger->addMessage(Message::$M2062, 'addFileFailed');
+            $tsvFileError = $fileModel->getLastError();
+            $this->_helper->FlashMessenger->addMessage(Message::$M2062."<br>".$tsvFileError, 'addFileFailed');
             $this->redirect('teacher/lesson?lesson_id=' . $lessonId);
             return;
         }
@@ -613,7 +614,7 @@ class TeacherController extends IController {
 
         // ファイル更新
         if (!$fileModel->editFile($fileId, $fileDescription)) {
-            $msg = Message::$M2085;
+            $msg = Message::$M2085."<br>".$fileModel->getLastError();
             $this->_helper->FlashMessenger->addMessage($msg, 'uploadError');
         }
         $this->_redirect('teacher/file?lesson_id=' . $lessonId . "&file_id=" . $fileId);

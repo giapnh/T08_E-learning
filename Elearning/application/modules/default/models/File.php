@@ -9,9 +9,11 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
     protected $adapter = null;
     protected $tmp;
     protected $lines;
+    protected $lineCount;
     protected $lessonDeadline;
     
     public $fileSaved;
+    public $lastError = "";
     
     public static $ID = "id";
     public static $LESSON_ID = "lesson_id";
@@ -28,6 +30,10 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
     public static $FILE_TYPE_NORMAL = 2;
     
     public static $FILE_MAX_SIZE = 524288000;
+    
+    // TSV ファイルエラー
+    protected $TSV_ERROR_TITLE = "タイトルが無効";
+    protected $TSV_ERROR_SUBTITLE = "サブタイトルが無効";
 
     public function __construct() {
         parent::__construct();
@@ -194,6 +200,14 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
             if ($this->tsvFileToTest($fileName, $info, $description)) {
                 return true;
             } else {
+                $lineCount = array_shift(array_values($this->lineCount));
+                
+                //
+                if (isset($lineCount)) {
+                    $this->lastError = $info['name']."の行".$lineCount."にエラーが発生：".$this->lastError;
+                } else {
+                    $this->lastError = $info['name']."の終わりが無効：".$this->lastError;
+                }
                 return false;
             }
         }
@@ -261,12 +275,20 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
      */
     protected function fileToLines() {
         $firstLine = $this->tmp[0];
+//        var_dump($firstLine);
+        $firstLine = $this->remove_utf8_bom($firstLine);
+//        var_dump($firstLine);
+        $this->tmp[0] = $firstLine;
         
         $this->lines = array();
+        $this->lineCount = array();
+        $this->lineCount[0] = "Not use";
         
+        $count = 0;
         foreach ($this->tmp as $lineNum => $line) {
             $lineC = explode("#", $line);
             $line = $lineC[0];
+            $count ++;
 
             $words = preg_split("/[\t\n\r]/", $line);
             foreach ($words as $index => $word) {
@@ -276,8 +298,16 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
             }
             if (count($words) != 0) {
                 $this->lines[] = $words;
+                $this->lineCount[] = $count;
             }
         }
+    }
+    
+    function remove_utf8_bom($text)
+    {
+        $bom = pack('H*','EFBBBF');
+        $text = preg_replace("/^$bom/", '', $text);
+        return $text;
     }
     
     /**
@@ -288,13 +318,17 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
     protected function readTestTitle() {
         $nextLine = $this->nextLine();
         
-        var_dump($nextLine);
-        
-        if (($nextLine[0] == self::$TSV_KEY_TITLE) && isset($nextLine[1])) {
-            return $nextLine[1];
+        if (($nextLine[0] != self::$TSV_KEY_TITLE)) {
+            $this->lastError = self::$TSV_KEY_TITLE."キーワードが必要";
+            return null;
         }
         
-        return null;
+        if (!isset($nextLine[1])) {
+            $this->lastError = "タイトルが無効";
+            return null;
+        }
+        
+        return $nextLine[1];
     }
     
     /**
@@ -305,11 +339,17 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
     protected function readTestSubtitle() {
         $nextLine = $this->nextLine();
         
-        if (($nextLine[0] == self::$TSV_KEY_SUBTITLE) && isset($nextLine[1])) {
-            return $nextLine[1];
+        if (($nextLine[0] != self::$TSV_KEY_SUBTITLE)) {
+            $this->lastError = self::$TSV_KEY_SUBTITLE."キーワードが必要";
+            return null;
         }
         
-        return null;
+        if (!isset($nextLine[1])) {
+            $this->lastError = "サブタイトルが無効";
+            return null;
+        }
+        
+        return $nextLine[1];
     }
     
     /**
@@ -323,10 +363,17 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
         
         // Check finished
         if ($nextLine[0] == self::$TSV_KEY_END) {
+            if (isset($nextLine[1])) {
+                return null;
+            }
+            if (($this->nextLine())) {
+                return null;
+            }
             return array("question" => null);
         }
         
         if (!isset($nextLine[1]) || !isset($nextLine[2])) {
+            $this->updateTsvError("質問が無効");
             return null;
         }
         
@@ -335,6 +382,7 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
         if ($nextLine[0] == "Q(".$questionIndex.")" && $nextLine[1] = "QS") {
             $question["question"] = $nextLine[2];
         } else {
+            $this->updateTsvError("質問が無効、「Q(".$questionIndex.") QS」が必要");
             return null;
         }
         
@@ -343,23 +391,49 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
         do {
             $nextLine = $this->nextLine();
             if (!isset($nextLine[1]) || !isset($nextLine[2])) {
+                $this->updateTsvError("答えが無効");
                 return null;
             }
-            if ($nextLine[0] == "Q(".$questionIndex.")" && $nextLine[1] == "S(".$answerCount.")") {
+            if ($nextLine[0] != "Q(".$questionIndex.")") {
+                $this->updateTsvError("答えが無効、「Q(".$questionIndex.")」が必要");
+                return null;
+            }
+            if ($nextLine[1] == "S(".$answerCount.")") {
                 $question["answers"][] = $nextLine[2];
             }
             $answerCount++;
         } while($nextLine[1]=="S(".($answerCount-1).")");
         
         if (!isset($nextLine[1]) || !isset($nextLine[2]) || !isset($nextLine[3])) {
+            $this->updateTsvError("質問の正しい答えが無効");
             return null;
         }
         if ($nextLine[1] != "KS") {
+            $this->updateTsvError("答えが無効、「KS」キーワードが必要");
             return null;
         }
         $p = preg_split("/[()]/", $nextLine[2]);
+        
+        if (!isset($p[1])) {
+            $this->updateTsvError("質問の正しい答えが無効");
+            return null;
+        }
+        if (!$this->isNumber($p[1])) {
+            $this->updateTsvError("質問の正しい答えが無効");
+            return null;
+        }
+        if ($p[1] > $answerCount-1) {
+            $this->updateTsvError("質問の正しい答えが無効");
+            return null;
+        }
         $question["trueAnswer"] = $p[1] + 0;
+        
+        
         $question["point"] = $nextLine[3];
+        if (!$this->isNumber($nextLine[3])) {
+            $this->updateTsvError("質問の点数が無効");
+            return null;
+        }
         
         return $question;
     }
@@ -375,6 +449,7 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
         $nextLineIndex = array_keys($this->lines);
         $nextLineIndex = $nextLineIndex[0];
         unset($this->lines[$nextLineIndex]);
+        unset($this->lineCount[$nextLineIndex]);
         return $nextLine;
     }
     
@@ -633,6 +708,27 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
         } else {
             return false;
         }
+    }
+    
+    protected function updateTsvError($errorStr) {
+        $this->lastError = $errorStr;
+    }
+
+        /**
+     * エラーを取る
+     */
+    public function getLastError() {
+        return $this->lastError;
+    }
+    
+    /**
+     * 文字列が数字かどうかをチェック
+     * 
+     * @param string $string
+     * @return boolean
+     */
+    protected function isNumber($string) {
+        return ctype_digit($string);
     }
 }
 ?>
