@@ -72,7 +72,7 @@ class TeacherController extends IController {
             $this->view->tags = $tags->listAll();
             $this->view->type = 1;
             $paginator = Zend_Paginator::factory($lessons->listWithTag($tagId));
-            $paginator->setItemCountPerPage(6);
+            $paginator->setItemCountPerPage(8);
             $paginator->setPageRange(3);
             $this->view->numpage = $paginator->count();
             $currentPage = $this->_request->getParam('page', 1);
@@ -83,7 +83,7 @@ class TeacherController extends IController {
             $this->view->teachers = $users->listTeacher();
             $this->view->type = 2;
             $paginator = Zend_Paginator::factory($lessons->listWithTeacher($teacherId));
-            $paginator->setItemCountPerPage(6);
+            $paginator->setItemCountPerPage(8);
             $paginator->setPageRange(3);
             $this->view->numpage = $paginator->count();
             $currentPage = $this->_request->getParam('page', 1);
@@ -96,7 +96,7 @@ class TeacherController extends IController {
             $type = $this->_request->getParam('sort_type');
             $asc = $this->_request->getParam('sort_asc');
             $paginator = Zend_Paginator::factory($lessons->findByKeyword($keyword, $type, $asc));
-            $paginator->setItemCountPerPage(12);
+            $paginator->setItemCountPerPage(8);
             $paginator->setPageRange(3);
             $this->view->numpage = 1;
             $currentPage = $this->_request->getParam('page', 1);
@@ -119,7 +119,7 @@ class TeacherController extends IController {
         $this->view->tags = $tags->listAllOfTeacher($uInfo['id']);
         if ($tagId) {
             $paginator = Zend_Paginator::factory($lessons->listWithTagByTeacher($tagId, $uInfo['id']));
-            $paginator->setItemCountPerPage(6);
+            $paginator->setItemCountPerPage(8);
             $paginator->setPageRange(3);
             $this->view->numpage = $paginator->count();
             $currentPage = $this->_request->getParam('page', 1);
@@ -127,7 +127,7 @@ class TeacherController extends IController {
             $this->view->data = $paginator;
         } else {
             $paginator = Zend_Paginator::factory($lessons->listWithTeacher($uInfo['id']));
-            $paginator->setItemCountPerPage(6);
+            $paginator->setItemCountPerPage(8);
             $paginator->setPageRange(3);
             $this->view->numpage = $paginator->count();
             $currentPage = $this->_request->getParam('page', 1);
