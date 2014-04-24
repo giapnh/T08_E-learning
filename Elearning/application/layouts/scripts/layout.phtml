@@ -11,14 +11,10 @@
         <?php echo $this->headLink() ?>
         <?php echo $this->headScript() ?>
         <script language="JavaScript">
+        
             onload = function() {
-                var e = document.getElementById("refreshed");
-                if (e.value == "no")
-                    e.value = "yes";
-                else {
-                    e.value = "no";
-                    location.reload();
-                }
+            	$("form").trigger('reset');
+                
             }
             //////////F12 disable code////////////////////////
             document.onkeypress = function(event) {
