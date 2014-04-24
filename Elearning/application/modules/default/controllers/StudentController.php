@@ -57,16 +57,21 @@ class StudentController extends IController {
         // Check login
         $this->initial();
         $lessons = new Default_Model_Lesson();
+        
         $get_type = $this->_request->getParam('type');
         $tagId = $this->_request->getParam('tagId');
         $teacherId = $this->_request->getParam('teacherId');
+        $keyword = $this->_request->getParam('keyword');
+        $type = $this->_request->getParam('sort_type');
+        $asc = $this->_request->getParam('sort_asc');
+        
         $this->view->tagId = $tagId;
         $this->view->teacherId = $teacherId;
         if ($get_type == null || $get_type == 1) {
             $tags = new Default_Model_Tag();
             $this->view->tags = $tags->listAll();
             $this->view->type = 1;
-            $paginator = Zend_Paginator::factory($lessons->listWithTag($tagId));
+            $paginator = Zend_Paginator::factory($lessons->listWithTag($tagId, $type, $asc));
             $paginator->setItemCountPerPage(4);
             $paginator->setPageRange(3);
             $this->view->numpage = $paginator->count();
@@ -77,7 +82,7 @@ class StudentController extends IController {
             $users = new Default_Model_Account();
             $this->view->teachers = $users->listTeacher();
             $this->view->type = 2;
-            $paginator = Zend_Paginator::factory($lessons->listWithTeacher($teacherId));
+            $paginator = Zend_Paginator::factory($lessons->listWithTeacher($teacherId, $type, $asc));
             $paginator->setItemCountPerPage(4);
             $paginator->setPageRange(3);
             $this->view->numpage = $paginator->count();
@@ -87,9 +92,6 @@ class StudentController extends IController {
         }
 
         if (isset($_GET["sa"])) {
-            $keyword = $this->_request->getParam('keyword');
-            $type = $this->_request->getParam('sort_type');
-            $asc = $this->_request->getParam('sort_asc');
             $paginator = Zend_Paginator::factory($lessons->findByKeyword($keyword, $type, $asc));
 //            $paginator->setItemCountPerPage(12);
             $paginator->setItemCountPerPage(4);
