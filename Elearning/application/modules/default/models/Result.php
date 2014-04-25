@@ -42,7 +42,7 @@ class Default_Model_Result extends Zend_Db_Table_Abstract {
     	$q = $this->getAdapter()->select()
     		->from($this->_name,array("selected"))
     		->join("learn", "learn.id = result.learn_id",array("lesson_id"))
-    		->join("question", "question.id = result.question_id", array("answer", "file_id","q" => "title"))
+    		->join("question", "question.id = result.question_id", array("answer", "file_id","q" => "title","point"))
     		->join("lesson_file", "question.file_id = lesson_file.id", array("lesson_file.title"))
     		->order("question.file_id")
     		->order("question.id")

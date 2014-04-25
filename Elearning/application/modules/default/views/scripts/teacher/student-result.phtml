@@ -33,21 +33,36 @@
         	<?php $pre = -1;
         		foreach ($this->results as $result):
         			if($result["file_id"] != $pre ):
-        				if($pre != -1)
-        					echo "</table>";
+        				if($pre != -1){
+							echo "<tr><td colspan ='4'>ポイント : $point/$total</td></tr>";
+        					echo "</table><br>";
+        				}
+        				$point = 0;
+        				$total = 0;
         				echo "<span>".$result["title"]."</span>";
         				echo '<table width="560" border="1" bordercolor="#d5d5d5" style="border-collapse:collapse" cellpadding="4" cellspacing="4">';
-        				echo "<tr><td>NO</td> <td>選択した</td> <td>正しい結果</td></tr>";
+        				echo "<tr><td>NO</td> <td>選択した</td> <td>正しい結果</td><td>結果</td></tr>";
         				$pre = $result["file_id"];
         			endif;
+        			$total += $result["point"];
         			
         	?>
         		<tr>
         			<td><?php echo $result["q"] ?></td>
         			<td><?php echo $result["selected"]; ?></td>
-        			<td><?php echo $result["answer"]?>
+        			<td><?php echo $result["answer"]?></td>
+        			<td><?php if($result["selected"] == $result["answer"]):
+        					echo "正しい";
+        					$point += $result["point"];
+							else : 
+							echo "<span style ='color: red'>正しくない</span>";
+							endif;
+        				?>
         		</tr>
-        	<?php endforeach;?>
+        	<?php endforeach;
+	        	echo "<tr><td colspan ='4'>ポイント : $point/$total</td></tr>";
+	        	echo "</table>";
+        	?>
         	</table>
         </div>
         <?php else : echo "データがない" ; endif;?>
