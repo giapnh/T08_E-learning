@@ -49,9 +49,9 @@
 					<td><?php if($student["liked"] != NULL ) echo "ライク"?></td>
 					<td><?php echo $student["comment"] ?></td>
 					<?php if($student["status"] == 1):?>
-					<td><a href="<?php echo $this->baseUrl()?>/teacher/lock-student?lesson_id=<?php echo $this->lessonId?>&id=<?php echo $student["id"]?>"/><u>ロック</u></a></td>
+					<td><a href="<?php echo $this->baseUrl()?>/teacher/lock-student?lesson_id=<?php echo $this->lessonId; ?>&id=<?php echo $student["id"]?>"/><u>ロック</u></a></td>
 					<?php else : ?>
-					<td><a href="<?php echo $this->baseUrl()?>/teacher/unlock-student?lesson_id=<?php echo $this?>&id=<?php echo $student["id"]?>"/><u>アンロック</u></a></td>
+					<td><a href="<?php echo $this->baseUrl()?>/teacher/unlock-student?lesson_id=<?php echo $this->lessonId; ?>&id=<?php echo $student["id"]?>"/><u>アンロック</u></a></td>
 					<?php endif;?>
 					<td> <u><a href = "<?php echo $this->baseUrl() ?>/teacher/student-result/learn_id/<?php echo $student["id"]?> ">テスト結果</a></u></td>
 				</tr>

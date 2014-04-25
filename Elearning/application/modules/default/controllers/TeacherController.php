@@ -395,7 +395,7 @@ class TeacherController extends IController {
         $this->view->errorMessages = $this->_helper->FlashMessenger->getMessages('addFileFailed');
         $this->view->messages = $this->_helper->FlashMessenger->getMessages('addFileSuccess');
 //        $this->view->reports = $reportModel->getReportLesson($lessonId);
-        $this->view->reports = null;
+//        $this->view->reports = null;
     }
 
     public function lessondetailAction() {
@@ -693,7 +693,7 @@ class TeacherController extends IController {
         $lessonId = $this->_request->getParam('lesson_id');
         $modelLearn = new Default_Model_Learn();
         $students = $modelLearn->getStudentsByLessonId($lessonId);
-        //Zend_Debug::dump($students);
+//        Zend_Debug::dump($students);die();
         $this->view->students = $students;
         $this->view->lessonId = $lessonId;
     }
