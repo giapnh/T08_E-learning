@@ -105,6 +105,7 @@ class TeacherController extends IController {
             $this->view->sortType = $type;
             $this->view->asc = $asc;
         }
+        $this->view->params = $this->_request->getParams();
     }
 
     public function mylessonAction() {
@@ -149,6 +150,7 @@ class TeacherController extends IController {
             $this->view->sortType = $type;
             $this->view->asc = $asc;
         }
+        $this->view->params = $this->_request->getParams();
     }
 
     public function profileAction() {

@@ -1,16 +1,18 @@
-<?php if ($this->pageCount): ?>
+<?php 
+if ($this->pageCount): ?>
     <?php
     if (isset($this->previous)) {
         ?>
         <div class="paging-next-prev">
-            <a href="<?php $this->url(array('page' => $this->previous)); ?>">前</a> 
+            <!--<a href="<?php $this->url(array('page' => $this->previous)); ?>">前</a>--> 
+            <a href="<?php $this->params['page'] = $this->previous; echo $this->url($this->params) ?>">前</a>
         </div>
         <?php
     }
     foreach ($this->pagesInRange as $page) {
         if ($page != $this->current) {
             ?>
-            <a href="<?php echo $this->url(array('page' => $page)) ?>">
+            <a href="<?php $this->params['page'] = $page; echo $this->url($this->params) ?>">
                 <div class="paging-item"><?php echo $page ?></div>
             </a>
             <?php
@@ -26,7 +28,8 @@
     if (isset($this->next)) {
         ?>
         <div class="paging-next-prev">
-            <a href="<?php echo $this->url(array('page' => $this->next)); ?>">次</a>
+            <!--<a href="<?php echo $this->url(array('page' => $this->next)); ?>">次</a>-->
+            <a href="<?php $this->params['page'] = $this->next; echo $this->url($this->params) ?>">次</a>
         </div>     
         <?php
     }

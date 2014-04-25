@@ -33,7 +33,7 @@
                 <button style="margin-left: 10px; margin-top: 10px;" name="btn_teacher" class="register-cus float-left">
                     先生</button>
             </a>
-            <form action="#" style="height: 30px;" method="get">
+            <form action="<?php echo $this->baseUrl(); ?>/student/myLesson" style="height: 30px;" method="get">
                 <div  style="margin-top: 10px;" class="float-right">
                     <input type="text" name="keyword" class="input_search" placeholder="検索内容"/>
                     <input  name="sa" type="submit" class="button-search" value="検索">
@@ -249,7 +249,7 @@
                     <div class="paging-center">
                         <?php
                         if ($this->numpage > 1)
-                            echo $this->paginationControl($this->data, 'Sliding', 'pageinator.phtml');
+                            echo $this->paginationControl($this->data, 'Sliding', 'pageinator.phtml', array('params'=>$this->params));
                         ?>
                     </div>
                 </div>

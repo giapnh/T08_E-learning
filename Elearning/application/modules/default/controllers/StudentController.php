@@ -60,7 +60,8 @@ class StudentController extends IController {
         // Check login
         $this->initial();
         $lessons = new Default_Model_Lesson();
-        
+        $this->view->params = $this->_request->getParams();
+//        var_dump($this->view->params);die();
         $get_type = $this->_request->getParam('type');
         $tagId = $this->_request->getParam('tagId');
         $teacherId = $this->_request->getParam('teacherId');
@@ -99,7 +100,7 @@ class StudentController extends IController {
 //            $paginator->setItemCountPerPage(12);
             $paginator->setItemCountPerPage(8);
             $paginator->setPageRange(3);
-            $this->view->numpage = 1;
+            $this->view->numpage = $paginator->count();
             $currentPage = $this->_request->getParam('page', 1);
             $paginator->setCurrentPageNumber($currentPage);
             $this->view->data = $paginator;
@@ -442,6 +443,7 @@ class StudentController extends IController {
             $paginator->setCurrentPageNumber($currentPage);
             $this->view->data = $paginator;
         }
+        $this->view->params = $this->_request->getParams();
     }
 
     /**
