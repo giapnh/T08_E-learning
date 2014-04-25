@@ -25,6 +25,8 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
 				LEFT JOIN copyright_report ON lesson_file.id = copyright_report.file_id 
 				WHERE lesson.id = ". $lessonId;
 		$this->getAdapter()->query($sql);
+		$tagModel = new Default_Model_Tag();
+		$tagModel->cleanUnuseTags();
 	}
     public function listAll($type = 0, $asc = 0) {
         $select = $this->getAdapter()->select();
