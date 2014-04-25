@@ -354,4 +354,13 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
         return $this->getAdapter()->fetchAll($select);
     }
 
+    public function upViolationLock($userId) {
+        $sql = "UPDATE ".$this->_name." SET lock_count=lock_count+1 WHERE id=".$userId;
+        $this->getAdapter()->query($sql);
+    }
+    
+    public function downViolationLock($userId) {
+        $sql = "UPDATE ".$this->_name." SET lock_count=lock_count-1 WHERE id=".$userId;
+        $this->getAdapter()->query($sql);
+    }
 }

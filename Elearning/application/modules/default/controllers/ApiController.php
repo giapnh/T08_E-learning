@@ -14,6 +14,8 @@ class ApiController extends Zend_Controller_Action {
     private $copyrightModel;
     private $fileModel;
     private $lessonReportModel;
+    private $lessonModel;
+    private $userModel;
 
     /**
      * 初期処理
@@ -53,6 +55,8 @@ class ApiController extends Zend_Controller_Action {
         $this->copyrightModel = new Default_Model_CopyrightReport();
         $this->fileModel = new Default_Model_File();
         $this->lessonReportModel = new Default_Model_LessonReport();
+        $this->lessonModel = new Default_Model_Lesson();
+        $this->userModel = new Default_Model_Account();
     }
 
 
@@ -130,12 +134,19 @@ class ApiController extends Zend_Controller_Action {
      * ファイルをロックする処理
      */
     public function lockFileAction() {
+//        $userModel = new Default_Model_Account();
+//        $lessonModel = new Default_Model_Lesson();
+//        $fileModel = new Default_Model_File();
+        
         $fileId = $this->getParam('file_id');
         if ($this->userInfo['role'] !=3 ) {
             $this->redirect('api/error?code='.$this->$ERROR_AUTHENTICAL);
             return;
         }
         if ($this->fileModel->lockFile($fileId)) {
+            $file = $this->fileModel->findFileById($fileId);
+            $lesson = $this->lessonModel->findLessonById($file['lesson_id']);
+            $this->userModel->upViolationLock($lesson['teacher_id']);
             echo json_encode('success');
         } else {
             $this->redirect('api/error?code='.$this->ERROR_ACTION_FAILED);
@@ -152,6 +163,9 @@ class ApiController extends Zend_Controller_Action {
             return;
         }
         if ($this->fileModel->unlockFile($fileId)) {
+            $file = $this->fileModel->findFileById($fileId);
+            $lesson = $this->lessonModel->findLessonById($file['lesson_id']);
+            $this->userModel->downViolationLock($lesson['teacher_id']);
             echo json_encode('success');
         } else {
             $this->redirect('api/error?code='.$this->ERROR_ACTION_FAILED);

@@ -654,6 +654,7 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
      * @return boolean
      */
     public function lockFile($fileId) {
+        $userModel = new Default_Model_Account();
         $file = $this->findFileById($fileId);
         if (!$file) {
             return false;

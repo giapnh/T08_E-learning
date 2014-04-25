@@ -240,8 +240,11 @@ class Admin_LessonController extends IController {
     public function lockAction() {
         $lessonId = $this->getParam('lesson_id');
         $lessonModel = new Default_Model_Lesson();
+        $userModel = new Default_Model_Account();
         
         $lessonModel->lockLesson($lessonId);
+        $lesson = $lessonModel->findLessonById($lessonId);
+        $userModel->upViolationLock($lesson['teacher_id']);
         
         $this->redirect('admin/lesson/lesson?lesson_id='.$lessonId);
     }
@@ -252,8 +255,11 @@ class Admin_LessonController extends IController {
     public function unlockAction() {
         $lessonId = $this->getParam('lesson_id');
         $lessonModel = new Default_Model_Lesson();
+        $userModel = new Default_Model_Account();
         
         $lessonModel->unlockLesson($lessonId);
+        $lesson = $lessonModel->findLessonById($lessonId);
+        $userModel->downViolationLock($lesson['teacher_id']);
         
         $this->redirect('admin/lesson/lesson?lesson_id='.$lessonId);
     }
