@@ -68,6 +68,10 @@ class UserController extends IController {
             } else {
 //Update last login time
                 $uInfo = $authAdapter->getUserInfo($uname);
+                if(!$uInfo){
+                	$this->view->errorMessage = "ユーザ名が間違い";
+                	return;
+                }
                 $status = $uInfo['status'];
                 if($uInfo["lock_count"] >= $master->getMasterValue(Default_Model_Master::$KEY_VIOLATION_TIME)){
                 	$this->view->errorMessage = "このアカウントがロックされました";
@@ -103,7 +107,7 @@ class UserController extends IController {
                     $this->view->errorMessage = Message::$M0032;
                     return;
                 }
-                else if ($status == 1) {// User active
+                if ($status == 1) {// User active
                     // Check valid
                     if ($authAdapter->isValid($uname, $paswd, $role)) {
                         if ($role == 2) {
