@@ -69,7 +69,7 @@ class UserController extends IController {
 //Update last login time
                 $uInfo = $authAdapter->getUserInfo($uname);
                 $status = $uInfo['status'];
-                if($status == 4){
+                if($uInfo["lock_count"] >= $master->getMasterValue(Default_Model_Master::$KEY_VIOLATION_TIME)){
                 	$this->view->errorMessage = "このアカウントがロックされました";
                 	return;
                 }
