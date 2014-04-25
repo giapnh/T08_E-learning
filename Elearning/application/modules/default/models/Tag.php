@@ -24,7 +24,12 @@ class Default_Model_Tag extends Zend_Db_Table_Abstract {
     }
 
     public function listAll() {
-        return $this->fetchAll()->toArray();
+        $result = $this->fetchAll();
+        if ($result) {
+            return $result->toArray();
+        } else {
+            return array();
+        }
     }
 
     public function listAllOfTeacher($teacherId) {
@@ -70,4 +75,18 @@ class Default_Model_Tag extends Zend_Db_Table_Abstract {
         return $this->getAdapter()->fetchAll($select);
     }
 
+    /**
+     * 授業がないタグを削除する
+     */
+    public function cleanUnuseTags() {
+        $lessonModel = new Default_Model_Lesson();
+        
+        $tags = $this->listAll();
+        foreach ($tags as $tag) {
+            $lessons = $lessonModel->listWithTag($tag['id']);
+            if (!$lessons) {
+                $this->delete("id=".$tag['id']);
+            }
+        }
+    }
 }
