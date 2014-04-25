@@ -69,7 +69,11 @@ class UserController extends IController {
 //Update last login time
                 $uInfo = $authAdapter->getUserInfo($uname);
                 $status = $uInfo['status'];
-                if ($status == 3) {// Check if user is activing
+                if($status == 4){
+                	$this->view->errorMessage = "このアカウントがロックされました";
+                	return;
+                }
+                else if ($status == 3) {// Check if user is activing
                     $last_time = $uInfo['last_login_time'];
                     $offset = time() - $last_time;
                     //Unlock
@@ -94,12 +98,12 @@ class UserController extends IController {
                         $this->view->errorMessage = $message;
                     }
                 }
-
-                if ($status == 2) {// If not confirm yet
+				
+                else if ($status == 2) {// If not confirm yet
                     $this->view->errorMessage = Message::$M0032;
                     return;
                 }
-                if ($status == 1) {// User active
+                else if ($status == 1) {// User active
                     // Check valid
                     if ($authAdapter->isValid($uname, $paswd, $role)) {
                         if ($role == 2) {
