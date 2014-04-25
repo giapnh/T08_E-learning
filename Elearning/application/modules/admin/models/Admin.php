@@ -49,9 +49,9 @@ class Admin_Model_Admin extends Zend_Db_Table_Abstract {
     
     public function getAdminById($userId) {
         $sql = "SELECT admin.id, admin.username, admin2.username as created
-                FROM admin, (SELECT id, username FROM admin) AS admin2
-                WHERE admin.create_admin = admin2.id
-                AND admin.id = '".$userId."'";
+                FROM admin LEFT JOIN (SELECT id, username FROM admin) AS admin2
+                ON admin.create_admin = admin2.id
+                WHERE admin.id = '".$userId."'";
         $result = $this->db->query($sql)->fetchAll();
         if ($result == null) {
             return null;

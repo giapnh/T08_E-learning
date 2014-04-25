@@ -108,9 +108,9 @@ class Admin_Model_Account extends Zend_Db_Table_Abstract {
      */
     public function getAllAdmin($username) {
         $sql = "SELECT admin.id, admin.username, admin2.username as created
-                FROM admin, (SELECT id, username FROM admin) AS admin2
-                WHERE admin.create_admin = admin2.id
-                AND admin.username != '" . $username . "'";
+                FROM admin LEFT JOIN (SELECT id, username FROM admin) AS admin2
+                ON admin.create_admin = admin2.id
+                WHERE admin.username != '" . $username . "'";
         $result = $this->db->query($sql);
         if ($result) {
             $admins = $result->fetchAll();
