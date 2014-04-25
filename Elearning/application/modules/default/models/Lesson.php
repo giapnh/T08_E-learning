@@ -13,7 +13,18 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
         $master = new Default_Model_Master();
         $this->_lessonDeadline = $master->getMasterValue(Default_Model_Master::$KEY_LESSON_DEADLINE);
     }
-
+	public function deleteLessonById($lessonId){
+		$sql = "DELETE lesson, lesson_file, lesson_tag, comment, file_comment, lesson_like, lesson_report, copyright_report
+				FROM lesson
+				LEFT JOIN lesson_file ON lesson.id = lesson_file.lesson_id
+				LEFT JOIN lesson_tag ON lesson.id = lesson_tag.lesson_id
+				LEFT JOIN comment ON lesson.id = comment.lesson_id
+				LEFT JOIN file_comment ON lesson_file.id = file_comment.file_id
+				LEFT JOIN lesson_like ON lesson.id = lesson_like.lesson_id
+				LEFT JOIN lesson_report ON lesson.id = lesson_report.lesson_id
+				LEFT JOIN copyright_report ON lesson_file.id = copyright_report.file_id ";
+		$this->getAdapter()->query($sql);
+	}
     public function listAll($type = 0, $asc = 0) {
         $select = $this->getAdapter()->select();
         $select->from('lesson')

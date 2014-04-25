@@ -480,7 +480,7 @@ class TeacherController extends IController {
 
         if ($lessonModel->isLessonOwner($teacherId, $lessonId)) {
             //　削除する
-            $lessonModel->delete("id=" . $lessonId);
+            $lessonModel->deleteLessonById($lessonId);
         }
 
         $this->_redirect("teacher");
