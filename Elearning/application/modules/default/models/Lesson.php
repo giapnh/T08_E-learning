@@ -389,6 +389,7 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
      * @param int $lessonId
      */
     public function lockLesson($lessonId) {
+        $userModel = new Default_Model_Account();
         $this->update(array("status" => 0), "id=" . $lessonId);
     }
 
