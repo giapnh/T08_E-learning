@@ -22,7 +22,8 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
 				LEFT JOIN file_comment ON lesson_file.id = file_comment.file_id
 				LEFT JOIN lesson_like ON lesson.id = lesson_like.lesson_id
 				LEFT JOIN lesson_report ON lesson.id = lesson_report.lesson_id
-				LEFT JOIN copyright_report ON lesson_file.id = copyright_report.file_id ";
+				LEFT JOIN copyright_report ON lesson_file.id = copyright_report.file_id 
+				WHERE lesson.lesson_id = ". $lessonId;
 		$this->getAdapter()->query($sql);
 	}
     public function listAll($type = 0, $asc = 0) {
