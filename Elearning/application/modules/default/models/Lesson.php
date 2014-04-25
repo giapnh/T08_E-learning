@@ -27,6 +27,11 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
 		$this->getAdapter()->query($sql);
 		$tagModel = new Default_Model_Tag();
 		$tagModel->cleanUnuseTags();
+		//delete file on disk
+		$path = APPLICATION_PATH. "\..\files\\".$lessonId;
+		if(is_dir($path)){
+			rmdir($path);
+		}
 	}
     public function listAll($type = 0, $asc = 0) {
         $select = $this->getAdapter()->select();

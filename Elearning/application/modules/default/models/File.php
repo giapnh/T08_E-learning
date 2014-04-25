@@ -42,12 +42,19 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
         $this->_lessonDeadline = $master->getMasterValue(Default_Model_Master::$KEY_LESSON_DEADLINE);
     }
 	public function deleteFileById($fileId){
+		$file = $this->findFileById($fileId);
+		if(!file)
+			return;
 		$sql = "DELETE lesson_file, file_comment, copyright_report
 				FROM lesson_file
 				LEFT JOIN file_comment ON lesson_file.id = file_comment.file_id
 				LEFT JOIN copyright_report ON lesson_file.id = copyright_report.file_id
 				WHERE lesson_file.id = ".$fileId;
 		$this->getAdapter()->query($sql);
+		$path = APPLICATION_PATH. "\..\files".$file["location"];
+		if(is_file($path)){
+			unlink($path);
+		}
 	}
     /**
      * ファイルを格納するフォールダを取る
