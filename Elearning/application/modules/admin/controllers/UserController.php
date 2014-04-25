@@ -181,7 +181,7 @@ class Admin_UserController extends IController {
     public function resetVerifycodeAction() {
         $userId = $this->_request->getParam('user_id');
         $userModel = new Admin_Model_User();
-        if ($userModel->resetPassword($userId) == true) {
+        if ($userModel->resetVerifyCode($userId) == true) {
             $this->_helper->FlashMessenger->addMessage(Message::$M038, 'updateInfoSuccess');
         } else {
             $this->_helper->FlashMessenger->addMessage(Message::$M042, 'updateInfoError');

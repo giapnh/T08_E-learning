@@ -92,7 +92,7 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
         $query = $this->select()
                 ->from($this->_name, array('username', 'last_login_ip'))
                 ->where('username=?', $username)
-                ->where("last_login_ip='$curr_ip' OR last_login_ip IS NULL");
+                ->where("last_login_ip='$curr_ip'");
         $result = $this->getAdapter()->fetchAll($query);
         if ($result)
             return true;

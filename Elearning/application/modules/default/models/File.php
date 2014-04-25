@@ -43,7 +43,7 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
     }
 	public function deleteFileById($fileId){
 		$file = $this->findFileById($fileId);
-		if(!file)
+		if(!$file)
 			return;
 		$sql = "DELETE lesson_file, file_comment, copyright_report
 				FROM lesson_file
@@ -51,10 +51,11 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
 				LEFT JOIN copyright_report ON lesson_file.id = copyright_report.file_id
 				WHERE lesson_file.id = ".$fileId;
 		$this->getAdapter()->query($sql);
-		$path = APPLICATION_PATH. "\..\files".$file["location"];
+		$path = APPLICATION_PATH. "\..\\files".$file["location"];
 		if(is_file($path)){
 			unlink($path);
 		}
+		
 	}
     /**
      * ファイルを格納するフォールダを取る

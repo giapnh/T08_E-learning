@@ -28,11 +28,27 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
 		$tagModel = new Default_Model_Tag();
 		$tagModel->cleanUnuseTags();
 		//delete file on disk
-		$path = APPLICATION_PATH. "\..\files\\".$lessonId;
+		$path = APPLICATION_PATH. "\..\\files\\".$lessonId;
 		if(is_dir($path)){
-			rmdir($path);
+			$this->__removeDir($path);
 		}
 	}
+	protected function __removeDir($path) {
+
+    // Normalise $path.
+    $path = rtrim($path, '/') . '/';
+
+    // Remove all child files and directories.
+    $items = glob($path . '*');
+
+    foreach($items as $item) {
+        is_dir($item) ? removeDir($item) : unlink($item);
+    }
+
+    // Remove directory.
+    rmdir($path);
+}
+	
     public function listAll($type = 0, $asc = 0) {
         $select = $this->getAdapter()->select();
         $select->from('lesson')
