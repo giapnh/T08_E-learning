@@ -112,22 +112,21 @@ class UserController extends IController {
                             if ($curr_ip === "::1") {
                                 $curr_ip = "127.0.0.1";
                             }
+
                             if ($authAdapter->checkIpValid($uname, $curr_ip)) {
                                 $data = $authAdapter->getUserInfo($uname);
-                                $authAdapter->updateLastLoginIp($uname, $curr_ip);
-                                $data = $authAdapter->getUserInfo($uname);
                                 //Update last login time
-                                $authAdapter->updateLastLoginTime($uname);
+                             	   $authAdapter->updateLastLoginTime($uname);
                                 // Save
                                 $auth->getStorage()->write($data);
+                                $authAdapter->updateLastLoginIp($uname, $curr_ip);
                                 $this->_redirect('teacher/index');
                             } else {
                                 $data = $authAdapter->getUserInfo($uname);
                                 //Update last login time
                                 $authAdapter->updateLastLoginTime($uname);
                                 // Save
-                                $auth->getStorage()->write($data);
-                                $this->_redirect('user/loginVerifyConfirm');
+                                $this->_redirect('user/loginVerifyConfirm?uname='.$uname);
                                 return;
                             }
                         } else {
@@ -166,10 +165,17 @@ class UserController extends IController {
         $uname = $this->getParam('uname');
         $acc = new Default_Model_Account();
         $uInfo = $acc->getUserInfo($uname);
-        if ($uInfo['status'] != 3) {
-            $this->redirect('user/login');
-            return;
+        $curr_ip = $_SERVER['REMOTE_ADDR'];
+        
+        if ($curr_ip === "::1") {
+        	$curr_ip = "127.0.0.1";
         }
+        $authAdapter = new Default_Model_Account();
+        if($authAdapter->checkIpValid($uname, $curr_ip) && $uInfo['status'] != 3){
+        	$this->redirect('user/login');
+        	return;
+        }
+       
         $this->view->uInfo = $uInfo;
         $data = $this->_request->getParams();
         if ($this->_request->isPost()) {
@@ -188,6 +194,7 @@ class UserController extends IController {
                 $authAdapter = new Default_Model_Account();
                 $authAdapter->unlock($uname);
                 // 現在IPを更新します
+                $authAdapter->updateLastLoginIp($uname, $curr_ip);
                 $this->_redirect('user/login');
             } else {
                 $this->view->
