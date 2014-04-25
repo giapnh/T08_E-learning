@@ -127,7 +127,7 @@ class UserController extends IController {
                                 $authAdapter->updateLastLoginTime($uname);
                                 // Save
                                 $auth->getStorage()->write($data);
-                                $this->_redirect('user/loginVerifyConfirm');
+                                $this->_redirect('user/loginVerifyConfirm?uname=' . $uname);
                                 return;
                             }
                         } else {
