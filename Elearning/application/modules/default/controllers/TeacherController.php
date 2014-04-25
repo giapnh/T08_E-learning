@@ -501,7 +501,7 @@ class TeacherController extends IController {
 
         if ($lessonModel->isLessonOwner($teacherId, $lessonId)) {
             //　削除する
-            $fileModel->delete("id=" . $fileId);
+            $fileModel->deleteFileById($fileId);
         }
 
         $this->redirect("teacher/lesson?lesson_id=" . $lessonId);
