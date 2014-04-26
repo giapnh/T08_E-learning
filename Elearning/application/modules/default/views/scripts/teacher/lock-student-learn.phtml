@@ -28,9 +28,17 @@
                         </div>
                         </font>
                     </div>
+                    <br>
+                    <div style="margin-top: 20px">
+                    <form action="<?php echo $this->baseUrl()?>/teacher/lock-student-learn/lesson_id/<?php echo $this->lessonId?>" method="get" style="float: right;">
+                    	<input type="text" name ="keyword" placeholder="検索情報。。。" style="height: 25px">
+                    	<button type="submit" class="button-search"> 検索</button>
+                    </form>
+                    </div>
+                    <div style="clear: both;"></div>
         <?php if(!empty($this->students)) :?>
 		<div>
-			<br> <h3>学生リスト</h3>
+			 <h3>学生リスト</h3>
 			<table width="560" border="1" bordercolor="#d5d5d5" style="border-collapse:collapse" cellpadding="4" cellspacing="4">
 			<tr>
 				<td>ユーザ名</td>

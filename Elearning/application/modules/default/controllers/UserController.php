@@ -338,6 +338,8 @@ class UserController extends IController {
         $auth = Zend_Auth::getInstance();
         $auth->clearIdentity();
         $auth->getStorage()->clear();
+        if(isset($_SESSION["CREATED"]))
+        unset($_SESSION["CREATED"]);
         $this->_redirect('user/login');
     }
 

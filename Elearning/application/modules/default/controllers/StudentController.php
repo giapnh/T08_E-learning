@@ -18,18 +18,7 @@ class StudentController extends IController {
         if (!$_SESSION) {
             session_start();
         }
-        if (!isset($_SESSION['CREATED'])) {
-            $_SESSION['CREATED'] = time();
-        } else if (time() - $_SESSION['CREATED'] > $master->getMasterValue(Default_Model_Master::$KEY_SESSION_TIME)) {
-            // １時間後自動にログアウトしています。
-            session_regenerate_id(true);
-            unset($_SESSION['CREATED']);
-            $auth->clearIdentity();
-            $this->_redirect('user/login');
-            return;
-        }
-
-
+        
         if (!$auth->hasIdentity()) {
             if ($this->_request->getActionName() != 'login') {
                 $this->_redirect('user/login');
@@ -40,6 +29,17 @@ class StudentController extends IController {
                 //学生チェックする
                 //$auth->clearIdentity();
                 $this->_redirect('user/login');
+            }else{
+            	if (!isset($_SESSION['CREATED'])) {
+            		$_SESSION['CREATED'] = time();
+            	} else if (time() - $_SESSION['CREATED'] > $master->getMasterValue(Default_Model_Master::$KEY_SESSION_TIME)) {
+            		// １時間後自動にログアウトしています。
+            		session_regenerate_id(true);
+            		unset($_SESSION['CREATED']);
+            		$auth->clearIdentity();
+            		$this->_redirect('user/login');
+            		return;
+            	}
             }
         }
     }

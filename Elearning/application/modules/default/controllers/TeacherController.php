@@ -17,18 +17,7 @@ class TeacherController extends IController {
         if (!$_SESSION) {
             session_start();
         }
-        if (!isset($_SESSION['CREATED'])) {
-            $_SESSION['CREATED'] = time();
-        } else if (time() - $_SESSION['CREATED'] > $master->getMasterValue(Default_Model_Master::$KEY_SESSION_TIME)) {
-            // １時間後自動にログアウトしています。
-            session_regenerate_id(true);
-            //thiennx : cho nay Giap lam kieu gi day ko ro, phai unset session di chu
-            //$_SESSION['CREATED'] = time();
-            unset($_SESSION["CREATED"]);
-            $auth->clearIdentity();
-            $this->_redirect('user/login');
-            return;
-        }
+        
         if (!$auth->hasIdentity()) {
             if ($this->_request->getActionName() != 'login') {
                 $this->_redirect('user/login');
@@ -41,6 +30,18 @@ class TeacherController extends IController {
                 //$auth->clearIdentity();
                 $this->_redirect('user/login');
             }else{
+            	if (!isset($_SESSION['CREATED'])) {
+            		$_SESSION['CREATED'] = time();
+            	} else if (time() - $_SESSION['CREATED'] > $master->getMasterValue(Default_Model_Master::$KEY_SESSION_TIME)) {
+            		// １時間後自動にログアウトしています。
+            		session_regenerate_id(true);
+            		//thiennx : cho nay Giap lam kieu gi day ko ro, phai unset session di chu
+            		//$_SESSION['CREATED'] = time();
+            		unset($_SESSION["CREATED"]);
+            		$auth->clearIdentity();
+            		$this->_redirect('user/login');
+            		return;
+            	}
             	$this->view->user_info = $infoUser;
             }
         }
@@ -716,9 +717,10 @@ class TeacherController extends IController {
     	$modelLesson = new Default_Model_Lesson();
     	if(!$lessonId || ! $modelLesson->findLessonById($lessonId))
     		$this->redirect("teacher/myLesson");
+    	$search = $this->_request->getParam("keyword");
     	if(!$modelLesson->isLessonOwner($this->currentTeacherId, $lessonId))
     		$this->redirect("teacher/myLesson");
-    	$students = $modelUser->listStudentForLock($lessonId);
+    	$students = $modelUser->listStudentForLock($lessonId, $search);
     	$this->view->students = $students;
     		
     	$this->view->lessonId = $lessonId;
