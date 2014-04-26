@@ -710,11 +710,15 @@ class TeacherController extends IController {
     public function lockStudentLearnAction(){
     	$this->initial();
     	$modelUser = new Default_Model_Account();
-    	$students = $modelUser->listStudentForLock();
-    	$this->view->students = $students;
     	$lessonId = $this->_request->getParam("lesson_id");
-    	if(!$lessonId)
+    	$modelLesson = new Default_Model_Lesson();
+    	if(!$lessonId || ! $modelLesson->findLessonById($lessonId))
     		$this->redirect("teacher/myLesson");
+    	if(!$modelLesson->isLessonOwner($this->currentTeacherId, $lessonId))
+    		$this->redirect("teacher/myLesson");
+    	$students = $modelUser->listStudentForLock($lessonId);
+    	$this->view->students = $students;
+    		
     	$this->view->lessonId = $lessonId;
     }
     public function lockStudentLearnLessonAction() {

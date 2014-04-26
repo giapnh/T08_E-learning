@@ -41,7 +41,7 @@
 				<tr>
 					<td><?php echo $student["username"]?></td>
 					<td><?php echo $student["name"]?></td>
-					<?php if(! $student["id"] || $student["id"] == 0 ):?>
+					<?php if(! $student["locked"] || $student["locked"] == 0 ):?>
 					<td><a href="<?php echo $this->baseUrl()?>/teacher/lock-student-learn-lesson?lesson_id=<?php echo $this->lessonId; ?>&id=<?php echo $student["s_id"]?>"/><u>ロック</u></a></td>
 					<?php else : ?>
 					<td><a href="<?php echo $this->baseUrl()?>/teacher/unlock-student-learn-lesson?lesson_id=<?php echo $this->lessonId; ?>&id=<?php echo $student["s_id"]?>"/><u>アンロック</u></a></td>

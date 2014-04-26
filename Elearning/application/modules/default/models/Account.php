@@ -216,13 +216,14 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
         		->where("status <> 5");
         return $this->getAdapter()->fetchAll($query);
     }
-	public function listStudentForLock(){
+	public function listStudentForLock($lessonId){
 		$query = $this->getAdapter()->select()
                 ->from($this->_name, array("username", "name", 's_id' => "id"))
-                ->joinLeft("lesson_lock", "user.id = lesson_lock.student_id AND lesson_lock.status = 1")
+                ->joinLeft("lesson_lock", "user.id = lesson_lock.student_id AND lesson_id = ". $lessonId, array("locked" => "status"))
                 ->where('role=?', "1")
+                //->where("lesson_id = ". $lessonId ." OR lesson_id is null")
         		->where("user.status <> 5");
-        return $this->getAdapter()->fetchAll($query);
+	        return $this->getAdapter()->fetchAll($query);
 	}
     public function listAll() {
         return $this->fetchAll()->toArray();

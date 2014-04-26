@@ -441,9 +441,9 @@ class StudentController extends IController {
             $this->view->tags = $tags->listAllTagByStudent($infoUser['id'], $filterAsc);
             $this->view->type = 1;
             if ($tagId == 0) {
-                $paginator = Zend_Paginator::factory($lessons->listAllByStudent($infoUser['id'], $type, $asc));
+                $lessonsList = $lessons->listAllByStudent($infoUser['id'], $type, $asc);
             } else {
-                $paginator = Zend_Paginator::factory($lessons->findLessonWithTagByStudent($tagId, $infoUser['id'], $type, $asc));
+                $lessonsList = $lessons->findLessonWithTagByStudent($tagId, $infoUser['id'], $type, $asc);
             }
         } else {
             $account = new Default_Model_Account();
@@ -451,16 +451,22 @@ class StudentController extends IController {
             $this->view->type = 2;
             $lessons = new Default_Model_Lesson();
             if ($teacherId == 0) {
-                $paginator = Zend_Paginator::factory($lessons->listAllByStudent($infoUser['id'], $type, $asc));
+                $lessonsList = $lessons->listAllByStudent($infoUser['id'], $type, $asc);
             } else {
-                $paginator = Zend_Paginator::factory($lessons->findLessonWithTeacherByStudent($teacherId, $infoUser['id'], $type, $asc));
+                $lessonsList = $lessons->findLessonWithTeacherByStudent($teacherId, $infoUser['id'], $type, $asc);
             }
         }
 
         if (isset($sa)) {
             $keyword = $this->_request->getParam('keyword');
-            $paginator = Zend_Paginator::factory($lessons->findByKeyword($keyword, $type, $asc, null, $infoUser['id']));
+            $lessonsList = $lessons->findByKeyword($keyword, $type, $asc, null, $infoUser['id']);
         }
+        $modelLock = new Default_Model_Lock();
+        foreach ($lessonsList as $k => $l){
+        	if($modelLock->getByStudentAndLesson($this->currentUser["id"], $l["id"], true))
+        		unset($lessonsList[$k]);
+        }
+        $paginator = Zend_Paginator::factory($lessonsList);
         
         $paginator->setItemCountPerPage($this->ITEMS_PER_PAGE);
         $paginator->setPageRange(3);
@@ -491,6 +497,9 @@ class StudentController extends IController {
         $infoUser = $auth->getStorage()->read();
         $studentId = $infoUser['id'];
         $lessonId = $this->_request->getParam('lessonId');
+        $modelLock = new Default_Model_Lock();
+        if($modelLock->getByStudentAndLesson($this->currentUser["id"], $lessonId, true))
+        	$this->redirect("student/index");
         $currentFileId = $this->_request->getParam('fileId');
         if ($lessonId == null) {
             $this->redirect('student/index');
