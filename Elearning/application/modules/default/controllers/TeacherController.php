@@ -8,6 +8,8 @@ class TeacherController extends IController {
     protected $user;
     protected $currentTeacherId;
 
+    protected $ITEMS_PER_PAGE = 6;
+    
     public function preDispatch() {
         $auth = Zend_Auth::getInstance();
         $master = new Default_Model_Master();
@@ -65,46 +67,44 @@ class TeacherController extends IController {
         $get_type = $this->_request->getParam('type');
         $tagId = $this->_request->getParam('tagId');
         $teacherId = $this->_request->getParam('teacherId');
-        $this->view->tagId = $tagId;
-        $this->view->teacherId = $teacherId;
+        $type = $this->_request->getParam('sort_type');
+        $asc = $this->_request->getParam('sort_asc');
+        $sa = $this->_request->getParam('sa');
+        
+        if (!isset($type)) {
+            $type = 0;
+        }
+        if (!isset($asc)) {
+            $asc = 0;
+        }
+        
         if ($get_type == null || $get_type == 1|| $tagId) {
             $tags = new Default_Model_Tag();
             $this->view->tags = $tags->listAll();
             $this->view->type = 1;
-            $paginator = Zend_Paginator::factory($lessons->listWithTag($tagId));
-            $paginator->setItemCountPerPage(8);
-            $paginator->setPageRange(3);
-            $this->view->numpage = $paginator->count();
-            $currentPage = $this->_request->getParam('page', 1);
-            $paginator->setCurrentPageNumber($currentPage);
-            $this->view->data = $paginator;
+            $paginator = Zend_Paginator::factory($lessons->listWithTag($tagId, $type, $asc));
+            
         } else {
             $users = new Default_Model_Account();
             $this->view->teachers = $users->listTeacher();
             $this->view->type = 2;
-            $paginator = Zend_Paginator::factory($lessons->listWithTeacher($teacherId));
-            $paginator->setItemCountPerPage(8);
-            $paginator->setPageRange(3);
-            $this->view->numpage = $paginator->count();
-            $currentPage = $this->_request->getParam('page', 1);
-            $paginator->setCurrentPageNumber($currentPage);
-            $this->view->data = $paginator;
+            $paginator = Zend_Paginator::factory($lessons->listWithTeacher($teacherId, $type, $asc));
         }
-
-        if (isset($_GET["sa"])) {
+        if (isset($sa)) {
             $keyword = $this->_request->getParam('keyword');
-            $type = $this->_request->getParam('sort_type');
-            $asc = $this->_request->getParam('sort_asc');
             $paginator = Zend_Paginator::factory($lessons->findByKeyword($keyword, $type, $asc));
-            $paginator->setItemCountPerPage(8);
-            $paginator->setPageRange(3);
-            $this->view->numpage = 1;
-            $currentPage = $this->_request->getParam('page', 1);
-            $paginator->setCurrentPageNumber($currentPage);
-            $this->view->data = $paginator;
-            $this->view->sortType = $type;
-            $this->view->asc = $asc;
         }
+        
+        $paginator->setItemCountPerPage($this->ITEMS_PER_PAGE);
+        $paginator->setPageRange(3);
+        $this->view->numpage = $paginator->count();
+        $currentPage = $this->_request->getParam('page', 1);
+        $paginator->setCurrentPageNumber($currentPage);
+        $this->view->data = $paginator;
+        $this->view->sortType = $type;
+        $this->view->asc = $asc;
+        $this->view->tagId = $tagId;
+        $this->view->teacherId = $teacherId;
         $this->view->params = $this->_request->getParams();
     }
 
@@ -118,38 +118,35 @@ class TeacherController extends IController {
         $this->view->tagId = $tagId;
         $tags = new Default_Model_Tag();
         $this->view->tags = $tags->listAllOfTeacher($uInfo['id']);
+        $sa = $this->_request->getParam('sa');
+        $type = $this->_request->getParam('sort_type');
+        $asc = $this->_request->getParam('sort_asc');
+        if (!isset($type)) {
+            $type = 0;
+        }
+        if (!isset($asc)) {
+            $asc = 0;
+        }
+            
         if ($tagId) {
-            $paginator = Zend_Paginator::factory($lessons->listWithTagByTeacher($tagId, $uInfo['id']));
-            $paginator->setItemCountPerPage(8);
-            $paginator->setPageRange(3);
-            $this->view->numpage = $paginator->count();
-            $currentPage = $this->_request->getParam('page', 1);
-            $paginator->setCurrentPageNumber($currentPage);
-            $this->view->data = $paginator;
+            $paginator = Zend_Paginator::factory($lessons->listWithTagByTeacher($tagId, $uInfo['id'], $type, $asc));
         } else {
-            $paginator = Zend_Paginator::factory($lessons->listWithTeacher($uInfo['id']));
-            $paginator->setItemCountPerPage(8);
-            $paginator->setPageRange(3);
-            $this->view->numpage = $paginator->count();
-            $currentPage = $this->_request->getParam('page', 1);
-            $paginator->setCurrentPageNumber($currentPage);
-            $this->view->data = $paginator;
+            $paginator = Zend_Paginator::factory($lessons->listWithTeacher($uInfo['id'], $type, $asc));
         }
 
-        if (isset($_GET["sa"])) {
+        if (isset($sa)) {
             $keyword = $this->_request->getParam('keyword');
-            $type = $this->_request->getParam('sort_type');
-            $asc = $this->_request->getParam('sort_asc');
             $paginator = Zend_Paginator::factory($lessons->findByKeyword($keyword, $type, $asc,$uInfo["id"]));
-            $paginator->setItemCountPerPage(12);
-            $paginator->setPageRange(3);
-            $this->view->numpage = 1;
-            $currentPage = $this->_request->getParam('page', 1);
-            $paginator->setCurrentPageNumber($currentPage);
-            $this->view->data = $paginator;
-            $this->view->sortType = $type;
-            $this->view->asc = $asc;
         }
+        
+        $paginator->setItemCountPerPage($this->ITEMS_PER_PAGE);
+        $paginator->setPageRange(3);
+        $this->view->numpage = $paginator->count();
+        $currentPage = $this->_request->getParam('page', 1);
+        $paginator->setCurrentPageNumber($currentPage);
+        $this->view->data = $paginator;
+        $this->view->sortType = $type;
+        $this->view->asc = $asc;
         $this->view->params = $this->_request->getParams();
     }
 

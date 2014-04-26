@@ -107,7 +107,7 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
         return $result;
     }
 
-    public function listWithTagByTeacher($tag, $teacher_id) {
+    public function listWithTagByTeacher($tag, $teacher_id, $type = 0, $asc = 0) {
         if ($tag == 0) {
             return $this->listAll();
         }
@@ -117,6 +117,21 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
                 ->joinInner('user', 'l.teacher_id=user.id', array('name'))
                 ->where('user.id=?', $teacher_id)
                 ->where("lt.tag_id=$tag");
+        $asc_str = "";
+        if ($asc == 0) {
+            $asc_str = $asc_str . "ASC";
+        } else if ($asc == 1) {
+            $asc_str = $asc_str . "DESC";
+        }
+        if ($type == 0) {//Title
+            $select->order('l.title' . ' ' . $asc_str);
+        } else if ($type == 1) {// time
+            $select->order('l.create_time' . ' ' . $asc_str);
+        } else if ($type == 2) {
+            $select->order('l.view' . ' ' . $asc_str);
+        } else if ($type == 3) {
+            $select->order('l.num_like' . ' ' . $asc_str);
+        }
         $result = $this->getAdapter()->fetchAll($select);
         foreach ($result as $index => $lesson) {
             $result[$index]['is_reported'] = $this->isReported($lesson);
@@ -124,7 +139,7 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
         return $result;
     }
 
-    public function listTeacherLessonsByTag($teacher, $tag) {
+    public function listTeacherLessonsByTag($teacher, $tag, $type = 0, $asc = 0) {
         $select = $this->getAdapter()->select();
         if ($tag == 0) {
             $select->from($this->_name)
@@ -168,13 +183,28 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
         return $result;
     }
 
-    public function listAllByStudent($student) {
+    public function listAllByStudent($student,  $type = 0, $asc = 0) {
         $select = $this->getAdapter()->select();
         $select->from('lesson')
                 ->joinInner('user', 'lesson.teacher_id=user.id', array('name'))
                 ->joinInner('learn', 'learn.lesson_id=lesson.id', array('status'))
                 ->where("learn.student_id=$student")
                 ->where("learn.register_time + INTERVAL " . $this->_lessonDeadline . " DAY >= NOW()");
+        $asc_str = "";
+        if ($asc == 0) {
+            $asc_str = $asc_str . "ASC";
+        } else if ($asc == 1) {
+            $asc_str = $asc_str . "DESC";
+        }
+        if ($type == 0) {//Title
+            $select->order('l.title' . ' ' . $asc_str);
+        } else if ($type == 1) {// time
+            $select->order('l.create_time' . ' ' . $asc_str);
+        } else if ($type == 2) {
+            $select->order('l.view' . ' ' . $asc_str);
+        } else if ($type == 3) {
+            $select->order('l.num_like' . ' ' . $asc_str);
+        }
         return $this->getAdapter()->fetchAll($select);
     }
 
@@ -213,7 +243,7 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
         return $result;
     }
 
-    public function findLessonWithTagByStudent($tagId, $studentId) {
+    public function findLessonWithTagByStudent($tagId, $studentId,  $type = 0, $asc = 0) {
         $select = $this->getAdapter()->select();
         $select->from('lesson')
                 ->joinInner('lesson_tag', 'lesson.id=lesson_tag.lesson_id', NULL)
@@ -222,10 +252,25 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
                 ->joinInner('user', 'user.id=lesson.teacher_id', array('name'))
                 ->where('learn.student_id=?', $studentId)
                 ->where("learn.register_time + INTERVAL " . $this->_lessonDeadline . " DAY >= NOW()");
+        $asc_str = "";
+        if ($asc == 0) {
+            $asc_str = $asc_str . "ASC";
+        } else if ($asc == 1) {
+            $asc_str = $asc_str . "DESC";
+        }
+        if ($type == 0) {//Title
+            $select->order('l.title' . ' ' . $asc_str);
+        } else if ($type == 1) {// time
+            $select->order('l.create_time' . ' ' . $asc_str);
+        } else if ($type == 2) {
+            $select->order('l.view' . ' ' . $asc_str);
+        } else if ($type == 3) {
+            $select->order('l.num_like' . ' ' . $asc_str);
+        }
         return $this->getAdapter()->fetchAll($select);
     }
 
-    public function findLessonWithTeacherByStudent($teacher, $studentId) {
+    public function findLessonWithTeacherByStudent($teacher, $studentId,  $type = 0, $asc = 0) {
         $select = $this->getAdapter()->select();
         $select->from('lesson')
                 ->joinInner('learn', 'lesson.id=learn.lesson_id', array('status'))
@@ -233,6 +278,21 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
                 ->where('learn.student_id=?', $studentId)
                 ->where("learn.register_time + INTERVAL " . $this->_lessonDeadline . " DAY >= NOW()")
                 ->joinInner('user', 'user.id=lesson.teacher_id', array("name"));
+        $asc_str = "";
+        if ($asc == 0) {
+            $asc_str = $asc_str . "ASC";
+        } else if ($asc == 1) {
+            $asc_str = $asc_str . "DESC";
+        }
+        if ($type == 0) {//Title
+            $select->order('l.title' . ' ' . $asc_str);
+        } else if ($type == 1) {// time
+            $select->order('l.create_time' . ' ' . $asc_str);
+        } else if ($type == 2) {
+            $select->order('l.view' . ' ' . $asc_str);
+        } else if ($type == 3) {
+            $select->order('l.num_like' . ' ' . $asc_str);
+        }
         return $this->getAdapter()->fetchAll($select);
     }
 

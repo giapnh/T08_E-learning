@@ -2,6 +2,47 @@
 @Controller: teacher
 @Action: index
 -->
+<script type="text/javascript">
+    $(document).ready(function(){
+        var params = {
+            <?php foreach ($this->params as $index => $param) { ?>
+                '<?php echo $index; ?>': '<?php echo $param; ?>',
+            <?php } ?>
+        }
+        
+        console.log(params);
+        for (i in params) {
+            console.log(params[i]);
+        }
+        var baseUrl = "<?php echo $this->baseUrl(); ?>/"+params.controller+"/"+params.action;
+        
+        delete(params.controller);
+        delete(params.action);
+        delete(params.module);
+        
+        $(".sort_asc_input").change(function(){
+            var link = baseUrl;
+            params.sort_asc = $(".sort_asc_input").val();
+            params.sort_type = $(".sort_type_input").val();
+            for (paramName in params) {
+                link += "/"+paramName+"/"+params[paramName];
+            }
+            console.log(link);
+            window.top.location = link;
+        });
+        $(".sort_type_input").change(function(){
+            var link = baseUrl;
+            params.sort_asc = $(".sort_asc_input").val();
+            params.sort_type = $(".sort_type_input").val();
+            for (paramName in params) {
+                link += "/"+paramName+"/"+params[paramName];
+            }
+            console.log(link);
+            window.top.location = link;
+        });
+    });
+</script>
+
 <center>
     <div class="content" style="background: #F0F0F0;">
         <div class="top_content clear banner">
@@ -48,22 +89,22 @@
                     </div>
                     <div style="margin-top: 10px; float: right;" id="sort_layout">
                         <div style="float: right; margin-left: 5px;">
-                            <select name="sort_asc" style="height: 30px;width: 70px;">;
-                                <option value="0" selected="<?php
+                            <select class="sort_asc_input" name="sort_asc" style="height: 30px;width: 70px;">;
+                                <option value="0" <?php
                                 if ($this->asc == 0) {
                                     echo "selected";
                                 }
-                                ?>">昇順</option>
-                                <option value="1" selected="<?php
+                                ?>>昇順</option>
+                                <option value="1" <?php
                                 if ($this->asc == 1) {
                                     echo "selected";
                                 }
-                                ?>">降順</option>
+                                ?>>降順</option>
                             </select>
                         </div>
                         <div style="float: right;">
                             <span style="color: black;">フィルタの種類:</span>
-                            <select name="sort_type" style="height: 30px;width: 90px;">;
+                            <select class="sort_type_input" name="sort_type" style="height: 30px;width: 90px;">;
                                 <option value="0" <?php if ($this->sortType == 0) { ?> selected <?php } ?>>タイトル</option>
                                 <option value="1" <?php if ($this->sortType == 1) { ?> selected <?php } ?>>時間</option>
                                 <option value="2" <?php if ($this->sortType == 2) { ?> selected <?php } ?>>ビュー数</option>
