@@ -70,6 +70,7 @@ class TeacherController extends IController {
         $type = $this->_request->getParam('sort_type');
         $asc = $this->_request->getParam('sort_asc');
         $sa = $this->_request->getParam('sa');
+        $filterAsc = $this->_request->getParam('filter_asc');
         
         if (!isset($type)) {
             $type = 0;
@@ -77,16 +78,18 @@ class TeacherController extends IController {
         if (!isset($asc)) {
             $asc = 0;
         }
+        if (!isset($filterAsc)) {
+            $filterAsc = 0;
+        }
         
         if ($get_type == null || $get_type == 1|| $tagId) {
             $tags = new Default_Model_Tag();
-            $this->view->tags = $tags->listAll();
+            $this->view->tags = $tags->listAll($filterAsc);
             $this->view->type = 1;
             $paginator = Zend_Paginator::factory($lessons->listWithTag($tagId, $type, $asc));
-            
         } else {
             $users = new Default_Model_Account();
-            $this->view->teachers = $users->listTeacher();
+            $this->view->teachers = $users->listTeacher($filterAsc);
             $this->view->type = 2;
             $paginator = Zend_Paginator::factory($lessons->listWithTeacher($teacherId, $type, $asc));
         }
@@ -113,11 +116,10 @@ class TeacherController extends IController {
         $auth = Zend_Auth::getInstance();
         $uInfo = $auth->getStorage()->read();
         $lessons = new Default_Model_Lesson();
+        $tags = new Default_Model_Tag();
+        
         $get_type = $this->_request->getParam('type');
         $tagId = $this->_request->getParam('tag_id');
-        $this->view->tagId = $tagId;
-        $tags = new Default_Model_Tag();
-        $this->view->tags = $tags->listAllOfTeacher($uInfo['id']);
         $sa = $this->_request->getParam('sa');
         $type = $this->_request->getParam('sort_type');
         $asc = $this->_request->getParam('sort_asc');
@@ -127,7 +129,12 @@ class TeacherController extends IController {
         if (!isset($asc)) {
             $asc = 0;
         }
-            
+        $filterAsc = $this->_request->getParam('filter_asc');
+        if (!isset($filterAsc)) {
+            $filterAsc = 0;
+        }
+        $this->view->tags = $tags->listAllOfTeacher($uInfo['id'], $filterAsc);
+        
         if ($tagId) {
             $paginator = Zend_Paginator::factory($lessons->listWithTagByTeacher($tagId, $uInfo['id'], $type, $asc));
         } else {
@@ -144,6 +151,7 @@ class TeacherController extends IController {
         $this->view->numpage = $paginator->count();
         $currentPage = $this->_request->getParam('page', 1);
         $paginator->setCurrentPageNumber($currentPage);
+        $this->view->tagId = $tagId;
         $this->view->data = $paginator;
         $this->view->sortType = $type;
         $this->view->asc = $asc;
