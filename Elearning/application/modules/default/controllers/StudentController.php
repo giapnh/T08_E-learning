@@ -42,6 +42,7 @@ class StudentController extends IController {
             	}
             }
         }
+        $this->initial();
     }
 
     /**
@@ -60,7 +61,7 @@ class StudentController extends IController {
      */
     public function indexAction() {
         // Check login
-        $this->initial();
+        
         $lessons = new Default_Model_Lesson();
         $this->view->params = $this->_request->getParams();
         $get_type = $this->_request->getParam('type');
@@ -115,7 +116,7 @@ class StudentController extends IController {
     }
 
     public function profileAction() {
-        $this->initial();
+        
     }
 
     /**
@@ -123,7 +124,7 @@ class StudentController extends IController {
      * @return type
      */
     public function profilechangeinfoAction() {
-        $this->initial();
+        
         $user = new Default_Model_Account();
         if ($this->_request->isPost()) {
             $data = $this->_request->getParams();
@@ -161,7 +162,7 @@ class StudentController extends IController {
     }
 
     public function deleteAccountAction() {
-        $this->initial();
+        
         if ($this->user) {
             $modelUser = new Default_Model_Account();
             $modelUser->deleteStudent($this->user["id"]);
@@ -175,7 +176,7 @@ class StudentController extends IController {
      * パスワードが変更機能アクション
      */
     public function changepasswordAction() {
-        $this->initial();
+        
         $user = new Default_Model_Account();
         if ($this->_request->isPost()) {
             $data = $this->_request->getParams();
@@ -232,7 +233,7 @@ class StudentController extends IController {
      * 秘密質問が変更機能アクション
      */
     public function changesecretqaAction() {
-        $this->initial();
+        
         $user = new Default_Model_Account();
         if ($this->_request->isPost()) {
             $data = $this->_request->getParams();
@@ -253,7 +254,7 @@ class StudentController extends IController {
     }
 
     public function lessondetailAction() {
-        $this->initial();
+        
         $lesson_id = $this->_request->getParam('lessonId');
         $userId = $this->currentUser["id"];
         //check locked
@@ -287,7 +288,7 @@ class StudentController extends IController {
     }
 
     public function registerlessonAction() {
-        $this->initial();
+        
         $lessonModel = new Default_Model_Lesson();
         $tagModel = new Default_Model_Tag();
         $learnModel = new Default_Model_Learn();
@@ -331,7 +332,7 @@ class StudentController extends IController {
     }
 
     public function mylessondetailAction() {
-        $this->initial();
+        
         $u = Zend_Auth::getInstance()->getStorage()->read();
         $lesson_id = $this->_request->getParam('lessonId');
         //check locked
@@ -387,7 +388,7 @@ class StudentController extends IController {
     }
 
     public function likeAction() {
-        $this->initial();
+        
         $u = Zend_Auth::getInstance()->getStorage()->read();
         if ($this->_request->isPost()) {
             $lesson_id = $this->_request->getParam('lesson_id');
@@ -401,7 +402,7 @@ class StudentController extends IController {
     }
 
     public function dislikeAction() {
-        $this->initial();
+        
         $u = Zend_Auth::getInstance()->getStorage()->read();
         if ($this->_request->isPost()) {
             $lesson_id = $this->_request->getParam('lesson_id');
@@ -415,7 +416,7 @@ class StudentController extends IController {
     }
 
     public function mylessonAction() {
-        $this->initial();
+        
         $auth = Zend_Auth::getInstance();
         $infoUser = $auth->getStorage()->read();
         $lessons = new Default_Model_Lesson();
@@ -485,7 +486,7 @@ class StudentController extends IController {
      * ファイル見る処理
      */
     public function fileAction() {
-        $this->initial();
+        
         $lessonModel = new Default_Model_Lesson();
         $lessonFileModel = new Default_Model_File();
         $filecommentModel = new Default_Model_FileComment();
@@ -570,7 +571,7 @@ class StudentController extends IController {
     }
 
     public function testResultAction() {
-        $this->initial();
+        
 
         $lessonId = $this->_request->getParam('lessonId');
         $fileId = $this->_request->getParam('file_id');
@@ -613,9 +614,20 @@ class StudentController extends IController {
 //        var_dump($total);
 //        die();
     }
-
+	public function reportLessonAction(){
+		if($this->_request->isPost()){
+			$lessonId = $this->_request->getParam("lesson_id");
+			$reason = $this->_request->getParam("reason");
+			if($lessonId){
+				$model = new Default_Model_LessonReport();
+				$model->addReport($this->currentUser['id'], $lessonId, $reason, 1);
+			}
+			$this->_redirect($_SERVER["HTTP_REFERER"]);
+		}
+		exit();
+	}
     public function updateResultAction() {
-        $this->initial();
+        
         $lessonModel = new Default_Model_Lesson();
         $fileModel = new Default_Model_File();
         $learnModel = new Default_Model_Learn();
@@ -648,7 +660,7 @@ class StudentController extends IController {
     }
 
     public function paymentAction() {
-        $this->initial();
+        
         //TODO
         $learnModel = new Default_Model_Learn();
         $paymentInfos = $learnModel->getStudentTotalPaymentInfo($this->user["id"]);
@@ -660,7 +672,7 @@ class StudentController extends IController {
 
     public function streamAction() {
         set_time_limit(0);
-        $this->initial();
+        
         $fileId = $this->_request->getParam("id");
         $lessonFileModel = new Default_Model_File();
         if ($lessonFileModel->checkUserCanSeeFile($this->currentUser["id"], $fileId)) {
