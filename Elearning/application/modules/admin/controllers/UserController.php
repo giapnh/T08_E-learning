@@ -57,7 +57,7 @@ class Admin_UserController extends IController {
         
         // ユーザリストと取る
         $userModel = new Admin_Model_User();
-        if (isset($status) && $status != 0) {
+        if (isset($status) && $status != 0 && $status != 5) {
             $usersPager = $userModel->getUsersByStatus($page, $limit, $orderBy, $order, $status);
             $this->view->users = $usersPager['users'];
             $this->view->orderBy = $orderBy;
@@ -109,6 +109,8 @@ class Admin_UserController extends IController {
         
         $userModel = new Admin_Model_User();
         $this->view->user = $userModel->getUser($userId);
+       	if(!$this->view->user)
+       		$this->_redirect("admin/user");
         $messages = $this->_helper->FlashMessenger->getMessages('updateInfoSuccess');
         $this->view->messages = $messages;
         $errorMessages = $this->_helper->FlashMessenger->getMessages('updateInfoError');
@@ -125,6 +127,8 @@ class Admin_UserController extends IController {
     
     	$userModel = new Admin_Model_User();
     	$this->view->user = $userModel->getUser($userId);
+    	if(!$this->view->user)
+    		$this->_redirect("admin/user");
     	$messages = $this->_helper->FlashMessenger->getMessages('updateInfoSuccess');
     	$this->view->messages = $messages;
     	$errorMessages = $this->_helper->FlashMessenger->getMessages('updateInfoError');

@@ -344,6 +344,10 @@ class StudentController extends IController {
 
         //$lessonModel->incrementView($lesson_id);
         $info = $lessonModel->findLessonById($lesson_id);
+        if(!$info)
+        	$this->redirect("student/index");
+        if($learnModel->isStudentLearn($u["id"], $lesson_id) )
+        	$this->redirect("student/index");
         $this->view->numComment = $commentModel->countCommentOnLesson($lesson_id);
         $this->view->comments = $commentModel->getAllCommentOfLesson($lesson_id);
         // Number of student join to this course

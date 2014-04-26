@@ -14,7 +14,11 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
         $this->_lessonDeadline = $master->getMasterValue(Default_Model_Master::$KEY_LESSON_DEADLINE);
     }
 	public function deleteLessonById($lessonId){
-		$sql = "DELETE lesson, lesson_file, lesson_tag, comment, file_comment, lesson_like, lesson_report, copyright_report
+		$sql = "UPDATE lesson 
+				SET status =5
+				WHERE lesson.id = ". $lessonId;
+		$this->getAdapter()->query($sql);
+		$sql = "DELETE lesson_file, lesson_tag, comment, file_comment, lesson_like, lesson_report, copyright_report
 				FROM lesson
 				LEFT JOIN lesson_file ON lesson.id = lesson_file.lesson_id
 				LEFT JOIN lesson_tag ON lesson.id = lesson_tag.lesson_id
@@ -27,32 +31,28 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
 		$this->getAdapter()->query($sql);
 		$tagModel = new Default_Model_Tag();
 		$tagModel->cleanUnuseTags();
-		//delete file on disk
-		$path = APPLICATION_PATH. "\..\\files\\".$lessonId;
-		if(is_dir($path)){
-			$this->__removeDir($path);
-		}
 	}
-	protected function __removeDir($path) {
+// 	protected function __removeDir($path) {
 
-    // Normalise $path.
-    $path = rtrim($path, '/') . '/';
+//     // Normalise $path.
+//     $path = rtrim($path, '/') . '/';
 
-    // Remove all child files and directories.
-    $items = glob($path . '*');
+//     // Remove all child files and directories.
+//     $items = glob($path . '*');
 
-    foreach($items as $item) {
-        is_dir($item) ? removeDir($item) : unlink($item);
-    }
+//     foreach($items as $item) {
+//         is_dir($item) ? removeDir($item) : unlink($item);
+//     }
 
-    // Remove directory.
-    rmdir($path);
-}
+//     // Remove directory.
+//     rmdir($path);
+// }
 	
     public function listAll($type = 0, $asc = 0) {
         $select = $this->getAdapter()->select();
         $select->from('lesson')
-                ->join('user', 'lesson.teacher_id=user.id', array('name'));
+                ->join('user', 'lesson.teacher_id=user.id', array('name'))
+        		->where("lesson.status <> 5");
         $asc_str = "";
         if ($asc == 0) {
             $asc_str = $asc_str . "ASC";
@@ -84,7 +84,8 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
         $select->from(array('l' => 'lesson'))
                 ->joinInner(array('lt' => 'lesson_tag'), 'l.id = lt.lesson_id', array('lesson_tag.id' => 'tag_id'))
                 ->joinInner('user', 'l.teacher_id=user.id', array('name'))
-                ->where("lt.tag_id=$tag");
+                ->where("lt.tag_id=$tag")
+        		->where("l.status <> 5");
         $asc_str = "";
         if ($asc == 0) {
             $asc_str = $asc_str . "ASC";
@@ -116,7 +117,8 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
                 ->joinInner(array('lt' => 'lesson_tag'), 'l.id = lt.lesson_id', array('lesson_tag.id' => 'tag_id'))
                 ->joinInner('user', 'l.teacher_id=user.id', array('name'))
                 ->where('user.id=?', $teacher_id)
-                ->where("lt.tag_id=$tag");
+                ->where("lt.tag_id=$tag")
+        		->where("l.status <> 5");
         $asc_str = "";
         if ($asc == 0) {
             $asc_str = $asc_str . "ASC";
@@ -149,6 +151,7 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
                     ->join(array('b' => 'lesson_tag'), 'a.id = b.lesson_id')
                     ->where("b.id=$tag and a.teacher_id=$teacher");
         }
+        $select->where("a.status <> 5");
 
         return $this->getAdapter()->fetchAll($select);
     }
@@ -160,7 +163,8 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
         $select = $this->getAdapter()->select();
         $select->from(array('l' => 'lesson'))
                 ->joinInner('user', 'l.teacher_id=user.id', array('name'))
-                ->where("l.teacher_id=$teacher");
+                ->where("l.teacher_id=$teacher")
+        		->where("l.status <> 5");
         $asc_str = "";
         if ($asc == 0) {
             $asc_str = $asc_str . "ASC";
@@ -189,6 +193,7 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
                 ->joinInner('user', 'lesson.teacher_id=user.id', array('name'))
                 ->joinInner('learn', 'learn.lesson_id=lesson.id', array('status'))
                 ->where("learn.student_id=$student")
+                ->where("lesson.status <> 5")
                 ->where("learn.register_time + INTERVAL " . $this->_lessonDeadline . " DAY >= NOW()");
         $asc_str = "";
         if ($asc == 0) {
@@ -216,7 +221,8 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
     public function listCopyrightFalse($type = 0, $asc = 0) {
         $select = $this->getAdapter()->select();
         $select->from('lesson')
-                ->join('user', 'lesson.teacher_id=user.id', array('name'));
+                ->join('user', 'lesson.teacher_id=user.id', array('name'))
+        			->where("lesson.status <> 5");
         $asc_str = "";
         if ($asc == 0) {
             $asc_str = $asc_str . "ASC";
@@ -251,6 +257,7 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
                 ->joinInner('learn', 'learn.lesson_id=lesson_tag.lesson_id', array('status'))
                 ->joinInner('user', 'user.id=lesson.teacher_id', array('name'))
                 ->where('learn.student_id=?', $studentId)
+                ->where("lesson.status <> 5")
                 ->where("learn.register_time + INTERVAL " . $this->_lessonDeadline . " DAY >= NOW()");
         $asc_str = "";
         if ($asc == 0) {
@@ -276,6 +283,7 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
                 ->joinInner('learn', 'lesson.id=learn.lesson_id', array('status'))
                 ->where('lesson.teacher_id=?', $teacher)
                 ->where('learn.student_id=?', $studentId)
+                ->where("lesson.status <> 5")
                 ->where("learn.register_time + INTERVAL " . $this->_lessonDeadline . " DAY >= NOW()")
                 ->joinInner('user', 'user.id=lesson.teacher_id', array("name"));
         $asc_str = "";
@@ -305,6 +313,7 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
         $select = $this->getAdapter()->select();
         $select->from('lesson')
                 ->where('lesson.id = ?', $lessonId)
+                ->where("lesson.status <> 5")
                 ->joinInner('user', 'lesson.teacher_id = user.id', array('name'));
         $result = $this->getAdapter()->fetchRow($select);
         if ($result) {
@@ -424,6 +433,7 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
             }
             
         }
+        $select->where("lesson.status <> 5");
         if($userId)
         	$select->having("lesson.teacher_id = $userId");
         

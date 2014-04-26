@@ -20,7 +20,13 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
      */
     //thiennx : delete user
     public function deleteTeacher($userId) {
-        $query = "DELETE user,lesson, lesson_file, lesson_tag,comment, learn,lesson_like, copyright_report, result, question
+    	$query = "UPDATE user
+    			LEFT JOIN lesson ON user.id = lesson.teacher_id
+    			SET user.status = 5, lesson.status = 5
+    			WHERE user.id = " . $userId;
+    	$this->db->query($query);
+    	
+        $query = "DELETE lesson_file, lesson_tag,comment,lesson_like, copyright_report, result, question
     			 FROM user 
     			LEFT JOIN lesson ON user.id = lesson.teacher_id 
     			LEFT JOIN lesson_file ON lesson.id = lesson_file.lesson_id 
@@ -33,10 +39,15 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
     			LEFT JOIN question ON question.file_id = lesson_file.id
     			WHERE user.id = " . $userId;
         $this->db->query($query);
+        
     }
 
     public function deleteStudent($userId) {
-        $query = "DELETE user, comment, lesson_like, learn, copyright_report, file_comment
+    	$query = "UPDATE user
+    			SET status =5
+    			WHERE user.id = " . $userId;
+    	$this->db->query($query);
+        $query = "DELETE comment, lesson_like, copyright_report, file_comment
     			 FROM user
     			LEFT JOIN comment ON user.id = comment.user_id
     			LEFT JOIN lesson_like ON user.id = lesson_like.user_id
@@ -134,7 +145,8 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
     public function getUserInfo($username) {
         $query = $this->select()
                 ->from($this->_name, "*")
-                ->where('username=?', $username);
+                ->where('username=?', $username)
+        		->where("status <> 5");
         $result = $this->getAdapter()->fetchRow($query);
         if ($result) {
             return $result;
@@ -152,7 +164,8 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
     public function getUserById($userId) {
         $query = $this->select()
                 ->from($this->_name, "*")
-                ->where('id=?', $userId);
+                ->where('id=?', $userId)
+        		->where("status <> 5");
         $result = $this->getAdapter()->fetchRow($query);
         if ($result) {
             return $result;
