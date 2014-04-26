@@ -191,11 +191,17 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
      * 先生リストが取る
      * @return list 先生リスト
      */
-    public function listTeacher() {
+    public function listTeacher($filterAsc = 0) {
+        if ($filterAsc == 0) {
+            $asc_str = "ASC";
+        } else if ($filterAsc == 1) {
+            $asc_str = "DESC";
+        }
         $query = $this->select()
                 ->from($this->_name, "*")
                 ->where('status=?', "1")
-                ->where('role=?', "2");
+                ->where('role=?', "2")
+                ->order('name' . ' ' . $asc_str);
         return $this->getAdapter()->fetchAll($query);
     }
 

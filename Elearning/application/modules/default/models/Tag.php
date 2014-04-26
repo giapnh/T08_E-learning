@@ -23,24 +23,41 @@ class Default_Model_Tag extends Zend_Db_Table_Abstract {
             return false;
     }
 
-    public function listAll() {
-        $result = $this->fetchAll();
+    public function listAll($filterAsc=0) {
+        $select = $this->getAdapter()->select();
+        $asc_str = "";
+        if ($filterAsc == 0) {
+            $asc_str = "ASC";
+        } else if ($filterAsc == 1) {
+            $asc_str = "DESC";
+        }
+        $select->from($this->_name);
+        $select->order('tag_name' . ' ' . $asc_str);
+        $result = $this->getAdapter()->fetchAll($select);
         if ($result) {
-            return $result->toArray();
+            return $result;
         } else {
             return array();
         }
     }
 
-    public function listAllOfTeacher($teacherId) {
+    public function listAllOfTeacher($teacherId, $filterAsc=0) {
         $select = $this->getAdapter()->select();
         $select->from(array('t' => 'tag'))
                 ->joinInner(array('lt' => 'lesson_tag'), 't.id=lt.tag_id', NULL)
-                ->joinInner(array('l' => 'lesson'), 'l.lesson_id = lt.lesson_id')
+                ->joinInner(array('l' => 'lesson'), 'l.id = lt.lesson_id')
                 ->joinInner(array('u' => 'user'), 'l.teacher_id = u.id')
                 ->where('u.id=?', $teacherId)
                 ->group('t.id');
-        return $this->fetchAll()->toArray();
+        $asc_str = "";
+        if ($filterAsc == 0) {
+            $asc_str = "ASC";
+        } else if ($filterAsc == 1) {
+            $asc_str = "DESC";
+        }
+        $select->order('tag_name' . ' ' . $asc_str);
+        $result = $this->getAdapter()->fetchAll($select);
+        return $result;
     }
 
     public function getAllTagOfLesson($lessonId) {

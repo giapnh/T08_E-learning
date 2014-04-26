@@ -77,7 +77,7 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
 
     public function listWithTag($tag, $type = 0, $asc = 0) {
         if ($tag == 0) {
-            return $this->listAll();
+            return $this->listAll($type, $asc);
         }
         
         $select = $this->getAdapter()->select();
@@ -110,7 +110,7 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
 
     public function listWithTagByTeacher($tag, $teacher_id, $type = 0, $asc = 0) {
         if ($tag == 0) {
-            return $this->listAll();
+            return $this->listAll($type, $asc);
         }
         $select = $this->getAdapter()->select();
         $select->from(array('l' => 'lesson'))
@@ -158,7 +158,7 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
 
     public function listWithTeacher($teacher, $type = 0, $asc = 0) {
         if ($teacher == 0) {
-            return $this->listAll();
+            return $this->listAll($type, $asc);
         }
         $select = $this->getAdapter()->select();
         $select->from(array('l' => 'lesson'))
@@ -202,13 +202,13 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
             $asc_str = $asc_str . "DESC";
         }
         if ($type == 0) {//Title
-            $select->order('l.title' . ' ' . $asc_str);
+            $select->order('lesson.title' . ' ' . $asc_str);
         } else if ($type == 1) {// time
-            $select->order('l.create_time' . ' ' . $asc_str);
+            $select->order('lesson.create_time' . ' ' . $asc_str);
         } else if ($type == 2) {
-            $select->order('l.view' . ' ' . $asc_str);
+            $select->order('lesson.view' . ' ' . $asc_str);
         } else if ($type == 3) {
-            $select->order('l.num_like' . ' ' . $asc_str);
+            $select->order('lesson.num_like' . ' ' . $asc_str);
         }
         return $this->getAdapter()->fetchAll($select);
     }
@@ -266,13 +266,13 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
             $asc_str = $asc_str . "DESC";
         }
         if ($type == 0) {//Title
-            $select->order('l.title' . ' ' . $asc_str);
+            $select->order('lesson.title' . ' ' . $asc_str);
         } else if ($type == 1) {// time
-            $select->order('l.create_time' . ' ' . $asc_str);
+            $select->order('lesson.create_time' . ' ' . $asc_str);
         } else if ($type == 2) {
-            $select->order('l.view' . ' ' . $asc_str);
+            $select->order('lesson.view' . ' ' . $asc_str);
         } else if ($type == 3) {
-            $select->order('l.num_like' . ' ' . $asc_str);
+            $select->order('lesson.num_like' . ' ' . $asc_str);
         }
         return $this->getAdapter()->fetchAll($select);
     }
@@ -293,13 +293,13 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
             $asc_str = $asc_str . "DESC";
         }
         if ($type == 0) {//Title
-            $select->order('l.title' . ' ' . $asc_str);
+            $select->order('lesson.title' . ' ' . $asc_str);
         } else if ($type == 1) {// time
-            $select->order('l.create_time' . ' ' . $asc_str);
+            $select->order('lesson.create_time' . ' ' . $asc_str);
         } else if ($type == 2) {
-            $select->order('l.view' . ' ' . $asc_str);
+            $select->order('lesson.view' . ' ' . $asc_str);
         } else if ($type == 3) {
-            $select->order('l.num_like' . ' ' . $asc_str);
+            $select->order('lesson.num_like' . ' ' . $asc_str);
         }
         return $this->getAdapter()->fetchAll($select);
     }
