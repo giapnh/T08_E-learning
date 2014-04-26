@@ -1,5 +1,21 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
+<style type="text/css">
+    .filter-title {
+        text-decoration: underline;
+        background-size: 30px 30px;
+        background-repeat: no-repeat;
+        cursor: pointer;
+    }
+    .filter-title-up {
+        background-image: url(<?php echo $this->baseUrl()."/public/images/sort_up_red.png"; ?>);
+        background-position: 127px 6px;
+    }
+    .filter-title-down {
+        background-image: url(<?php echo $this->baseUrl()."/public/images/sort_down_red.png"; ?>);
+        background-position: 127px -3px;
+    }
+</style>
 <script type="text/javascript">
     $(document).ready(function(){
         var params = {
@@ -38,22 +54,32 @@
             console.log(link);
             window.top.location = link;
         });
+        
+        params.filter_asc = <?php 
+            if(!isset($this->params['filter_asc'])) {
+                echo "0";
+            } else if ($this->params['filter_asc'] == 0) {
+                echo "1";
+            } else {
+                echo "0";
+            }
+        ?>;
+        if (params.filter_asc == 0) {
+            $(".filter-title").addClass('filter-title-up');
+            $(".filter-title").removeClass('filter-title-down');
+        } else {
+            $(".filter-title").addClass('filter-title-down');
+            $(".filter-title").removeClass('filter-title-up');
+        }
         $(".filter-title").click(function(){
             var link = baseUrl;
-            params.filter_asc = <?php 
-                if(!isset($this->params['filter_asc'])) {
-                    echo "0";
-                } else if ($this->params['filter_asc'] == 0) {
-                    echo "1";
-                } else {
-                    echo "0";
-                }
-            ?>;
+            
             for (paramName in params) {
                 link += "/"+paramName+"/"+params[paramName];
             }
             window.top.location = link;
         });
+        
     });
 </script>
 
