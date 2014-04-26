@@ -43,10 +43,10 @@ class Default_Model_Tag extends Zend_Db_Table_Abstract {
 
     public function listAllOfTeacher($teacherId, $filterAsc=0) {
         $select = $this->getAdapter()->select();
-        $select->from(array('t' => 'tag'))
-                ->joinInner(array('lt' => 'lesson_tag'), 't.id=lt.tag_id', NULL)
-                ->joinInner(array('l' => 'lesson'), 'l.id = lt.lesson_id')
-                ->joinInner(array('u' => 'user'), 'l.teacher_id = u.id')
+        $select->from(array('t' => 'tag'), array('id'=>"t.id", "tag_name"))
+                ->joinInner(array('lt' => 'lesson_tag'), 't.id=lt.tag_id', array())
+                ->joinInner(array('l' => 'lesson'), 'l.id = lt.lesson_id', array())
+                ->joinInner(array('u' => 'user'), 'l.teacher_id = u.id', array())
                 ->where('u.id=?', $teacherId)
                 ->group('t.id');
         $asc_str = "";
@@ -55,7 +55,7 @@ class Default_Model_Tag extends Zend_Db_Table_Abstract {
         } else if ($filterAsc == 1) {
             $asc_str = "DESC";
         }
-        $select->order('tag_name' . ' ' . $asc_str);
+        $select->order('t.tag_name' . ' ' . $asc_str);
         $result = $this->getAdapter()->fetchAll($select);
         return $result;
     }
