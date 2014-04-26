@@ -372,13 +372,20 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
         $this->update($update_data, $where);
     }
 
-    public function listTeacherByStudent($student) {
+    public function listTeacherByStudent($student, $filterAsc=0) {
         $select = $this->getAdapter()->select();
         $select->from('user')
                 ->joinInner('lesson', 'lesson.teacher_id=user.id', NULL)
                 ->joinInner('learn', 'learn.lesson_id=lesson.id', NULL)
                 ->where('learn.student_id=?', $student)
                 ->group('user.id');
+        $asc_str = "";
+        if ($filterAsc == 0) {
+            $asc_str = "ASC";
+        } else if ($filterAsc == 1) {
+            $asc_str = "DESC";
+        }
+        $select->order('user.name' . ' ' . $asc_str);
         return $this->getAdapter()->fetchAll($select);
     }
 

@@ -70,23 +70,27 @@ class StudentController extends IController {
         $sa = $this->_request->getParam('sa');
         $type = $this->_request->getParam('sort_type');
         $asc = $this->_request->getParam('sort_asc');
+        $filterAsc = $this->_request->getParam('filter_asc');
         if (!isset($type)) {
             $type = 0;
         }
         if (!isset($asc)) {
             $asc = 0;
         }
+        if (!isset($filterAsc)) {
+            $filterAsc = 0;
+        }
         
         $this->view->tagId = $tagId;
         $this->view->teacherId = $teacherId;
         if ($get_type == null || $get_type == 1) {
             $tags = new Default_Model_Tag();
-            $this->view->tags = $tags->listAll();
+            $this->view->tags = $tags->listAll($filterAsc);
             $this->view->type = 1;
             $lessonsList = $lessons->listWithTag($tagId, $type, $asc);
         } else {
             $users = new Default_Model_Account();
-            $this->view->teachers = $users->listTeacher();
+            $this->view->teachers = $users->listTeacher($filterAsc);
             $this->view->type = 2;
             $lessonsList = $lessons->listWithTeacher($teacherId, $type, $asc);
         }
@@ -421,10 +425,20 @@ class StudentController extends IController {
         $sa = $this->getParam('sa');
         $type = $this->_request->getParam('sort_type');
         $asc = $this->_request->getParam('sort_asc');
+        $filterAsc = $this->_request->getParam('filter_asc');
+        if (!isset($type)) {
+            $type = 0;
+        }
+        if (!isset($asc)) {
+            $asc = 0;
+        }
+        if (!isset($filterAsc)) {
+            $filterAsc = 0;
+        }
         
         if ($get_type == null || $get_type == 1) {
             $tags = new Default_Model_Tag();
-            $this->view->tags = $tags->listAllTagByStudent($infoUser['id']);
+            $this->view->tags = $tags->listAllTagByStudent($infoUser['id'], $filterAsc);
             $this->view->type = 1;
             if ($tagId == 0) {
                 $lessonsList = $lessons->listAllByStudent($infoUser['id'], $type, $asc);
@@ -433,7 +447,7 @@ class StudentController extends IController {
             }
         } else {
             $account = new Default_Model_Account();
-            $this->view->teachers = $account->listTeacherByStudent($infoUser['id']);
+            $this->view->teachers = $account->listTeacherByStudent($infoUser['id'], $filterAsc);
             $this->view->type = 2;
             $lessons = new Default_Model_Lesson();
             if ($teacherId == 0) {
@@ -460,10 +474,11 @@ class StudentController extends IController {
         $currentPage = $this->_request->getParam('page', 1);
         $paginator->setCurrentPageNumber($currentPage);
         $this->view->data = $paginator;
-            
         $this->view->tagId = $tagId;
         $this->view->teacherId = $teacherId;
         $this->view->params = $this->_request->getParams();
+        $this->view->sortType = $type;
+        $this->view->asc = $asc;
     }
 
     /**

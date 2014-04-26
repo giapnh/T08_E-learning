@@ -69,7 +69,7 @@ class Default_Model_Tag extends Zend_Db_Table_Abstract {
         return $this->getAdapter()->fetchAll($select);
     }
 
-    public function listAllTagByStudent($studentId) {
+    public function listAllTagByStudent($studentId, $filterAsc=0) {
         $select = $this->getAdapter()->select();
         $select->from(array('t' => 'tag'), "*")
                 ->joinInner('lesson_tag', 'lesson_tag.tag_id = t.id', NULL)
@@ -78,6 +78,13 @@ class Default_Model_Tag extends Zend_Db_Table_Abstract {
                 ->joinInner('user', 'user.id = learn.student_id', NULL)
                 ->where('user.id = ?', $studentId)
                 ->group('t.id');
+        $asc_str = "";
+        if ($filterAsc == 0) {
+            $asc_str = "ASC";
+        } else if ($filterAsc == 1) {
+            $asc_str = "DESC";
+        }
+        $select->order('t.tag_name' . ' ' . $asc_str);
         return $this->getAdapter()->fetchAll($select);
     }
 
