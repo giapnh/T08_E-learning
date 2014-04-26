@@ -22,7 +22,9 @@ class TeacherController extends IController {
         } else if (time() - $_SESSION['CREATED'] > $master->getMasterValue(Default_Model_Master::$KEY_SESSION_TIME)) {
             // １時間後自動にログアウトしています。
             session_regenerate_id(true);
-            $_SESSION['CREATED'] = time();
+            //thiennx : cho nay Giap lam kieu gi day ko ro, phai unset session di chu
+            //$_SESSION['CREATED'] = time();
+            unset($_SESSION["CREATED"]);
             $auth->clearIdentity();
             $this->_redirect('user/login');
             return;
