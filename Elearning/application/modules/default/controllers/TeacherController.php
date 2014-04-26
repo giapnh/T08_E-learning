@@ -699,6 +699,47 @@ class TeacherController extends IController {
      * 授業の学生をロック
      * @param type $name Description
      */
+    public function lockStudentLearnAction(){
+    	$this->initial();
+    	$modelUser = new Default_Model_Account();
+    	$students = $modelUser->listStudentForLock();
+    	$this->view->students = $students;
+    	$lessonId = $this->_request->getParam("lesson_id");
+    	if(!$lessonId)
+    		$this->redirect("teacher/myLesson");
+    	$this->view->lessonId = $lessonId;
+    }
+    public function lockStudentLearnLessonAction() {
+    	$this->initial();
+    	$modelLock = new Default_Model_Lock();
+    	$lessonId = $this->_request->getParam('lesson_id');
+    	$studentId= $this->_request->getParam("id");
+    	$lock = $modelLock->getByStudentAndLesson($studentId, $lessonId);
+    	if($lock){
+    		$modelLock->update(array("status" => "1"), "id=". $lock["id"]);
+    	}
+    	else{
+    		$modelLock->insert(array("student_id" => $studentId, "lesson_id" => $lessonId,"status" => 1));
+    	}
+    	$this->_redirect("teacher/lock-student-learn?lesson_id=$lessonId");
+    }
+    
+    /**
+     * 授業の学生をロック
+     * @param type $name Description
+     */
+    public function unlockStudentLearnLessonAction() {
+    	$this->initial();
+    	$modelLock = new Default_Model_Lock();
+    	$lessonId = $this->_request->getParam('lesson_id');
+    	$studentId= $this->_request->getParam("id");
+    	$lock = $modelLock->getByStudentAndLesson($studentId, $lessonId);
+    	if($lock){
+    		$modelLock->update(array("status" => "0"), "id=". $lock["id"]);
+    	}
+    	$this->_redirect("teacher/lock-student-learn?lesson_id=$lessonId");
+    	    }
+    
     public function lockStudentAction() {
         $this->initial();
         $modelLearn = new Default_Model_Learn();

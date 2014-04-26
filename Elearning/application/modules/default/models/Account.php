@@ -204,12 +204,20 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
      * @return list 学生リスト
      */
     public function listStudent() {
-        $query = $this->select()
+        $query = $this->getAdapter()->select()
                 ->from($this->_name, "username")
-                ->where('role=?', "1");
-        return $this->getAdapter()->fetchAll($query)->toArray();
+                ->where('role=?', "1")
+        		->where("status <> 5");
+        return $this->getAdapter()->fetchAll($query);
     }
-
+	public function listStudentForLock(){
+		$query = $this->getAdapter()->select()
+                ->from($this->_name, array("username", "name", 's_id' => "id"))
+                ->joinLeft("lesson_lock", "user.id = lesson_lock.student_id AND lesson_lock.status = 1")
+                ->where('role=?', "1")
+        		->where("user.status <> 5");
+        return $this->getAdapter()->fetchAll($query);
+	}
     public function listAll() {
         return $this->fetchAll()->toArray();
     }

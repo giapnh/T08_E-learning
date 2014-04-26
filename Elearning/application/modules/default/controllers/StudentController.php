@@ -83,18 +83,23 @@ class StudentController extends IController {
             $tags = new Default_Model_Tag();
             $this->view->tags = $tags->listAll();
             $this->view->type = 1;
-            $paginator = Zend_Paginator::factory($lessons->listWithTag($tagId, $type, $asc));
+            $lessonsList = $lessons->listWithTag($tagId, $type, $asc);
         } else {
             $users = new Default_Model_Account();
             $this->view->teachers = $users->listTeacher();
             $this->view->type = 2;
-            $paginator = Zend_Paginator::factory($lessons->listWithTeacher($teacherId, $type, $asc));
+            $lessonsList = $lessons->listWithTeacher($teacherId, $type, $asc);
         }
 
         if (isset($sa)) {
-            $paginator = Zend_Paginator::factory($lessons->findByKeyword($keyword, $type, $asc));
+            $lessonsList = $lessons->findByKeyword($keyword, $type, $asc);
         }
-        
+        $modelLock = new Default_Model_Lock();
+        foreach ($lessonsList as $k => $l){
+        	if($modelLock->getByStudentAndLesson($this->currentUser["id"], $l["id"], true))
+        		unset($lessonsList[$k]);
+        }
+        $paginator = Zend_Paginator::factory($lessonsList);
         $paginator->setItemCountPerPage($this->ITEMS_PER_PAGE);
         $paginator->setPageRange(3);
         $this->view->numpage = $paginator->count();
@@ -247,6 +252,10 @@ class StudentController extends IController {
         $this->initial();
         $lesson_id = $this->_request->getParam('lessonId');
         $userId = $this->currentUser["id"];
+        //check locked
+        $modelLock = new Default_Model_Lock();
+        if($modelLock->getByStudentAndLesson($userId, $lesson_id,true))
+        	$this->_redirect("student/index");
         $lessonModel = new Default_Model_Lesson();
         $tagModel = new Default_Model_Tag();
         $learnModel = new Default_Model_Learn();
@@ -286,6 +295,11 @@ class StudentController extends IController {
             $do = $this->_request->getParam('do');
             $this->view->do = $do;
             $lesson_id = $this->_request->getParam('lessonId');
+            //check locked
+            $modelLock = new Default_Model_Lock();
+            if($modelLock->getByStudentAndLesson($this->currentUser["id"], $lesson_id,true))
+            	$this->_redirect("student/index");
+            
             if ($do == 'view') {
                 $info = $lessonModel->findLessonById($lesson_id);
                 // Number of student join to this course
@@ -315,6 +329,12 @@ class StudentController extends IController {
     public function mylessondetailAction() {
         $this->initial();
         $u = Zend_Auth::getInstance()->getStorage()->read();
+        $lesson_id = $this->_request->getParam('lessonId');
+        //check locked
+        $modelLock = new Default_Model_Lock();
+        if($modelLock->getByStudentAndLesson($u["id"], $lesson_id,true))
+        	$this->_redirect("student/index");
+         
         $lessonModel = new Default_Model_Lesson();
         $tagModel = new Default_Model_Tag();
         $learnModel = new Default_Model_Learn();
