@@ -297,7 +297,7 @@
                     if (data.error != undefined) {
                         alert("レポート失敗しました");
                     } else {
-                        $(".report-num").text(data.reports_num+"レポート");
+//                        $(".report-num").text(data.reports_num+"レポート");
                         $(".report-input").val("");
                         renderReport(data.id, data.username, data.reason);
                     }
@@ -419,9 +419,7 @@
         <hr class="clear">
         <div class="report-status">
             <img src="<?php echo $this->baseUrl()."/public/images/lesson_report.png"; ?>">
-            <span class="report-num" style='color: red;'><?php
-                echo count($this->reports);
-            ?>レポート</span>
+            <span class="report-num" style='color: red;'>授業レポート</span>
         </div>
         <?php
             foreach ($this->reports as $report) {

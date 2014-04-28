@@ -62,7 +62,7 @@ class Default_Model_LessonReport extends Zend_Db_Table_Abstract {
 		->from($this->_name)
 		->join("user", $this->_name.".user_id = user.id", array("username"))
 		->where($this->_name.".status = 1")
-		->where($this->_name.".role = 2")
+		->where($this->_name.".role = 2 OR ".$this->_name.".role = 1")
 		->where("lesson_id = ?", $lessonId);
 		return $this->getAdapter()->fetchAll($select);
 	}
