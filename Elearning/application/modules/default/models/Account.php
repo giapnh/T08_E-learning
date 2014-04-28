@@ -26,7 +26,7 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
     			WHERE user.id = " . $userId;
     	$this->db->query($query);
     	
-        $query = "DELETE lesson_file, lesson_tag,comment,lesson_like, copyright_report, result, question
+        $query = "DELETE lesson_report, lesson_file, lesson_tag,comment,lesson_like, copyright_report, result, question
     			 FROM user 
     			LEFT JOIN lesson ON user.id = lesson.teacher_id 
     			LEFT JOIN lesson_file ON lesson.id = lesson_file.lesson_id 
@@ -37,6 +37,7 @@ class Default_Model_Account extends Zend_Db_Table_Abstract {
     			LEFT JOIN copyright_report ON lesson_file.id = copyright_report.file_id 
     			LEFT JOIN result ON result.learn_id = learn.id
     			LEFT JOIN question ON question.file_id = lesson_file.id
+        		LEFT JOIN lesson_report ON lesson_report.lesson_id = lesson.id
     			WHERE user.id = " . $userId;
         $this->db->query($query);
         

@@ -151,7 +151,8 @@ class Admin_LessonController extends IController {
         //
         $lessonId = $this->_request->getParam('lesson_id');
         $currentFileId = $this->_request->getParam('file_id');
-        
+        if(!$curreantFileId)
+        	$currentFileId = 0;
         //
         $currentFile = $lessonFileModel->findFileById($currentFileId);
         $lessonInfo = $lessonModel->findLessonById($lessonId);
@@ -163,6 +164,7 @@ class Admin_LessonController extends IController {
                 $currentFile = $files[0];
             } else {
                 $this->view->fileError = "ファイルがない";
+                $this->redirect("admin/lesson/lesson?do=view&lesson_id=".$lessonId);
             }
         }
         $reports = $reportModel->getReport($currentFile['id']);

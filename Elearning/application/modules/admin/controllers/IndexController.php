@@ -71,7 +71,7 @@ class Admin_IndexController extends IController {
     	$this->view->rate = $master[Default_Model_Master::$KEY_TEACHER_FEE_RATE];
     	if(isset($param["download"])){
     		// create TSV file
-    	$filename = "/public/TSV/file-".date("Y-m-d-H-i-s", time()).".tsv";
+    	$filename = "/public/TSV/ELS-UBT-".date("Y-m-d-H-i-s", time()).".tsv";
    		$path = APPLICATION_PATH."/..".$filename;
    		$file=fopen($path, "w");
    		$write=fwrite($file,"ELS-UBT-GWK54M78\t");
@@ -83,7 +83,7 @@ class Admin_IndexController extends IController {
    			$write=fwrite($file,$info["username"]."\t".$info["name"]."\t".($info["total"] * $this->view->price)."\t".$info["address"]."\t".$info["phone"]."\t18\t".$info["bank_account"]. "\r\n");
    		endforeach;
    		foreach ($teacherPaymentInfos as $info):
-   			$write=fwrite($file,$info["username"]."\t".$info["name"]."\t".($info["total"] * $this->view->price *0.6 )."\t".$info["address"]."\t".$info["phone"]."\t54\t".$info["bank_account"]. "\r\n");
+   			$write=fwrite($file,$info["username"]."\t".$info["name"]."\t".($info["total"] * $this->view->price *$this->view->rate )."\t".$info["address"]."\t".$info["phone"]."\t54\t".$info["bank_account"]. "\r\n");
    		endforeach;
    		$write=fwrite($file,"END___END___END\t");
    		$write=fwrite($file,$param["year"]."\t".$param["month"]);

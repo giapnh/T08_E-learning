@@ -514,6 +514,11 @@ class StudentController extends IController {
         
         //ロックチェックする
         // ファイル情報を取る
+        $lesson = $lessonModel->findLessonById($lessonId);
+        if(!$lesson){
+        	$this->redirect('student/index');
+        	return;
+        }
         $files = $lessonFileModel->getFileByLesson($lessonId);
         if (!$currentFileId) {
             if (count($files) > 0) {
