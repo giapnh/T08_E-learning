@@ -49,6 +49,120 @@
     .lesson-title a {
         color: white;
     }
+    .file-title {
+        font-weight: bolder; 
+        color: white; 
+        padding-top: 3px;
+        font-size: 16px; 
+        background: #51A007; 
+        width: 100%;
+        min-height: 23px;
+    }
+    .file-title a {
+        color: white;
+    }
+    .files-list {
+        background: yellowgreen; 
+        border-radius: 4px; 
+        color: white; 
+        margin-top: 3px;
+        padding-top: 5px;
+        height: 500px;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+    .file-container {
+        width: 750px;
+        height: 614px;
+    }
+    .lesson-teacher {
+        font-style: italic;
+        padding: 5px;
+    }
+    .lesson-created {
+        color: gray;
+        padding: 5px;
+    }
+    .file-name {
+        font-weight: bolder; 
+        color: white; 
+        padding-top: 3px; 
+        padding-bottom: 3px; 
+        font-size: 16px; 
+        background: #51A007;
+    }
+    .comment-container {
+        width: 70%;
+        text-align: left;
+        background: #DFF2F8; 
+        margin-left: 100px; 
+        margin-top: 5px; 
+        margin-bottom: 5px;
+        box-shadow: 2px 2px 2px; 
+        border-style: solid; 
+        border-width: thin; 
+        border-radius: 1px;
+    }
+    .comment-role {
+        padding-left: 20px;
+        padding-top: 10px; 
+        font-weight: bolder; 
+        font-size: 16px; 
+        color: #7E3500
+    }
+    .comment-time {
+        padding-left: 50px; 
+        font-size: 12px; 
+        color: #A66322; 
+        font-style: italic;
+    }
+    .comment-content {
+        padding-left: 50px; 
+        font-size: 14px;
+    }
+    .comment-form {
+        width: 70%;
+        text-align: left;
+        background: #DFF2F8; 
+        margin-left: 100px; 
+        margin-top: 5px; 
+        margin-bottom: 5px;
+        box-shadow: 2px 2px 2px; 
+        border-style: solid; 
+        border-width: thin; 
+        border-radius: 1px;
+    }
+    .error-msg {
+        color: red;
+        padding: 5px;
+        font-size: 16px;
+        font-weight: bold;
+    }
+    .submit-btn {
+        margin: 10px;
+    }
+    .question {
+        color: blue;
+        font-weight: bold;
+    }
+    .result-true {
+        background-image: url("<?php echo $this->baseUrl()."/public/images/nought.png"; ?>");
+        background-size: 25px 25px;
+        background-repeat: no-repeat;
+        padding: 5px;
+        padding-left: 25px;
+        color: blue;
+        display: none;
+    }
+    .result-false {
+        background-image: url("<?php echo $this->baseUrl()."/public/images/cross.png"; ?>");
+        background-size: 25px 25px;
+        background-repeat: no-repeat;
+        padding: 5px;
+        padding-left: 25px;
+        color: red;
+        display: none;
+    }
 </style>
 <center>
     <div class="content" style="background: #F0F0F0;">

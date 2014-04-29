@@ -18,6 +18,9 @@
     #lesson_container .tag_label {
         font-weight: bold;
     }
+    .tags {
+        min-height: 100px;
+    }
     #lesson_container .tags span {
         padding: 5px;
         margin-right: 10px;
@@ -40,6 +43,7 @@
         height: 180px;
         margin-bottom: 10px;
         margin-left: 10px;
+        overflow: auto;
     }
     .message {
         width: 100%;
@@ -347,7 +351,7 @@
         <div class="description">
             <?php echo $this->lessonInfo['description']; ?>
         </div>
-        <div style="height: 200px;">
+        <div style="min-height: 200px;">
             <div class="teacher_name">
                 先生：<?php echo $this->lessonInfo['name']; ?>
             </div>
