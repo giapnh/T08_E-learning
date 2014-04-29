@@ -1,4 +1,7 @@
 ﻿/* ------------START static/css/style-----------*/
+.description{
+	overflow: auto;
+}
 img {
     border: none;
 }

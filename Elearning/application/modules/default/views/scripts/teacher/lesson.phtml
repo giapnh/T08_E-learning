@@ -467,6 +467,7 @@
                         $deleteBtnClass = "";
                     }
                     ?>
+                    <div>
                     <a href="<?php echo $link; ?>">
                         <div class="file_type"><img src="<?php echo $icon ?>"></div>
                         <div class="file_name"><?php echo $file['filename']; ?></div>
@@ -483,6 +484,7 @@
                         </div>
                     </a>
                     <a href="<?php echo $deleteLink; ?>" class="btn-delete<?php echo $deleteBtnClass; ?>">X</a>
+                	</div>
                 </div> <!--End file container-->
                 <?php
             } // End foreach files
