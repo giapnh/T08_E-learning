@@ -111,6 +111,13 @@
 
             return false;
         });
+        
+        $('form').submit(function(){
+            // Disable next submit
+            $('form').submit(function(){
+                return false;
+            });
+        });
     });
 </script>
 <center>
@@ -207,7 +214,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td colspan='2'>
-                                                        注意：アップロードできるフォーマット：ｍｐ３、ｐｎｊ、ｊｐｇ、ｔｓｖ
+                                                        注意：アップロードできるフォーマット：ｍｐ３、wav、ｐｎｇ、ｍｐ４、ｊｐｇ、ｔｓｖ、gif、ｐｄｆ
                                                     </td>
                                                 </tr>
                                             </table>

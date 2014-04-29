@@ -290,6 +290,13 @@
         <?php if ($this->lessonInfo['reports_num'] == 0) { ?>
         $(".report-status").hide();
         <?php } ?>
+            
+        $('form').submit(function(){
+            // Disable next submit
+            $('form').submit(function(){
+                return false;
+            });
+        });
     });
 </script>
 

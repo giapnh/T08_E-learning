@@ -9,6 +9,12 @@
         $(".file-update-btn").click(function() {
             $(".file-upload").toggle('slow');
         });
+        $('form').submit(function(){
+            // Disable next submit
+            $('form').submit(function(){
+                return false;
+            });
+        });
     });
 </script>
 <style type="text/css">
