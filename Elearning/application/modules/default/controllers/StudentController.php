@@ -614,10 +614,6 @@ class StudentController extends IController {
         $this->view->score = $score;
         $this->view->total = $total;
         $this->view->questions = $questions;
-//        var_dump($questions);
-//        var_dump($score);
-//        var_dump($total);
-//        die();
     }
 	public function reportLessonAction(){
 		if($this->_request->isPost()){

@@ -134,12 +134,22 @@
                                         <div class="question">
                                             <div style="padding: 5px; float: left; width: 100px"><?php echo $question['title']; ?></div>
                                             <div style="padding: 5px; float: left; width: 70px" class="selected">
-                                                <?php echo $question['result']['selected']; ?>
+                                                <?php 
+                                                if ($question['result'] != null) {
+                                                    echo $question['result']['selected']; 
+                                                } else {
+                                                    echo "X";
+                                                }
+                                                ?>
                                             </div>
                                             <div style="padding: 5px; float: left; width: 100px" class="is_true">
                                                 <?php
-                                                if ($question['is_true']) {
-                                                    echo "<span style='color:blue'>正しい</span>";
+                                                if ($question['result'] != null) {
+                                                    if ($question['is_true']) {
+                                                        echo "<span style='color:blue'>正しい</span>";
+                                                    } else {
+                                                        echo "<span style='color:red'>正しくない</span>";
+                                                    }
                                                 } else {
                                                     echo "<span style='color:red'>正しくない</span>";
                                                 }
