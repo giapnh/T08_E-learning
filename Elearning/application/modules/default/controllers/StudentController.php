@@ -486,22 +486,29 @@ class StudentController extends IController {
      * ファイル見る処理
      */
     public function fileAction() {
-        
-        $lessonModel = new Default_Model_Lesson();
-        $lessonFileModel = new Default_Model_File();
-        $filecommentModel = new Default_Model_FileComment();
-        $repordModel = new Default_Model_CopyrightReport();
-        $learnModel = new Default_Model_Learn();
-        $masterModel = new Default_Model_Master();
-
+        //
         $auth = Zend_Auth::getInstance();
         $infoUser = $auth->getStorage()->read();
         $studentId = $infoUser['id'];
         $lessonId = $this->_request->getParam('lessonId');
-        $modelLock = new Default_Model_Lock();
-        if($modelLock->getByStudentAndLesson($this->currentUser["id"], $lessonId, true))
-        	$this->redirect("student/index");
         $currentFileId = $this->_request->getParam('fileId');
+        
+        //
+        $lessonModel = new Default_Model_Lesson();
+        $lessonFileModel = new Default_Model_File();
+        $filecommentModel = new Default_Model_FileComment();
+        $repordModel = new Default_Model_CopyrightReport();
+        $masterModel = new Default_Model_Master();
+        $questionModel = new Default_Model_Question();
+        $resultModel = new Default_Model_Result();
+        $learnModel = new Default_Model_Learn();
+        $learn = $learnModel->findByLessonAndStudent($lessonId, $studentId);
+
+        $modelLock = new Default_Model_Lock();
+        if($modelLock->getByStudentAndLesson($this->currentUser["id"], $lessonId, true)) {
+            $this->redirect("student/index");
+        }
+        
         if ($lessonId == null) {
             $this->redirect('student/index');
             return;
@@ -563,6 +570,25 @@ class StudentController extends IController {
         $this->view->files = $files;
         $this->view->controller = $this;
 
+        // テスト結果を見る
+        if ($this->getParam('result_display') == "true" && $currentFile) {
+            if ( $lessonFileModel->getFileExt($currentFile['filename']) == 'tsv') {
+                $questionsNoResult = $questionModel->findQuestionByFile($currentFile['id']);
+                $questions = $resultModel->estimateResult($questionsNoResult, $learn['id']);
+                $score = 0;
+                $total = 0;
+                foreach($questions as $question) {
+                    if ($question["result"]["selected"] == $question["answer"]) {
+                        $score += $question["point"];
+                    }
+                    $total = $question['point'];
+                }
+                $this->view->questions = $questions;
+                $this->view->score = $score;
+                $this->view->total = $total;
+            }
+        }
+        
         // Report
         if ($this->_request->isPost()) {
             $u = Zend_Auth::getInstance()->getStorage()->read();
@@ -652,7 +678,7 @@ class StudentController extends IController {
             $resultModel->updateResult($learn['id'], $question['id'], $selected);
         }
 
-        $this->redirect('student/test-result?file_id=' . $fileId . "&lessonId=" . $lesson['id']);
+        $this->redirect('student/file?fileId=' . $fileId . "&lessonId=" . $lesson['id'] ."&result_display=true");
     }
 
     public function getTestHtml($testId) {

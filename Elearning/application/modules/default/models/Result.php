@@ -23,6 +23,27 @@ class Default_Model_Result extends Zend_Db_Table_Abstract {
         }
     }
     
+    public function estimateResult($questions, $learnId) {
+        $score = 0;
+        $total = 0;
+        foreach ($questions as $i => $question) {
+            $questions[$i]['result'] = $this->findResultByQuestionAndLearn($learnId, $question['id']);
+            if ($questions[$i]['result']) {
+                if ($questions[$i]['result']['selected'] == $questions[$i]['answer']) {
+                    $score += $questions[$i]['point'];
+                    $questions[$i]['is_true'] = true;
+                } else {
+                    $questions[$i]['is_true'] = false;
+                }
+            } else {
+                $questions[$i]['result']['selected'] = "X";
+                $questions[$i]['is_true'] = false;
+            }
+            $total += $questions[$i]['point'];
+        }
+        return $questions;
+    }
+    
     public function updateResult($learnId, $questionId, $selected) {
         $currentResult = $this->findResultByQuestionAndLearn($learnId, $questionId);
         if ($currentResult) {

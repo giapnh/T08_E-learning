@@ -62,10 +62,12 @@ class Default_Model_Question extends Zend_Db_Table_Abstract {
     }
     
     public function findQuestionByFile($fileId) {
+        $resultModel = new Default_Model_Result();
         $query = $this->select()
                 ->where("file_id='".$fileId."'");
-        $result = $this->getAdapter()->fetchAll($query);
-        return $result;
+        $questions = $this->getAdapter()->fetchAll($query);
+        
+        return $questions;
     }
     
 }

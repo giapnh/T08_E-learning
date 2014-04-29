@@ -48,6 +48,31 @@
             return false;
         });
         
+        var questions = jQuery.parseJSON('<?php echo json_encode($this->questions); ?>');
+        for (var i in questions) {
+            var question = questions[i];
+            $("."+question['title']+" ."+question['result']['selected']).attr("checked", "");
+            if (question['is_true']) {
+                $("."+question['title']+" .result-true").show();
+            } else {
+                $("."+question['title']+" .result-false").show();
+            }
+        }
+        if (questions) {
+            $(".do-test-btn").show();
+            $(".submit-btn").hide();
+        } else {
+            $(".do-test-btn").hide();
+            $(".submit-btn").show();
+        }
+        $(".do-test-btn").click(function(){
+            $(".submit-btn").show();
+            $(".do-test-btn").hide();
+            $(".result-true").hide();
+            $(".result-false").hide();
+            $("input[type=radio]").attr("checked", false);
+            return false;
+        });
     });
 </script>
 <style type="text/css" media="print">
@@ -90,8 +115,8 @@
         overflow-x: hidden;
     }
     .file-container {
-        width: 100%;
-        height: 600px;
+        width: 750px;
+        height: 614px;
     }
     .lesson-teacher {
         font-style: italic;
@@ -155,6 +180,31 @@
         padding: 5px;
         font-size: 16px;
         font-weight: bold;
+    }
+    .submit-btn {
+        margin: 10px;
+    }
+    .question {
+        color: blue;
+        font-weight: bold;
+    }
+    .result-true {
+        background-image: url("<?php echo $this->baseUrl()."/public/images/nought.png"; ?>");
+        background-size: 25px 25px;
+        background-repeat: no-repeat;
+        padding: 5px;
+        padding-left: 25px;
+        color: blue;
+        display: none;
+    }
+    .result-false {
+        background-image: url("<?php echo $this->baseUrl()."/public/images/cross.png"; ?>");
+        background-size: 25px 25px;
+        background-repeat: no-repeat;
+        padding: 5px;
+        padding-left: 25px;
+        color: red;
+        display: none;
     }
 </style>
 <center>
@@ -272,7 +322,7 @@
                                 
                                 <?php if ($this->lessonInfo['status'] == 1) { ?>
                                 
-                                <div style="margin: 10px; width: 95%;max-height: 800px;
+                                <div style="margin: 10px; width: 750px;max-height: 800px;
                                      border-color: #007F9F; border-style: solid; border-width: thin;">
 
                                     <?php
@@ -300,22 +350,23 @@
                                         ?>
                                        <div class="file-container">
                                         <div>
-                                            <a href="<?php echo $this->baseUrl()."/student/test-result?file_id=".$this->currentFile['id']."&lessonId=".$this->lessonInfo['id']; ?>">
+                                            <a href="<?php echo $this->baseUrl()."/student/file?fileId=".$this->currentFile['id']."&lessonId=".$this->lessonInfo['id']; ?>&result_display=true">
                                                 <button class="normal-button">前回の結果を見る</button>
                                             </a>
                                         </div>
-                                            <h3><?php echo $this->currentFile['title'] ?></h3>
-                                            <h4><?php echo $this->currentFile['subtitle'] ?></h4>
-                                            <form action="<?php echo $this->baseUrl() . "/student/update-result?file_id=" . $this->currentFile['id']; ?>" method="post">
-                                                <div style="width: 100%;  min-height: 300px; max-height: 500px; overflow: auto;">
-                                                    <?php
-                                                    echo $this->controller->getTestHtml($this->currentFile['id']);
-                                                    ?>
-                                                </div>
-                                                <div class="float-left">
-                                                    <input id="submit_test" name="submit" type="submit" value="答えチェック" class="showlogfromm" style="height: 28px; margin-left: 10px;">
-                                                </div>
-                                            </form>
+                                        <h3><?php echo $this->currentFile['title'] ?></h3>
+                                        <h4><?php echo $this->currentFile['subtitle'] ?></h4>
+                                        <form action="<?php echo $this->baseUrl() . "/student/update-result?file_id=" . $this->currentFile['id']; ?>" method="post">
+                                            <div style="width: 100%;  min-height: 300px; max-height: 440px; overflow: auto;">
+                                                <?php
+                                                echo $this->controller->getTestHtml($this->currentFile['id']);
+                                                ?>
+                                            </div>
+                                            <div>
+                                                <input class="submit-btn" id="submit_test" name="submit" type="submit" value="答えチェック" class="showlogfromm" style="height: 28px; margin-left: 10px;">
+                                                <button class="do-test-btn">テスト実施</button>
+                                            </div>
+                                        </form>
                                        </div>
                                             <?php
                                         }

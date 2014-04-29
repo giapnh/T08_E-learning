@@ -148,7 +148,7 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
         $exts = explode(".", $filename);
         $n = count($exts) - 1;
         $exts = $exts[$n];
-        return $exts;
+        return strtolower($exts);
     }
     
     /**
@@ -489,15 +489,25 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
      * @return string
      */
     protected function createQuestionHtml($question) {
-        $questionHtml = "<div class='question_container'>\n";
-        $questionHtml .= "\t<div class='question'>Q".$question["index"].": ".$question["question"]."</div>\n";
+        $qIndex = $question["index"];
+        $content = $question["question"];
+        $point = $question["point"];
+        $trueAnswer = $question["trueAnswer"];
+        
+        $questionHtml = "<div class='question_container Q".$qIndex."'>\n";
+        $questionHtml .= "\t<div class='question'>Q".$qIndex.": ".$content."(".$point."点)</div>\n";
         $questionHtml .="\t<div class='answers'>\n";
         
         foreach ($question["answers"] as $index => $answer) {
-            $questionHtml .= "\t\t<input type='radio' name='Q[".$question["index"]."]' value='".($index + 1)."' >".$answer."<br>\n";
+            $questionHtml .= "\t\t<input class='S".($index+1)."' type='radio' name='Q[".$qIndex."]' value='".($index + 1)."' >".$answer."<br>\n";
         }
         
-        $questionHtml .= "\t</div>\n</div>\n";
+        $questionHtml .= "\t</div>\n";
+        
+        $questionHtml .= "<div class='result-true'>正しい</div>";
+        $questionHtml .= "<div class='result-false'>正しくない</div>";
+        
+        $questionHtml .= "\n</div>";
         
         return $questionHtml;
     }
