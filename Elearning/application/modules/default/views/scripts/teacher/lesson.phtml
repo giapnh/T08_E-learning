@@ -347,7 +347,7 @@
         <div class="description">
             <?php echo $this->lessonInfo['description']; ?>
         </div>
-        <div style="height: 200px;">
+        <div>
             <div class="teacher_name">
                 先生：<?php echo $this->lessonInfo['name']; ?>
             </div>
@@ -463,6 +463,7 @@
                         $deleteBtnClass = "";
                     }
                     ?>
+                    <div>
                     <a href="<?php echo $link; ?>">
                         <div class="file_type"><img src="<?php echo $icon ?>"></div>
                         <div class="file_name"><?php echo $file['filename']; ?></div>
@@ -479,6 +480,7 @@
                         </div>
                     </a>
                     <a href="<?php echo $deleteLink; ?>" class="btn-delete<?php echo $deleteBtnClass; ?>">X</a>
+                	</div>
                 </div> <!--End file container-->
                 <?php
             } // End foreach files
