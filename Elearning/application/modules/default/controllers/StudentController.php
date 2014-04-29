@@ -581,7 +581,7 @@ class StudentController extends IController {
                     if ($question["result"]["selected"] == $question["answer"]) {
                         $score += $question["point"];
                     }
-                    $total = $question['point'];
+                    $total += $question['point'];
                 }
                 $this->view->questions = $questions;
                 $this->view->score = $score;

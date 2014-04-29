@@ -61,6 +61,10 @@
         if (questions) {
             $(".do-test-btn").show();
             $(".submit-btn").hide();
+            var point = <?php echo $this->score; ?>;
+            var total = <?php echo $this->total; ?>;
+            $(".point").text("点数："+point+"/"+total);
+            $("input[type=radio]").attr("disabled", true);
         } else {
             $(".do-test-btn").hide();
             $(".submit-btn").show();
@@ -71,6 +75,8 @@
             $(".result-true").hide();
             $(".result-false").hide();
             $("input[type=radio]").attr("checked", false);
+            $(".point").text("");
+            $("input[type=radio]").attr("disabled", false);
             return false;
         });
     });
@@ -357,6 +363,7 @@
                                         <h3><?php echo $this->currentFile['title'] ?></h3>
                                         <h4><?php echo $this->currentFile['subtitle'] ?></h4>
                                         <form action="<?php echo $this->baseUrl() . "/student/update-result?file_id=" . $this->currentFile['id']; ?>" method="post">
+                                            <div class="point"></div>
                                             <div style="width: 100%;  min-height: 300px; max-height: 440px; overflow: auto;">
                                                 <?php
                                                 echo $this->controller->getTestHtml($this->currentFile['id']);

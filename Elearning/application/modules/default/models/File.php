@@ -494,7 +494,8 @@ class Default_Model_File extends Zend_Db_Table_Abstract {
         $point = $question["point"];
         $trueAnswer = $question["trueAnswer"];
         
-        $questionHtml = "<div class='question_container Q".$qIndex."'>\n";
+        $questionHtml = "<hr>";
+        $questionHtml .= "<div class='question_container Q".$qIndex."'>\n";
         $questionHtml .= "\t<div class='question'>Q".$qIndex.": ".$content."(".$point."点)</div>\n";
         $questionHtml .="\t<div class='answers'>\n";
         
