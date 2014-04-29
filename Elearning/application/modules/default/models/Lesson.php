@@ -13,12 +13,13 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
         $master = new Default_Model_Master();
         $this->_lessonDeadline = $master->getMasterValue(Default_Model_Master::$KEY_LESSON_DEADLINE);
     }
-	public function deleteLessonById($lessonId){
-		$sql = "UPDATE lesson 
+
+    public function deleteLessonById($lessonId) {
+        $sql = "UPDATE lesson 
 				SET status =5
-				WHERE lesson.id = ". $lessonId;
-		$this->getAdapter()->query($sql);
-		$sql = "DELETE lesson_file, lesson_tag, comment, file_comment, lesson_like, lesson_report, copyright_report
+				WHERE lesson.id = " . $lessonId;
+        $this->getAdapter()->query($sql);
+        $sql = "DELETE lesson_file, lesson_tag, comment, file_comment, lesson_like, lesson_report, copyright_report
 				FROM lesson
 				LEFT JOIN lesson_file ON lesson.id = lesson_file.lesson_id
 				LEFT JOIN lesson_tag ON lesson.id = lesson_tag.lesson_id
@@ -27,32 +28,29 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
 				LEFT JOIN lesson_like ON lesson.id = lesson_like.lesson_id
 				LEFT JOIN lesson_report ON lesson.id = lesson_report.lesson_id
 				LEFT JOIN copyright_report ON lesson_file.id = copyright_report.file_id 
-				WHERE lesson.id = ". $lessonId;
-		$this->getAdapter()->query($sql);
-		$tagModel = new Default_Model_Tag();
-		$tagModel->cleanUnuseTags();
-	}
-// 	protected function __removeDir($path) {
+				WHERE lesson.id = " . $lessonId;
+        $this->getAdapter()->query($sql);
+        $tagModel = new Default_Model_Tag();
+        $tagModel->cleanUnuseTags();
+    }
 
+// 	protected function __removeDir($path) {
 //     // Normalise $path.
 //     $path = rtrim($path, '/') . '/';
-
 //     // Remove all child files and directories.
 //     $items = glob($path . '*');
-
 //     foreach($items as $item) {
 //         is_dir($item) ? removeDir($item) : unlink($item);
 //     }
-
 //     // Remove directory.
 //     rmdir($path);
 // }
-	
+
     public function listAll($type = 0, $asc = 0) {
         $select = $this->getAdapter()->select();
         $select->from('lesson')
                 ->join('user', 'lesson.teacher_id=user.id', array('name'))
-        		->where("lesson.status <> 5");
+                ->where("lesson.status <> 5");
         $asc_str = "";
         if ($asc == 0) {
             $asc_str = $asc_str . "ASC";
@@ -79,13 +77,13 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
         if ($tag == 0) {
             return $this->listAll($type, $asc);
         }
-        
+
         $select = $this->getAdapter()->select();
         $select->from(array('l' => 'lesson'))
                 ->joinInner(array('lt' => 'lesson_tag'), 'l.id = lt.lesson_id', array('lesson_tag.id' => 'tag_id'))
                 ->joinInner('user', 'l.teacher_id=user.id', array('name'))
                 ->where("lt.tag_id=$tag")
-        		->where("l.status <> 5");
+                ->where("l.status <> 5");
         $asc_str = "";
         if ($asc == 0) {
             $asc_str = $asc_str . "ASC";
@@ -118,7 +116,7 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
                 ->joinInner('user', 'l.teacher_id=user.id', array('name'))
                 ->where('user.id=?', $teacher_id)
                 ->where("lt.tag_id=$tag")
-        		->where("l.status <> 5");
+                ->where("l.status <> 5");
         $asc_str = "";
         if ($asc == 0) {
             $asc_str = $asc_str . "ASC";
@@ -164,7 +162,7 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
         $select->from(array('l' => 'lesson'))
                 ->joinInner('user', 'l.teacher_id=user.id', array('name'))
                 ->where("l.teacher_id=$teacher")
-        		->where("l.status <> 5");
+                ->where("l.status <> 5");
         $asc_str = "";
         if ($asc == 0) {
             $asc_str = $asc_str . "ASC";
@@ -187,7 +185,7 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
         return $result;
     }
 
-    public function listAllByStudent($student,  $type = 0, $asc = 0) {
+    public function listAllByStudent($student, $type = 0, $asc = 0) {
         $select = $this->getAdapter()->select();
         $select->from('lesson')
                 ->joinInner('user', 'lesson.teacher_id=user.id', array('name'))
@@ -222,7 +220,7 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
         $select = $this->getAdapter()->select();
         $select->from('lesson')
                 ->join('user', 'lesson.teacher_id=user.id', array('name'))
-        			->where("lesson.status <> 5");
+                ->where("lesson.status <> 5");
         $asc_str = "";
         if ($asc == 0) {
             $asc_str = $asc_str . "ASC";
@@ -249,7 +247,7 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
         return $result;
     }
 
-    public function findLessonWithTagByStudent($tagId, $studentId,  $type = 0, $asc = 0) {
+    public function findLessonWithTagByStudent($tagId, $studentId, $type = 0, $asc = 0) {
         $select = $this->getAdapter()->select();
         $select->from('lesson')
                 ->joinInner('lesson_tag', 'lesson.id=lesson_tag.lesson_id', NULL)
@@ -277,7 +275,7 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
         return $this->getAdapter()->fetchAll($select);
     }
 
-    public function findLessonWithTeacherByStudent($teacher, $studentId,  $type = 0, $asc = 0) {
+    public function findLessonWithTeacherByStudent($teacher, $studentId, $type = 0, $asc = 0) {
         $select = $this->getAdapter()->select();
         $select->from('lesson')
                 ->joinInner('learn', 'lesson.id=learn.lesson_id', array('status'))
@@ -339,7 +337,7 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
      * @param type $keyword
      * @return type
      */
-    public function findByKeyword($keyword, $type, $asc, $userId = null,$studentId = null) {
+    public function findByKeyword($keyword, $type, $asc, $userId = null, $studentId = null) {
         // Check if have "+" or "-" charecter
         if (strpos($keyword, '+')) {
             $subKey = explode('+', $keyword);
@@ -356,6 +354,16 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
                 }
             }
             $select->orWhere($nameWhere);
+
+            $titleWhere = "";
+            for ($i = 0; $i < count($subKey); $i++) {
+                $titleWhere = $titleWhere . "name LIKE '%$subKey[$i]%'";
+                if ($i != count($subKey) - 1) {
+                    $titleWhere = $titleWhere . " AND ";
+                }
+            }
+            $select->orWhere($titleWhere);
+
             $select->orWhere("tag_name  LIKE '%" . trim($keyword) . "%'")
                     ->orWhere("title LIKE '%" . trim($keyword) . "%'")
                     ->orWhere("description LIKE '%" . trim($keyword) . "%'")
@@ -384,6 +392,9 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
                     ->joinInner('tag', 'lesson_tag.tag_id=tag.id', array('tag_name'));
             for ($i = 0; $i < count($subKey); $i++) {
                 $select->orWhere("name LIKE '%" . trim($subKey[$i]) . "%'");
+            }
+            for ($i = 0; $i < count($subKey); $i++) {
+                $select->orWhere("title LIKE '%" . trim($subKey[$i]) . "%'");
             }
             $select->orWhere("tag_name  LIKE '%$keyword%'")
                     ->orWhere("title LIKE '%$keyword%'")
@@ -431,24 +442,23 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
             } else if ($type == 3) {
                 $select->order('lesson.num_like' . ' ' . $asc_str);
             }
-            
         }
         $select->where("lesson.status <> 5");
-        if($userId)
-        	$select->having("lesson.teacher_id = $userId");
-        
-        $result =  $this->getAdapter()->fetchAll($select);  
+        if ($userId)
+            $select->having("lesson.teacher_id = $userId");
+
+        $result = $this->getAdapter()->fetchAll($select);
         foreach ($result as $index => $lesson) {
             $result[$index]['is_reported'] = $this->isReported($lesson);
         }
-        if($studentId){
-        	$modelLearn = new Default_Model_Learn();
-        	foreach ($result as $k => $r){
-        		if( $modelLearn->isStudentLearn($studentId, $r["id"]))
-        			unset($result[$k]);
-        	}
+        if ($studentId) {
+            $modelLearn = new Default_Model_Learn();
+            foreach ($result as $k => $r) {
+                if ($modelLearn->isStudentLearn($studentId, $r["id"]))
+                    unset($result[$k]);
+            }
         }
-       	return $result;
+        return $result;
     }
 
     /**
