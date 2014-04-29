@@ -357,7 +357,7 @@ class Default_Model_Lesson extends Zend_Db_Table_Abstract {
 
             $titleWhere = "";
             for ($i = 0; $i < count($subKey); $i++) {
-                $titleWhere = $titleWhere . "name LIKE '%$subKey[$i]%'";
+                $titleWhere = $titleWhere . "lesson.title LIKE '%$subKey[$i]%'";
                 if ($i != count($subKey) - 1) {
                     $titleWhere = $titleWhere . " AND ";
                 }
