@@ -166,12 +166,12 @@
                 <table class="list_lession_content" cellpadding="0" cellspacing="0" border="0">
                     <tr>
                         <td valign="top" class="containt_center_cen_left" style="margin-top: 14px;">
-                            <div style="width: 100%; height: 20px;" class="filter-title lession-title">タグリスト</div>
                             <?php
                             /* タグが表現の倍は */
                             $type = $this->type;
                             if ($type == 1) {
                                 ?>
+                            <div style="width: 100%; height: 20px;" class="filter-title lession-title">タグリスト</div>
                             <a href="<?php echo $this->baseUrl(); ?>/teacher/index?type=1&tagId=0">
                                 <button class="<?php
                                 if ($this->tagId == 0) {
@@ -186,6 +186,7 @@
                             <?php
                             } else {
                                 ?>
+                                <div style="width: 100%; height: 20px;" class="filter-title lession-title">先生リスト</div>
                                 <a href="<?php echo $this->baseUrl(); ?>/teacher/index?type=2&teacherId=0">
                                     <button class="
                                     <?php
