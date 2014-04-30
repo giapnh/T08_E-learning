@@ -59,7 +59,6 @@ class Admin_Model_User extends Zend_Db_Table_Abstract {
         // TODO
         $query = $this->select()
                 ->from($this->_name, "*")
-                ->where("status <> 5")
                 ->order(array($orderBy." ".$order))
                 ->limitPage($page, $limit);
         $result = $this->getAdapter()->fetchAll($query);

@@ -57,7 +57,7 @@ class Admin_UserController extends IController {
         
         // ユーザリストと取る
         $userModel = new Admin_Model_User();
-        if (isset($status) && $status != 0 && $status != 5) {
+        if (isset($status) && $status != 0) {
             $usersPager = $userModel->getUsersByStatus($page, $limit, $orderBy, $order, $status);
             $this->view->users = $usersPager['users'];
             $this->view->orderBy = $orderBy;
@@ -200,12 +200,19 @@ class Admin_UserController extends IController {
      */
     public function deleteAction() {
         $userId = $this->_request->getParam('user_id');
-        $userModel = new Admin_Model_User();
-        if ($userModel->deleteUser($userId) == true) {
-            $this->_helper->FlashMessenger->addMessage(Message::$M039, 'updateInfoSuccess');
+        $userModel = new Default_Model_Account();
+        $user = $userModel->getUserById($userId);
+        if ($user['role'] == 1) {
+            $userModel->deleteStudent($userId);
         } else {
-            $this->_helper->FlashMessenger->addMessage(Message::$M043, 'updateInfoError');
+            $userModel->deleteTeacher($userId);
         }
+        $this->_helper->FlashMessenger->addMessage(Message::$M039, 'updateInfoSuccess');
+//        if ($userModel->deleteUser($userId) == true) {
+//            $this->_helper->FlashMessenger->addMessage(Message::$M039, 'updateInfoSuccess');
+//        } else {
+//            $this->_helper->FlashMessenger->addMessage(Message::$M043, 'updateInfoError');
+//        }
         $this->redirect("/admin/user");
     }
     

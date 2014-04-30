@@ -86,8 +86,8 @@
                             <option value="0">全部</option>
                             <option value="1">許可された</option>
                             <option value="2">許可をまっている</option>
-                            <option value="4">削除された</option>
-                            <option value="4">ロックされた</option>
+                            <option value="5">削除された</option>
+                            <option value="3">ロックされた</option>
                         </select>
                     </td>
                 </tr>
@@ -118,6 +118,8 @@
                         } elseif ($user['status'] == 2) {
                             echo "許可を待っている";
                         } elseif ($user['status'] == 3) {
+                            echo "ロックされている";
+                        } elseif ($user['status'] == 5) {
                             echo "削除された";
                         } else {
                             echo "エラー";
