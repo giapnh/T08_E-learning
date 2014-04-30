@@ -61,8 +61,8 @@
         if (questions) {
             $(".do-test-btn").show();
             $(".submit-btn").hide();
-            var point = <?php echo $this->score; ?>;
-            var total = <?php echo $this->total; ?>;
+            var point = <?php if ($this->score) echo $this->score; else echo 0; ?>;
+            var total = <?php if ($this->total) echo $this->total; else echo 0; ?>;
             $(".point").text("点数："+point+"/"+total);
             $("input[type=radio]").attr("disabled", true);
         } else {
@@ -211,6 +211,11 @@
         padding-left: 25px;
         color: red;
         display: none;
+    }
+    .point {
+        color: blue;
+        font-weight: bold;
+        font-style: italic;
     }
 </style>
 <center>

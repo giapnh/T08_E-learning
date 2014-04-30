@@ -525,7 +525,10 @@ class TeacherController extends IController {
         $lessonFileModel = new Default_Model_File();
         $filecommentModel = new Default_Model_FileComment();
         $reportModel = new Default_Model_CopyrightReport();
-
+        $questionModel = new Default_Model_Question();
+        $learnModel = new Default_Model_Learn();
+        $resultModel = new Default_Model_Result();
+        
         $lessonId = $this->_request->getParam('lesson_id');
         $currentFileId = $this->_request->getParam('file_id');
 
@@ -547,6 +550,7 @@ class TeacherController extends IController {
         if ($currentFile == NULL) {
             if (count($files) > 0) {
                 $currentFile = $files[0];
+                $currentFileId = $currentFile['id'];
             } else {
                 $this->view->fileError = "ファイルがない";
             }
@@ -565,6 +569,58 @@ class TeacherController extends IController {
             }
         }
 
+        if ($this->getParam('result_display') == "true" && $currentFile) {
+            if ( $lessonFileModel->getFileExt($currentFile['filename']) == 'tsv') {
+                $answers = $this->getParam('Q');
+                $questions = $questionModel->findQuestionByFile($currentFileId);
+                $score = 0;
+                $total = 0;
+                foreach ($questions as $i => $question) {
+                    $index = (int)substr($question["title"],1);
+                    if (isset($answers[$index])) {
+                        $questions[$i]["result"]["selected"] = "S".$answers[$index];
+                        if ("S".$answers[$index] == $questions[$i]['answer']) {
+                                $score += $questions[$i]['point'];
+                                $questions[$i]['is_true'] = true;
+
+                        } else {
+                                $questions[$i]['is_true'] = false;
+                        }
+                    }else{
+                        $questions[$i]['is_true'] = false;
+                        $questions[$i]["result"]["selected"] = "X";
+                    }
+                    $total += $questions[$i]['point'];
+                }
+                $this->view->questions = $questions;
+                $this->view->score = $score;
+                $this->view->total = $total;
+            }
+        }
+        
+        // Student
+        $learnId = $this->getParam('learn_id');
+        if (isset($learnId) && $currentFile) {
+            if ( $lessonFileModel->getFileExt($currentFile['filename']) == 'tsv') {
+                $questionsNoResult = $questionModel->findQuestionByFile($currentFile['id']);
+                $questions = $resultModel->estimateResult($questionsNoResult, $learnId);
+                $score = 0;
+                $total = 0;
+                foreach($questions as $question) {
+                    if ($question["result"]["selected"] == $question["answer"]) {
+                        $score += $question["point"];
+                    }
+                    $total += $question['point'];
+                }
+                $this->view->questions = $questions;
+                $this->view->score = $score;
+                $this->view->total = $total;
+            }
+            $student = $learnModel->getStudentByLearnId($learnId);
+            $this->view->student = $student;
+        }
+        
+        $this->view->learnId = $learnId;
         $this->view->currentFile = $currentFile;
         $this->view->lessonInfo = $lessonInfo;
         $this->view->fileModel = new Default_Model_File();

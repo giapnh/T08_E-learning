@@ -15,6 +15,44 @@
                 return false;
             });
         });
+        
+        var questions = jQuery.parseJSON('<?php echo json_encode($this->questions); ?>');
+        for (var i in questions) {
+            var question = questions[i];
+            $("."+question['title']+" ."+question['result']['selected']).attr("checked", "");
+            if (question['is_true']) {
+                $("."+question['title']+" .result-true").show();
+            } else {
+                $("."+question['title']+" .result-false").show();
+            }
+        }
+        if (questions) {
+            $(".do-test-btn").show();
+            $(".submit-btn").hide();
+            var point = <?php if ($this->score) echo $this->score; else echo 0; ?>;
+            var total = <?php if ($this->total) echo $this->total; else echo 0; ?>;
+            $(".point").text("点数："+point+"/"+total);
+            $("input[type=radio]").attr("disabled", true);
+        } else {
+            $(".do-test-btn").hide();
+            $(".submit-btn").show();
+        }
+        $(".do-test-btn").click(function(){
+            $(".submit-btn").show();
+            $(".do-test-btn").hide();
+            $(".result-true").hide();
+            $(".result-false").hide();
+            $("input[type=radio]").attr("checked", false);
+            $(".point").text("");
+            $("input[type=radio]").attr("disabled", false);
+            return false;
+        });
+        <?php if ($this->learnId) { ?>
+        $(".do-test-btn").hide();
+        <?php } ?>
+        <?php if ($this->student) { ?>
+            $(".file-nav").hide();
+        <?php } ?>
     });
 </script>
 <style type="text/css">
@@ -163,6 +201,11 @@
         color: red;
         display: none;
     }
+    .point {
+        color: blue;
+        font-weight: bold;
+        font-style: italic;
+    }
 </style>
 <center>
     <div class="content" style="background: #F0F0F0;">
@@ -233,6 +276,11 @@
                                         <?php
                                         $count = 0;
                                         if ($this->files != null) {
+                                            if ($this->learnId) {
+                                                $learnStr = "&learn_id=".$this->learnId;
+                                            } else {
+                                                $learnStr = "";
+                                            }
                                             foreach ($this->files as $file) {
                                                 $count++;
                                                 $fileTypes = explode(".", $file['filename']);
@@ -250,7 +298,7 @@
                                                     $icon = $this->baseUrl() . "/public/images/test.png";
                                                 }
                                                 ?>
-                                                <a href="<?php echo $this->baseUrl(); ?>/teacher/file?lesson_id=<?php echo $this->lessonInfo['id']; ?>&file_id=<?php echo $file['id']; ?>">
+                                                <a href="<?php echo $this->baseUrl(); ?>/teacher/file?lesson_id=<?php echo $this->lessonInfo['id']; ?>&file_id=<?php echo $file['id'].$learnStr; ?>">
                                                     <div class="full-width" style="font-weight: bold; margin: 5px;">
                                                         <img style="float:left; margin-right: 5px;" src="<?php echo $icon; ?>" width="30" height="30">
                                                         <div>
@@ -317,6 +365,16 @@
                                                 ?>
                                             </div>
                                         </div>
+                                        <div style="margin: 5px;font-weight: bold;font-style: italic;">
+                                        <?php if ($this->student) {
+                                            echo "学生".$this->student['name']."の結果をみている";
+                                        } ?>
+                                        </div>
+                                        <div style="margin: 5px;">
+                                            <?php if ($this->student) {
+                                                echo "<a href='".$this->baseUrl()."/teacher/students/lesson_id/".$this->lessonId."'>学生リストに戻る</a>";
+                                            } ?>                           
+                                        </div>
                                         <div style="margin: 10px; width: 95%;min-height: 500px;max-height: 800px; border-color: #007F9F; border-style: solid; border-width: thin;">
                                             <!--Content here-->
                                             <?php
@@ -335,23 +393,23 @@
 
                                             <?php } else if ($currentFile == 'tsv') { // テストファイル
                                                 ?>
-                                                <!--フォームスタット-->
                                                 <?php
                                                 $controller = $this->controller;
                                                 //echo $controller->getTestHtml($this->currentFile['id']);
                                                 ?>
                                                 <h3><?php echo $this->currentFile['title'] ?></h3>
                                             <h4><?php echo $this->currentFile['subtitle'] ?></h4>
-                                            <form action="<?php echo $this->baseUrl() . "/teacher/test-result?file_id=" . $this->currentFile['id']; ?>&lessonId=<?php echo $this->lessonId?>" method="post">
-                                                <div style="width: 100%;  min-height: 300px; max-height: 500px; overflow: auto;">
+                                            <form action="<?php echo $this->baseUrl() . "/teacher/file?file_id=" . $this->currentFile['id']; ?>&lesson_id=<?php echo $this->lessonId?>&result_display=true" method="post">
+                                                <div class="point"></div>
+                                                <div style="width: 100%;  min-height: 300px; max-height: 440px; overflow: auto;">
                                                     <?php
                                                     echo $this->controller->getTestHtml($this->currentFile['id']);
                                                     ?>
-                                                    <div class="float-left">
-                                                    <input id="submit_test" name="submit" type="submit" value="答えチェック" class="showlogfromm" style="height: 28px; margin-left: 10px;">
                                                 </div>
+                                                <div class="float-left">
+                                                    <input class="submit-btn" name="submit" type="submit" value="答えチェック" class="showlogfromm" style="height: 28px; margin-left: 10px;">
+                                                    <button class="do-test-btn">テスト実施</button>
                                                 </div>
-                                                
                                             </form>
  
         <!--                                        <a href="<?php echo $this->baseUrl() . "/teacher/students?learn_id=" . $this->lessonId . "&file_id=" . $this->currentFile['id']; ?>">

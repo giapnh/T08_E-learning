@@ -115,6 +115,22 @@ class Default_Model_Learn extends Zend_Db_Table_Abstract {
                 ->order("register_time DESC");
         return $this->getAdapter()->fetchAll($query);
     }
+    
+    public function getStudentByLearnId($learnId) {
+        $userModel = new Default_Model_Account();
+        $learn = $this->find($learnId);
+        if ($learn && count($learn)>0) {
+            $learn = $learn[0];
+            $student = $userModel->getUserById($learn['student_id']);
+            if ($student) {
+                return $student;
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
 
     //lock students
     public function lockStudent($ids) {

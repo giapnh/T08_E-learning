@@ -53,7 +53,7 @@
 					<?php else : ?>
 					<td><a href="<?php echo $this->baseUrl()?>/teacher/unlock-student?lesson_id=<?php echo $this->lessonId; ?>&id=<?php echo $student["id"]?>"/><u>アンロック</u></a></td>
 					<?php endif;?>
-					<td> <u><a href = "<?php echo $this->baseUrl() ?>/teacher/student-result/learn_id/<?php echo $student["id"]?> ">テスト結果</a></u></td>
+					<td> <u><a href = "<?php echo $this->baseUrl() ?>/teacher/file/lesson_id/<?php echo $this->lessonId."/learn_id/".$student["id"]; ?> ">テスト結果</a></u></td>
 				</tr>
 			<?php endforeach;?>
 			</table>
